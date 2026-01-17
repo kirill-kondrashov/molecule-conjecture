@@ -16,6 +16,7 @@ import Molecule.Rfast
 import Molecule.Hyperbolicity
 import Molecule.PiecewiseAnalytic
 import Molecule.RfastHorseshoe
+import Molecule.Compactness
 
 namespace MLC
 
@@ -48,10 +49,7 @@ operator and functional spaces is beyond the scope of this file.
 
 -- Rfast_HMol is now defined in Molecule.RfastHorseshoe
 
-/-- Predicate for Compactness of the Horseshoe operator.
-    We interpret "The renormalization horseshoe is compact" as the space HMol being compact.
-    The operator f is the restriction to this space. -/
-def IsCompactOperator (_ : HMol → HMol) : Prop := CompactSpace HMol
+-- IsCompactOperator is now defined in Molecule.Compactness
 
 
 
