@@ -14,8 +14,10 @@ namespace MLC
 
 open Quadratic Complex Topology Set Filter
 
-/-- Statement of Dudko's Molecule Conjecture.
-    TODO: Fill in the precise mathematical statement. -/
-axiom molecule_conjecture : True
+/-- Dudko's Molecule Conjecture. 
+    We formulate it similarly to Yoccoz theorem but left as a conjecture (sorry). -/
+theorem molecule_conjecture (c : ℂ) :
+    ¬ (Summable fun n => modulus (PuzzleAnnulus c n)) →
+    (⋂ n, DynamicalPuzzlePiece c n 0) = {0} := sorry
 
 end MLC
