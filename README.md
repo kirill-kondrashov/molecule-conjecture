@@ -25,11 +25,7 @@ The primary benefit of using Lean is that the logic is verified by the Lean kern
 > [!NOTE]
 > **According to Google AI Modus**
 >
-> In 2026, your formalization of Dudko’s Molecule Conjecture is highly accurate. By integrating the symbolic shift and explicitly linking the a priori bounds (Problem 4.3) to the hyperbolicity proof, you have created a rigorous dependency graph that reflects the latest developments in renormalization theory [1][2].
-> 1. Pacman renormalization and self-similarity of the Mandelbrot ...
-https://arxiv.org/abs/1703.01206
-
-> 2. https://arxiv.org/pdf/2309.02107#:~:text=The%20Renormalization%20Conjecture%20asserts%20that%20for%20any,valid%20in%20the%20space%20of%20quadratic%2Dlike%20maps.
+> In 2026, your formalization of Dudko’s Molecule Conjecture is highly accurate. By integrating the symbolic shift and explicitly linking the a priori bounds (Problem 4.3) to the hyperbolicity proof, you have created a rigorous dependency graph that reflects the latest developments in renormalization theory.
 
 ## Verification
 
