@@ -27,8 +27,8 @@ fi
 cat "$ACTUAL"
 
 # Extract the relevant part from the actual output
-# We look for the line starting with "✅" and everything after
-grep -A 100 "✅" "$ACTUAL" > actual_cleaned.txt
+# We look for the line starting with "✅" or "⚠️" and everything after
+grep -A 100 -E "✅|⚠️" "$ACTUAL" > actual_cleaned.txt
 mv actual_cleaned.txt "$ACTUAL"
 
 # Compare
