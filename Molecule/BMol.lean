@@ -5,6 +5,8 @@ import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.Calculus.Deriv.Polynomial
 import Mathlib.Data.Complex.Basic
 import Mathlib.Topology.MetricSpace.Basic
+import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
+import Mathlib.Topology.Maps.Proper.Basic
 
 namespace MLC
 
@@ -26,12 +28,14 @@ structure QuadraticLikeMap where
   isOpen_V : IsOpen V
   isConnected_U : IsConnected U
   isConnected_V : IsConnected V
+  simplyConnected_U : SimplyConnectedSpace U
+  simplyConnected_V : SimplyConnectedSpace V
   subset : U ⊆ V
   closure_subset : closure U ⊆ V
   analytic_on : AnalyticOn ℂ f U
   maps_to : MapsTo f U V
-  -- Properness: tendsto to infinity (boundary of V)
-  proper : Tendsto (maps_to.restrict f U V) (cocompact U) (cocompact V)
+  -- Properness using IsProperMap on the restricted map
+  proper : IsProperMap (maps_to.restrict f U V)
   -- Degree 2 condition: unique critical point in U
   unique_critical_point : ∃! c ∈ U, deriv f c = 0
 
@@ -50,7 +54,9 @@ noncomputable def defaultBMol : BMol :=
     isOpen_V := Metric.isOpen_ball
     isConnected_U := sorry
     isConnected_V := sorry
-    subset := sorry
+    simplyConnected_U := sorry
+    simplyConnected_V := sorry
+    subset := Metric.ball_subset_ball (by norm_num)
     closure_subset := sorry
     analytic_on := sorry
     maps_to := sorry
