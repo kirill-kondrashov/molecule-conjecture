@@ -10,7 +10,9 @@ import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.Calculus.Deriv.Pow
 import Mathlib.Analysis.Calculus.Deriv.Polynomial
 import Mathlib.Topology.MetricSpace.ProperSpace
+import Mathlib.Algebra.Order.Ring.Archimedean
 import Yoccoz.Quadratic.Complex.Basic
+import Yoccoz.Quadratic.Complex.Escape
 
 namespace MLC
 
@@ -101,20 +103,109 @@ lemma continuous_orbit (n : ℕ) : Continuous (fun c : ℂ => Quadratic.orbit c 
     exact (ih.pow 2).add continuous_id
 
 /--
+General escape lemma: if |z| > 2 and |z| ≥ |c|, the orbit escapes.
+-/
+lemma escapes_of_large_norm_and_ge_c {c z : ℂ} (hz : ‖z‖ > 2) (hcz : ‖c‖ ≤ ‖z‖) :
+    ¬ Quadratic.boundedOrbit c z := by
+  intro h_bounded
+  rcases h_bounded with ⟨M, hM⟩
+  -- We prove by induction that |z_n| ≥ 2 + 3^n * (|z| - 2)
+  have growth : ∀ n, ‖Quadratic.orbit c z n‖ ≥ 2 + 3^n * (‖z‖ - 2) := by
+    intro n
+    induction n with
+    | zero =>
+      simp
+    | succ n ih =>
+      let zn := Quadratic.orbit c z n
+      have h_zn_ge_2 : ‖zn‖ ≥ 2 + 3^n * (‖z‖ - 2) := ih
+      have h_zn_gt_2 : ‖zn‖ > 2 := by
+        have : 3^n * (‖z‖ - 2) > 0 := mul_pos (pow_pos (by norm_num) n) (sub_pos.mpr hz)
+        linarith
+      
+      have h_zn_ge_c : ‖zn‖ ≥ ‖c‖ := by
+        have : 3^n * (‖z‖ - 2) ≥ 1 * (‖z‖ - 2) := mul_le_mul_of_nonneg_right (one_le_pow₀ (by norm_num)) (sub_nonneg.mpr (le_of_lt hz))
+        linarith
+      
+      rw [Quadratic.orbit_succ]
+      have tri : ‖zn^2 + c‖ ≥ ‖zn‖^2 - ‖c‖ := by
+        have := norm_add_le (zn^2 + c) (-c)
+        simp only [add_neg_cancel_right, norm_neg] at this
+        rw [Complex.norm_pow] at this
+        linarith
+      
+      have step_ineq : ‖zn‖^2 - ‖c‖ ≥ 2 + 3 * (‖zn‖ - 2) := by
+        calc ‖zn‖^2 - ‖c‖ 
+             ≥ ‖zn‖^2 - ‖zn‖ := by linarith
+           _ = (‖zn‖ - 2) * (‖zn‖ + 1) + 2 := by ring
+           _ ≥ (‖zn‖ - 2) * 3 + 2 := by
+             have : ‖zn‖ + 1 ≥ 3 := by linarith
+             nlinarith
+           _ = 2 + 3 * (‖zn‖ - 2) := by ring
+        
+      calc ‖zn^2 + c‖ ≥ ‖zn‖^2 - ‖c‖ := tri
+           _ ≥ 2 + 3 * (‖zn‖ - 2) := step_ineq
+           _ ≥ 2 + 3 * (2 + 3^n * (‖z‖ - 2) - 2) := by
+             have : ‖zn‖ - 2 ≥ 3^n * (‖z‖ - 2) := by linarith
+             linarith
+           _ = 2 + 3 * (3^n * (‖z‖ - 2)) := by ring
+           _ = 2 + 3^(n+1) * (‖z‖ - 2) := by ring_nf
+  
+  -- The growth implies unboundedness
+  let C := ‖z‖ - 2
+  have hC : C > 0 := sub_pos.mpr hz
+  rcases exists_nat_ge ((M - 2) / C + 1) with ⟨N, hN_pow⟩
+  have h3N : (3:ℝ)^N ≥ N := by
+    have : ∀ n : ℕ, (3:ℝ)^n ≥ n := by
+      intro n
+      induction n with
+      | zero => simp
+      | succ n ih =>
+        cases n with
+        | zero => simp
+        | succ n =>
+          rw [pow_succ]
+          simp only [Nat.cast_succ] at ih ⊢
+          calc (3:ℝ)^(n+1) * 3 = 3 * (3:ℝ)^(n+1) := by ring
+               _ ≥ 3 * (↑n + 1) := mul_le_mul_of_nonneg_left ih (by norm_num)
+               _ = 3 * n + 3 := by ring
+               _ ≥ n + 1 + 1 := by linarith
+    exact this N
+  
+  specialize hM N
+  have : ‖Quadratic.orbit c z N‖ ≥ 2 + 3^N * C := growth N
+  have : 3^N * C > M - 2 := by
+    calc (3:ℝ)^N * C ≥ N * C := mul_le_mul_of_nonneg_right h3N (le_of_lt hC)
+         _ ≥ ((M - 2) / C + 1) * C := mul_le_mul_of_nonneg_right hN_pow (le_of_lt hC)
+         _ = (M - 2) + C := by field_simp [ne_of_gt hC]
+         _ > M - 2 := by linarith
+  linarith
+
+/--
 If |z| > 2 and |c| ≤ 2, the orbit escapes to infinity.
-We assume this standard result to deduce boundedness properties.
 -/
 lemma escapes_if_gt_2 (c z : ℂ) (hc : ‖c‖ ≤ 2) (hz : ‖z‖ > 2) :
     ¬ Quadratic.boundedOrbit c z := by
-  -- If bounded, it would stay bounded. But it escapes.
-  sorry
+  apply escapes_of_large_norm_and_ge_c hz
+  trans 2
+  exact hc
+  exact le_of_lt hz
 
 /--
 If |c| > 2, the orbit of 0 escapes.
 -/
 lemma c_gt_2_escapes (c : ℂ) (hc : ‖c‖ > 2) : ¬ Quadratic.boundedOrbit c 0 := by
-  -- Standard result.
-  sorry
+  have h_esc_c : ¬ Quadratic.boundedOrbit c c := by
+    apply escapes_of_large_norm_and_ge_c hc (le_refl _)
+  intro h_bounded
+  apply h_esc_c
+  cases h_bounded with | intro M hM =>
+  use M
+  intro n
+  have : Quadratic.orbit c c n = Quadratic.orbit c 0 (n+1) := by
+    dsimp [Quadratic.orbit]
+    simp [Quadratic.fc]
+  rw [this]
+  exact hM (n+1)
 
 /--
 Mandelbrot set is contained in the closed disk of radius 2.
@@ -144,9 +235,13 @@ lemma mandelbrot_eq_inter : Quadratic.MandelbrotSet = ⋂ n, {c : ℂ | ‖Quadr
       exact c_gt_2_escapes c h_big h
     have : ¬ Quadratic.boundedOrbit c 0 := by
        have h_esc := escapes_if_gt_2 c (Quadratic.orbit c 0 n) hc_le_2 h_gt
-       -- Need to connect orbit of z_n to orbit of 0.
-       -- orbit c 0 (n+k) = orbit c (orbit c 0 n) k
-       sorry
+       intro h_bounded
+       apply h_esc
+       rcases h_bounded with ⟨M, hM⟩
+       use M
+       intro k
+       simp [Quadratic.orbit, ← Function.iterate_add_apply, add_comm]
+       exact hM (n + k)
     exact this h
   · intro h
     simp at *
@@ -178,6 +273,9 @@ instance : T2Space Mol := by unfold Mol; infer_instance
 
 /-- Mol is connected. -/
 -- We postulate this property for our `Mol` type.
+-- This is a difficult result. The connectedness of the Mandelbrot set (Douady and Hubbard)
+-- implies that the main molecule might be connected, but formalizing this requires
+-- significant machinery (Riemann mapping, external rays) not yet fully available.
 instance : ConnectedSpace Mol := sorry
 
 /--
