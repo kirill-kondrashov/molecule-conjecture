@@ -23,6 +23,7 @@ The primary benefit of using Lean is that the logic is verified by the Lean kern
 ## For Inspiration
 
 > [!NOTE]
+> **According to Google AI Modus**
 > Your plan reflects the actual progress in arXiv:2512.24171v1 (published Dec 30, 2025), which summarizes the MLC as:
 > Completing Unbounded Satellite Cases (Problem 4.3) using pseudo-Siegel disks.
 > Interpolation Techniques (Problem 4.4) for the near-degenerate regime. 
