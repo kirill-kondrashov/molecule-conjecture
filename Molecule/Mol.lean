@@ -11,6 +11,9 @@ import Mathlib.Analysis.Calculus.Deriv.Pow
 import Mathlib.Analysis.Calculus.Deriv.Polynomial
 import Mathlib.Topology.MetricSpace.ProperSpace
 import Mathlib.Algebra.Order.Ring.Archimedean
+import Mathlib.Analysis.Normed.Module.Convex
+import Mathlib.Analysis.Convex.Topology
+import Mathlib.Analysis.Normed.Module.Connected
 import Yoccoz.Quadratic.Complex.Basic
 import Yoccoz.Quadratic.Complex.Escape
 
@@ -28,6 +31,34 @@ The boundary of the main cardioid is given by the map c(t) = (e^(it)/2)(1 - e^(i
 -/
 def MainCardioid : Set ℂ :=
   { c : ℂ | ∃ z : ℂ, z^2 + c = z ∧ ‖2 * z‖ < 1 }
+
+/-- The map parameterizing the Main Cardioid interior. -/
+def mainCardioidMap (z : ℂ) : ℂ := z - z^2
+
+lemma mainCardioid_eq_image : MainCardioid = mainCardioidMap '' (Metric.ball 0 0.5) := by
+  ext c
+  constructor
+  · rintro ⟨z, hz_eq, h2z⟩
+    refine ⟨z, ?_, ?_⟩
+    · rw [Metric.mem_ball, dist_zero_right]
+      simp at h2z
+      linarith
+    · simp [mainCardioidMap]
+      linear_combination -1 * hz_eq
+  · rintro ⟨z, hz, rfl⟩
+    use z
+    simp [mainCardioidMap]
+    rw [Metric.mem_ball, dist_zero_right] at hz
+    linarith
+
+lemma isConnected_mainCardioid : IsConnected MainCardioid := by
+  rw [mainCardioid_eq_image]
+  apply IsConnected.image
+  · refine (convex_ball (0 : ℂ) 0.5).isConnected ?_
+    use 0
+    simp [Metric.mem_ball]
+    norm_num
+  · exact (continuous_id.sub (continuous_id.pow 2)).continuousOn
 
 /--
 The Main Cardioid parameterization boundary.
@@ -63,20 +94,13 @@ as all hyperbolic components obtained from the main component via parabolic
 bifurcations."
 
 For the purpose of this formalization, we define Mol as a subset of the complex plane ℂ.
-We approximate the definition by defining it as the closure of the Main Cardioid
-and its attached components. Since we lack a full formalization of "parabolic bifurcations"
-and "hyperbolic components" in this library, we use a placeholder definition that
-constrains Mol to be a subset of the Mandelbrot set containing the Main Cardioid.
-
+We approximate the definition by defining it as the closure of the Main Cardioid.
+This ensures it is connected and contained in M (Main Cardioid ⊆ M).
 Ideally, `MolSet` would be defined as:
 `closure (MainCardioid ∪ ⋃ (K ∈ ParabolicComponents), K)`
 where `ParabolicComponents` are components attached to MainCardioid.
-
-For now, we define it as a set that includes the Main Cardioid and is contained in M.
-To satisfy the "no opaque types/defs" requirement while acknowledging the complexity,
-we define it as the union of MainCardioid and a placeholder set, restricted to M.
 -/
-def MolSet : Set ℂ := Quadratic.MandelbrotSet
+def MolSet : Set ℂ := closure MainCardioid
 
 /--
 A property identifying if a parameter belongs to the main molecule branches.
@@ -265,18 +289,42 @@ lemma isCompact_mandelbrot : IsCompact Quadratic.MandelbrotSet := by
   · exact isClosed_mandelbrot
   · exact mandelbrot_subset_ball
 
-/-- Mol is a closed subset of M (which is compact), hence Mol is compact. -/
-instance : CompactSpace Mol := ⟨isCompact_iff_isCompact_univ.mp isCompact_mandelbrot⟩
+/-- Mol is a closed subset of ℂ (closure MainCardioid). -/
+lemma isClosed_molSet : IsClosed MolSet := isClosed_closure
+
+/-- Mol is connected (closure of connected MainCardioid). -/
+lemma isConnected_molSet : IsConnected MolSet :=
+  IsConnected.closure isConnected_mainCardioid
+
+lemma bounded_molSet : Bornology.IsBounded MolSet := by
+  have h_subset : MainCardioid ⊆ Metric.ball 0 1 := by
+    rw [mainCardioid_eq_image]
+    rintro c ⟨z, hz, rfl⟩
+    simp [mainCardioidMap]
+    rw [Metric.mem_ball, dist_zero_right] at hz
+    have : ‖z‖ < 0.5 := hz
+    apply lt_of_le_of_lt (norm_sub_le z (z^2))
+    rw [norm_pow]
+    have : ‖z‖^2 < 0.25 := by
+      have : 0 ≤ ‖z‖ := norm_nonneg z
+      nlinarith
+    linarith
+  have h_clos : closure MainCardioid ⊆ Metric.closedBall 0 1 := by
+    rw [← closure_ball (0:ℂ) (by norm_num)]
+    exact closure_mono h_subset
+  exact Bornology.IsBounded.subset Metric.isBounded_closedBall h_clos
+
+lemma isCompact_molSet : IsCompact MolSet :=
+  Metric.isCompact_of_isClosed_isBounded isClosed_molSet bounded_molSet
+
+/-- Mol is compact. -/
+instance : CompactSpace Mol := ⟨isCompact_iff_isCompact_univ.mp isCompact_molSet⟩
 
 /-- Mol is a subset of ℂ, hence Hausdorff. -/
 instance : T2Space Mol := by unfold Mol; infer_instance
 
 /-- Mol is connected. -/
--- We postulate this property for our `Mol` type.
--- This is a difficult result. The connectedness of the Mandelbrot set (Douady and Hubbard)
--- implies that the main molecule might be connected, but formalizing this requires
--- significant machinery (Riemann mapping, external rays) not yet fully available.
-instance : ConnectedSpace Mol := sorry
+instance : ConnectedSpace Mol := isConnected_iff_connectedSpace.mp isConnected_molSet
 
 /--
 The cusp of the main molecule.
