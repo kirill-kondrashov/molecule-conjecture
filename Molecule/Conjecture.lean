@@ -9,6 +9,7 @@ import Mathlib.Topology.Connected.LocallyConnected
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Data.Set.Finite.Basic
 import Lean
+import Molecule.BMol
 
 namespace MLC
 
@@ -30,11 +31,6 @@ For this formalization, we represent these complex dynamical objects and propert
 abstractly using types and predicates, as the full construction of the renormalization 
 operator and functional spaces is beyond the scope of this file.
 -/
-
-/-- Placeholder for the space BMol -/
-opaque BMol : Type
-axiom defaultBMol : BMol
-instance : Inhabited BMol := ⟨defaultBMol⟩
 
 /-- Placeholder for the space HMol (Renormalization Horseshoe) -/
 opaque HMol : Type
