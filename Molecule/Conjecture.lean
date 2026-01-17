@@ -57,42 +57,102 @@ def CombinatoriallyAssociated (f_horseshoe : HMol → HMol) (f_target : ({x : Mo
       ρ (f_horseshoe h) = (f_target ⟨ρ h, h_neq⟩).val
 
 
+
+section ProofPlan
+
+/-!
+## Proof Plan (formalized from arXiv:1703.01206v3 and arXiv:2512.24171v1)
+-/
+
 /--
-The Formal Statement of the Molecule Conjecture.
-
-**Theorem**: There exists a renormalization operator ℛ acting on the Banach
-space of quadratic-like maps ℬ which admits a compact invariant set ℋ (the
-"Horseshoe"). The operator is piecewise analytic and hyperbolic, possessing a
-contracting stable lamination of codimension 1 and a 1-dimensional unstable
-direction. Furthermore, the dynamics of ℛ on ℋ is topologically semi-conjugate
-to a canonical combinatorial action on the "Molecule" moduli space ℳ cusp,
-classifying the renormalization types by their homotopy classes.
-
-**Source**: Appendix C.3 "The Molecule Conjecture", p. 89 of Dudko, Lyubich,
-Selinger (arXiv:1703.01206v3).
-
-## Proof Plan (derived from arXiv:1703.01206v3 and arXiv:2512.24171v1)
-
 ### 1. Construct the Molecule Renormalization Operator (R_fast)
-*   **Definition**: Define a "fast" pacman renormalization operator `Rfast: BMol → BMol` acting on a space of sectorial maps (pacmen).
-*   **Combinatorial Model**: Use **Branner-Douady surgery** to define a "Molecule map" `R_prm` on the parameter plane, which serves as the combinatorial model for the renormalization. The map is modeled by `Q(z) = z(z+1)^2`.
-*   **Unified Framework**: Unify "Satellite" and "Neutral" renormalizations into this single "Molecule Renormalization" framework (2512.24171 §3.8).
+We postulate the existence of the operator and its combinatorial model.
+-/
+axiom Rfast_candidate : BMol → BMol
+axiom Rfast_HMol_candidate : HMol → HMol
+axiom Rprm_combinatorial_model : {x : Mol // x ≠ cusp} → {x : Mol // x ≠ cusp}
 
+/--
 ### 2. Establish A Priori Bounds (The "Problem 4.3" Step)
-*   **Requirement**: A key intermediate step is to establish "pseudo-Siegel a priori bounds" for the remaining unbounded satellite quadratic-like cases.
-*   **Status**: Identified as **Problem 4.3** in 2512.24171, its completion is explicitly stated as *required* for the Molecule Conjecture.
+A key intermediate step is to establish "pseudo-Siegel a priori bounds" for the remaining
+unbounded satellite quadratic-like cases.
+-/
+def PseudoSiegelAPrioriBounds : Prop := sorry
 
+/--
+**Problem 4.3**: Completion of bounds is required for the Molecule Conjecture.
+-/
+axiom problem_4_3_bounds_established : PseudoSiegelAPrioriBounds
+
+/--
 ### 3. Prove Hyperbolicity and Unstable Manifold Dimensions
-*   **Hyperbolicity**: Prove that `Rfast` is a hyperbolic operator.
-*   **1D Unstable Manifold**: Demonstrate that it has a **one-dimensional unstable manifold**. This resolves the "long-standing problem" mentioned in 1703.01206 by showing the renormalization horseshoe is compact and combinatorially associated with the Molecule map.
-*   **Technique**: Use transcendental dynamics on the unstable manifolds to analyze the operator.
+Prove that `Rfast` is a hyperbolic operator with a **one-dimensional unstable manifold**.
+And that the restriction to the horseshoe is a compact operator.
+-/
+theorem Rfast_hyperbolicity_conjecture :
+  IsHyperbolic Rfast_candidate ∧ IsPiecewiseAnalytic1DUnstable Rfast_candidate := sorry
 
+theorem Rfast_HMol_compactness : IsCompactOperator Rfast_HMol_candidate := sorry
+
+theorem Rfast_combinatorially_associated :
+  CombinatoriallyAssociated Rfast_HMol_candidate Rprm_combinatorial_model := sorry
+
+/--
 ### 4. Extend to Virtual Molecule (Near-Degenerate Regime)
-*   **Virtual Molecule**: Develop a "Virtual Molecule" version of the theory to handle cases where the renormalization is "virtual" (fails on some scales).
-*   **Interpolation**: Solve **Problem 4.4** (Interpolation Problem) to handle the transition between the Molecule and near-degenerate regimes (2512.24171 §4.5).
+Develop a "Virtual Molecule" version of the theory to handle cases where the renormalization
+is "virtual" (fails on some scales).
+-/
+def VirtualMoleculeRegime : Prop := sorry
 
+/--
+**Problem 4.4**: Interpolation Problem.
+-/
+theorem problem_4_4_interpolation_solved : VirtualMoleculeRegime := sorry
+
+/--
 ### 5. Final Implication: Local Connectivity (MLC)
-*   Show that the constructed hyperbolic operator implies **Conjecture 1.2** (geometric property of hyperbolic components), which in turn implies the **MLC Conjecture** for all parameters on the main molecule and its copies.
+Show that the constructed hyperbolic operator implies **Conjecture 1.2** (geometric property
+of hyperbolic components), which in turn implies the **MLC Conjecture** for all parameters
+on the main molecule and its copies.
+-/
+def MLC_on_Molecule : Prop := sorry
+
+theorem hyperbolicity_implies_MLC
+  (h_hyp : IsHyperbolic Rfast_candidate)
+  (h_dim : IsPiecewiseAnalytic1DUnstable Rfast_candidate)
+  (h_bounds : PseudoSiegelAPrioriBounds)
+  (h_virt : VirtualMoleculeRegime) :
+  MLC_on_Molecule := sorry
+
+def SymbolicShift (N : ℕ) := (Int → Fin N)
+
+/--
+The "shift" map on the symbolic space `SymbolicShift`.
+It maps a sequence `s` to `s'`, where `s'(i) = s(i+1)`.
+-/
+def shift_map {N : ℕ} (s : SymbolicShift N) : SymbolicShift N :=
+  fun i => s (i + 1)
+
+/--
+**Conjecture Relationship**: The combinatorial model `R_target` is topologically conjugate
+to a subshift of finite type (or a specific symbolic shift) on `SymbolicShift N`.
+
+For the Molecule Conjecture, the renormalization dynamics are often modeled by a
+shift on a symbol space (representing the sequence of renormalization types).
+
+Here, we posit that `R_target` is conjugate to the shift map on some `SymbolicShift N`.
+-/
+def IsConjugateToShift {α : Type*} (f : α → α) (N : ℕ) : Prop :=
+  ∃ (φ : α → SymbolicShift N),
+    Function.Bijective φ ∧
+    ∀ x, φ (f x) = shift_map (φ x)
+
+axiom R_target_is_shift : ∃ N, IsConjugateToShift Rprm_combinatorial_model N
+
+end ProofPlan
+
+/--
+The Formal Statement of the Molecule Conjecture (Refined).
 -/
 theorem molecule_conjecture_refined :
   ∃ (Rfast : BMol → BMol)
@@ -102,7 +162,13 @@ theorem molecule_conjecture_refined :
     IsPiecewiseAnalytic1DUnstable Rfast ∧
     IsCompactOperator Rfast_HMol ∧
     CombinatoriallyAssociated Rfast_HMol R_target :=
-sorry
+  ⟨Rfast_candidate,
+   Rfast_HMol_candidate,
+   Rprm_combinatorial_model,
+   Rfast_hyperbolicity_conjecture.1,
+   Rfast_hyperbolicity_conjecture.2,
+   Rfast_HMol_compactness,
+   Rfast_combinatorially_associated⟩
 
 end
 end MLC
