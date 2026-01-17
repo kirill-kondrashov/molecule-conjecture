@@ -14,6 +14,7 @@ import Molecule.HMol
 import Molecule.Mol
 import Molecule.Rfast
 import Molecule.Hyperbolicity
+import Molecule.PiecewiseAnalytic
 
 namespace MLC
 
@@ -42,8 +43,7 @@ operator and functional spaces is beyond the scope of this file.
 
 -- IsHyperbolic is now defined in Molecule.Hyperbolicity
 
-/-- Predicate for Piecewise Analyticity with 1D Unstable Direction -/
-opaque IsPiecewiseAnalytic1DUnstable (f : BMol → BMol) : Prop
+-- IsPiecewiseAnalytic1DUnstable is now defined in Molecule.PiecewiseAnalytic
 
 /-- The restriction of Rfast to the horseshoe HMol -/
 opaque Rfast_HMol : HMol → HMol

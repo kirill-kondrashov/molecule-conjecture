@@ -13,7 +13,7 @@ open Complex Topology Filter Set
 A map `f` is analytic on a set `U` in `BMol` if there exists a chart to a Banach space
 conjugating `f` to an analytic map.
 -/
-structure AnalyticOn (f : BMol → BMol) (U : Set BMol) : Type 1 where
+structure AnalyticChart (f : BMol → BMol) (U : Set BMol) : Type 1 where
   E : Type
   inst1 : NormedAddCommGroup E
   inst2 : NormedSpace ℂ E
@@ -36,7 +36,7 @@ def IsPiecewiseAnalytic (f : BMol → BMol) : Prop :=
     Us.Countable ∧
     (∀ U ∈ Us, IsOpen U) ∧
     (⋃₀ Us = univ) ∧
-    ∀ U ∈ Us, Nonempty (AnalyticOn f U)
+    ∀ U ∈ Us, Nonempty (AnalyticChart f U)
 
 /--
 1D Unstable Direction: At every point in the domain (where analytic),
@@ -44,7 +44,7 @@ the derivative has a 1D unstable splitting.
 This generalizes the fixed-point hyperbolicity to the entire domain.
 -/
 def Has1DUnstableDirection (f : BMol → BMol) : Prop :=
-  ∀ (U : Set BMol) (h : AnalyticOn f U) (x : BMol),
+  ∀ (U : Set BMol) (h : AnalyticChart f U) (x : BMol),
     x ∈ U →
     let _ := h.inst1; let _ := h.inst2
     -- The derivative of the conjugate map F at φ(x)
