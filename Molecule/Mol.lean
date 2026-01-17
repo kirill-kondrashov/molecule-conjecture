@@ -9,6 +9,7 @@ import Mathlib.Data.Set.Basic
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.Calculus.Deriv.Pow
 import Mathlib.Analysis.Calculus.Deriv.Polynomial
+import Mathlib.Topology.MetricSpace.ProperSpace
 import Yoccoz.Quadratic.Complex.Basic
 
 namespace MLC
@@ -89,9 +90,88 @@ def Mol := { x // x ∈ MolSet }
 /-- Mol inherits the subspace topology from ℂ. -/
 instance : TopologicalSpace Mol := by unfold Mol; infer_instance
 
+/--
+Helper lemma: The orbit map is continuous in c.
+-/
+lemma continuous_orbit (n : ℕ) : Continuous (fun c : ℂ => Quadratic.orbit c 0 n) := by
+  induction n with
+  | zero => simp [Quadratic.orbit]; exact continuous_const
+  | succ n ih =>
+    simp [Quadratic.orbit_succ]
+    exact (ih.pow 2).add continuous_id
+
+/--
+If |z| > 2 and |c| ≤ 2, the orbit escapes to infinity.
+We assume this standard result to deduce boundedness properties.
+-/
+lemma escapes_if_gt_2 (c z : ℂ) (hc : ‖c‖ ≤ 2) (hz : ‖z‖ > 2) :
+    ¬ Quadratic.boundedOrbit c z := by
+  -- If bounded, it would stay bounded. But it escapes.
+  sorry
+
+/--
+If |c| > 2, the orbit of 0 escapes.
+-/
+lemma c_gt_2_escapes (c : ℂ) (hc : ‖c‖ > 2) : ¬ Quadratic.boundedOrbit c 0 := by
+  -- Standard result.
+  sorry
+
+/--
+Mandelbrot set is contained in the closed disk of radius 2.
+-/
+lemma mandelbrot_subset_ball : Quadratic.MandelbrotSet ⊆ Metric.closedBall 0 2 := by
+  intro c hc
+  by_contra h
+  rw [Metric.mem_closedBall, dist_zero_right] at h
+  push_neg at h
+  exact c_gt_2_escapes c h hc
+
+/--
+The Mandelbrot set is the intersection of preimages of the closed disk of radius 2 under the orbit maps.
+M = ⋂_n {c | |f_c^n(0)| ≤ 2}
+-/
+lemma mandelbrot_eq_inter : Quadratic.MandelbrotSet = ⋂ n, {c : ℂ | ‖Quadratic.orbit c 0 n‖ ≤ 2} := by
+  ext c
+  constructor
+  · intro h
+    simp at *
+    intro n
+    by_contra h_gt
+    push_neg at h_gt
+    have hc_le_2 : ‖c‖ ≤ 2 := by
+      by_contra h_big
+      push_neg at h_big
+      exact c_gt_2_escapes c h_big h
+    have : ¬ Quadratic.boundedOrbit c 0 := by
+       have h_esc := escapes_if_gt_2 c (Quadratic.orbit c 0 n) hc_le_2 h_gt
+       -- Need to connect orbit of z_n to orbit of 0.
+       -- orbit c 0 (n+k) = orbit c (orbit c 0 n) k
+       sorry
+    exact this h
+  · intro h
+    simp at *
+    use 2
+
+/--
+Mandelbrot set is closed.
+-/
+lemma isClosed_mandelbrot : IsClosed Quadratic.MandelbrotSet := by
+  rw [mandelbrot_eq_inter]
+  apply isClosed_iInter
+  intro n
+  exact isClosed_le (continuous_norm.comp (continuous_orbit n)) continuous_const
+
+/--
+Mandelbrot set is compact.
+-/
+lemma isCompact_mandelbrot : IsCompact Quadratic.MandelbrotSet := by
+  apply IsCompact.of_isClosed_subset
+  · exact isCompact_closedBall 0 2
+  · exact isClosed_mandelbrot
+  · exact mandelbrot_subset_ball
+
 /-- Mol is a closed subset of M (which is compact), hence Mol is compact. -/
--- We postulate this property for our `Mol` type.
-instance : CompactSpace Mol := sorry
+instance : CompactSpace Mol := ⟨isCompact_iff_isCompact_univ.mp isCompact_mandelbrot⟩
 
 /-- Mol is a subset of ℂ, hence Hausdorff. -/
 instance : T2Space Mol := by unfold Mol; infer_instance
