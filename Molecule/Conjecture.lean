@@ -59,7 +59,16 @@ def CombinatoriallyAssociated (f_horseshoe : HMol → HMol) (f_target : ({x : Mo
 /--
 The Formal Statement of the Molecule Conjecture.
 
-**Theorem**: There exists a renormalization operator $\mathcal{R}$ acting on the Banach space of quadratic-like maps $\mathcal{B}$ which admits a compact invariant set $\mathcal{H}$ (the "Horseshoe"). The operator is piecewise analytic and hyperbolic, possessing a contracting stable lamination of codimension 1 and a 1-dimensional unstable direction. Furthermore, the dynamics of $\mathcal{R}$ on $\mathcal{H}$ is topologically semi-conjugate to a canonical combinatorial action on the "Molecule" moduli space $\mathcal{M} \setminus \{cusp\}$, classifying the renormalization types by their homotopy classes.
+**Theorem**: There exists a renormalization operator ℛ acting on the Banach
+space of quadratic-like maps ℬ which admits a compact invariant set ℋ (the
+"Horseshoe"). The operator is piecewise analytic and hyperbolic, possessing a
+contracting stable lamination of codimension 1 and a 1-dimensional unstable
+direction. Furthermore, the dynamics of ℛ on ℋ is topologically semi-conjugate
+to a canonical combinatorial action on the "Molecule" moduli space ℳ cusp,
+classifying the renormalization types by their homotopy classes.
+
+**Source**: Appendix C.3 "The Molecule Conjecture", p. 89 of Dudko, Lyubich,
+*Selinger (arXiv:1703.01206v3).
 -/
 theorem molecule_conjecture_refined :
   ∃ (Rfast : BMol → BMol)
