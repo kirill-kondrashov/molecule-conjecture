@@ -7,7 +7,7 @@ def main : IO UInt32 := do
   initSearchPath (← findSysroot)
   let env ← importModules #[{ module := `Molecule.Conjecture }] {}
   
-  let name := ``MLC.molecule_conjecture
+  let name := ``MLC.molecule_conjecture_refined
   
   let coreContext : Core.Context := { fileName := "<check_axioms>", fileMap := default }
   let coreState : Core.State := { env := env }
