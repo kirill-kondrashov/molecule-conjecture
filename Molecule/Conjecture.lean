@@ -13,6 +13,7 @@ import Molecule.BMol
 import Molecule.HMol
 import Molecule.Mol
 import Molecule.Rfast
+import Molecule.Hyperbolicity
 
 namespace MLC
 
@@ -39,8 +40,7 @@ operator and functional spaces is beyond the scope of this file.
 
 -- Rfast is now defined in Molecule.Rfast
 
-/-- Predicate for Hyperbolicity -/
-opaque IsHyperbolic (f : BMol → BMol) : Prop
+-- IsHyperbolic is now defined in Molecule.Hyperbolicity
 
 /-- Predicate for Piecewise Analyticity with 1D Unstable Direction -/
 opaque IsPiecewiseAnalytic1DUnstable (f : BMol → BMol) : Prop
