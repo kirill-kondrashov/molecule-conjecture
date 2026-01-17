@@ -12,6 +12,7 @@ import Lean
 import Molecule.BMol
 import Molecule.HMol
 import Molecule.Mol
+import Molecule.Rfast
 
 namespace MLC
 
@@ -36,8 +37,7 @@ operator and functional spaces is beyond the scope of this file.
 
 -- HMol is now defined in Molecule.HMol
 
-/-- The Renormalization Operator Rfast -/
-opaque Rfast : BMol → BMol
+-- Rfast is now defined in Molecule.Rfast
 
 /-- Predicate for Hyperbolicity -/
 opaque IsHyperbolic (f : BMol → BMol) : Prop
