@@ -23,38 +23,27 @@ namespace MLC
 open Quadratic Complex Topology Set Filter
 noncomputable section
 
-/-! 
+/-!
 Dudko's Molecule Conjecture.
-We formalize this conjecture based on the properties of the renormalization operator Rfast.
 
-The Molecule Conjecture posits the existence of a "pacman" renormalization operator 
-Rfast : BMol → BMol with the following properties:
-1. Rfast is hyperbolic.
-2. Rfast is piecewise analytic with a one-dimensional unstable direction.
-3. The renormalization horseshoe Rfast : HMol → HMol is compact.
-4. The horseshoe is combinatorially associated with Rfast | Mol \ {cusp}.
+This file provides the formal statement of the Molecule Conjecture (Dudko-Lyubich-Selinger, arXiv:1703.01206).
+The conjecture posits the existence of a "pacman" renormalization operator `Rfast` acting on a space of
+quadratic-like maps `BMol`, and a corresponding renormalization horseshoe `HMol`.
 
-For this formalization, we represent these complex dynamical objects and properties 
-abstractly using types and predicates, as the full construction of the renormalization 
-operator and functional spaces is beyond the scope of this file.
--/
+# Project Structure and Formalization State
 
--- HMol is now defined in Molecule.HMol
+The components of this conjecture are now rigorously defined in separate modules:
 
--- Rfast is now defined in Molecule.Rfast
+* **Operator Domain (`Molecule.BMol`)**: `BMol` is the space of Quadratic-Like maps.
+* **Horseshoe Domain (`Molecule.HMol`)**: `HMol` models the invariant set (horseshoe) of the operator.
+* **Renormalization (`Molecule.Rfast`)**: `Rfast` is defined as a totalized function returning a valid renormalization if one exists (using `Classical.choose`).
+* **Horseshoe Restriction (`Molecule.RfastHorseshoe`)**: `Rfast_HMol` represents the restriction of `Rfast` to `HMol`. It handles the conversion between the disconnected horseshoe topology and the connected quadratic-like map topology via extension/restriction predicates.
+* **Hyperbolicity (`Molecule.Hyperbolicity`)**: `IsHyperbolic` formalizes the notion of hyperbolicity for operators on Banach spaces.
+* **Analyticity (`Molecule.PiecewiseAnalytic`)**: `IsPiecewiseAnalytic1DUnstable` defines the regularity and spectral properties of the operator.
+* **Compactness (`Molecule.Compactness`)**: `IsCompactOperator` asserts the topological compactness of the horseshoe invariant set.
 
--- IsHyperbolic is now defined in Molecule.Hyperbolicity
+This file assembles these definitions into the final statement `molecule_conjecture_refined`.
 
--- IsPiecewiseAnalytic1DUnstable is now defined in Molecule.PiecewiseAnalytic
-
--- Rfast_HMol is now defined in Molecule.RfastHorseshoe
-
--- IsCompactOperator is now defined in Molecule.Compactness
-
-
-
-
-/-- 
 The Combinatorial Association implies a semi-conjugacy ρ.
 We treat ρ as part of the conjecture's existential statement or as a parameter to the predicate.
 Here, we bundle the existence of ρ into the property.
@@ -63,12 +52,14 @@ def CombinatoriallyAssociated (f_horseshoe : HMol → HMol) (f_target : ({x : Mo
   ∃ (ρ : HMol → Mol),
     Continuous ρ ∧
     Function.Surjective ρ ∧
-    ∀ (h : HMol), 
+    ∀ (h : HMol),
       ∀ (h_neq : ρ h ≠ cusp),
       ρ (f_horseshoe h) = (f_target ⟨ρ h, h_neq⟩).val
 
-/-- 
+/--
 The Formal Statement of the Molecule Conjecture.
+
+**Theorem**: There exists a renormalization operator $\mathcal{R}$ acting on the Banach space of quadratic-like maps $\mathcal{B}$ which admits a compact invariant set $\mathcal{H}$ (the "Horseshoe"). The operator is piecewise analytic and hyperbolic, possessing a contracting stable lamination of codimension 1 and a 1-dimensional unstable direction. Furthermore, the dynamics of $\mathcal{R}$ on $\mathcal{H}$ is topologically semi-conjugate to a canonical combinatorial action on the "Molecule" moduli space $\mathcal{M} \setminus \{cusp\}$, classifying the renormalization types by their homotopy classes.
 -/
 theorem molecule_conjecture_refined :
   ∃ (Rfast : BMol → BMol)
