@@ -10,6 +10,7 @@ import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Data.Set.Finite.Basic
 import Lean
 import Molecule.BMol
+import Molecule.HMol
 
 namespace MLC
 
@@ -32,13 +33,7 @@ abstractly using types and predicates, as the full construction of the renormali
 operator and functional spaces is beyond the scope of this file.
 -/
 
-/-- Placeholder for the space HMol (Renormalization Horseshoe) -/
-opaque HMol : Type
-axiom defaultHMol : HMol
-instance : Inhabited HMol := ⟨defaultHMol⟩
-
-axiom defaultTopoHMol : TopologicalSpace HMol
-instance : TopologicalSpace HMol := defaultTopoHMol
+-- HMol is now defined in Molecule.HMol
 
 /-- The Renormalization Operator Rfast -/
 opaque Rfast : BMol → BMol
