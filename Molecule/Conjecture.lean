@@ -11,6 +11,7 @@ import Mathlib.Data.Set.Finite.Basic
 import Lean
 import Molecule.BMol
 import Molecule.HMol
+import Molecule.Mol
 
 namespace MLC
 
@@ -50,19 +51,7 @@ opaque Rfast_HMol : HMol → HMol
 /-- Predicate for Compactness of the Horseshoe operator -/
 opaque IsCompactOperator (f : HMol → HMol) : Prop
 
-/-- Predicate for Combinatorial Association 
-    Based on the semi-conjugacy property:
-    There is a continuous surjective map ρ : HMol → Mol that is a semi-conjugacy
-    away from the cusp. 
--/
-opaque Mol : Type
-axiom defaultTopoMol : TopologicalSpace Mol
-instance : TopologicalSpace Mol := defaultTopoMol
 
-axiom defaultMol : Mol
-instance : Inhabited Mol := ⟨defaultMol⟩
-
-opaque cusp : Mol
 
 
 /-- 
