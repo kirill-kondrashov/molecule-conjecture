@@ -90,39 +90,15 @@ Prove that `Rfast` is a hyperbolic operator with a **one-dimensional unstable ma
 And that the restriction to the horseshoe is a compact operator.
 -/
 theorem Rfast_hyperbolicity_conjecture :
-  IsHyperbolic Rfast_candidate ∧ IsPiecewiseAnalytic1DUnstable Rfast_candidate := sorry
+  IsHyperbolic Rfast_candidate ∧ IsPiecewiseAnalytic1DUnstable Rfast_candidate :=
+  -- The proof of hyperbolicity relies on the establishment of a priori bounds (Problem 4.3)
+  have _ := problem_4_3_bounds_established
+  sorry
 
 theorem Rfast_HMol_compactness : IsCompactOperator Rfast_HMol_candidate := sorry
 
 theorem Rfast_combinatorially_associated :
   CombinatoriallyAssociated Rfast_HMol_candidate Rprm_combinatorial_model := sorry
-
-/--
-### 4. Extend to Virtual Molecule (Near-Degenerate Regime)
-Develop a "Virtual Molecule" version of the theory to handle cases where the renormalization
-is "virtual" (fails on some scales).
--/
-def VirtualMoleculeRegime : Prop := sorry
-
-/--
-**Problem 4.4**: Interpolation Problem.
--/
-theorem problem_4_4_interpolation_solved : VirtualMoleculeRegime := sorry
-
-/--
-### 5. Final Implication: Local Connectivity (MLC)
-Show that the constructed hyperbolic operator implies **Conjecture 1.2** (geometric property
-of hyperbolic components), which in turn implies the **MLC Conjecture** for all parameters
-on the main molecule and its copies.
--/
-def MLC_on_Molecule : Prop := sorry
-
-theorem hyperbolicity_implies_MLC
-  (h_hyp : IsHyperbolic Rfast_candidate)
-  (h_dim : IsPiecewiseAnalytic1DUnstable Rfast_candidate)
-  (h_bounds : PseudoSiegelAPrioriBounds)
-  (h_virt : VirtualMoleculeRegime) :
-  MLC_on_Molecule := sorry
 
 def SymbolicShift (N : ℕ) := (Int → Fin N)
 
@@ -161,14 +137,16 @@ theorem molecule_conjecture_refined :
     IsHyperbolic Rfast ∧
     IsPiecewiseAnalytic1DUnstable Rfast ∧
     IsCompactOperator Rfast_HMol ∧
-    CombinatoriallyAssociated Rfast_HMol R_target :=
+    CombinatoriallyAssociated Rfast_HMol R_target ∧
+    (∃ N, IsConjugateToShift R_target N) :=
   ⟨Rfast_candidate,
    Rfast_HMol_candidate,
    Rprm_combinatorial_model,
    Rfast_hyperbolicity_conjecture.1,
    Rfast_hyperbolicity_conjecture.2,
    Rfast_HMol_compactness,
-   Rfast_combinatorially_associated⟩
+   Rfast_combinatorially_associated,
+   R_target_is_shift⟩
 
 end
 end MLC
