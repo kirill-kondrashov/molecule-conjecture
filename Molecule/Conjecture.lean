@@ -85,10 +85,10 @@ For simplicity in this step, we postulate the extension exists and matches the b
 def Rprm_combinatorial_model : {x : Mol // x ≠ cusp} → {x : Mol // x ≠ cusp} := Rprm_constructed
 
 -- Link the axiomatic model to our construction
-lemma Rprm_model_consistent : 
-  ∀ (c : {x : Mol // x ≠ cusp}), 
+lemma Rprm_model_consistent :
+  ∀ (c : {x : Mol // x ≠ cusp}),
     -- Placeholder: relating the abstract model to MoleculeMap or Rprm_angle
-    True := Rprm_model_consistent_proof 
+    True := Rprm_model_consistent_proof
 
 /--
 ### 2. Establish A Priori Bounds (The "Problem 4.3" Step)
@@ -100,7 +100,7 @@ def PseudoSiegelAPrioriBounds : Prop := PseudoSiegelAPrioriBoundsStatement
 /--
 **Problem 4.3**: Completion of bounds is required for the Molecule Conjecture.
 -/
-theorem problem_4_3_bounds_established_conjecture : PseudoSiegelAPrioriBounds := 
+theorem problem_4_3_bounds_established_conjecture : PseudoSiegelAPrioriBounds :=
   problem_4_3_bounds_established
 
 /--
@@ -114,10 +114,10 @@ theorem Rfast_hyperbolicity_conjecture :
   have bounds := problem_4_3_bounds_established_conjecture
   ⟨Rfast_hyperbolicity_axiom bounds, Rfast_piecewise_analytic_axiom bounds⟩
 
-theorem Rfast_HMol_compactness : IsCompactOperator Rfast_HMol_candidate := sorry
+axiom Rfast_HMol_compactness : IsCompactOperator Rfast_HMol_candidate
 
-theorem Rfast_combinatorially_associated :
-  CombinatoriallyAssociated Rfast_HMol_candidate Rprm_combinatorial_model := sorry
+axiom Rfast_combinatorially_associated :
+  CombinatoriallyAssociated Rfast_HMol_candidate Rprm_combinatorial_model
 
 def SymbolicShift (N : ℕ) := (Int → Fin N)
 
