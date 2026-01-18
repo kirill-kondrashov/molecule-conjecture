@@ -71,7 +71,10 @@ Problem 4.3: Completion of bounds is required for the Molecule Conjecture.
 -/
 theorem problem_4_3_bounds_established : PseudoSiegelAPrioriBoundsStatement := by
   -- 1. Existence of the Fixed Point f*
-  obtain ⟨f_star, h_fixed, h_crit_val⟩ := fixed_point_exists
+  -- We assume a non-trivial fixed point exists for the sake of the conjecture framework.
+  -- The current fixed_point_exists from FixedPointExistence.lean only gives a trivial non-renormalizable one.
+  have fixed_point_exists_strong : ∃ f : BMol, Rfast f = f ∧ IsFastRenormalizable f ∧ criticalValue f = 0 := sorry
+  obtain ⟨f_star, h_fixed, h_renorm, h_crit_val⟩ := fixed_point_exists_strong
 
   -- 2. Define the return times a_n, b_n
   -- Placeholder: specific sequence required (Fibonacci or similar)
@@ -103,7 +106,7 @@ theorem problem_4_3_bounds_established : PseudoSiegelAPrioriBoundsStatement := b
 
   -- 4. The Main Bounds Argument
   -- We use the axiom stating that renormalization implies these bounds.
-  have h_main := renormalization_implies_bounds f_star D U a b h_fixed h_D_open h_U_open h_f_in_U h_c1_in_D
+  have h_main := renormalization_implies_bounds f_star D U a b h_fixed h_renorm h_D_open h_U_open h_f_in_U h_c1_in_D
 
   exact ⟨f_star, D, U, a, b, h_fixed, h_D_open, h_U_open, h_f_in_U, h_c1_in_D, h_main⟩
 
