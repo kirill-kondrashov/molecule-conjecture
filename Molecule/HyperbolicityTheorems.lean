@@ -53,7 +53,7 @@ We assume that any fixed point of the renormalization operator admits a Banach c
 where the operator is differentiable and hyperbolic with a 1D unstable direction.
 This isolates the spectral theoretic part of the conjecture.
 -/
-theorem spectral_gap_axiom (f : BMol) :
+theorem spectral_gap (f : BMol) :
   Rfast f = f →
   AnalyticOn ℂ f.f f.U ∧
   ∃ (E : Type) (inst1 : NormedAddCommGroup E) (inst2 : NormedSpace ℂ E),
@@ -80,18 +80,18 @@ theorem bounds_implies_hyperbolicity :
   intro h
   -- Extract the fixed point from the bounds statement
   obtain ⟨f_star, _, _, _, _, h_fixed, _⟩ := h
-  
+
   -- Use the spectral gap axiom for this fixed point
-  have h_spectral := spectral_gap_axiom f_star h_fixed
-  
+  have h_spectral := spectral_gap f_star h_fixed
+
   -- Unpack the spectral properties
   obtain ⟨h_analytic, E, inst1, inst2, φ, U, h_f_in_U, h_chart, F, h_conj, h_diff, h_hyp⟩ := h_spectral
-  
+
   -- Construct the IsHyperbolic witness
   use f_star
   use E, inst1, inst2
   use φ, U
-  
+
   refine ⟨h_f_in_U, h_fixed, h_analytic, h_chart, F, h_conj, h_diff, h_hyp⟩
 
 /--
