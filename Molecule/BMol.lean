@@ -43,6 +43,8 @@ structure QuadraticLikeMap where
   proper : IsProperMap (maps_to.restrict f U V)
   -- Degree 2 condition: unique critical point in U
   unique_critical_point : ∃! c ∈ U, deriv f c = 0
+  -- Simple critical point (non-degenerate)
+  simple_critical_point : ∀ c ∈ U, deriv f c = 0 → deriv (deriv f) c ≠ 0
 
 /-- The unique critical point of a Quadratic-like map. -/
 noncomputable def criticalPoint (g : QuadraticLikeMap) : ℂ :=
@@ -193,6 +195,22 @@ noncomputable def defaultBMol : BMol :=
       · intro y hy
         simp [Metric.mem_ball] at hy
         exact hy.2
+    simple_critical_point := by
+      intro c hc h_deriv
+      dsimp [f] at *
+      have h1 : deriv (fun z ↦ z ^ 2) c = 2 * c := by
+        rw [deriv_pow_field 2]; simp
+      rw [h1] at h_deriv
+      
+      have h_deriv_fun : deriv (fun (z:ℂ) ↦ z^2) = (fun z ↦ 2*z) := by
+        ext z
+        rw [deriv_pow_field 2]; simp
+      
+      rw [h_deriv_fun]
+      rw [deriv_const_mul]
+      · rw [deriv_id'']
+        norm_num
+      · exact differentiableAt_id
   }
 
 noncomputable instance : Inhabited BMol := ⟨defaultBMol⟩

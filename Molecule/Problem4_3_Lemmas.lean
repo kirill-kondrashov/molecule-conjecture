@@ -1,17 +1,11 @@
 import Molecule.BMol
 import Molecule.Rfast
 import Yoccoz.Quadratic.Complex.Basic
+import Molecule.FixedPointExistence
 
 namespace MLC
 
 open Quadratic Complex Topology Set Filter
-
-/--
-Axiom: Existence of a Renormalization Fixed Point.
-In the full theory, this is the "Pacman Fixed Point".
-We assume it exists and has critical value 0 for simplicity.
--/
-axiom fixed_point_exists : ∃ f : BMol, Rfast f = f ∧ criticalValue f = 0
 
 /--
 Axiom: Renormalization Implies Small Orbit Bounds.
