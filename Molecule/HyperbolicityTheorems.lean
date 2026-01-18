@@ -4,7 +4,7 @@ import Molecule.PiecewiseAnalytic
 import Molecule.FirstStepConstruction
 import Molecule.Problem4_3
 import Mathlib.Analysis.Complex.CauchyIntegral
-import Molecule.RenormalizationAxioms
+import Molecule.RenormalizationTheorem
 import Molecule.GlobalAnalyticity
 
 namespace MLC
