@@ -37,15 +37,9 @@ lemma h_RHS_deriv_aux (N : ℕ) (ψ : ℂ → ℂ) (c : ℂ) (a : ℂ)
     (h_diff_ψ : DifferentiableAt ℂ ψ c)
     (h_deriv_ψ : deriv ψ c = a) :
     deriv (fun z => (ψ z)^N) c = N * (ψ c)^(N-1) * a := by
-  let g := fun w : ℂ => w^N
-  change deriv (g ∘ ψ) c = _
-  rw [deriv_comp c (differentiableAt_id (𝕜 := ℂ).pow N) h_diff_ψ]
-  have h_pow : deriv g (ψ c) = N * (ψ c)^(N-1) := by
-    rw [deriv_pow]
-    exact differentiableAt_id (𝕜 := ℂ)
-  rw [h_pow]
+  change deriv (ψ^N) c = _
+  rw [deriv_pow h_diff_ψ N]
   rw [h_deriv_ψ]
-  ring
 
 lemma h_LHS_deriv2_aux (f : ℂ → ℂ) (ψ : ℂ → ℂ) (c : ℂ) (a : ℂ) (U : Set ℂ)
     (hc : c ∈ U)
@@ -61,50 +55,42 @@ lemma h_LHS_deriv2_aux (f : ℂ → ℂ) (ψ : ℂ → ℂ) (c : ℂ) (a : ℂ) 
     rw [deriv_comp z (h_diff_ψ.differentiableAt (x := f z)) (h_diff_f.differentiableAt (h_open.mem_nhds hz))]
     rw [h_deriv_ψ_const (f z)]
   rw [Filter.EventuallyEq.deriv_eq h_local]
-  -- deriv (a * deriv f)
-  let h := deriv f
-  change deriv (fun z => a * h z) c = _
-  rw [deriv_const_mul h_diff_deriv_f]
+  rw [deriv_const_mul a h_diff_deriv_f]
+  rfl
 
 lemma h_RHS_deriv2_aux (N : ℕ) (ψ : ℂ → ℂ) (c : ℂ) (a : ℂ) (hN : N ≥ 4)
     (h_diff_ψ : Differentiable ℂ ψ)
     (h_deriv_ψ_const : ∀ z, deriv ψ z = a)
     (h_psi_c : ψ c = 0) :
     deriv (deriv (fun z => (ψ z)^N)) c = 0 := by
-  -- deriv RHS z = N * a * (ψ z)^(N-1)
   have h_local : ∀ᶠ z in 𝓝 c, deriv (fun w => (ψ w)^N) z = (N:ℂ) * a * (ψ z)^(N-1) := by
     filter_upwards with z
-    let g := fun w : ℂ => w^N
-    change deriv (g ∘ ψ) z = _
-    rw [deriv_comp z (differentiableAt_id (𝕜 := ℂ).pow N) (h_diff_ψ z)]
-    have h_pow : deriv g (ψ z) = N * (ψ z)^(N-1) := by
-      rw [deriv_pow]
-      exact differentiableAt_id (𝕜 := ℂ)
-    rw [h_pow]
+    change deriv (ψ^N) z = _
+    rw [deriv_pow (h_diff_ψ z) N]
     rw [h_deriv_ψ_const z]
     ring
   
   rw [Filter.EventuallyEq.deriv_eq h_local]
-  -- deriv of N*a*(ψ z)^(N-1)
-  rw [deriv_const_mul]
-  · -- deriv ((ψ z)^(N-1))
-    let g := fun w : ℂ => w^(N-1)
-    change deriv (g ∘ ψ) c = _
-    rw [deriv_comp c (differentiableAt_id (𝕜 := ℂ).pow (N-1)) (h_diff_ψ c)]
-    have h_pow : deriv g (ψ c) = (N-1) * (ψ c)^(N-1-1) := by
-      rw [deriv_pow]
-      exact differentiableAt_id (𝕜 := ℂ)
-    rw [h_pow]
-    rw [h_psi_c]
-    -- (0)^(N-2)
-    have h_exp : N - 1 - 1 ≠ 0 := by
-      norm_num
-      linarith
-    rw [zero_pow h_exp]
+  change deriv (fun x => ((N:ℂ)*a) * (ψ^(N-1)) x) c = _
+  rw [deriv_const_mul ((N:ℂ)*a) (DifferentiableAt.pow (h_diff_ψ c) (N-1))]
+  rw [deriv_pow (h_diff_ψ c) (N-1)]
+  rw [h_psi_c]
+  -- (0)^(N-2)
+  have h_exp : N - 1 - 1 ≠ 0 := by
+    omega
+  rw [zero_pow h_exp]
+  simp
+
+lemma deriv_affine (a b : ℂ) (c : ℂ) : deriv (fun z => a * z + b) c = a := by
+  change deriv ((fun z => a * z) + (fun z => b)) c = a
+  rw [deriv_add]
+  · change deriv (fun z => a * id z) c + deriv (fun z => b) c = a
+    rw [deriv_const_mul a differentiableAt_id]
+    rw [deriv_id]
     simp
-  · -- Differentiability of (ψ z)^(N-1)
-    apply DifferentiableAt.pow
-    exact h_diff_ψ c
+  · apply DifferentiableAt.const_mul
+    exact differentiableAt_id
+  · exact differentiableAt_const b
 
 /--
 Lemma: The default quadratic map z^2 is not Fast Renormalizable.
@@ -163,21 +149,9 @@ lemma defaultBMol_not_renormalizable : ¬ IsFastRenormalizable defaultBMol := by
 
   -- RHS' c
   have h_deriv_ψ : deriv ψ c = a := by
-      have : ψ = fun z => a * z + b := funext hψ
-      rw [this]
-      let f1 := fun z : ℂ => a * z
-      let f2 := fun z : ℂ => b
-      change deriv (f1 + f2) c = a
-      rw [deriv_add]
-      · change deriv (fun z => a * z) c + 0 = a
-        rw [deriv_const]
-        rw [add_zero]
-        rw [deriv_const_mul]
-        · rw [deriv_id]; simp
-        · exact differentiableAt_id
-      · apply DifferentiableAt.const_mul
-        exact differentiableAt_id
-      · exact differentiableAt_const b
+    have : ψ = fun z => a * z + b := funext hψ
+    rw [this]
+    exact deriv_affine a b c
 
   have h_RHS_deriv : deriv RHS c = N * (ψ c)^(N-1) * a :=
     h_RHS_deriv_aux N ψ c a (h_diff_ψ_at c) h_deriv_ψ
@@ -205,22 +179,10 @@ lemma defaultBMol_not_renormalizable : ¬ IsFastRenormalizable defaultBMol := by
       contradiction
 
   have h_deriv_ψ_all : ∀ z, deriv ψ z = a := by
-      intro z
-      have : ψ = fun w => a * w + b := funext hψ
-      rw [this]
-      let f1 := fun z : ℂ => a * z
-      let f2 := fun z : ℂ => b
-      change deriv (f1 + f2) z = a
-      rw [deriv_add]
-      · change deriv (fun z => a * z) z + 0 = a
-        rw [deriv_const]
-        rw [add_zero]
-        rw [deriv_const_mul]
-        · rw [deriv_id]; simp
-        · exact differentiableAt_id
-      · apply DifferentiableAt.const_mul
-        exact differentiableAt_id
-      · exact differentiableAt_const b
+    intro z
+    have : ψ = fun w => a * w + b := funext hψ
+    rw [this]
+    exact deriv_affine a b z
 
   -- Second derivative of LHS at c
   have h_diff_deriv_f : DifferentiableAt ℂ (deriv g'.f) c := by
