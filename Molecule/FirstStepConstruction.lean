@@ -2,6 +2,7 @@ import Molecule.BMol
 import Molecule.Mol
 import Molecule.HMol
 import Molecule.Construction
+import Molecule.Rfast
 
 namespace MLC
 
@@ -16,10 +17,9 @@ and its combinatorial model `Rprm`, fulfilling the "First Step" of the proof pla
 
 /--
 The constructed Molecule Renormalization Operator.
-Currently defined as a constant map returning `defaultBMol` as a placeholder
-for the full analytic construction.
+We now use the actual Rfast operator defined in `Molecule.Rfast`.
 -/
-def Rfast_constructed : BMol → BMol := fun _ => defaultBMol
+def Rfast_constructed : BMol → BMol := Rfast
 
 /--
 The constructed Horseshoe Operator.

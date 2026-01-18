@@ -4,6 +4,7 @@ import Mathlib.Analysis.Normed.Module.Basic
 import Mathlib.Analysis.Calculus.FDeriv.Basic
 import Mathlib.Topology.Algebra.Module.Basic
 import Mathlib.Analysis.Complex.Basic
+import Mathlib.Analysis.Analytic.Basic
 
 import Mathlib.LinearAlgebra.FiniteDimensional.Defs
 
@@ -45,6 +46,7 @@ def IsHyperbolic (f : BMol → BMol) : Prop :=
     ∃ (φ : BMol → E) (U : Set BMol),
       g ∈ U ∧
       f g = g ∧ -- Fixed point
+      AnalyticOn ℂ g.f g.U ∧ -- f itself should be analytic in its domain
       -- φ is a "chart" around g
       (∃ (V : Set E), IsOpen V ∧ MapsTo φ U V) ∧
       -- The conjugate map F = φ ∘ f ∘ φ⁻¹ is differentiable at φ(g)

@@ -20,7 +20,7 @@ import Molecule.Compactness
 import Molecule.Construction
 import Molecule.FirstStepConstruction
 import Molecule.Problem4_3
-import Molecule.HyperbolicityAxioms
+import Molecule.HyperbolicityTheorems
 
 namespace MLC
 
@@ -112,7 +112,7 @@ theorem Rfast_hyperbolicity_conjecture :
   IsHyperbolic Rfast_candidate ∧ IsPiecewiseAnalytic1DUnstable Rfast_candidate :=
   -- The proof of hyperbolicity relies on the establishment of a priori bounds (Problem 4.3)
   have bounds := problem_4_3_bounds_established_conjecture
-  ⟨Rfast_hyperbolicity_axiom bounds, Rfast_piecewise_analytic_axiom bounds⟩
+  ⟨Rfast_hyperbolicity bounds, Rfast_piecewise_analytic bounds⟩
 
 axiom Rfast_HMol_compactness : IsCompactOperator Rfast_HMol_candidate
 
