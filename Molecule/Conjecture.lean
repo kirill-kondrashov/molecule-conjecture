@@ -19,6 +19,7 @@ import Molecule.RfastHorseshoe
 import Molecule.Compactness
 import Molecule.Construction
 import Molecule.FirstStepConstruction
+import Molecule.Problem4_3
 
 namespace MLC
 
@@ -93,12 +94,13 @@ lemma Rprm_model_consistent :
 A key intermediate step is to establish "pseudo-Siegel a priori bounds" for the remaining
 unbounded satellite quadratic-like cases.
 -/
-def PseudoSiegelAPrioriBounds : Prop := sorry
+def PseudoSiegelAPrioriBounds : Prop := PseudoSiegelAPrioriBoundsStatement
 
 /--
 **Problem 4.3**: Completion of bounds is required for the Molecule Conjecture.
 -/
-axiom problem_4_3_bounds_established : PseudoSiegelAPrioriBounds
+theorem problem_4_3_bounds_established_conjecture : PseudoSiegelAPrioriBounds := 
+  problem_4_3_bounds_established
 
 /--
 ### 3. Prove Hyperbolicity and Unstable Manifold Dimensions
@@ -108,7 +110,7 @@ And that the restriction to the horseshoe is a compact operator.
 theorem Rfast_hyperbolicity_conjecture :
   IsHyperbolic Rfast_candidate ∧ IsPiecewiseAnalytic1DUnstable Rfast_candidate :=
   -- The proof of hyperbolicity relies on the establishment of a priori bounds (Problem 4.3)
-  have _ := problem_4_3_bounds_established
+  have _ := problem_4_3_bounds_established_conjecture
   sorry
 
 theorem Rfast_HMol_compactness : IsCompactOperator Rfast_HMol_candidate := sorry
