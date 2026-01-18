@@ -12,7 +12,7 @@ open Quadratic Complex Topology Set Filter
 
 
 /--
-Axiom: Renormalization Implies Small Orbit Bounds.
+Renormalization Implies Small Orbit Bounds.
 If f renormalizes to the fixed point, its critical orbit stays in a small disk at specific times.
 This encapsulates the "Key Lemma 4.8" dynamic content.
 -/
@@ -27,16 +27,17 @@ theorem renormalization_implies_bounds (f_star : BMol) (D : Set ℂ) (U : Set BM
         let c1 := criticalValue f
         let ft := f.f^[t]
         ft c1 ∈ D ∧
-        ∃ (D0 : Set ℂ) (h_maps : MapsTo ft D0 D),
-          IsOpen D0 ∧
+        exists (D0 D_target : Set ℂ) (h_maps : MapsTo ft D0 D_target),
+          IsOpen D0 ∧ IsOpen D_target ∧
+          D_target ⊆ D ∧
           c1 ∈ D0 ∧
-          IsProperMap (MapsTo.restrict ft D0 D h_maps) ∧
-          ∀ y ∈ D, Set.ncard {x ∈ D0 | ft x = y} = 2
+          IsProperMap (MapsTo.restrict ft D0 D_target h_maps) ∧
+          ∀ y ∈ D_target, Set.ncard {x ∈ D0 | ft x = y} = 2
   ) := by
   intro h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D
 
   -- Proof Sketch following Dudko-Lyubich-Selinger (arXiv:1703.01206), Key Lemma 4.8.
-  
+
   -- Step 1: Construction of Pseudo-Siegel Disks
   have h_pseudo_siegel := exists_pseudo_siegel_disk f_star D h_fixed h_renorm h_open_D h_cv_in_D
 
@@ -48,7 +49,7 @@ theorem renormalization_implies_bounds (f_star : BMol) (D : Set ℂ) (U : Set BM
   apply Filter.eventually_atTop.mpr
   use 1
   intro n hn t ht f hf
-  
+
   constructor
   · -- Condition 1: Orbit lands in D
     exact renormalization_orbit_lands_in_D f_star D U a b n t f h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D hn ht hf

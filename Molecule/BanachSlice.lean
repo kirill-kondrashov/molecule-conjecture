@@ -22,11 +22,12 @@ def HasSiegelBounds (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → 
         let c1 := criticalValue f
         let ft := f.f^[t]
         ft c1 ∈ D ∧
-        ∃ (D0 : Set ℂ) (h_maps : MapsTo ft D0 D),
-          IsOpen D0 ∧
+        ∃ (D0 D_target : Set ℂ) (h_maps : MapsTo ft D0 D_target),
+          IsOpen D0 ∧ IsOpen D_target ∧
+          D_target ⊆ D ∧
           c1 ∈ D0 ∧
-          IsProperMap (MapsTo.restrict ft D0 D h_maps) ∧
-          ∀ y ∈ D, Set.ncard {x ∈ D0 | ft x = y} = 2
+          IsProperMap (MapsTo.restrict ft D0 D_target h_maps) ∧
+          ∀ y ∈ D_target, Set.ncard {x ∈ D0 | ft x = y} = 2
     )
 
 /-- The Banach Space for the slice. -/

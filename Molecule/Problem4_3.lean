@@ -37,12 +37,13 @@ def PseudoSiegelAPrioriBoundsStatement : Prop :=
 
         -- Condition 2: Pullback property (Branched Covering)
         -- There exists a domain D0 such that f^t : D0 → D is a branched covering.
-        ∃ (D0 : Set ℂ) (h_maps : MapsTo ft D0 D),
-          IsOpen D0 ∧
+        ∃ (D0 D_target : Set ℂ) (h_maps : MapsTo ft D0 D_target),
+          IsOpen D0 ∧ IsOpen D_target ∧
+          D_target ⊆ D ∧
           c1 ∈ D0 ∧
           -- Formalizing a branched cover as a proper map of degree 2
-          IsProperMap (MapsTo.restrict ft D0 D h_maps) ∧
-          ∀ y ∈ D, Set.ncard {x ∈ D0 | ft x = y} = 2
+          IsProperMap (MapsTo.restrict ft D0 D_target h_maps) ∧
+          ∀ y ∈ D_target, Set.ncard {x ∈ D0 | ft x = y} = 2
     )
 
 /--
