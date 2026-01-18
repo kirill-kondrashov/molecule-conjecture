@@ -269,7 +269,7 @@ Lemma: Assumed bounds for defaultBMol (for contradiction).
 This lemma assumes the conclusion of renormalization_implies_bounds holds for defaultBMol.
 This is false because defaultBMol is not renormalizable, but we use it to prove contradiction.
 -/
-lemma defaultBMol_assumed_bounds : 
+lemma defaultBMol_assumed_bounds (h_renorm : IsFastRenormalizable defaultBMol) : 
     (∀ᶠ n in Filter.atTop, ∀ t ∈ ({fun n => n, fun n => n + 1} : Set (ℕ → ℕ)).image (fun f => f n),
       ∀ f, f ∈ (Rfast^[n]) ⁻¹' Set.univ →
         let c1 := criticalValue f
@@ -280,7 +280,29 @@ lemma defaultBMol_assumed_bounds :
           c1 ∈ D0 ∧
           IsProperMap (MapsTo.restrict ft D0 (Metric.ball 0 0.1) h_maps) ∧
           ∀ y ∈ (Metric.ball 0 0.1), Set.ncard {x ∈ D0 | ft x = y} = 2
-  ) := sorry 
+  ) := by
+  let f_star := defaultBMol
+  let D : Set ℂ := Metric.ball 0 0.1
+  let U : Set BMol := Set.univ
+  let a : ℕ → ℕ := fun n => n
+  let b : ℕ → ℕ := fun n => n + 1
+  
+  -- We assume (incorrectly) that defaultBMol satisfies the bounds theorem premises
+  have h_bounds := renormalization_implies_bounds f_star D U a b
+    (defaultBMol_is_fixed_point)
+    h_renorm
+    (Metric.isOpen_ball)
+    (isOpen_univ)
+    (by trivial)
+    (by rw [defaultBMol_criticalValue_zero]; simp [D, Metric.mem_ball]; norm_num)
+
+  -- Align the set notation
+  apply Filter.Eventually.mono h_bounds
+  intro n hn t ht
+  simp [a, b, U, D, Metric.mem_ball] at ht hn ⊢
+  rcases ht with rfl | rfl
+  · exact hn.1
+  · exact hn.2 
 
 /--
 Lemma: Cardinality of roots in preimage D0.
@@ -326,7 +348,7 @@ lemma preimage_roots_cardinality {deg : ℕ} {y : ℂ} (h_deg : deg ≥ 1)
     · exact h_deg
     · exact hy_nonzero
 
-lemma defaultBMol_violates_bounds_axiom : False := by
+lemma defaultBMol_violates_bounds_axiom (h_renorm : IsFastRenormalizable defaultBMol) : False := by
   -- Proof Sketch:
   -- 1. Assume for the sake of contradiction that `defaultBMol` satisfies the "Renormalization Implies Bounds" property.
   --    (In reality, it doesn't because it's not renormalizable, but we explore the geometric consequences).
@@ -336,7 +358,7 @@ lemma defaultBMol_violates_bounds_axiom : False := by
   let a : ℕ → ℕ := fun n => n
   let b : ℕ → ℕ := fun n => n + 1
 
-  have h_bounds_assumed := defaultBMol_assumed_bounds
+  have h_bounds_assumed := defaultBMol_assumed_bounds h_renorm
 
   -- 2. Extract specific bounds for a large enough `n`.
   rcases (Filter.eventually_atTop.mp h_bounds_assumed) with ⟨N, hN⟩
@@ -428,7 +450,7 @@ theorem fixed_point_uniqueness :
   · intro y hy
     dsimp [Rfast] at hy
     by_cases h : IsFastRenormalizable y
-    · exfalso; exact defaultBMol_violates_bounds_axiom
+    · exfalso; sorry
     · rw [dif_neg h] at hy; exact hy.symm
 
 theorem Rfast_theorem_1_1 :
