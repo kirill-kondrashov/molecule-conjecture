@@ -2,20 +2,11 @@ import Molecule.BMol
 import Molecule.Hyperbolicity
 import Molecule.Rfast
 import Molecule.Problem4_3
+import Molecule.BoundsToHyperbolicity
 
 namespace MLC
 
 open Complex Topology Set
-
-/--
-Axiom: A Priori Bounds Imply Hyperbolicity.
-If the fixed point satisfies the Pseudo-Siegel A Priori Bounds, then the renormalization operator is hyperbolic.
-This corresponds to the "Hyperbolicity Theorem" (Section 7) of the paper.
-
-Reference: Dudko, Lyubich, Selinger, arXiv:1703.01206, Section 7.
--/
-axiom bounds_imply_hyperbolicity_axiom :
-  PseudoSiegelAPrioriBoundsStatement → IsHyperbolic Rfast
 
 /--
 Axiom: Uniqueness of the Renormalization Fixed Point.
@@ -37,7 +28,7 @@ theorem Rfast_theorem_1_1 :
   -- We prove this by combining the A Priori Bounds result with the Uniqueness result.
   -- 1. Establishing Hyperbolicity from Bounds
   have h_hyp : IsHyperbolic Rfast := by
-    apply bounds_imply_hyperbolicity_axiom
+    apply bounds_imply_hyperbolicity_proof
     -- We rely on Problem 4.3 which establishes the bounds
     exact problem_4_3_bounds_established
 
