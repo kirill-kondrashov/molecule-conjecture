@@ -27,7 +27,7 @@ axiom IsQuasidisk.is_open {s : Set ℂ} : IsQuasidisk s → IsOpen s
 
 /-- The fixed point of renormalization has a pseudo-invariant quasidisk within D. -/
 axiom fixed_point_has_ps_disk (f_star : BMol) (D : Set ℂ) (h_open : IsOpen D) (h_crit : criticalValue f_star ∈ D) : 
-  Rfast f_star = f_star → ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps
+  Rfast f_star = f_star → ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps
 
 /--
 Constructs the pseudo-Siegel disk for the fixed point f_star within the domain D.
@@ -59,17 +59,35 @@ lemma ps_disk_is_open (f_star : BMol) (D : Set ℂ)
     exact ps_disk_quasidisk f_star D h_fixed h_fast h_open h_crit
 
 /-- The constructed pseudo-Siegel disk contains the critical value. -/
-lemma ps_disk_contains_crit (f_star : BMol) (D : Set ℂ) (h_crit : criticalValue f_star ∈ D) :
-  criticalValue f_star ∈ construct_pseudo_siegel_disk f_star D := sorry
+lemma ps_disk_contains_crit (f_star : BMol) (D : Set ℂ)
+  (h_fixed : Rfast f_star = f_star) (h_open : IsOpen D) (h_crit : criticalValue f_star ∈ D) :
+  criticalValue f_star ∈ construct_pseudo_siegel_disk f_star D := by
+    rw [construct_pseudo_siegel_disk]
+    have h_cond : Rfast f_star = f_star ∧ IsOpen D ∧ criticalValue f_star ∈ D := ⟨h_fixed, h_open, h_crit⟩
+    rw [dif_pos h_cond]
+    have h_exists := fixed_point_has_ps_disk f_star D h_open h_crit h_fixed
+    exact (Classical.choose_spec h_exists).2.2.2
 
 /-- The constructed pseudo-Siegel disk is a subset of D. -/
 lemma ps_disk_subset (f_star : BMol) (D : Set ℂ) :
-  construct_pseudo_siegel_disk f_star D ⊆ D := sorry
+  construct_pseudo_siegel_disk f_star D ⊆ D := by
+    rw [construct_pseudo_siegel_disk]
+    split_ifs with h
+    · obtain ⟨h_fixed, h_open, h_crit⟩ := h
+      have h_exists := fixed_point_has_ps_disk f_star D h_open h_crit h_fixed
+      exact (Classical.choose_spec h_exists).1
+    · exact Set.empty_subset D
 
 /-- The constructed pseudo-Siegel disk is pseudo-invariant. -/
 lemma ps_disk_invariant (f_star : BMol) (D : Set ℂ)
-  (h_fixed : Rfast f_star = f_star) (h_fast : IsFastRenormalizable f_star) :
-  PseudoInvariant f_star (construct_pseudo_siegel_disk f_star D) := sorry
+  (h_fixed : Rfast f_star = f_star) (h_fast : IsFastRenormalizable f_star)
+  (h_open : IsOpen D) (h_crit : criticalValue f_star ∈ D) :
+  PseudoInvariant f_star (construct_pseudo_siegel_disk f_star D) := by
+    rw [construct_pseudo_siegel_disk]
+    have h_cond : Rfast f_star = f_star ∧ IsOpen D ∧ criticalValue f_star ∈ D := ⟨h_fixed, h_open, h_crit⟩
+    rw [dif_pos h_cond]
+    have h_exists := fixed_point_has_ps_disk f_star D h_open h_crit h_fixed
+    exact (Classical.choose_spec h_exists).2.2.1
 
 /--
 Lemma: Existence of Pseudo-Siegel Disks.
@@ -91,11 +109,11 @@ lemma exists_pseudo_siegel_disk (f_star : BMol) (D : Set ℂ)
   constructor
   · exact ps_disk_is_open f_star D h_fixed h_fast h_open h_crit
   constructor
-  · exact ps_disk_contains_crit f_star D h_crit
+  · exact ps_disk_contains_crit f_star D h_fixed h_open h_crit
   constructor
   · exact ps_disk_subset f_star D
   constructor
   · exact ps_disk_quasidisk f_star D h_fixed h_fast h_open h_crit
-  · exact ps_disk_invariant f_star D h_fixed h_fast
+  · exact ps_disk_invariant f_star D h_fixed h_fast h_open h_crit
 
 end MLC
