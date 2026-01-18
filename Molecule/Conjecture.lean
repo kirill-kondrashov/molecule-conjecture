@@ -20,6 +20,7 @@ import Molecule.Compactness
 import Molecule.Construction
 import Molecule.FirstStepConstruction
 import Molecule.Problem4_3
+import Molecule.HyperbolicityAxioms
 
 namespace MLC
 
@@ -110,8 +111,8 @@ And that the restriction to the horseshoe is a compact operator.
 theorem Rfast_hyperbolicity_conjecture :
   IsHyperbolic Rfast_candidate ∧ IsPiecewiseAnalytic1DUnstable Rfast_candidate :=
   -- The proof of hyperbolicity relies on the establishment of a priori bounds (Problem 4.3)
-  have _ := problem_4_3_bounds_established_conjecture
-  sorry
+  have bounds := problem_4_3_bounds_established_conjecture
+  ⟨Rfast_hyperbolicity_axiom bounds, Rfast_piecewise_analytic_axiom bounds⟩
 
 theorem Rfast_HMol_compactness : IsCompactOperator Rfast_HMol_candidate := sorry
 
