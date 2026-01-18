@@ -1,6 +1,6 @@
 # Machine-Generated Formalization of Dudko's Molecule Conjecture
 
-[![build](https://github.com/kirill-kondrashov/yoccos-theorem/actions/workflows/lean_action_ci.yml/badge.svg)](https://github.com/kirill-kondrashov/yoccos-theorem/actions/workflows/lean_action_ci.yml)
+[![build](https://github.com/kirill-kondrashov/molecule-conjecture/actions/workflows/lean_action_ci.yml/badge.svg)](https://github.com/kirill-kondrashov/molecule-conjecture/actions/workflows/lean_action_ci.yml)
 
 This repository contains a **machine-generated formal proof** of Dudko's Molecule Conjecture for quadratic polynomials in Lean 4. This theorem is a key component of the Mandelbrot Local Connectivity (MLC) Conjecture, establishing it for non-renormalizable parameters.
 
@@ -10,8 +10,6 @@ Essentially, this software facilitates progress toward an exact proof **in colla
 > This is a work in progress. Updates will be posted when (or if ☺) the proof is fully verified. This repository is shared at an early stage to simplify collaboration.
 
 The primary benefit of using Lean is that the logic is verified by the Lean kernel, ensuring correctness relative to the definitions and axioms provided. Some essential parts, such as definitions, useful lemmas, and theorems from the literature, are included. All domain-specific results are now formalized, relying only on Lean's standard axioms.
-
-[**Read the Documentation (PDF)**](docs/proof.pdf): Includes Lean listings alongside comments, attempting to make the proofs human-readable.
 
 ## Disclaimer
 

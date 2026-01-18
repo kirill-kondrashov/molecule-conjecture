@@ -58,7 +58,7 @@ noncomputable def Rfast (g : BMol) : BMol :=
   if h : IsFastRenormalizable g then
     Classical.choose h
   else
-    g
+    defaultBMol
 
 lemma Rfast_spec (g : BMol) (h : IsFastRenormalizable g) :
     Nonempty (RenormalizationRelation g (Rfast g)) := by
