@@ -44,9 +44,6 @@ All axioms used:
 - propext
 - Quot.sound
 - Classical.choice
-- MLC.Rfast_candidate
-- MLC.Rfast_HMol_candidate
-- MLC.Rprm_combinatorial_model
 - sorryAx
 - MLC.problem_4_3_bounds_established
 - MLC.R_target_is_shift

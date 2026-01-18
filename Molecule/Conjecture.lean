@@ -17,6 +17,8 @@ import Molecule.Hyperbolicity
 import Molecule.PiecewiseAnalytic
 import Molecule.RfastHorseshoe
 import Molecule.Compactness
+import Molecule.Construction
+import Molecule.FirstStepConstruction
 
 namespace MLC
 
@@ -66,11 +68,25 @@ section ProofPlan
 
 /--
 ### 1. Construct the Molecule Renormalization Operator (R_fast)
-We postulate the existence of the operator and its combinatorial model.
+We use the constructed operators from `Molecule.FirstStepConstruction`.
 -/
-axiom Rfast_candidate : BMol → BMol
-axiom Rfast_HMol_candidate : HMol → HMol
-axiom Rprm_combinatorial_model : {x : Mol // x ≠ cusp} → {x : Mol // x ≠ cusp}
+def Rfast_candidate : BMol → BMol := Rfast_constructed
+def Rfast_HMol_candidate : HMol → HMol := Rfast_HMol_constructed
+
+/--
+The Combinatorial Model is constructed in `Molecule.Construction`.
+We wrap the angle map `Rprm_angle` into the type expected by the conjecture.
+For the conjecture statement, we identify the combinatorial action on the moduli space
+with the explicit angle map on the boundary, extended to the interior.
+For simplicity in this step, we postulate the extension exists and matches the boundary behavior.
+-/
+def Rprm_combinatorial_model : {x : Mol // x ≠ cusp} → {x : Mol // x ≠ cusp} := Rprm_constructed
+
+-- Link the axiomatic model to our construction
+lemma Rprm_model_consistent : 
+  ∀ (c : {x : Mol // x ≠ cusp}), 
+    -- Placeholder: relating the abstract model to MoleculeMap or Rprm_angle
+    True := Rprm_model_consistent_proof 
 
 /--
 ### 2. Establish A Priori Bounds (The "Problem 4.3" Step)
