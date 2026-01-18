@@ -44,7 +44,6 @@ All axioms used:
 - propext
 - Quot.sound
 - Classical.choice
-- MLC.fixed_point_exists
 - MLC.renormalization_implies_bounds
 - MLC.SliceSpace
 - MLC.slice_chart
