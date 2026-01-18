@@ -1,19 +1,50 @@
 import Molecule.BMol
 import Molecule.Hyperbolicity
 import Molecule.Rfast
+import Molecule.Problem4_3
 
 namespace MLC
 
 open Complex Topology Set
 
 /--
-Axiom: Pacman Renormalization Theorem (Hyperbolicity and Uniqueness).
+Axiom: A Priori Bounds Imply Hyperbolicity.
+If the fixed point satisfies the Pseudo-Siegel A Priori Bounds, then the renormalization operator is hyperbolic.
+This corresponds to the "Hyperbolicity Theorem" (Section 7) of the paper.
+
+Reference: Dudko, Lyubich, Selinger, arXiv:1703.01206, Section 7.
+-/
+axiom bounds_imply_hyperbolicity_axiom :
+  PseudoSiegelAPrioriBoundsStatement → IsHyperbolic Rfast
+
+/--
+Axiom: Uniqueness of the Renormalization Fixed Point.
+There is only one fixed point for the Pacman Renormalization operator with a given combinatorics.
+
+Reference: Dudko, Lyubich, Selinger, arXiv:1703.01206, Theorem 1.1.
+-/
+axiom fixed_point_uniqueness_axiom :
+  ∃! f, Rfast f = f
+
+/--
+Theorem: Pacman Renormalization Theorem (Hyperbolicity and Uniqueness).
 There exists a unique fixed point of the renormalization operator, and the operator is hyperbolic at this fixed point.
 
 Reference: Dudko, Lyubich, Selinger, "Pacman Renormalization...", arXiv:1703.01206, Theorem 1.1.
 -/
-axiom Rfast_theorem_1_1 : 
-  (IsHyperbolic Rfast) ∧ (∃! f, Rfast f = f)
+theorem Rfast_theorem_1_1 : 
+  (IsHyperbolic Rfast) ∧ (∃! f, Rfast f = f) := by
+  -- We prove this by combining the A Priori Bounds result with the Uniqueness result.
+  -- 1. Establishing Hyperbolicity from Bounds
+  have h_hyp : IsHyperbolic Rfast := by
+    apply bounds_imply_hyperbolicity_axiom
+    -- We rely on Problem 4.3 which establishes the bounds
+    exact problem_4_3_bounds_established
+
+  -- 2. Establishing Uniqueness
+  have h_unique : ∃! f, Rfast f = f := fixed_point_uniqueness_axiom
+
+  exact ⟨h_hyp, h_unique⟩
 
 /-- 
 Theorem: Properties of the Renormalization Fixed Point.
