@@ -14,7 +14,7 @@ Pacman renormalization is a specific instance of this with particular domain geo
 -/
 structure RenormalizationRelation (g g' : BMol) where
   p : ℕ
-  p_pos : p ≥ 1
+  p_pos : p ≥ 2
   U' : Set ℂ
   V' : Set ℂ
   ψ : ℂ → ℂ -- Rescaling map
