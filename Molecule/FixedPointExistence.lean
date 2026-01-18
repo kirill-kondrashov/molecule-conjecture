@@ -56,7 +56,6 @@ lemma h_LHS_deriv2_aux (f : ℂ → ℂ) (ψ : ℂ → ℂ) (c : ℂ) (a : ℂ) 
     rw [h_deriv_ψ_const (f z)]
   rw [Filter.EventuallyEq.deriv_eq h_local]
   rw [deriv_const_mul a h_diff_deriv_f]
-  rfl
 
 lemma h_RHS_deriv2_aux (N : ℕ) (ψ : ℂ → ℂ) (c : ℂ) (a : ℂ) (hN : N ≥ 4)
     (h_diff_ψ : Differentiable ℂ ψ)
