@@ -37,9 +37,10 @@ lemma h_RHS_deriv_aux (N : ℕ) (ψ : ℂ → ℂ) (c : ℂ) (a : ℂ)
     (h_diff_ψ : DifferentiableAt ℂ ψ c)
     (h_deriv_ψ : deriv ψ c = a) :
     deriv (fun z => (ψ z)^N) c = N * (ψ c)^(N-1) * a := by
-  change deriv ((fun w => w^N) ∘ ψ) c = _
-  rw [deriv_comp c (g:=fun w => w^N) (hφ:=differentiableAt_id.pow N) (hf:=h_diff_ψ)]
-  have h_pow : deriv (fun w => w^N) (ψ c) = N * (ψ c)^(N-1) := by
+  let g := fun w : ℂ => w^N
+  change deriv (g ∘ ψ) c = _
+  rw [deriv_comp c (differentiableAt_id (𝕜 := ℂ).pow N) h_diff_ψ]
+  have h_pow : deriv g (ψ c) = N * (ψ c)^(N-1) := by
     rw [deriv_pow]
     exact differentiableAt_id (𝕜 := ℂ)
   rw [h_pow]
@@ -61,9 +62,9 @@ lemma h_LHS_deriv2_aux (f : ℂ → ℂ) (ψ : ℂ → ℂ) (c : ℂ) (a : ℂ) 
     rw [h_deriv_ψ_const (f z)]
   rw [Filter.EventuallyEq.deriv_eq h_local]
   -- deriv (a * deriv f)
-  rw [deriv_mul (differentiableAt_const a) h_diff_deriv_f]
-  rw [deriv_const]
-  simp
+  let h := deriv f
+  change deriv (fun z => a * h z) c = _
+  rw [deriv_const_mul h_diff_deriv_f]
 
 lemma h_RHS_deriv2_aux (N : ℕ) (ψ : ℂ → ℂ) (c : ℂ) (a : ℂ) (hN : N ≥ 4)
     (h_diff_ψ : Differentiable ℂ ψ)
@@ -73,9 +74,10 @@ lemma h_RHS_deriv2_aux (N : ℕ) (ψ : ℂ → ℂ) (c : ℂ) (a : ℂ) (hN : N 
   -- deriv RHS z = N * a * (ψ z)^(N-1)
   have h_local : ∀ᶠ z in 𝓝 c, deriv (fun w => (ψ w)^N) z = (N:ℂ) * a * (ψ z)^(N-1) := by
     filter_upwards with z
-    change deriv ((fun w => w^N) ∘ ψ) z = _
-    rw [deriv_comp z (g:=fun w => w^N) (hφ:=differentiableAt_id.pow N) (hf:=h_diff_ψ z)]
-    have h_pow : deriv (fun w => w^N) (ψ z) = N * (ψ z)^(N-1) := by
+    let g := fun w : ℂ => w^N
+    change deriv (g ∘ ψ) z = _
+    rw [deriv_comp z (differentiableAt_id (𝕜 := ℂ).pow N) (h_diff_ψ z)]
+    have h_pow : deriv g (ψ z) = N * (ψ z)^(N-1) := by
       rw [deriv_pow]
       exact differentiableAt_id (𝕜 := ℂ)
     rw [h_pow]
@@ -84,13 +86,12 @@ lemma h_RHS_deriv2_aux (N : ℕ) (ψ : ℂ → ℂ) (c : ℂ) (a : ℂ) (hN : N 
   
   rw [Filter.EventuallyEq.deriv_eq h_local]
   -- deriv of N*a*(ψ z)^(N-1)
-  -- Use deriv_mul twice or similar
-  rw [deriv_mul (differentiableAt_const (↑N * a))]
-  · rw [deriv_const, zero_mul, zero_add]
-    -- deriv ((ψ z)^(N-1))
-    change deriv ((fun w => w^(N-1)) ∘ ψ) c = _
-    rw [deriv_comp c (g:=fun w => w^(N-1)) (hφ:=differentiableAt_id.pow (N-1)) (hf:=h_diff_ψ c)]
-    have h_pow : deriv (fun w => w^(N-1)) (ψ c) = (N-1) * (ψ c)^(N-1-1) := by
+  rw [deriv_const_mul]
+  · -- deriv ((ψ z)^(N-1))
+    let g := fun w : ℂ => w^(N-1)
+    change deriv (g ∘ ψ) c = _
+    rw [deriv_comp c (differentiableAt_id (𝕜 := ℂ).pow (N-1)) (h_diff_ψ c)]
+    have h_pow : deriv g (ψ c) = (N-1) * (ψ c)^(N-1-1) := by
       rw [deriv_pow]
       exact differentiableAt_id (𝕜 := ℂ)
     rw [h_pow]
@@ -164,11 +165,19 @@ lemma defaultBMol_not_renormalizable : ¬ IsFastRenormalizable defaultBMol := by
   have h_deriv_ψ : deriv ψ c = a := by
       have : ψ = fun z => a * z + b := funext hψ
       rw [this]
-      rw [deriv_add (differentiableAt_const_mul a).differentiableAt (differentiableAt_const b)]
-      rw [deriv_const]
-      rw [deriv_const_mul (differentiableAt_id (𝕜 := ℂ))]
-      rw [deriv_id]
-      simp
+      let f1 := fun z : ℂ => a * z
+      let f2 := fun z : ℂ => b
+      change deriv (f1 + f2) c = a
+      rw [deriv_add]
+      · change deriv (fun z => a * z) c + 0 = a
+        rw [deriv_const]
+        rw [add_zero]
+        rw [deriv_const_mul]
+        · rw [deriv_id]; simp
+        · exact differentiableAt_id
+      · apply DifferentiableAt.const_mul
+        exact differentiableAt_id
+      · exact differentiableAt_const b
 
   have h_RHS_deriv : deriv RHS c = N * (ψ c)^(N-1) * a :=
     h_RHS_deriv_aux N ψ c a (h_diff_ψ_at c) h_deriv_ψ
@@ -199,11 +208,19 @@ lemma defaultBMol_not_renormalizable : ¬ IsFastRenormalizable defaultBMol := by
       intro z
       have : ψ = fun w => a * w + b := funext hψ
       rw [this]
-      rw [deriv_add (differentiableAt_const_mul a).differentiableAt (differentiableAt_const b)]
-      rw [deriv_const]
-      rw [deriv_const_mul (differentiableAt_id (𝕜 := ℂ))]
-      rw [deriv_id]
-      simp
+      let f1 := fun z : ℂ => a * z
+      let f2 := fun z : ℂ => b
+      change deriv (f1 + f2) z = a
+      rw [deriv_add]
+      · change deriv (fun z => a * z) z + 0 = a
+        rw [deriv_const]
+        rw [add_zero]
+        rw [deriv_const_mul]
+        · rw [deriv_id]; simp
+        · exact differentiableAt_id
+      · apply DifferentiableAt.const_mul
+        exact differentiableAt_id
+      · exact differentiableAt_const b
 
   -- Second derivative of LHS at c
   have h_diff_deriv_f : DifferentiableAt ℂ (deriv g'.f) c := by
