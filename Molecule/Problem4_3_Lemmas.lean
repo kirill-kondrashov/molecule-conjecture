@@ -2,32 +2,11 @@ import Molecule.BMol
 import Molecule.Rfast
 import Yoccoz.Quadratic.Complex.Basic
 import Molecule.FixedPointExistence
+import Molecule.PseudoSiegelDisk
 
 namespace MLC
 
 open Quadratic Complex Topology Set Filter
-
-/--
-Lemma: Existence of Pseudo-Siegel Disks.
-One constructs "pseudo-Siegel disks" that fill in parabolic fjords (deep incursions of the Julia set),
-obtaining quasi-invariant domains with controlled geometry.
--/
-lemma exists_pseudo_siegel_disk (f_star : BMol) (D : Set ℂ)
-  (_ : Rfast f_star = f_star)
-  (_ : IsFastRenormalizable f_star)
-  (_ : IsOpen D)
-  (_ : criticalValue f_star ∈ D) :
-  ∃ (D_ps : Set ℂ), IsOpen D_ps ∧ criticalValue f_star ∈ D_ps ∧ D_ps ⊆ D := by
-  -- Detailed construction involves analyzing the postcritical set geometry near the fixed point.
-  -- For the topological statement, the domain D itself (or a subset) suffices.
-  -- In the full theory (Dudko-Lyubich-Selinger), D_ps is constructed to avoid "parabolic fjords".
-  -- Here we satisfy the existential quantifier with D itself, which is open and contains the critical value.
-  refine ⟨D, ?_⟩
-  constructor
-  · assumption
-  · constructor
-    · assumption
-    · exact Subset.refl D
 
 /--
 Lemma: Renormalization Orbit Lands in D.
@@ -35,16 +14,38 @@ For sufficiently large n, the orbit of the critical value under the renormalized
 -/
 lemma renormalization_orbit_lands_in_D (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ)
   (n t : ℕ) (f : BMol)
-  (_ : Rfast f_star = f_star)
-  (_ : IsFastRenormalizable f_star)
-  (_ : IsOpen D) (_ : IsOpen U)
-  (_ : f_star ∈ U)
-  (_ : criticalValue f_star ∈ D)
-  (_ : n ≥ 1)
-  (_ : t ∈ ({a n, b n} : Set ℕ))
-  (_ : f ∈ (Rfast^[n]) ⁻¹' U) :
+  (h_fixed : Rfast f_star = f_star)
+  (h_renorm : IsFastRenormalizable f_star)
+  (h_open_D : IsOpen D) (h_open_U : IsOpen U)
+  (h_f_star_in_U : f_star ∈ U)
+  (h_cv_in_D : criticalValue f_star ∈ D)
+  (h_n_ge_1 : n ≥ 1)
+  (h_t_in_set : t ∈ ({a n, b n} : Set ℕ))
+  (h_f_in_preimage : f ∈ (Rfast^[n]) ⁻¹' U) :
   (f.f^[t] (criticalValue f)) ∈ D := by
   -- By the pseudo-Siegel disk construction and invariance properties.
+  -- The proof relies on the fact that R^n(f) is close to f_star, so its critical value is in D.
+  -- Then we pull back this property via the renormalization rescaling.
+  let gn := (Rfast^[n]) f
+  
+  -- Since f is in the pre-image, gn ∈ U
+  have h_gn_in_U : gn ∈ U := h_f_in_preimage
+  
+  -- Since U is a neighborhood of f_star, and D is a neighborhood of cv(f_star),
+  -- and Rfast is continuous (morally), for large n, cv(gn) ∈ D.
+  -- Note: This requires continuity of Rfast and criticalValue, which we assume or prove elsewhere.
+  -- In a sketch, we assert this holds for "sufficiently large n".
+  
+  -- The time t ∈ {a n, b n} corresponds to the return times associated with the n-th renormalization.
+  -- The renormalization relation implies a conjugacy:
+  -- gn.f ~ Ψ⁻¹ ∘ f^[t] ∘ Ψ
+  -- Thus f^[t] (cv f) ~ Ψ (cv gn).
+  
+  -- Since Ψ is a contraction (scales down to the renormalization domain),
+  -- and D is an open set containing the critical value (presumably 0 or close to it),
+  -- the image Ψ(cv gn) lies in D.
+  
+  -- This requires detailed bounds on the rescaling factors and the domain geometry.
   sorry
 
 /--
