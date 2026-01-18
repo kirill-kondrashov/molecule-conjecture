@@ -3,50 +3,12 @@ import Molecule.Rfast
 import Yoccoz.Quadratic.Complex.Basic
 import Molecule.FixedPointExistence
 import Molecule.PseudoSiegelDisk
+import Molecule.RenormalizationOrbit
 
 namespace MLC
 
 open Quadratic Complex Topology Set Filter
 
-/--
-Lemma: Renormalization Orbit Lands in D.
-For sufficiently large n, the orbit of the critical value under the renormalized map lands in D.
--/
-lemma renormalization_orbit_lands_in_D (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ)
-  (n t : ℕ) (f : BMol)
-  (h_fixed : Rfast f_star = f_star)
-  (h_renorm : IsFastRenormalizable f_star)
-  (h_open_D : IsOpen D) (h_open_U : IsOpen U)
-  (h_f_star_in_U : f_star ∈ U)
-  (h_cv_in_D : criticalValue f_star ∈ D)
-  (h_n_ge_1 : n ≥ 1)
-  (h_t_in_set : t ∈ ({a n, b n} : Set ℕ))
-  (h_f_in_preimage : f ∈ (Rfast^[n]) ⁻¹' U) :
-  (f.f^[t] (criticalValue f)) ∈ D := by
-  -- By the pseudo-Siegel disk construction and invariance properties.
-  -- The proof relies on the fact that R^n(f) is close to f_star, so its critical value is in D.
-  -- Then we pull back this property via the renormalization rescaling.
-  let gn := (Rfast^[n]) f
-  
-  -- Since f is in the pre-image, gn ∈ U
-  have h_gn_in_U : gn ∈ U := h_f_in_preimage
-  
-  -- Since U is a neighborhood of f_star, and D is a neighborhood of cv(f_star),
-  -- and Rfast is continuous (morally), for large n, cv(gn) ∈ D.
-  -- Note: This requires continuity of Rfast and criticalValue, which we assume or prove elsewhere.
-  -- In a sketch, we assert this holds for "sufficiently large n".
-  
-  -- The time t ∈ {a n, b n} corresponds to the return times associated with the n-th renormalization.
-  -- The renormalization relation implies a conjugacy:
-  -- gn.f ~ Ψ⁻¹ ∘ f^[t] ∘ Ψ
-  -- Thus f^[t] (cv f) ~ Ψ (cv gn).
-  
-  -- Since Ψ is a contraction (scales down to the renormalization domain),
-  -- and D is an open set containing the critical value (presumably 0 or close to it),
-  -- the image Ψ(cv gn) lies in D.
-  
-  -- This requires detailed bounds on the rescaling factors and the domain geometry.
-  sorry
 
 /--
 Lemma: Renormalization Pullback Property.
