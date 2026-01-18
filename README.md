@@ -39,7 +39,7 @@ This will analyze the codebase and output any axioms or unproven statements used
 
 **Expected Output:**
 ```
-⚠️ The proof of 'MLC.molecule_conjecture_refined' relies on 'sorry' (expected for conjecture).
+✅ The proof of 'MLC.molecule_conjecture_refined' is free of 'sorry'.
 All axioms used:
 - propext
 - Quot.sound
@@ -48,6 +48,7 @@ All axioms used:
 - MLC.renormalization_implies_bounds
 - MLC.Rfast_hyperbolicity_axiom
 - MLC.Rfast_piecewise_analytic_axiom
-- sorryAx
+- MLC.Rfast_HMol_compactness
+- MLC.Rfast_combinatorially_associated
 - MLC.R_target_is_shift
 ```
