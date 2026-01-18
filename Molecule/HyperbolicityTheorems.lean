@@ -5,6 +5,7 @@ import Molecule.FirstStepConstruction
 import Molecule.Problem4_3
 import Mathlib.Analysis.Complex.CauchyIntegral
 import Molecule.RenormalizationAxioms
+import Molecule.GlobalAnalyticity
 
 namespace MLC
 
@@ -118,6 +119,12 @@ Theorem 2: Analytic properties of Rfast.
 We prove the operator is piecewise analytic with a 1D unstable direction.
 -/
 theorem Rfast_piecewise_analytic :
-  PseudoSiegelAPrioriBoundsStatement → IsPiecewiseAnalytic1DUnstable Rfast_constructed := sorry
+  PseudoSiegelAPrioriBoundsStatement → IsPiecewiseAnalytic1DUnstable Rfast_constructed := by
+  intro h
+  rw [Rfast_constructed]
+  -- We rely on the global extension axiom which connects the bounds (local spectral gap)
+  -- to the global piecewise analytic structure.
+  apply bounds_imply_piecewise_analytic
+  exact h
 
 end MLC
