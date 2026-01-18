@@ -72,14 +72,14 @@ theorem bounds_implies_hyperbolicity :
   have h_spectral := spectral_gap_axiom f_star h_fixed
   
   -- Unpack the spectral properties
-  obtain ⟨_, E, inst1, inst2, φ, U, h_f_in_U, h_chart, F, h_conj, h_diff, h_hyp⟩ := h_spectral
+  obtain ⟨h_analytic, E, inst1, inst2, φ, U, h_f_in_U, h_chart, F, h_conj, h_diff, h_hyp⟩ := h_spectral
   
   -- Construct the IsHyperbolic witness
   use f_star
   use E, inst1, inst2
   use φ, U
   
-  refine ⟨h_f_in_U, h_fixed, h_chart, F, h_conj, h_diff, h_hyp⟩
+  refine ⟨h_f_in_U, h_fixed, h_analytic, h_chart, F, h_conj, h_diff, h_hyp⟩
 
 /--
 Theorem 1: Hyperbolicity of Rfast.
