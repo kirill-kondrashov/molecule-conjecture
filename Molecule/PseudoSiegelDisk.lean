@@ -35,13 +35,17 @@ This construction "fills in" parabolic fjords to ensure controlled geometry.
 -/
 opaque construct_pseudo_siegel_disk (f_star : BMol) (D : Set ℂ) : Set ℂ
 
+/-- The constructed pseudo-Siegel disk is a quasidisk. -/
+lemma ps_disk_quasidisk (f_star : BMol) (D : Set ℂ)
+  (h_fixed : Rfast f_star = f_star) (h_fast : IsFastRenormalizable f_star) :
+  IsQuasidisk (construct_pseudo_siegel_disk f_star D) := sorry
+
 /-- The constructed pseudo-Siegel disk is open. -/
-lemma ps_disk_is_open (f_star : BMol) (D : Set ℂ) (h_open : IsOpen D) :
+lemma ps_disk_is_open (f_star : BMol) (D : Set ℂ) 
+  (h_fixed : Rfast f_star = f_star) (h_fast : IsFastRenormalizable f_star) (h_open : IsOpen D) :
   IsOpen (construct_pseudo_siegel_disk f_star D) := by
-    -- In a full construction, we would show D_ps is a quasidisk and use the axiom
-    -- For now, we assume the construction yields a quasidisk
-    -- apply IsQuasidisk.is_open
-    sorry
+    apply IsQuasidisk.is_open
+    exact ps_disk_quasidisk f_star D h_fixed h_fast
 
 /-- The constructed pseudo-Siegel disk contains the critical value. -/
 lemma ps_disk_contains_crit (f_star : BMol) (D : Set ℂ) (h_crit : criticalValue f_star ∈ D) :
@@ -50,11 +54,6 @@ lemma ps_disk_contains_crit (f_star : BMol) (D : Set ℂ) (h_crit : criticalValu
 /-- The constructed pseudo-Siegel disk is a subset of D. -/
 lemma ps_disk_subset (f_star : BMol) (D : Set ℂ) :
   construct_pseudo_siegel_disk f_star D ⊆ D := sorry
-
-/-- The constructed pseudo-Siegel disk is a quasidisk. -/
-lemma ps_disk_quasidisk (f_star : BMol) (D : Set ℂ)
-  (h_fixed : Rfast f_star = f_star) (h_fast : IsFastRenormalizable f_star) :
-  IsQuasidisk (construct_pseudo_siegel_disk f_star D) := sorry
 
 /-- The constructed pseudo-Siegel disk is pseudo-invariant. -/
 lemma ps_disk_invariant (f_star : BMol) (D : Set ℂ)
@@ -79,7 +78,7 @@ lemma exists_pseudo_siegel_disk (f_star : BMol) (D : Set ℂ)
     PseudoInvariant f_star D_ps := by
   use construct_pseudo_siegel_disk f_star D
   constructor
-  · exact ps_disk_is_open f_star D h_open
+  · exact ps_disk_is_open f_star D h_fixed h_fast h_open
   constructor
   · exact ps_disk_contains_crit f_star D h_crit
   constructor
