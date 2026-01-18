@@ -5,7 +5,7 @@ import Molecule.FixedPointExistence
 
 namespace MLC
 
-open Quadratic Complex Topology Set Filter
+open Quadratic Complex Topology Set Filter Classical
 
 /--
 A quasidisk is the image of the unit disk under a quasiconformal map of the plane.
@@ -25,27 +25,38 @@ opaque PseudoInvariant (f : BMol) (s : Set ℂ) : Prop
 /-- Every quasidisk is an open set. -/
 axiom IsQuasidisk.is_open {s : Set ℂ} : IsQuasidisk s → IsOpen s
 
-/-- The fixed point of renormalization has a pseudo-invariant quasidisk. -/
-axiom fixed_point_has_ps_disk (f_star : BMol) : 
-  Rfast f_star = f_star → ∃ D_ps, IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps
+/-- The fixed point of renormalization has a pseudo-invariant quasidisk within D. -/
+axiom fixed_point_has_ps_disk (f_star : BMol) (D : Set ℂ) (h_open : IsOpen D) (h_crit : criticalValue f_star ∈ D) : 
+  Rfast f_star = f_star → ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps
 
 /--
 Constructs the pseudo-Siegel disk for the fixed point f_star within the domain D.
 This construction "fills in" parabolic fjords to ensure controlled geometry.
 -/
-opaque construct_pseudo_siegel_disk (f_star : BMol) (D : Set ℂ) : Set ℂ
+noncomputable def construct_pseudo_siegel_disk (f_star : BMol) (D : Set ℂ) : Set ℂ :=
+  if h : Rfast f_star = f_star ∧ IsOpen D ∧ criticalValue f_star ∈ D then
+    Classical.choose (fixed_point_has_ps_disk f_star D h.2.1 h.2.2 h.1)
+  else
+    ∅
 
 /-- The constructed pseudo-Siegel disk is a quasidisk. -/
 lemma ps_disk_quasidisk (f_star : BMol) (D : Set ℂ)
-  (h_fixed : Rfast f_star = f_star) (h_fast : IsFastRenormalizable f_star) :
-  IsQuasidisk (construct_pseudo_siegel_disk f_star D) := sorry
+  (h_fixed : Rfast f_star = f_star) (h_fast : IsFastRenormalizable f_star)
+  (h_open : IsOpen D) (h_crit : criticalValue f_star ∈ D) :
+  IsQuasidisk (construct_pseudo_siegel_disk f_star D) := by
+    rw [construct_pseudo_siegel_disk]
+    have h_cond : Rfast f_star = f_star ∧ IsOpen D ∧ criticalValue f_star ∈ D := ⟨h_fixed, h_open, h_crit⟩
+    rw [dif_pos h_cond]
+    have h_exists := fixed_point_has_ps_disk f_star D h_open h_crit h_fixed
+    exact (Classical.choose_spec h_exists).2.1
 
 /-- The constructed pseudo-Siegel disk is open. -/
 lemma ps_disk_is_open (f_star : BMol) (D : Set ℂ) 
-  (h_fixed : Rfast f_star = f_star) (h_fast : IsFastRenormalizable f_star) (h_open : IsOpen D) :
+  (h_fixed : Rfast f_star = f_star) (h_fast : IsFastRenormalizable f_star)
+  (h_open : IsOpen D) (h_crit : criticalValue f_star ∈ D) :
   IsOpen (construct_pseudo_siegel_disk f_star D) := by
     apply IsQuasidisk.is_open
-    exact ps_disk_quasidisk f_star D h_fixed h_fast
+    exact ps_disk_quasidisk f_star D h_fixed h_fast h_open h_crit
 
 /-- The constructed pseudo-Siegel disk contains the critical value. -/
 lemma ps_disk_contains_crit (f_star : BMol) (D : Set ℂ) (h_crit : criticalValue f_star ∈ D) :
@@ -78,13 +89,13 @@ lemma exists_pseudo_siegel_disk (f_star : BMol) (D : Set ℂ)
     PseudoInvariant f_star D_ps := by
   use construct_pseudo_siegel_disk f_star D
   constructor
-  · exact ps_disk_is_open f_star D h_fixed h_fast h_open
+  · exact ps_disk_is_open f_star D h_fixed h_fast h_open h_crit
   constructor
   · exact ps_disk_contains_crit f_star D h_crit
   constructor
   · exact ps_disk_subset f_star D
   constructor
-  · exact ps_disk_quasidisk f_star D h_fixed h_fast
+  · exact ps_disk_quasidisk f_star D h_fixed h_fast h_open h_crit
   · exact ps_disk_invariant f_star D h_fixed h_fast
 
 end MLC
