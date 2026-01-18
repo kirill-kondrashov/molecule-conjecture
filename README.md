@@ -44,7 +44,10 @@ All axioms used:
 - propext
 - Quot.sound
 - Classical.choice
+- MLC.fixed_point_exists
+- MLC.renormalization_implies_bounds
+- MLC.Rfast_hyperbolicity_axiom
+- MLC.Rfast_piecewise_analytic_axiom
 - sorryAx
-- MLC.problem_4_3_bounds_established
 - MLC.R_target_is_shift
 ```

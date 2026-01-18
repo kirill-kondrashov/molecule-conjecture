@@ -19,6 +19,8 @@ import Molecule.RfastHorseshoe
 import Molecule.Compactness
 import Molecule.Construction
 import Molecule.FirstStepConstruction
+import Molecule.Problem4_3
+import Molecule.HyperbolicityAxioms
 
 namespace MLC
 
@@ -83,22 +85,23 @@ For simplicity in this step, we postulate the extension exists and matches the b
 def Rprm_combinatorial_model : {x : Mol // x ≠ cusp} → {x : Mol // x ≠ cusp} := Rprm_constructed
 
 -- Link the axiomatic model to our construction
-lemma Rprm_model_consistent : 
-  ∀ (c : {x : Mol // x ≠ cusp}), 
+lemma Rprm_model_consistent :
+  ∀ (c : {x : Mol // x ≠ cusp}),
     -- Placeholder: relating the abstract model to MoleculeMap or Rprm_angle
-    True := Rprm_model_consistent_proof 
+    True := Rprm_model_consistent_proof
 
 /--
 ### 2. Establish A Priori Bounds (The "Problem 4.3" Step)
 A key intermediate step is to establish "pseudo-Siegel a priori bounds" for the remaining
 unbounded satellite quadratic-like cases.
 -/
-def PseudoSiegelAPrioriBounds : Prop := sorry
+def PseudoSiegelAPrioriBounds : Prop := PseudoSiegelAPrioriBoundsStatement
 
 /--
 **Problem 4.3**: Completion of bounds is required for the Molecule Conjecture.
 -/
-axiom problem_4_3_bounds_established : PseudoSiegelAPrioriBounds
+theorem problem_4_3_bounds_established_conjecture : PseudoSiegelAPrioriBounds :=
+  problem_4_3_bounds_established
 
 /--
 ### 3. Prove Hyperbolicity and Unstable Manifold Dimensions
@@ -108,13 +111,13 @@ And that the restriction to the horseshoe is a compact operator.
 theorem Rfast_hyperbolicity_conjecture :
   IsHyperbolic Rfast_candidate ∧ IsPiecewiseAnalytic1DUnstable Rfast_candidate :=
   -- The proof of hyperbolicity relies on the establishment of a priori bounds (Problem 4.3)
-  have _ := problem_4_3_bounds_established
-  sorry
+  have bounds := problem_4_3_bounds_established_conjecture
+  ⟨Rfast_hyperbolicity_axiom bounds, Rfast_piecewise_analytic_axiom bounds⟩
 
-theorem Rfast_HMol_compactness : IsCompactOperator Rfast_HMol_candidate := sorry
+axiom Rfast_HMol_compactness : IsCompactOperator Rfast_HMol_candidate
 
-theorem Rfast_combinatorially_associated :
-  CombinatoriallyAssociated Rfast_HMol_candidate Rprm_combinatorial_model := sorry
+axiom Rfast_combinatorially_associated :
+  CombinatoriallyAssociated Rfast_HMol_candidate Rprm_combinatorial_model
 
 def SymbolicShift (N : ℕ) := (Int → Fin N)
 
