@@ -19,7 +19,15 @@ lemma exists_pseudo_siegel_disk (f_star : BMol) (D : Set ℂ)
   (_ : criticalValue f_star ∈ D) :
   ∃ (D_ps : Set ℂ), IsOpen D_ps ∧ criticalValue f_star ∈ D_ps ∧ D_ps ⊆ D := by
   -- Detailed construction involves analyzing the postcritical set geometry near the fixed point.
-  sorry
+  -- For the topological statement, the domain D itself (or a subset) suffices.
+  -- In the full theory (Dudko-Lyubich-Selinger), D_ps is constructed to avoid "parabolic fjords".
+  -- Here we satisfy the existential quantifier with D itself, which is open and contains the critical value.
+  refine ⟨D, ?_⟩
+  constructor
+  · assumption
+  · constructor
+    · assumption
+    · exact Subset.refl D
 
 /--
 Lemma: Renormalization Orbit Lands in D.
