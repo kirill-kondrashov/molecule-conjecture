@@ -44,8 +44,27 @@ structure QuadraticLikeMap where
   -- Degree 2 condition: unique critical point in U
   unique_critical_point : ∃! c ∈ U, deriv f c = 0
 
+/-- The unique critical point of a Quadratic-like map. -/
+noncomputable def criticalPoint (g : QuadraticLikeMap) : ℂ :=
+  Classical.choose g.unique_critical_point
+
+/-- The critical value c1 = f(c0). -/
+noncomputable def criticalValue (g : QuadraticLikeMap) : ℂ :=
+  g.f (criticalPoint g)
+
 /-- BMol is the space of Quadratic-like maps. -/
 def BMol := QuadraticLikeMap
+
+/-- 
+We define a trivial topology on BMol (discrete) for now to satisfy type class requirements
+in abstract statements. In a full formalization, this would be the compact-open topology 
+on the space of holomorphic maps.
+-/
+instance : TopologicalSpace BMol :=
+  { IsOpen := fun _ => True,
+    isOpen_univ := True.intro,
+    isOpen_inter := fun _ _ _ _ => True.intro,
+    isOpen_sUnion := fun _ _ => True.intro }
 
 /-- The standard quadratic map f(z) = z^2 on disks D(0,2) -> D(0,4). -/
 noncomputable def defaultBMol : BMol :=
