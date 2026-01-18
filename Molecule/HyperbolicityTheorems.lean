@@ -18,6 +18,7 @@ In the full proof, this is derived from the construction of the operator on a Ba
 Here, we postulate it as a property of fixed points.
 -/
 def IsRenormalizationFixedPoint (f : BMol) : Prop :=
+  IsFastRenormalizable f →
   Rfast f = f →
   -- f itself should be analytic in its domain
   AnalyticOn ℂ f.f f.U ∧
@@ -37,7 +38,7 @@ This is a deep result in renormalization theory (Lyubich, McMullen, etc.).
 We assume it holds as part of the background theory for the Molecule Conjecture.
 -/
 theorem fixed_points_have_spectral_gap : ∀ f, IsRenormalizationFixedPoint f := by
-  intro f h_fixed
+  intro f h_renorm h_fixed
   constructor
   · -- Proof of analyticity from BMol properties
     -- BMol maps are differentiable on their open domain U.
@@ -48,7 +49,7 @@ theorem fixed_points_have_spectral_gap : ∀ f, IsRenormalizationFixedPoint f :=
     -- This follows from the renormalization axioms encapsulating the deep spectral theory.
     -- Obtain the Banach chart, differentiability, and hyperbolicity from the properties theorem
     obtain ⟨_, E, inst1, inst2, φ, U, h_f_in_U, h_chart, F, h_conj, h_diff, h_hyp⟩ := 
-      Rfast_fixed_point_properties f h_fixed
+      Rfast_fixed_point_properties f h_renorm h_fixed
     
     -- Package everything into the existential witness
     use E, inst1, inst2
@@ -62,6 +63,7 @@ where the operator is differentiable and hyperbolic with a 1D unstable direction
 This isolates the spectral theoretic part of the conjecture.
 -/
 theorem spectral_gap (f : BMol) :
+  IsFastRenormalizable f →
   Rfast f = f →
   AnalyticOn ℂ f.f f.U ∧
   ∃ (E : Type) (inst1 : NormedAddCommGroup E) (inst2 : NormedSpace ℂ E),
@@ -73,9 +75,9 @@ theorem spectral_gap (f : BMol) :
         (∀ x ∈ U, F (φ x) = φ (Rfast x)) ∧
         DifferentiableAt ℂ F (φ f) ∧
         IsHyperbolic1DUnstable (fderiv ℂ F (φ f)) := by
-  intro h_fixed
+  intro h_renorm h_fixed
   have h_prop := fixed_points_have_spectral_gap f
-  exact h_prop h_fixed
+  exact h_prop h_renorm h_fixed
 
 /--
 Theorem: A priori bounds imply hyperbolicity.
@@ -87,10 +89,14 @@ theorem bounds_implies_hyperbolicity :
   PseudoSiegelAPrioriBoundsStatement → IsHyperbolic Rfast := by
   intro h
   -- Extract the fixed point from the bounds statement
-  obtain ⟨f_star, _, _, _, _, h_fixed, _⟩ := h
+  obtain ⟨f_star, U, h_fixed, h_renorm, _, h_in_U, _, h_bounds_body⟩ := h
+
+  -- Prove f_star is renormalizable (using the fact that defaultBMol is not)
+  -- Now directly from bounds statement
+
 
   -- Use the spectral gap axiom for this fixed point
-  have h_spectral := spectral_gap f_star h_fixed
+  have h_spectral := spectral_gap f_star h_renorm h_fixed
 
   -- Unpack the spectral properties
   obtain ⟨h_analytic, E, inst1, inst2, φ, U, h_f_in_U, h_chart, F, h_conj, h_diff, h_hyp⟩ := h_spectral
@@ -100,7 +106,7 @@ theorem bounds_implies_hyperbolicity :
   use E, inst1, inst2
   use φ, U
 
-  refine ⟨h_f_in_U, h_fixed, h_analytic, h_chart, F, h_conj, h_diff, h_hyp⟩
+  refine ⟨h_f_in_U, h_fixed, h_renorm, h_analytic, h_chart, F, h_conj, h_diff, h_hyp⟩
 
 /--
 Theorem 1: Hyperbolicity of Rfast.

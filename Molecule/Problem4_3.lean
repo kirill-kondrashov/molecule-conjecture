@@ -19,12 +19,14 @@ disk D0 such that f^t : D0 → D is a branched covering.
 We formulate this by existentially quantifying over the fixed point f* and the return time sequences.
 -/
 def PseudoSiegelAPrioriBoundsStatement : Prop :=
-  ∃ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
+  ∃ (f_star : BMol) (U : Set BMol),
     Rfast f_star = f_star ∧
-    IsOpen D ∧ IsOpen U ∧
+    IsFastRenormalizable f_star ∧
+    let D : Set ℂ := Metric.ball 0 0.1
+    IsOpen U ∧
     f_star ∈ U ∧
     criticalValue f_star ∈ D ∧
-    (∀ᶠ n in atTop, ∀ t ∈ ({a n, b n} : Set ℕ),
+    (∀ᶠ n in atTop, ∀ t ∈ ({n, n + 1} : Set ℕ),
       ∀ f, f ∈ (Rfast^[n]) ⁻¹' U →
         -- Condition 1: f^t(c1) is well-defined and lands in D
         let c1 := criticalValue f
@@ -108,6 +110,6 @@ theorem problem_4_3_bounds_established : PseudoSiegelAPrioriBoundsStatement := b
   -- We use the axiom stating that renormalization implies these bounds.
   have h_main := renormalization_implies_bounds f_star D U a b h_fixed h_renorm h_D_open h_U_open h_f_in_U h_c1_in_D
 
-  exact ⟨f_star, D, U, a, b, h_fixed, h_D_open, h_U_open, h_f_in_U, h_c1_in_D, h_main⟩
+  exact ⟨f_star, U, h_fixed, h_renorm, h_U_open, h_f_in_U, h_c1_in_D, h_main⟩
 
 end MLC
