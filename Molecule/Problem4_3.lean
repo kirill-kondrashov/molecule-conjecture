@@ -47,10 +47,18 @@ def PseudoSiegelAPrioriBoundsStatement : Prop :=
 Helper structure for Renormalization Triangulation (Section 4.3.1)
 -/
 structure RenormalizationTriangulation (f : BMol) (m : ℕ) where
-  -- Placeholder for the triangulation data
-  -- "Delta_m(i)" sectors
-  Delta : Set ℂ
-  -- Properties...
+  -- The base sector S anchored at the fixed point α
+  base_sector : Set ℂ 
+  -- The collection of sectors Δ_m(i) forming the triangulation
+  -- indexed by the return time steps i
+  sectors : ℕ → Set ℂ
+  -- Property: The triangulation is the union of these sectors
+  triangulation_def : ∀ i < m, sectors i = (f.f^[i] '' base_sector)
+  -- Property: Anchored at the fixed point
+  anchored : ∀ i < m, f.fixed_point ∈ sectors i
+  -- Property: Disjoint interiors (except at the fixed point)
+  disjoint_interiors : ∀ i j, i < j ∧ j < m → 
+    IsOpen (interior (sectors i) ∩ interior (sectors j)) → False
 
 /--
 The "Forbidden Part of the Boundary" (Section 4.3).

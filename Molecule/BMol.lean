@@ -52,6 +52,14 @@ noncomputable def criticalPoint (g : QuadraticLikeMap) : ℂ :=
 noncomputable def criticalValue (g : QuadraticLikeMap) : ℂ :=
   g.f (criticalPoint g)
 
+/-- 
+A fixed point of the map.
+For a quadratic-like map, there are typically two. This definition selects one arbitrarily
+(in practice, the α-fixed point is intended).
+-/
+noncomputable def QuadraticLikeMap.fixed_point (g : QuadraticLikeMap) : ℂ :=
+  Classical.epsilon (fun z => z ∈ g.U ∧ g.f z = z)
+
 /-- BMol is the space of Quadratic-like maps. -/
 def BMol := QuadraticLikeMap
 
