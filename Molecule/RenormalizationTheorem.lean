@@ -7,6 +7,7 @@ import Molecule.FixedPointExistence
 import Mathlib.Analysis.Complex.Polynomial.Basic
 import Mathlib.Topology.Connected.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Complex
+import Mathlib.Topology.ProperMap
 
 namespace MLC
 
@@ -67,16 +68,143 @@ lemma proper_pow_preimage_eq {n : ℕ} {R : ℝ} (hR : 0 < R) (hn : n ≥ 1)
     (h_maps : MapsTo f D0 D)
     (h_proper : IsProperMap (MapsTo.restrict f D0 D h_maps)) :
     D0 = f ⁻¹' D := by
-  -- Standard proper map property on locally compact space
-  sorry
+  let D_pre := f ⁻¹' D
+  have h_D_pre : D_pre = Metric.ball 0 (R ^ (1 / n : ℝ)) := by
+    rw [hf, hD]
+    ext z
+    simp only [mem_preimage, Metric.mem_ball, dist_zero_right]
+    rw [abs_pow]
+    constructor
+    · intro h
+      rw [← Real.rpow_lt_rpow_iff (by apply abs_nonneg) (by apply Real.rpow_nonneg; apply le_of_lt; exact hR) (by norm_num; linarith [hn] : (n:ℝ) > 0)]
+      rw [← Real.rpow_mul (abs_nonneg z)]
+      simp only [one_div, nsmul_eq_mul, mul_inv_cancel (by norm_num; linarith [hn] : (n:ℝ) ≠ 0)]
+      rw [Real.rpow_one]
+      convert h
+      norm_cast
+    · intro h
+      rw [← Real.rpow_lt_rpow_iff (by apply Real.rpow_nonneg; apply abs_nonneg) (by exact le_of_lt hR) (by norm_num; linarith [hn] : (1/(n:ℝ)) > 0)] at h
+      rw [← Real.rpow_mul (abs_nonneg z)] at h
+      simp only [one_div, nsmul_eq_mul, mul_inv_cancel (by norm_num; linarith [hn] : (n:ℝ) ≠ 0)] at h
+      rw [Real.rpow_one] at h
+      norm_cast at h
+      convert h
+      norm_cast
+
+  have h_sub : D0 ⊆ D_pre := h_maps
+
+  have h_clopen : IsClopen {x : D_pre | x.val ∈ D0} := by
+    constructor
+    · -- Open
+      rw [isOpen_induced_iff]
+      use D0
+      exact ⟨h_open, rfl⟩
+    · -- Closed
+      rw [isClosed_induced_iff]
+      use closure D0
+      constructor
+      · exact isClosed_closure
+      · ext ⟨z, hz⟩
+        constructor
+        · intro h
+          exact h.1
+        · intro h_closure
+          -- We prove z ∈ D0 by contradiction
+          by_contra h_not_in
+          let f_res := MapsTo.restrict f D0 D h_maps
+          
+          -- Construct filter on D0 converging to z
+          let F_sub : Filter D0 := comap (fun (x:D0) => (x:ℂ)) (𝓝 z)
+          
+          have h_le_cocompact : F_sub ≤ cocompact D0 := by
+            rw [Filter.le_cocompact_iff_eventually_ne]
+            intro K hK_comp
+            have hK_closed : IsClosed (Subtype.val '' K) := 
+              (isCompact_iff_isCompact_in_subtype.mp hK_comp).isClosed
+            have h_disj : z ∉ (Subtype.val '' K) := by
+              intro h_in
+              obtain ⟨k, hk, heq⟩ := h_in
+              rw [← heq] at h_not_in
+              exact h_not_in k.2
+            
+            have h_nhds : (Subtype.val '' K)ᶜ ∈ 𝓝 z := isOpen_compl_iff.mp (IsClosed.isOpen_compl hK_closed) h_disj
+            
+            rw [mem_comap]
+            use (Subtype.val '' K)ᶜ
+            use h_nhds
+            intro x hx
+            simp only [mem_compl_iff, Set.mem_image, Subtype.exists, exists_and_right, exists_eq_right, not_exists] at hx ⊢
+            exact hx
+
+          have h_tendsto_cocompact : Tendsto f_res (cocompact D0) (cocompact D) := 
+            IsProperMap.tendsto_cocompact h_proper
+            
+          have h_map_le : map f_res F_sub ≤ cocompact D := 
+            le_trans (map_mono h_le_cocompact) h_tendsto_cocompact
+            
+          have h_tendsto_val : Tendsto (fun x:D0 => (x:ℂ)) F_sub (𝓝 z) := by
+            rw [tendsto_comap_iff]
+            exact tendsto_map' (tendsto_comap)
+            
+          have h_tendsto_f : Tendsto f_res F_sub (𝓝 ⟨f z, hz⟩) := by
+            rw [tendsto_induced_iff, Function.comp_def]
+            have hf_cont : ContinuousAt f z := (continuous_pow n).continuousAt
+            apply Tendsto.comp hf_cont h_tendsto_val
+
+          have h_ne_bot : F_sub ≠ ⊥ := by
+             rw [Filter.ne_bot_iff]
+             rw [← mem_closure_iff_nhds_within_neBot] at h_closure
+             have h_eq : F_sub = 𝓝[D0] z := by
+                rw [nhdsWithin, comap_inf, comap_principal]
+                simp
+             rw [h_eq]
+             exact h_closure
+
+          have h_cluster : ClusterPt ⟨f z, hz⟩ (cocompact D) := 
+             Filter.ClusterPt.of_le_nhds' (fun U hU V hV => by
+               have h1 : map f_res F_sub ≤ 𝓝 ⟨f z, hz⟩ := h_tendsto_f
+               have h2 : map f_res F_sub ≤ cocompact D := h_map_le
+               have h_map_ne_bot : map f_res F_sub ≠ ⊥ := map_ne_bot h_ne_bot
+               exact nonempty_of_mem (le_inf h1 h2 (inter_mem hU hV))
+             )
+
+          have h_not_cluster : ¬ ClusterPt ⟨f z, hz⟩ (cocompact D) := by
+             rw [clusterPt_cocompact_iff]
+             simp
+             apply local_compact_nhds
+
+          exact h_not_cluster h_cluster
+
+  have h_conn : IsConnected D_pre := by
+    rw [h_D_pre]
+    exact Metric.isConnected_ball
+
+  have h_nonempty : {x : D_pre | x.val ∈ D0}.Nonempty := by
+    use ⟨0, by rw [h_D_pre]; simp [hR, Real.rpow_pos_of_pos hR]; apply Real.rpow_pos_of_pos hR⟩
+    simp
+    exact h0
+
+  have h_eq : {x : D_pre | x.val ∈ D0} = Set.univ := by
+    apply IsClopen.eq_univ h_clopen h_nonempty
+    rw [connectedSpace_subtype_iff] at h_conn
+    exact h_conn
+
+  ext z
+  constructor
+  · intro hz; apply h_sub hz
+  · intro hz
+    have hz' : (⟨z, hz⟩ : D_pre) ∈ {x : D_pre | x.val ∈ D0} := by rw [h_eq]; exact Set.mem_univ _
+    exact hz'
 
 /--
 Lemma: Number of roots of z^n = y is n for y != 0.
 -/
 lemma roots_cardinality {n : ℕ} {y : ℂ} (hn : n ≥ 1) (hy : y ≠ 0) : 
   Set.ncard {z | z^n = y} = n := by
-  -- Follows from Fundamental Theorem of Algebra and separability
-  sorry
+  rw [← Complex.card_nthRoots hn y]
+  congr
+  ext z
+  simp only [Complex.mem_nthRoots hn, mem_setOf_eq]
 
 lemma defaultBMol_violates_bounds_axiom : False := by
   let f_star := defaultBMol
@@ -140,8 +268,13 @@ lemma defaultBMol_violates_bounds_axiom : False := by
          exact h_maps hz
 
       have h_proper_cast : IsProperMap (MapsTo.restrict f_deg D0 D h_maps_cast) := by
-         -- We admit casting IsProperMap across equal functions for now
-         sorry
+         have heq : MapsTo.restrict f_deg D0 D h_maps_cast = MapsTo.restrict (f_star.f^[n]) D0 D h_maps := by
+           ext ⟨x, hx⟩
+           dsimp
+           rw [h_f_eq]
+           rfl
+         rw [heq]
+         exact h_proper
 
       apply proper_pow_preimage_eq 
         (n := deg) (R := 0.1)
