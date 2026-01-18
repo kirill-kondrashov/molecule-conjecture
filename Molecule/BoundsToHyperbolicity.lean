@@ -2,6 +2,7 @@ import Molecule.BMol
 import Molecule.Hyperbolicity
 import Molecule.Rfast
 import Molecule.Problem4_3
+import Molecule.BanachSlice
 import Mathlib.Analysis.Complex.CauchyIntegral
 
 namespace MLC
@@ -26,10 +27,47 @@ theorem bounds_imply_banach_slice :
       DifferentiableAt ℂ F (φ f_star) ∧
       IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star)) := by
   intro h
-  -- Proving this requires constructing a Banach space of analytic functions
-  -- and a "Banach Slice" (a manifold chart) around the fixed point.
-  -- This relies on advanced complex analytic spectral theory (Teichmuller space theory).
-  sorry
+  obtain ⟨f_star, D, U, a, b, h_bounds_body⟩ := h
+
+  -- Use the components from the BanachSlice module
+  let E := SliceSpace
+  let φ := slice_chart f_star
+  let U_slice := slice_domain f_star
+  let F := slice_operator f_star
+
+  have h_siegel : HasSiegelBounds f_star D U a b := by
+    exact h_bounds_body
+
+  use E, (inferInstance : NormedAddCommGroup E), (inferInstance : NormedSpace ℂ E)
+  use φ, U_slice, f_star
+
+  -- 1. Rfast f_star = f_star
+  have h_fixed := h_siegel.1
+  constructor
+  · exact h_fixed
+
+  -- 2. f_star ∈ U_slice
+  constructor
+  · change f_star ∈ univ
+    exact mem_univ f_star
+
+  -- 3. Chart maps to open set
+  constructor
+  · apply slice_chart_open
+
+  -- 4. Existence of F with properties
+  use F
+  constructor
+  · -- Conjugacy: ∀ x ∈ U, F (φ x) = φ (Rfast x)
+    intro x hx
+    apply slice_conjugacy
+    exact hx
+
+  -- 5. Differentiability and Hyperbolicity (from Spectral Gap Axiom)
+  have h_spectral := slice_spectral_gap h_siegel
+  constructor
+  · exact h_spectral.1
+  · exact h_spectral.2
 
 /--
 Theorem: Bounds Imply Hyperbolicity.
