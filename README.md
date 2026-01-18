@@ -51,7 +51,6 @@ All axioms used:
 - MLC.slice_chart_open
 - MLC.slice_conjugacy
 - MLC.slice_spectral_gap
-- MLC.fixed_point_uniqueness_axiom
 - MLC.bounds_imply_piecewise_analytic
 - MLC.Rfast_HMol_compactness
 - MLC.Rfast_combinatorially_associated
