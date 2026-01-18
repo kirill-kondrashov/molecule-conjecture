@@ -45,12 +45,9 @@ theorem fixed_points_have_spectral_gap : ∀ f, IsRenormalizationFixedPoint f :=
     exact f.differentiable_on
   · -- Proof of Spectral Gap
     -- This follows from the renormalization axioms encapsulating the deep spectral theory.
-    -- Obtain the Banach chart and differentiability from the first axiom
-    obtain ⟨E, inst1, inst2, φ, U, h_f_in_U, h_chart, F, h_conj, h_diff⟩ := 
-      Rfast_fixed_point_is_differentiable f h_fixed
-    
-    -- Use the second axiom to prove hyperbolicity
-    have h_hyp := Rfast_fixed_point_derivative_is_hyperbolic f h_fixed E inst1 inst2 φ U F h_f_in_U h_conj h_diff
+    -- Obtain the Banach chart, differentiability, and hyperbolicity from the properties theorem
+    obtain ⟨_, E, inst1, inst2, φ, U, h_f_in_U, h_chart, F, h_conj, h_diff, h_hyp⟩ := 
+      Rfast_fixed_point_properties f h_fixed
     
     -- Package everything into the existential witness
     use E, inst1, inst2
