@@ -4,33 +4,12 @@ import Yoccoz.Quadratic.Complex.Basic
 import Molecule.FixedPointExistence
 import Molecule.PseudoSiegelDisk
 import Molecule.RenormalizationOrbit
+import Molecule.RenormalizationPullback
 
 namespace MLC
 
 open Quadratic Complex Topology Set Filter
 
-
-/--
-Lemma: Renormalization Pullback Property.
-For sufficiently large n, the map has a pullback domain D0 such that it is a proper map of degree 2 onto D.
--/
-lemma renormalization_pullback_property (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ)
-  (n t : ℕ) (f : BMol)
-  (_ : Rfast f_star = f_star)
-  (_ : IsFastRenormalizable f_star)
-  (_ : IsOpen D) (_ : IsOpen U)
-  (_ : f_star ∈ U)
-  (_ : criticalValue f_star ∈ D)
-  (_ : n ≥ 1)
-  (_ : t ∈ ({a n, b n} : Set ℕ))
-  (_ : f ∈ (Rfast^[n]) ⁻¹' U) :
-  ∃ (D0 : Set ℂ) (h_maps : MapsTo (f.f^[t]) D0 D),
-    IsOpen D0 ∧
-    (criticalValue f) ∈ D0 ∧
-    IsProperMap (MapsTo.restrict (f.f^[t]) D0 D h_maps) ∧
-    ∀ y ∈ D, Set.ncard {x ∈ D0 | (f.f^[t]) x = y} = 2 := by
-  -- Proved using the covering lemma for puzzle pieces and properness.
-  sorry
 
 /--
 Axiom: Renormalization Implies Small Orbit Bounds.
