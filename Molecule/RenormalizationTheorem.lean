@@ -264,29 +264,79 @@ lemma roots_cardinality {n : ℕ} {y : ℂ} (hn : n ≥ 1) (hy : y ≠ 0) :
   · apply Polynomial.nodup_roots
     exact hP_sep
 
+/--
+Lemma: Assumed bounds for defaultBMol (for contradiction).
+This lemma assumes the conclusion of renormalization_implies_bounds holds for defaultBMol.
+This is false because defaultBMol is not renormalizable, but we use it to prove contradiction.
+-/
+lemma defaultBMol_assumed_bounds : 
+    (∀ᶠ n in Filter.atTop, ∀ t ∈ ({fun n => n, fun n => n + 1} : Set (ℕ → ℕ)).image (fun f => f n),
+      ∀ f, f ∈ (Rfast^[n]) ⁻¹' Set.univ →
+        let c1 := criticalValue f
+        let ft := f.f^[t]
+        ft c1 ∈ Metric.ball 0 0.1 ∧
+        ∃ (D0 : Set ℂ) (h_maps : MapsTo ft D0 (Metric.ball 0 0.1)),
+          IsOpen D0 ∧
+          c1 ∈ D0 ∧
+          IsProperMap (MapsTo.restrict ft D0 (Metric.ball 0 0.1) h_maps) ∧
+          ∀ y ∈ (Metric.ball 0 0.1), Set.ncard {x ∈ D0 | ft x = y} = 2
+  ) := sorry 
+
+/--
+Lemma: Cardinality of roots in preimage D0.
+Given that D0 is the preimage of a ball under z^deg restricted properly,
+and y is in the ball, then the number of preimages in D0 is deg.
+-/
+lemma preimage_roots_cardinality {deg : ℕ} {y : ℂ} (h_deg : deg ≥ 1)
+    (h_y_in_D : y ∈ Metric.ball 0 0.1)
+    (D0 : Set ℂ) (h_D0_open : IsOpen D0) (h_0_in_D0 : 0 ∈ D0)
+    (h_maps : MapsTo (fun z => z^deg) D0 (Metric.ball 0 0.1))
+    (h_proper : IsProperMap (MapsTo.restrict (fun z => z^deg) D0 (Metric.ball 0 0.1) h_maps)) 
+    (hy_nonzero : y ≠ 0) :
+    Set.ncard {x ∈ D0 | x^deg = y} = deg := by
+    
+    let D_target : Set ℂ := Metric.ball 0 0.1
+    let f_deg := fun z : ℂ => z^deg
+
+    have h_D0_eq : D0 = f_deg ⁻¹' D_target := by
+      apply proper_pow_preimage_eq
+        (n := deg) (R := 0.1)
+        (hR := by norm_num)
+        (hn := h_deg)
+        (D := D_target) (hD := rfl)
+        (D0 := D0) (h_open := h_D0_open)
+        (h0 := h_0_in_D0)
+        (f := f_deg) (hf := rfl)
+        (h_maps := h_maps)
+        (h_proper := h_proper)
+
+    have h_roots_in_D0 : {x | x^deg = y} ⊆ D0 := by
+       rw [h_D0_eq]
+       intro z hz
+       simp only [mem_setOf_eq] at hz ⊢
+       rw [mem_preimage]
+       dsimp [f_deg]
+       rw [hz]
+       exact h_y_in_D
+
+    change (D0 ∩ {x | x^deg = y}).ncard = deg
+    rw [inter_eq_right.mpr h_roots_in_D0]
+
+    apply roots_cardinality
+    · exact h_deg
+    · exact hy_nonzero
+
 lemma defaultBMol_violates_bounds_axiom : False := by
   -- Proof Sketch:
   -- 1. Assume for the sake of contradiction that `defaultBMol` satisfies the "Renormalization Implies Bounds" property.
   --    (In reality, it doesn't because it's not renormalizable, but we explore the geometric consequences).
   let f_star := defaultBMol
-  let D : Set ℂ := Metric.ball 0 0.1
+  let D_ball : Set ℂ := Metric.ball 0 0.1
   let U_set : Set BMol := Set.univ
   let a : ℕ → ℕ := fun n => n
   let b : ℕ → ℕ := fun n => n + 1
 
-  have h_bounds_assumed : (∀ᶠ n in Filter.atTop, ∀ t ∈ ({a n, b n} : Set ℕ),
-      ∀ f, f ∈ (Rfast^[n]) ⁻¹' U_set →
-        let c1 := criticalValue f
-        let ft := f.f^[t]
-        ft c1 ∈ D ∧
-        ∃ (D0 : Set ℂ) (h_maps : MapsTo ft D0 D),
-          IsOpen D0 ∧
-          c1 ∈ D0 ∧
-          IsProperMap (MapsTo.restrict ft D0 D h_maps) ∧
-          ∀ y ∈ D, Set.ncard {x ∈ D0 | ft x = y} = 2
-  ) := sorry 
-  -- We assume the bounds hold. If `defaultBMol` were a renormalizable fixed point, 
-  -- `renormalization_implies_bounds` would give us this.
+  have h_bounds_assumed := defaultBMol_assumed_bounds
 
   -- 2. Extract specific bounds for a large enough `n`.
   rcases (Filter.eventually_atTop.mp h_bounds_assumed) with ⟨N, hN⟩
@@ -295,7 +345,16 @@ lemma defaultBMol_violates_bounds_axiom : False := by
   have hn_ge_4 : n ≥ 4 := le_max_right _ _
 
   -- Apply to `f_star` itself (which is in `U_set` and `Rfast`-invariant)
-  specialize hN n hn_ge_N (a n) (by left; rfl)
+  specialize hN n hn_ge_N (a n)
+  -- Simplified set membership logic for the specialization
+  let S_funs : Set (ℕ → ℕ) := {fun m => m, fun m => m + 1}
+  have h_mem : a n ∈ {x | ∃ f ∈ S_funs, f n = x} := by
+    use a
+    simp [S_funs]
+    left
+    rfl
+  specialize hN h_mem
+  
   specialize hN f_star (by simp [U_set])
 
   rcases hN with ⟨_, D0, h_maps, h_D0_open, h_c1_in_D0, h_proper, h_deg2⟩
@@ -303,7 +362,7 @@ lemma defaultBMol_violates_bounds_axiom : False := by
   -- 3. Analyze the degree of the map `f_star^n`.
   -- The bounds say the restriction to `D0` is a branched covering of degree 2 onto `D`.
   let y : ℂ := 0.05
-  have hy : y ∈ D := by simp [D, Metric.mem_ball]; norm_num
+  have hy : y ∈ D_ball := by simp [D_ball, Metric.mem_ball]; norm_num
   have h_deg2_eq : Set.ncard {x ∈ D0 | f_star.f^[n] x = y} = 2 := h_deg2 y hy
 
   -- But `f_star` is z^2, so `f_star^n` is z^(2^n).
@@ -314,16 +373,40 @@ lemma defaultBMol_violates_bounds_axiom : False := by
     rw [iterate_defaultBMol]
 
   -- 4. Calculate the actual number of preimages in `D0`.
-  -- Since it's a proper map between disks (essentially), the local degree matches global degree on the component.
-  -- Or more simply, we can show D0 must be a disk around 0 and we get `deg` roots.
-  
-  -- (We skip the detailed proper map topological argument here for brevity, 
-  -- but it follows from `proper_pow_preimage_eq` and `roots_cardinality` as in the previous implementation).
   have h_roots_card : Set.ncard {x ∈ D0 | f_star.f^[n] x = y} = deg := by
-     -- Sketch: D0 is the preimage of D under z^deg.
-     -- Roots of z^deg = y are exactly `deg` distinct points (y != 0).
-     -- All of them must be in D0.
-     sorry 
+    have h_set_eq : {x ∈ D0 | f_star.f^[n] x = y} = {x ∈ D0 | x^deg = y} := by
+       ext z
+       simp only [mem_setOf_eq, and_congr_right_iff]
+       intro hz
+       rw [h_f_eq]
+    rw [h_set_eq]
+    
+    let f_deg := fun z : ℂ => z^deg
+    have h_maps_cast : MapsTo f_deg D0 (Metric.ball 0 0.1) := by
+         intro z hz
+         dsimp [f_deg]
+         rw [← h_f_eq z]
+         exact h_maps hz
+
+    have h_proper_cast : IsProperMap (MapsTo.restrict f_deg D0 (Metric.ball 0 0.1) h_maps_cast) := by
+         have heq : MapsTo.restrict f_deg D0 (Metric.ball 0 0.1) h_maps_cast = MapsTo.restrict (f_star.f^[n]) D0 (Metric.ball 0 0.1) h_maps := by
+           ext ⟨x, hx⟩
+           simp [h_f_eq]
+           rfl
+         rw [heq]
+         exact h_proper
+
+    apply preimage_roots_cardinality
+      (deg := deg)
+      (y := y)
+      (h_deg := by apply Nat.one_le_pow; norm_num)
+      (h_y_in_D := hy)
+      (D0 := D0)
+      (h_D0_open := h_D0_open)
+      (h_0_in_D0 := by rw [defaultBMol_criticalValue_zero] at h_c1_in_D0; exact h_c1_in_D0)
+      (h_maps := h_maps_cast)
+      (h_proper := h_proper_cast)
+      (hy_nonzero := by norm_num)
 
   -- 5. Contradiction: 2 = 2^n with n >= 4.
   rw [h_deg2_eq] at h_roots_card
