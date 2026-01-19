@@ -4,8 +4,10 @@ import Molecule.Rfast
 import Molecule.Problem4_3
 import Molecule.BoundsToHyperbolicity
 import Molecule.FixedPointExistence
+import Molecule.ProperMapLemmas
 import Mathlib.Analysis.Complex.Polynomial.Basic
 import Mathlib.Topology.Connected.Basic
+import Mathlib.Topology.Connected.LocallyConnected
 import Mathlib.Analysis.SpecialFunctions.Pow.Complex
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Topology.Maps.Proper.Basic
@@ -73,7 +75,7 @@ lemma preimage_pow_eq_ball {n : ℕ} {R : ℝ} (hR : 0 < R) (hn : n ≥ 1) :
     (fun z : ℂ => z^n) ⁻¹' (Metric.ball 0 R) = Metric.ball 0 (R ^ (1 / (n : ℝ))) := by
   ext z
   simp only [mem_preimage, Metric.mem_ball, dist_zero_right]
-  rw [Complex.norm_pow]
+  rw [norm_pow]
   constructor
   · intro h
     rw [← Real.rpow_natCast] at h
@@ -96,96 +98,6 @@ lemma preimage_pow_eq_ball {n : ℕ} {R : ℝ} (hR : 0 < R) (hn : n ≥ 1) :
     rw [this] at h
     exact h
 
-/--
-Lemma: If a restriction of a continuous map to a subset D0 is proper, then D0 is closed in the preimage of the target.
--/
-lemma isClosed_of_proper_map_restrict {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] [T2Space X]
-    {f : X → Y} {D : Set Y} {D0 : Set X}
-    (hf : Continuous f)
-    (h_maps : MapsTo f D0 D)
-    (h_proper : IsProperMap (MapsTo.restrict f D0 D h_maps)) :
-    IsClosed {x : f ⁻¹' D | x.val ∈ D0} := by
-  rw [isClosed_iff_clusterPt]
-  intro ⟨z, hz⟩ h_clus
-  let f_res := MapsTo.restrict f D0 D h_maps
-  let F_sub : Filter D0 := Filter.comap (fun (x:D0) => (x:X)) (𝓝 z)
-  let y_in_D : D := ⟨f z, mem_preimage.mp hz⟩
-
-  have h_map_cluster : MapClusterPt y_in_D F_sub f_res := by
-    rw [MapClusterPt, ClusterPt]
-    have h_tendsto : Filter.Tendsto f_res F_sub (𝓝 y_in_D) := by
-      rw [nhds_subtype_eq_comap]
-      rw [Filter.tendsto_iff_comap]
-      dsimp [F_sub]
-      rw [Filter.comap_comap]
-      have h_comp : Subtype.val ∘ f_res = f ∘ Subtype.val := rfl
-      rw [h_comp]
-      rw [← Filter.comap_comap]
-      apply Filter.comap_mono
-      rw [← Filter.map_le_iff_le_comap]
-      exact hf.continuousAt
-
-    have h_ne_bot : F_sub.NeBot := by
-       dsimp [F_sub]
-       rw [Filter.comap_neBot_iff]
-
-       let val_D0 : D0 → X := Subtype.val
-       let val_pre : f ⁻¹' D → X := Subtype.val
-
-       have h_ne_X : (Filter.map val_pre (𝓝 ⟨z, hz⟩ ⊓ Filter.principal {x : f ⁻¹' D | x.val ∈ D0})).NeBot :=
-         Filter.NeBot.map (m := val_pre) h_clus
-
-       have h_mono : Filter.map val_pre (𝓝 ⟨z, hz⟩ ⊓ Filter.principal {x : f ⁻¹' D | x.val ∈ D0}) ≤ 𝓝 z ⊓ Filter.map val_D0 ⊤ := by
-           apply le_trans (Filter.map_inf_le)
-           apply inf_le_inf
-           · rw [nhds_subtype_eq_comap]
-             exact Filter.map_comap_le
-           · rw [Filter.map_principal]
-             rw [Filter.map_top]
-             rw [Filter.le_principal_iff]
-             intro x hx
-             rcases hx with ⟨a, ha, rfl⟩
-             exact ⟨⟨a.val, ha⟩, rfl⟩
-
-       have h_final : (𝓝 z ⊓ Filter.map val_D0 ⊤).NeBot := Filter.NeBot.mono h_ne_X h_mono
-       haveI := h_final
-       intro t ht
-       have h_inter : t ∩ (range val_D0) ∈ 𝓝 z ⊓ Filter.map val_D0 ⊤ := by
-          rw [Filter.mem_inf_iff]
-          use t
-          constructor
-          · exact ht
-          use range val_D0
-          constructor
-          · rw [Filter.map_top]
-            exact Filter.mem_principal_self _
-          · rfl
-       have h_nonempty := Filter.nonempty_of_mem h_inter
-       rcases h_nonempty with ⟨x, hx_t, ⟨y, hy_eq⟩⟩
-       use y
-       rw [← hy_eq] at hx_t
-       exact hx_t
-
-    apply Filter.NeBot.mono (Filter.NeBot.map (m := f_res) h_ne_bot)
-    apply le_inf h_tendsto (le_refl _)
-
-  have h_ex_y := h_proper.clusterPt_of_mapClusterPt h_map_cluster
-  rcases h_ex_y with ⟨y_sub, hy_eq, hy_clus⟩
-
-  have h_ne : (𝓝 y_sub ⊓ F_sub).NeBot := hy_clus
-  dsimp [F_sub] at h_ne
-  rw [nhds_subtype_eq_comap] at h_ne
-  rw [← Filter.comap_inf] at h_ne
-
-  have h_ne_X : (𝓝 (y_sub:X) ⊓ 𝓝 z).NeBot := by
-     apply Filter.NeBot.mono (Filter.NeBot.map (m := Subtype.val) h_ne)
-     exact Filter.map_comap_le
-
-  have h_y_eq_z : (y_sub:X) = z := eq_of_nhds_neBot h_ne_X
-
-  change z ∈ D0
-  rw [← h_y_eq_z]
-  exact y_sub.2
 
 /--
 Lemma: Proper restriction of a power map to a ball must be the full preimage ball.
@@ -269,7 +181,7 @@ Lemma: Assumed bounds for defaultBMol (for contradiction).
 This lemma assumes the conclusion of renormalization_implies_bounds holds for defaultBMol.
 This is false because defaultBMol is not renormalizable, but we use it to prove contradiction.
 -/
-lemma defaultBMol_assumed_bounds (h_renorm : IsFastRenormalizable defaultBMol) : 
+lemma defaultBMol_assumed_bounds (h_renorm : IsFastRenormalizable defaultBMol) :
     (∀ᶠ n in Filter.atTop, ∀ t ∈ ({fun n => n, fun n => n + 1} : Set (ℕ → ℕ)).image (fun f => f n),
       ∀ f, f ∈ (Rfast^[n]) ⁻¹' Set.univ →
         let c1 := criticalValue f
@@ -287,7 +199,7 @@ lemma defaultBMol_assumed_bounds (h_renorm : IsFastRenormalizable defaultBMol) :
   let U : Set BMol := Set.univ
   let a : ℕ → ℕ := fun n => n
   let b : ℕ → ℕ := fun n => n + 1
-  
+
   -- We assume (incorrectly) that defaultBMol satisfies the bounds theorem premises
   have h_bounds := renormalization_implies_bounds f_star D U a b
     (defaultBMol_is_fixed_point)
@@ -303,8 +215,42 @@ lemma defaultBMol_assumed_bounds (h_renorm : IsFastRenormalizable defaultBMol) :
   simp [a, b, U, D, Metric.mem_ball] at ht hn ⊢
   rcases ht with rfl | rfl
   · exact hn.1
-  · exact hn.2 
+  · exact hn.2
 
+/--
+Lemma: A proper restriction of a power map to an open set containing the origin
+must be the full preimage of the target.
+-/
+lemma proper_pow_preimage_eq_generalized {deg : ℕ} (h_deg : 0 < deg)
+    (D0 : Set ℂ) (h_D0_open : IsOpen D0) (h_0_in_D0 : 0 ∈ D0)
+    (D_target : Set ℂ) (h_target_open : IsOpen D_target)
+    [ConnectedSpace D_target]
+    (h_maps : MapsTo (fun z => z^deg) D0 D_target)
+    (h_proper : IsProperMap (MapsTo.restrict (fun z => z^deg) D0 D_target h_maps)) :
+    D0 = (fun z => z^deg) ⁻¹' D_target := by
+  let f := fun z : ℂ => z^deg
+  let D_pre := f ⁻¹' D_target
+
+  -- 1. D0 is clopen in D_pre (Using extracted lemma)
+  have h_clopen : IsClopen {x : D_pre | x.val ∈ D0} :=
+    isClopen_preimage_val (continuous_pow deg) h_maps h_proper h_D0_open
+
+  -- 2. D_pre is connected
+  haveI : ConnectedSpace D_pre :=
+    connectedSpace_pow_preimage h_deg h_target_open h_0_in_D0 rfl h_maps h_proper h_clopen
+
+  -- 3. Conclusion
+  have h_eq : {x : D_pre | x.val ∈ D0} = Set.univ := by
+    apply IsClopen.eq_univ h_clopen
+    use ⟨(0:ℂ), by rw [mem_preimage]; dsimp [f]; rw [zero_pow (Nat.pos_iff_ne_zero.mp h_deg)]; apply h_maps h_0_in_D0⟩
+    exact h_0_in_D0
+
+  ext z
+  constructor
+  · intro hz; apply h_maps hz
+  · intro hz
+    have : (⟨z, hz⟩ : D_pre) ∈ {x : D_pre | x.val ∈ D0} := by rw [h_eq]; trivial
+    exact this
 /--
 Lemma: Cardinality of roots in preimage D0.
 Given that D0 is the preimage of a ball under z^deg restricted properly,
@@ -313,19 +259,18 @@ and y is in the ball, then the number of preimages in D0 is deg.
 lemma preimage_roots_cardinality {deg : ℕ} {y : ℂ} (h_deg : deg ≥ 1)
     (h_y_in_D : y ∈ Metric.ball 0 0.1)
     (D0 : Set ℂ) (h_D0_open : IsOpen D0) (h_0_in_D0 : 0 ∈ D0)
-    (D_target : Set ℂ) (h_target_open : IsOpen D_target) (h_target_sub : D_target ⊆ Metric.ball 0 0.1)
+    (D_target : Set ℂ) (h_target_open : IsOpen D_target) [ConnectedSpace D_target]
+    (h_target_sub : D_target ⊆ Metric.ball 0 0.1)
     (h_y_in_target : y ∈ D_target)
     (h_maps : MapsTo (fun z => z^deg) D0 D_target)
-    (h_proper : IsProperMap (MapsTo.restrict (fun z => z^deg) D0 D_target h_maps)) 
+    (h_proper : IsProperMap (MapsTo.restrict (fun z => z^deg) D0 D_target h_maps))
     (hy_nonzero : y ≠ 0) :
     Set.ncard {x ∈ D0 | x^deg = y} = deg := by
-    
+
     let f_deg := fun z : ℂ => z^deg
 
-    have h_D0_eq : D0 = f_deg ⁻¹' D_target := by
-      -- This requires a generalized version of proper_pow_preimage_eq
-      -- For now, we assume this holds as a property of proper maps between nice domains
-      sorry
+    have h_D0_eq : D0 = f_deg ⁻¹' D_target :=
+      proper_pow_preimage_eq_generalized (Nat.succ_le_of_lt h_deg) D0 h_D0_open h_0_in_D0 D_target h_target_open h_maps h_proper
 
     have h_roots_in_D0 : {x | x^deg = y} ⊆ D0 := by
        rw [h_D0_eq]
@@ -342,6 +287,32 @@ lemma preimage_roots_cardinality {deg : ℕ} {y : ℂ} (h_deg : deg ≥ 1)
     apply roots_cardinality
     · exact h_deg
     · exact hy_nonzero
+
+/--
+Lemma: y in component
+-/
+lemma y_in_component_of_ball {D_target : Set ℂ} {r : ℝ} (hr : 0 < r)
+  (h_sub : Metric.ball 0 r ⊆ D_target) (y : ℂ) (hy : y ∈ Metric.ball 0 r) :
+  y ∈ connectedComponentIn D_target 0 := by
+  have h_0_in : (0:ℂ) ∈ Metric.ball 0 r := by simp [Metric.mem_ball, dist_self, hr]
+  apply IsPreconnected.subset_connectedComponentIn ((Metric.isConnected_ball hr).isPreconnected)
+  · exact h_sub
+  · exact h_0_in
+  · exact hy
+
+/--
+Lemma: 0 in component
+-/
+lemma zero_in_component_of_D0 {f : ℂ → ℂ} {D0 D_target : Set ℂ} {n : ℕ}
+  (h_f_eq : ∀ z, f z = z^(2^n)) (h_n : n ≥ 1) (h_0_in_D0 : 0 ∈ D0) (h_0_in_Dt : 0 ∈ D_target)
+  (h_maps : MapsTo f D0 D_target) :
+  0 ∈ D0 ∩ f ⁻¹' connectedComponentIn D_target 0 := by
+  refine ⟨_, _⟩
+  · exact h_0_in_D0
+  · rw [mem_preimage]
+    rw [h_f_eq]
+    rw [zero_pow (by norm_num; linarith)]
+    apply mem_connectedComponentIn h_0_in_Dt
 
 lemma defaultBMol_contradicts_bounds {U : Set BMol} (h_default_in_U : defaultBMol ∈ U)
   (h_bounds_assumed : (∀ᶠ n in Filter.atTop, ∀ t ∈ ({n, n + 1} : Set ℕ),
@@ -361,28 +332,21 @@ lemma defaultBMol_contradicts_bounds {U : Set BMol} (h_default_in_U : defaultBMo
   let a : ℕ → ℕ := fun n => n
   let b : ℕ → ℕ := fun n => n + 1
 
-  -- 2. Extract specific bounds for a large enough `n`.
   rcases (Filter.eventually_atTop.mp h_bounds_assumed) with ⟨N, hN⟩
   let n := max N 4
   have hn_ge_N : n ≥ N := le_max_left _ _
   have hn_ge_4 : n ≥ 4 := le_max_right _ _
 
-  -- Apply to `f_star` itself
   specialize hN n hn_ge_N (a n)
-  -- Simplified set membership logic for the specialization
-  have h_mem : a n ∈ ({n, n + 1} : Set ℕ) := by
-    dsimp [a]
-    simp
+  have h_mem : a n ∈ ({n, n + 1} : Set ℕ) := by dsimp [a]; simp
   specialize hN h_mem
-  
-  -- Show f_star is in the preimage
+
   have h_f_in_pre : f_star ∈ (Rfast^[n]) ⁻¹' U := by
     rw [mem_preimage]
-    -- Induction to show Rfast^[n] f_star = f_star
     have h_iter : Rfast^[n] f_star = f_star := by
       induction n with
       | zero => simp
-      | succ n ih => 
+      | succ n ih =>
         rw [Function.iterate_succ_apply', ih]
         exact defaultBMol_is_fixed_point
     rw [h_iter]
@@ -392,12 +356,12 @@ lemma defaultBMol_contradicts_bounds {U : Set BMol} (h_default_in_U : defaultBMo
 
   rcases hN with ⟨_, D0, D_target, h_maps, h_D0_open, h_Dt_open, h_Dt_sub, h_c1_in_D0, h_proper, h_deg2⟩
 
-  -- 3. Analyze the degree of the map `f_star^n`.
-  -- The bounds say the restriction to `D0` is a branched covering of degree 2 onto `D_target`.
-  -- We need a point y in D_target.
-  -- 0 is in D0 (c1 = 0).
-  -- f^n(0) = 0. So 0 in D_target.
-  
+  let deg := 2^n
+  have h_f_eq : ∀ z, f_star.f^[n] z = z^deg := by
+    intro z
+    dsimp [f_star]
+    rw [iterate_defaultBMol]
+
   have h_0_in_Dt : 0 ∈ D_target := by
     rw [defaultBMol_criticalValue_zero] at h_c1_in_D0
     have h_crit_val_img : f_star.f^[n] 0 = 0 := by
@@ -406,104 +370,125 @@ lemma defaultBMol_contradicts_bounds {U : Set BMol} (h_default_in_U : defaultBMo
     apply h_maps
     exact h_c1_in_D0
 
-  obtain ⟨y, hy_in_Dt, hy_ne_0⟩ : ∃ y ∈ D_target, y ≠ 0 := by
-    have h_nhds : D_target ∈ 𝓝 0 := IsOpen.mem_nhds h_Dt_open h_0_in_Dt
-    rcases Metric.mem_nhds_iff.mp h_nhds with ⟨r, hr_pos, hr_sub⟩
-    use (r/2)
-    constructor
-    · apply hr_sub; simp [Metric.mem_ball, dist_zero_right, abs_of_pos hr_pos]; linarith
-    · norm_num; linarith
+  have h_nhds : D_target ∈ 𝓝 0 := IsOpen.mem_nhds h_Dt_open h_0_in_Dt
+  rcases Metric.mem_nhds_iff.mp h_nhds with ⟨r, hr_pos, hr_sub⟩
+  let y : ℂ := r / 2
+  have hy_ne_0 : y ≠ 0 := by
+    simp [y]; linarith
 
-  have h_deg2_eq : Set.ncard {x ∈ D0 | f_star.f^[n] x = y} = 2 := h_deg2 y hy_in_Dt
+  have hy_in_Dt : y ∈ D_target := by
+    apply hr_sub
+    rw [Metric.mem_ball, dist_zero_right]
+    have h_norm_y : ‖y‖ = r/2 := by
+      dsimp [y]
+      rw [norm_div, Complex.norm_real, Complex.norm_natCast]
+      rw [Real.norm_of_nonneg (le_of_lt hr_pos)]
+      norm_num
+    rw [h_norm_y]
+    linarith
 
-  -- But `f_star` is z^2, so `f_star^n` is z^(2^n).
-  let deg := 2^n
-  have h_f_eq : ∀ z, f_star.f^[n] z = z^deg := by
-    intro z
-    dsimp [f_star]
-    rw [iterate_defaultBMol]
+  -- RESTRICTION TO CONNECTED COMPONENT
+  let D_target_comp := connectedComponentIn D_target 0
+  let D0_comp := D0 ∩ (f_star.f^[n] ⁻¹' D_target_comp)
 
-  -- 4. Calculate the actual number of preimages in `D0`.
-  have h_roots_card : Set.ncard {x ∈ D0 | f_star.f^[n] x = y} = deg := by
-    have h_set_eq : {x ∈ D0 | f_star.f^[n] x = y} = {x ∈ D0 | x^deg = y} := by
+  have h_y_in_comp : y ∈ D_target_comp := by
+     apply y_in_component_of_ball hr_pos hr_sub
+     rw [Metric.mem_ball, dist_zero_right]
+     have h_norm_y : ‖y‖ = r/2 := by
+      dsimp [y]
+      rw [norm_div, Complex.norm_real, Complex.norm_natCast]
+      rw [Real.norm_of_nonneg (le_of_lt hr_pos)]
+      norm_num
+     rw [h_norm_y]
+     linarith
+
+  have h_deg2_eq : Set.ncard {x ∈ D0_comp | f_star.f^[n] x = y} = 2 := by
+    -- Same roots
+    have h_roots_eq : {x ∈ D0_comp | f_star.f^[n] x = y} = {x ∈ D0 | f_star.f^[n] x = y} := by
+      ext z
+      simp only [D0_comp, mem_inter_iff, mem_preimage, mem_setOf_eq]
+      constructor
+      · intro h; exact ⟨h.1.1, h.2⟩
+      · intro h; refine ⟨⟨h.1, ?_⟩, h.2⟩; rw [h.2]; exact h_y_in_comp
+    rw [h_roots_eq]
+    exact h_deg2 y hy_in_Dt
+
+  have h_Dt_comp_open : IsOpen D_target_comp := IsOpen.connectedComponentIn h_Dt_open
+
+  have h_D0_comp_open : IsOpen D0_comp := by
+    apply IsOpen.inter h_D0_open
+    apply IsOpen.preimage _ h_Dt_comp_open
+    apply Continuous.congr (continuous_pow (2^n))
+    intro z; symm; apply h_f_eq
+
+  have h_0_in_D0_comp : 0 ∈ D0_comp := by
+    apply zero_in_component_of_D0 h_f_eq (by linarith)
+    rw [defaultBMol_criticalValue_zero] at h_c1_in_D0; exact h_c1_in_D0
+    exact h_0_in_Dt
+    exact h_maps
+
+  have h_maps_comp : MapsTo (f_star.f^[n]) D0_comp D_target_comp := by
+    intro x hx
+    exact hx.2
+
+  have h_proper_comp : IsProperMap (MapsTo.restrict (f_star.f^[n]) D0_comp D_target_comp h_maps_comp) := by
+    apply isProperMap_restrict_connectedComponent h_maps h_proper 0 h_0_in_Dt
+    · rw [funext h_f_eq]; exact continuous_pow deg
+    · exact h_D0_open
+    · exact h_Dt_open
+
+  have h_roots_card : Set.ncard {x ∈ D0_comp | f_star.f^[n] x = y} = deg := by
+    have h_set_eq : {x ∈ D0_comp | f_star.f^[n] x = y} = {x ∈ D0_comp | x^deg = y} := by
        ext z
        simp only [mem_setOf_eq, and_congr_right_iff]
        intro hz
        rw [h_f_eq]
     rw [h_set_eq]
-    
+
     let f_deg := fun z : ℂ => z^deg
-    have h_maps_cast : MapsTo f_deg D0 D_target := by
+    have h_maps_cast : MapsTo f_deg D0_comp D_target_comp := by
          intro z hz
          dsimp [f_deg]
          rw [← h_f_eq z]
-         exact h_maps hz
-         
-    have h_proper_cast : IsProperMap (MapsTo.restrict f_deg D0 D_target h_maps_cast) := by
-         have heq : MapsTo.restrict f_deg D0 D_target h_maps_cast = MapsTo.restrict (f_star.f^[n]) D0 D_target h_maps := by
+         exact h_maps_comp hz
+
+    have h_proper_cast : IsProperMap (MapsTo.restrict f_deg D0_comp D_target_comp h_maps_cast) := by
+         have heq : MapsTo.restrict f_deg D0_comp D_target_comp h_maps_cast = MapsTo.restrict (f_star.f^[n]) D0_comp D_target_comp h_maps_comp := by
            ext ⟨x, hx⟩
            simp [h_f_eq]
            rfl
          rw [heq]
-         exact h_proper
+         exact h_proper_comp
+
+    haveI : ConnectedSpace D_target_comp := by
+      rw [← isConnected_iff_connectedSpace]
+      apply isConnected_connectedComponentIn_iff.mpr h_0_in_Dt
 
     apply preimage_roots_cardinality
       (deg := deg)
       (y := y)
       (h_deg := by apply Nat.one_le_pow; norm_num)
       (h_y_in_D := by apply h_Dt_sub hy_in_Dt)
-      (D0 := D0)
-      (h_D0_open := h_D0_open)
-      (h_0_in_D0 := by rw [defaultBMol_criticalValue_zero] at h_c1_in_D0; exact h_c1_in_D0)
-      (D_target := D_target)
-      (h_target_open := h_Dt_open)
-      (h_target_sub := h_Dt_sub)
-      (h_y_in_target := hy_in_Dt)
+      (D0 := D0_comp)
+      (h_D0_open := h_D0_comp_open)
+      (h_0_in_D0 := h_0_in_D0_comp)
+      (D_target := D_target_comp)
+      (h_target_open := h_Dt_comp_open)
+      (h_target_sub := by apply Set.Subset.trans (connectedComponentIn_subset D_target 0) h_Dt_sub)
+      (h_y_in_target := h_y_in_comp)
       (h_maps := h_maps_cast)
       (h_proper := h_proper_cast)
       (hy_nonzero := hy_ne_0)
 
-  -- 5. Contradiction: 2 = 2^n with n >= 4.
   rw [h_deg2_eq] at h_roots_card
   have h_contra : 2 = deg := h_roots_card
-  
+
   have h_n_is_1 : n = 1 := by
     dsimp [deg] at h_contra
     symm at h_contra
     exact (Nat.pow_eq_self_iff (by norm_num)).mp h_contra
 
   linarith [hn_ge_4, h_n_is_1]
-
-lemma defaultBMol_violates_bounds_axiom (h_renorm : IsFastRenormalizable defaultBMol) : False := by
-  -- Proof Sketch:
-  -- 1. Assume for the sake of contradiction that `defaultBMol` satisfies the "Renormalization Implies Bounds" property.
-  --    (In reality, it doesn't because it's not renormalizable, but we explore the geometric consequences).
-  
-  have h_bounds_assumed := defaultBMol_assumed_bounds h_renorm
-  
-  have h_bounds_converted : (∀ᶠ n in Filter.atTop, ∀ t ∈ ({n, n + 1} : Set ℕ),
-      ∀ f, f ∈ (Rfast^[n]) ⁻¹' Set.univ → 
-        let c1 := criticalValue f
-        let ft := f.f^[t]
-        ft c1 ∈ Metric.ball 0 0.1 ∧
-        ∃ (D0 D_target : Set ℂ) (h_maps : MapsTo ft D0 D_target),
-          IsOpen D0 ∧ IsOpen D_target ∧
-          D_target ⊆ Metric.ball 0 0.1 ∧
-          c1 ∈ D0 ∧
-          IsProperMap (MapsTo.restrict ft D0 D_target h_maps) ∧
-          ∀ y ∈ D_target, Set.ncard {x ∈ D0 | ft x = y} = 2
-      ) := by
-      apply Filter.Eventually.mono h_bounds_assumed
-      intro n hn t ht f hf
-      have h_t_in_image : t ∈ ({fun n => n, fun n => n + 1} : Set (ℕ → ℕ)).image (fun f => f n) := by
-        simp at ht
-        rcases ht with rfl | rfl
-        · use (fun n => n); simp
-        · use (fun n => n + 1); simp
-      specialize hn t h_t_in_image f hf
-      exact hn
-
-  exact defaultBMol_contradicts_bounds (by trivial) h_bounds_converted
 
 theorem renormalizable_fixed_point_exists :
   ∃ f, IsFastRenormalizable f ∧ Rfast f = f := by
