@@ -372,7 +372,7 @@ lemma defaultBMol_contradicts_bounds {U : Set BMol} (h_default_in_U : defaultBMo
   have h_0_in_Dt : 0 ∈ D_target := by
     rw [defaultBMol_criticalValue_zero] at h_c1_in_D0
     have h_crit_val_img : f_star.f^[n] 0 = 0 := by
-       simp [f_star, defaultBMol, iterate_defaultBMol, zero_pow (by linarith [hn_ge_4] : n ≠ 0)]
+       simp [f_star, defaultBMol]
     rw [← h_crit_val_img]
     apply h_maps
     exact h_c1_in_D0
