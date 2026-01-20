@@ -81,8 +81,21 @@ lemma renorm_D_target_open (f : BMol) (n : ℕ) : IsOpen (renorm_D_target f n) :
   rw [h_psi, Set.image_id]
   exact (renorm_g f n).isOpen_V
 
-lemma renorm_critical_value_mem (f : BMol) (n : ℕ) :
-  criticalValue f ∈ renorm_D0 f n := by sorry
+lemma renorm_critical_value_mem (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ)
+  (n t : ℕ) (f : BMol)
+  (h_fixed : Rfast f_star = f_star)
+  (h_renorm : IsFastRenormalizable f_star)
+  (h_open_D : IsOpen D) (h_open_U : IsOpen U)
+  (h_f_star_in_U : f_star ∈ U)
+  (h_cv_in_D : criticalValue f_star ∈ D)
+  (h_n_ge_1 : n ≥ 1)
+  (h_t_in_set : t ∈ ({a n, b n} : Set ℕ))
+  (h_f_in_preimage : f ∈ (Rfast^[n]) ⁻¹' U) :
+  criticalValue f ∈ renorm_D0 f n := by
+  have h_psi : renorm_Ψ f n = id := by ext; rfl
+  dsimp [renorm_D0, renorm_g]
+  rw [h_psi, Set.image_id]
+  exact (renormalization_orbit_control f_star D U a b h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D n t f h_n_ge_1 h_t_in_set h_f_in_preimage).2.1
 
 lemma renorm_is_proper (f : BMol) (n t : ℕ) (a b : ℕ → ℕ)
   (h_t_in_set : t ∈ ({a n, b n} : Set ℕ))
@@ -130,6 +143,6 @@ lemma renormalization_pullback_property (f_star : BMol) (D : Set ℂ) (U : Set B
   refine ⟨D0, D_target, h_maps, ?_, ?_, h_subset, ?_, h_proper, h_degree⟩
   · exact renorm_D0_open f n
   · exact renorm_D_target_open f n
-  · exact renorm_critical_value_mem f n
+  · exact renorm_critical_value_mem f_star D U a b n t f h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D h_n_ge_1 h_t_in_set h_f_in_preimage
 
 end MLC
