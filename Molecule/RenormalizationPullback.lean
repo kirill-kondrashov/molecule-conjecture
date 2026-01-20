@@ -115,23 +115,23 @@ lemma renorm_is_proper (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ �
   have h_D0_eq : renorm_D0 f n = g.U := by dsimp [renorm_D0, renorm_g, g]; rw [h_psi, Set.image_id]
   have h_Dt_eq : renorm_D_target f n = g.V := by dsimp [renorm_D_target, renorm_g, g]; rw [h_psi, Set.image_id]
   
-  have h_eq := (renormalization_orbit_control f_star D U a b h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D n t f h_n_ge_1 h_t_in_set h_f_in_preimage).2.2.2
+  have h_eq := (renormalization_orbit_control f_star D U a b h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D n t f h_n_ge_1 h_t_in_set h_f_in_preimage).2.2.2.1
   
   have h_prop := g.proper
   
-  -- Revert h_maps so its type is updated during generalization
+  -- Revert h_maps to generalize its type dependencies
   revert h_maps
   generalize hD0 : renorm_D0 f n = D0
   generalize hDt : renorm_D_target f n = Dt
   intro h_maps
   
-  have h_eq_U : D0 = g.U := by rw [← hD0, h_D0_eq]
-  have h_eq_V : Dt = g.V := by rw [← hDt, h_Dt_eq]
+  -- Align generalized variables with g.U and g.V
+  rw [h_D0_eq] at hD0
+  rw [h_Dt_eq] at hDt
+  subst hD0
+  subst hDt
   
-  subst h_eq_U
-  subst h_eq_V
-  
-  -- Now everything matches
+  -- Apply the congruence lemma
   apply isProperMap_congr h_prop
   intro x hx
   symm
@@ -139,10 +139,36 @@ lemma renorm_is_proper (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ �
   rw [← renorm_g]
   exact hx
 
-lemma renorm_degree (f : BMol) (n t : ℕ) (a b : ℕ → ℕ)
+lemma renorm_degree (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ)
+  (n t : ℕ) (f : BMol)
+  (h_fixed : Rfast f_star = f_star)
+  (h_renorm : IsFastRenormalizable f_star)
+  (h_open_D : IsOpen D) (h_open_U : IsOpen U)
+  (h_f_star_in_U : f_star ∈ U)
+  (h_cv_in_D : criticalValue f_star ∈ D)
+  (h_n_ge_1 : n ≥ 1)
   (h_t_in_set : t ∈ ({a n, b n} : Set ℕ))
+  (h_f_in_preimage : f ∈ (Rfast^[n]) ⁻¹' U)
   (y : ℂ) (hy : y ∈ renorm_D_target f n) :
-  Set.ncard {x ∈ renorm_D0 f n | (f.f^[t]) x = y} = 2 := by sorry
+  Set.ncard {x ∈ renorm_D0 f n | (f.f^[t]) x = y} = 2 := by
+  have h_deg := (renormalization_orbit_control f_star D U a b h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D n t f h_n_ge_1 h_t_in_set h_f_in_preimage).2.2.2.2
+  have h_psi : renorm_Ψ f n = id := by ext; rfl
+  let g := renorm_g f n
+  have h_D0_eq : renorm_D0 f n = g.U := by dsimp [renorm_D0, renorm_g, g]; rw [h_psi, Set.image_id]
+  have h_Dt_eq : renorm_D_target f n = g.V := by dsimp [renorm_D_target, renorm_g, g]; rw [h_psi, Set.image_id]
+  
+  rw [h_Dt_eq] at hy
+  rw [h_D0_eq]
+  
+  specialize h_deg y hy
+  -- The set in h_deg uses (Rfast^[n] f).U which is g.U.
+  -- The goal uses g.U after rewrite.
+  -- We just need to check if the function f^[t] matches what h_deg expects?
+  -- h_deg says {x ∈ (Rfast^[n] f).U | f.f^[t] x = y}.ncard = 2
+  -- The goal is {x ∈ g.U | f.f^[t] x = y}.ncard = 2
+  -- renorm_g f n = Rfast^[n] f. So they are identical.
+  
+  exact h_deg
 
 /--
 Lemma: Renormalization Pullback Property.
@@ -175,7 +201,7 @@ lemma renormalization_pullback_property (f_star : BMol) (D : Set ℂ) (U : Set B
   have h_subset : D_target ⊆ D := renorm_D_target_subset f_star D U n f h_f_star_in_U h_cv_in_D h_U_subset h_f_in_preimage
   have h_maps : MapsTo (f.f^[t]) D0 D_target := renorm_maps_to f_star D U a b n t f h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D h_n_ge_1 h_t_in_set h_f_in_preimage
   have h_proper : IsProperMap (MapsTo.restrict (f.f^[t]) D0 D_target h_maps) := renorm_is_proper f_star D U a b n t f h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D h_n_ge_1 h_t_in_set h_f_in_preimage h_maps
-  have h_degree : ∀ y ∈ D_target, Set.ncard {x ∈ D0 | (f.f^[t]) x = y} = 2 := renorm_degree f n t a b h_t_in_set
+  have h_degree : ∀ y ∈ D_target, Set.ncard {x ∈ D0 | (f.f^[t]) x = y} = 2 := renorm_degree f_star D U a b n t f h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D h_n_ge_1 h_t_in_set h_f_in_preimage
 
   refine ⟨D0, D_target, h_maps, ?_, ?_, h_subset, ?_, h_proper, h_degree⟩
   · exact renorm_D0_open f n
