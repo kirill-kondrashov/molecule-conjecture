@@ -26,7 +26,8 @@ axiom renormalization_orbit_control (f_star : BMol) (D : Set ℂ) (U : Set BMol)
     f ∈ (Rfast^[n]) ⁻¹' U →
     MapsTo (f.f^[t]) (Rfast^[n] f).U (Rfast^[n] f).V ∧
     criticalValue f ∈ (Rfast^[n] f).U ∧
-    (f.f^[t] (criticalValue f)) ∈ D
+    (f.f^[t] (criticalValue f)) ∈ D ∧
+    (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z)
 
 /--
 Lemma: Renormalization implies domain control.
@@ -56,6 +57,6 @@ lemma renormalization_orbit_lands_in_D (f_star : BMol) (D : Set ℂ) (U : Set BM
   (h_t_in_set : t ∈ ({a n, b n} : Set ℕ))
   (h_f_in_preimage : f ∈ (Rfast^[n]) ⁻¹' U) :
   (f.f^[t] (criticalValue f)) ∈ D := by
-  exact (renormalization_orbit_control f_star D U a b h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D n t f h_n_ge_1 h_t_in_set h_f_in_preimage).2.2
+  exact (renormalization_orbit_control f_star D U a b h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D n t f h_n_ge_1 h_t_in_set h_f_in_preimage).2.2.1
 
 end MLC

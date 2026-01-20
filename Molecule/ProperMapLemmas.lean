@@ -520,4 +520,20 @@ lemma isProperMap_restrict_connectedComponent {f : ℂ → ℂ} {D0 D_target : S
     rw [h_eq_image]
     exact hL_D0_compact.image continuous_subtype_val
 
+/--
+Properness of a restricted map depends only on the function values on the domain.
+-/
+lemma isProperMap_congr {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
+    {f g : X → Y} {U : Set X} {V : Set Y}
+    {hf : MapsTo f U V} {hg : MapsTo g U V}
+    (h_proper : IsProperMap (MapsTo.restrict f U V hf))
+    (h_eq : ∀ x ∈ U, f x = g x) :
+    IsProperMap (MapsTo.restrict g U V hg) := by
+  have h_restrict_eq : MapsTo.restrict f U V hf = MapsTo.restrict g U V hg := by
+    ext x
+    apply h_eq
+    exact x.2
+  rw [← h_restrict_eq]
+  exact h_proper
+
 end MLC
