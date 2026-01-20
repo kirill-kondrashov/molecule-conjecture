@@ -261,7 +261,7 @@ lemma isClosedEmbedding_inclusion {X : Type*} [TopologicalSpace X] {s t : Set X}
 /--
 Helper lemma: The image of the connected component is closed in the target.
 -/
-lemma pow_image_closed_in_target (deg : ℕ)
+lemma pow_image_closed_in_target
     {D_target : Set ℂ} {D0 : Set ℂ} {f : ℂ → ℂ}
     (h_maps : MapsTo f D0 D_target)
     (h_proper : IsProperMap (MapsTo.restrict f D0 D_target h_maps))
@@ -304,7 +304,16 @@ lemma pow_image_closed_in_target (deg : ℕ)
       have h_inc_cont : Continuous inc := continuous_subtype_val.subtype_mk _
       have hC_closed_in_pre : IsClosed (connectedComponent (⟨0, h0_in_pre⟩ : D_pre)) := isClosed_connectedComponent
       have : {x : D0 | x.val ∈ C} = inc ⁻¹' (connectedComponent (⟨0, h0_in_pre⟩ : D_pre)) := by
-        sorry
+        ext x
+        simp only [hC, connectedComponentIn, dif_pos h0_in_pre, mem_setOf_eq, mem_preimage, mem_image,
+          Subtype.exists, exists_and_right, exists_eq_right]
+        constructor
+        · rintro ⟨h, hc⟩
+          have : h = hD0_sub_pre x.property := rfl
+          subst this
+          exact hc
+        · intro hc
+          exact ⟨hD0_sub_pre x.property, hc⟩
       rw [this]
       apply IsClosed.preimage h_inc_cont hC_closed_in_pre
     
@@ -360,7 +369,7 @@ lemma pow_preimage_connected_component_eq {deg : ℕ} (h_deg : 0 < deg)
   
   -- 4. f(C) is closed in D_target
   have hfC_closed_in_target : IsClosed (Subtype.val ⁻¹' (f '' C) : Set D_target) :=
-    pow_image_closed_in_target deg h_maps h_proper h_clopen h0_in_pre h_0_in_D0 C rfl
+    pow_image_closed_in_target h_maps h_proper h_clopen h0_in_pre h_0_in_D0 C rfl
 
   -- 5. f(C) = D_target
   have hfC_open_in_target : IsOpen (Subtype.val ⁻¹' (f '' C) : Set D_target) := by
@@ -370,13 +379,26 @@ lemma pow_preimage_connected_component_eq {deg : ℕ} (h_deg : 0 < deg)
   have hfC_clopen : IsClopen (Subtype.val ⁻¹' (f '' C) : Set D_target) := ⟨hfC_closed_in_target, hfC_open_in_target⟩
   
   have hfC_nonempty : (Subtype.val ⁻¹' (f '' C) : Set D_target).Nonempty := by
-    sorry
+    use ⟨f 0, h_maps h_0_in_D0⟩
+    simp only [mem_preimage, mem_image, Subtype.coe_mk]
+    use 0
+    constructor
+    · dsimp [C]
+      rw [connectedComponentIn, dif_pos h0_in_pre]
+      simp only [mem_image, Subtype.exists, exists_and_right, exists_eq_right]
+      exact ⟨h0_in_pre, mem_connectedComponent_refl _⟩
+    · rw [hf]; simp [zero_pow (Nat.pos_iff_ne_zero.mp h_deg)]
   
   have hfC_univ : Subtype.val ⁻¹' (f '' C) = univ := 
     isClopen_iff.mp hfC_clopen |>.resolve_left hfC_nonempty.ne_empty
   
   have hfC_eq_target : f '' C = D_target := by
-    sorry
+    have hfC_univ_pre : Subtype.val '' (Subtype.val ⁻¹' (f '' C)) = D_target ∩ f '' C := 
+      Subtype.image_preimage_coe D_target (f '' C)
+    rw [inter_comm] at hfC_univ_pre
+    rw [hfC_univ, image_univ, Subtype.range_coe] at hfC_univ_pre
+    rw [inter_eq_left.mpr (pow_image_subset_target C rfl)] at hfC_univ_pre
+    exact hfC_univ_pre.symm
 
   -- 6. C = D_pre
   apply subset_antisymm
