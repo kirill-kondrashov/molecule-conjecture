@@ -27,6 +27,19 @@ axiom renormalization_orbit_control (f_star : BMol) (D : Set ℂ) (U : Set BMol)
     (f.f^[t] (criticalValue f)) ∈ D
 
 /--
+Lemma: Renormalization implies domain control.
+The domain of the n-th renormalization of f is contained in D.
+-/
+lemma renormalization_domain (f_star : BMol) (D : Set ℂ) (U : Set BMol) (n : ℕ) (f : BMol)
+  (h_f_star_in_U : f_star ∈ U)
+  (h_cv_in_D : criticalValue f_star ∈ D)
+  (h_U_subset : ∀ g ∈ U, g.V ⊆ D)
+  (h_f_in_preimage : f ∈ (Rfast^[n]) ⁻¹' U) :
+  (Rfast^[n] f).V ⊆ D := by
+  have h_renorm_in_U : (Rfast^[n] f) ∈ U := h_f_in_preimage
+  exact h_U_subset (Rfast^[n] f) h_renorm_in_U
+
+/--
 Lemma: Renormalization Orbit Lands in D.
 For sufficiently large n, the orbit of the critical value under the renormalized map lands in D.
 -/

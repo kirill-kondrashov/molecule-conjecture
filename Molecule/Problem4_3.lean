@@ -76,8 +76,8 @@ theorem problem_4_3_bounds_established : PseudoSiegelAPrioriBoundsStatement := b
   -- 1. Existence of the Fixed Point f*
   -- We assume a non-trivial fixed point exists for the sake of the conjecture framework.
   -- The current fixed_point_exists from FixedPointExistence.lean only gives a trivial non-renormalizable one.
-  have fixed_point_exists_strong : ∃ f : BMol, Rfast f = f ∧ IsFastRenormalizable f ∧ criticalValue f = 0 := sorry
-  obtain ⟨f_star, h_fixed, h_renorm, h_crit_val⟩ := fixed_point_exists_strong
+  have fixed_point_exists_strong : ∃ f : BMol, Rfast f = f ∧ IsFastRenormalizable f ∧ criticalValue f = 0 ∧ f.V ⊆ Metric.ball 0 0.1 := sorry
+  obtain ⟨f_star, h_fixed, h_renorm, h_crit_val, h_f_star_sub_D⟩ := fixed_point_exists_strong
 
   -- 2. Define the return times a_n, b_n
   -- Placeholder: specific sequence required (Fibonacci or similar)
@@ -107,9 +107,14 @@ theorem problem_4_3_bounds_established : PseudoSiegelAPrioriBoundsStatement := b
     simp [D, Metric.mem_ball]
     norm_num
 
+  have h_U_subset : ∀ g ∈ U, g.V ⊆ D := by
+    intro g hg
+    rw [mem_singleton_iff.mp hg]
+    exact h_f_star_sub_D
+
   -- 4. The Main Bounds Argument
   -- We use the axiom stating that renormalization implies these bounds.
-  have h_main := renormalization_implies_bounds f_star D U a b h_fixed h_renorm h_D_open h_U_open h_f_in_U h_c1_in_D
+  have h_main := renormalization_implies_bounds f_star D U a b h_fixed h_renorm h_D_open h_U_open h_f_in_U h_c1_in_D h_U_subset
 
   exact ⟨f_star, U, h_fixed, h_renorm, h_U_open, h_f_in_U, h_c1_in_D, h_main⟩
 

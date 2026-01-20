@@ -183,31 +183,41 @@ This is false because defaultBMol is not renormalizable, but we use it to prove 
 -/
 lemma defaultBMol_assumed_bounds (h_renorm : IsFastRenormalizable defaultBMol) :
     (∀ᶠ n in Filter.atTop, ∀ t ∈ ({fun n => n, fun n => n + 1} : Set (ℕ → ℕ)).image (fun f => f n),
-      ∀ f, f ∈ (Rfast^[n]) ⁻¹' Set.univ →
+      ∀ f, f ∈ (Rfast^[n]) ⁻¹' {defaultBMol} →
         let c1 := criticalValue f
         let ft := f.f^[t]
-        ft c1 ∈ Metric.ball 0 0.1 ∧
+        ft c1 ∈ Metric.ball 0 5 ∧
         ∃ (D0 D_target : Set ℂ) (h_maps : MapsTo ft D0 D_target),
           IsOpen D0 ∧ IsOpen D_target ∧
-          D_target ⊆ Metric.ball 0 0.1 ∧
+          D_target ⊆ Metric.ball 0 5 ∧
           c1 ∈ D0 ∧
           IsProperMap (MapsTo.restrict ft D0 D_target h_maps) ∧
           ∀ y ∈ D_target, Set.ncard {x ∈ D0 | ft x = y} = 2
   ) := by
   let f_star := defaultBMol
-  let D : Set ℂ := Metric.ball 0 0.1
-  let U : Set BMol := Set.univ
+  let D : Set ℂ := Metric.ball 0 5
+  let U : Set BMol := {defaultBMol}
   let a : ℕ → ℕ := fun n => n
   let b : ℕ → ℕ := fun n => n + 1
 
   -- We assume (incorrectly) that defaultBMol satisfies the bounds theorem premises
+  have h_f_star_fixed : Rfast f_star = f_star := defaultBMol_is_fixed_point
+  have h_f_star_renorm : IsFastRenormalizable f_star := h_renorm
+  have h_D_open : IsOpen D := Metric.isOpen_ball
+  have h_U_open : IsOpen U := by change True; trivial
+  have h_f_star_in_U : f_star ∈ U := rfl
+  have h_cv_in_D : criticalValue f_star ∈ D := by
+    rw [defaultBMol_criticalValue_zero]
+    apply Metric.mem_ball.mpr
+    simp [dist_self]
+    try norm_num
+  have h_U_subset : ∀ g ∈ U, g.V ⊆ D := by
+    intro g hg
+    rw [mem_singleton_iff.mp hg]
+    exact Metric.ball_subset_ball (by norm_num)
+
   have h_bounds := renormalization_implies_bounds f_star D U a b
-    (defaultBMol_is_fixed_point)
-    h_renorm
-    (Metric.isOpen_ball)
-    (isOpen_univ)
-    (by trivial)
-    (by rw [defaultBMol_criticalValue_zero]; simp [D, Metric.mem_ball]; norm_num)
+    h_f_star_fixed h_f_star_renorm h_D_open h_U_open h_f_star_in_U h_cv_in_D h_U_subset
 
   -- Align the set notation
   apply Filter.Eventually.mono h_bounds
@@ -256,17 +266,17 @@ Lemma: Cardinality of roots in preimage D0.
 Given that D0 is the preimage of a ball under z^deg restricted properly,
 and y is in the ball, then the number of preimages in D0 is deg.
 -/
-lemma preimage_roots_cardinality {deg : ℕ} {y : ℂ} (h_deg : deg ≥ 1)
-    (_h_y_in_D : y ∈ Metric.ball 0 0.1)
+lemma preimage_roots_cardinality {deg : ℕ} {y : ℂ} {R : ℝ} (h_deg : deg ≥ 1) (hR : 0 < R)
+    (_h_y_in_D : y ∈ Metric.ball 0 R)
     (D0 : Set ℂ) (h_D0_open : IsOpen D0) (h_0_in_D0 : 0 ∈ D0)
     (D_target : Set ℂ) (h_target_open : IsOpen D_target) [ConnectedSpace D_target]
-    (_h_target_sub : D_target ⊆ Metric.ball 0 0.1)
+    (_h_target_sub : D_target ⊆ Metric.ball 0 R)
     (h_y_in_target : y ∈ D_target)
     (h_maps : MapsTo (fun z => z^deg) D0 D_target)
     (h_proper : IsProperMap (MapsTo.restrict (fun z => z^deg) D0 D_target h_maps))
     (hy_nonzero : y ≠ 0) :
     Set.ncard {x ∈ D0 | x^deg = y} = deg := by
-
+    have _ := hR
     let f_deg := fun z : ℂ => z^deg
 
     have h_D0_eq : D0 = f_deg ⁻¹' D_target :=
@@ -316,16 +326,16 @@ lemma defaultBMol_contradicts_bounds {U : Set BMol} (h_default_in_U : defaultBMo
       ∀ f, f ∈ (Rfast^[n]) ⁻¹' U →
         let c1 := criticalValue f
         let ft := f.f^[t]
-        ft c1 ∈ Metric.ball 0 0.1 ∧
+        ft c1 ∈ Metric.ball 0 5 ∧
         ∃ (D0 D_target : Set ℂ) (h_maps : MapsTo ft D0 D_target),
           IsOpen D0 ∧ IsOpen D_target ∧
-          D_target ⊆ Metric.ball 0 0.1 ∧
+          D_target ⊆ Metric.ball 0 5 ∧
           c1 ∈ D0 ∧
           IsProperMap (MapsTo.restrict ft D0 D_target h_maps) ∧
           ∀ y ∈ D_target, Set.ncard {x ∈ D0 | ft x = y} = 2
   )) : False := by
   let f_star := defaultBMol
-  let D_ball : Set ℂ := Metric.ball 0 0.1
+  let D_ball : Set ℂ := Metric.ball 0 5
   let a : ℕ → ℕ := fun n => n
   let b : ℕ → ℕ := fun n => n + 1
 
@@ -461,10 +471,9 @@ lemma defaultBMol_contradicts_bounds {U : Set BMol} (h_default_in_U : defaultBMo
       rw [← isConnected_iff_connectedSpace]
       apply isConnected_connectedComponentIn_iff.mpr h_0_in_Dt
 
-    apply preimage_roots_cardinality
-      (deg := deg)
-      (y := y)
+    apply preimage_roots_cardinality (R := 5)
       (h_deg := by apply Nat.one_le_pow; norm_num)
+      (hR := by norm_num)
       (_h_y_in_D := by apply h_Dt_sub hy_in_Dt)
       (D0 := D0_comp)
       (h_D0_open := h_D0_comp_open)

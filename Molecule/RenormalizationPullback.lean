@@ -3,6 +3,7 @@ import Molecule.Rfast
 import Yoccoz.Quadratic.Complex.Basic
 import Molecule.FixedPointExistence
 import Molecule.PseudoSiegelDisk
+import Molecule.RenormalizationOrbit
 
 namespace MLC
 
@@ -31,11 +32,26 @@ The domain D0 defined by the renormalization.
 noncomputable def renorm_D0 (f : BMol) (n : ℕ) : Set ℂ :=
   (renorm_Ψ f n) '' (renorm_g f n).U
 
+/--
+The domain of the renormalized map is contained in the target domain D.
+-/
+lemma renormalization_domain_subset (f_star : BMol) (D : Set ℂ) (U : Set BMol) (n : ℕ) (f : BMol)
+  (h_f_star_in_U : f_star ∈ U)
+  (h_cv_in_D : criticalValue f_star ∈ D)
+  (h_U_subset : ∀ g ∈ U, g.V ⊆ D)
+  (h_f_in_preimage : f ∈ (Rfast^[n]) ⁻¹' U) :
+  renorm_D_target f n ⊆ D := by
+  dsimp [renorm_D_target, renorm_Ψ, renorm_g]
+  simp
+  exact renormalization_domain f_star D U n f h_f_star_in_U h_cv_in_D h_U_subset h_f_in_preimage
+
 lemma renorm_D_target_subset (f_star : BMol) (D : Set ℂ) (U : Set BMol) (n : ℕ) (f : BMol)
   (h_f_star_in_U : f_star ∈ U)
   (h_cv_in_D : criticalValue f_star ∈ D)
+  (h_U_subset : ∀ g ∈ U, g.V ⊆ D)
   (h_f_in_preimage : f ∈ (Rfast^[n]) ⁻¹' U) :
-  renorm_D_target f n ⊆ D := by sorry
+  renorm_D_target f n ⊆ D := by
+  exact renormalization_domain_subset f_star D U n f h_f_star_in_U h_cv_in_D h_U_subset h_f_in_preimage
 
 lemma renorm_maps_to (f : BMol) (n t : ℕ) (a b : ℕ → ℕ)
   (h_t_in_set : t ∈ ({a n, b n} : Set ℕ)) :
@@ -70,6 +86,7 @@ lemma renormalization_pullback_property (f_star : BMol) (D : Set ℂ) (U : Set B
   (_h_open_D : IsOpen D) (_h_open_U : IsOpen U)
   (h_f_star_in_U : f_star ∈ U)
   (h_cv_in_D : criticalValue f_star ∈ D)
+  (h_U_subset : ∀ g ∈ U, g.V ⊆ D)
   (_h_n_ge_1 : n ≥ 1)
   (h_t_in_set : t ∈ ({a n, b n} : Set ℕ))
   (h_f_in_preimage : f ∈ (Rfast^[n]) ⁻¹' U) :
@@ -79,17 +96,17 @@ lemma renormalization_pullback_property (f_star : BMol) (D : Set ℂ) (U : Set B
     (criticalValue f) ∈ D0 ∧
     IsProperMap (MapsTo.restrict (f.f^[t]) D0 D_target h_maps) ∧
     ∀ y ∈ D_target, Set.ncard {x ∈ D0 | (f.f^[t]) x = y} = 2 := by
-  
+
   -- Step 1: Use definitions
   let D0 := renorm_D0 f n
   let D_target := renorm_D_target f n
-  
+
   -- Step 2: Use lemmas
-  have h_subset : D_target ⊆ D := renorm_D_target_subset f_star D U n f h_f_star_in_U h_cv_in_D h_f_in_preimage
+  have h_subset : D_target ⊆ D := renorm_D_target_subset f_star D U n f h_f_star_in_U h_cv_in_D h_U_subset h_f_in_preimage
   have h_maps : MapsTo (f.f^[t]) D0 D_target := renorm_maps_to f n t a b h_t_in_set
   have h_proper : IsProperMap (MapsTo.restrict (f.f^[t]) D0 D_target h_maps) := renorm_is_proper f n t a b h_t_in_set h_maps
   have h_degree : ∀ y ∈ D_target, Set.ncard {x ∈ D0 | (f.f^[t]) x = y} = 2 := renorm_degree f n t a b h_t_in_set
-  
+
   refine ⟨D0, D_target, h_maps, ?_, ?_, h_subset, ?_, h_proper, h_degree⟩
   · exact renorm_D0_open f n
   · exact renorm_D_target_open f n

@@ -22,6 +22,7 @@ theorem renormalization_implies_bounds (f_star : BMol) (D : Set ℂ) (U : Set BM
   IsOpen D → IsOpen U →
   f_star ∈ U →
   criticalValue f_star ∈ D →
+  (∀ g ∈ U, g.V ⊆ D) →
   (∀ᶠ n in atTop, ∀ t ∈ ({a n, b n} : Set ℕ),
       ∀ f, f ∈ (Rfast^[n]) ⁻¹' U →
         let c1 := criticalValue f
@@ -34,7 +35,7 @@ theorem renormalization_implies_bounds (f_star : BMol) (D : Set ℂ) (U : Set BM
           IsProperMap (MapsTo.restrict ft D0 D_target h_maps) ∧
           ∀ y ∈ D_target, Set.ncard {x ∈ D0 | ft x = y} = 2
   ) := by
-  intro h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D
+  intro h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D h_U_subset
 
   -- Proof Sketch following Dudko-Lyubich-Selinger (arXiv:1703.01206), Key Lemma 4.8.
 
@@ -55,6 +56,6 @@ theorem renormalization_implies_bounds (f_star : BMol) (D : Set ℂ) (U : Set BM
     exact renormalization_orbit_lands_in_D f_star D U a b n t f h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D hn ht hf
 
   · -- Condition 2: Branched Covering Property
-    exact renormalization_pullback_property f_star D U a b n t f h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D hn ht hf
+    exact renormalization_pullback_property f_star D U a b n t f h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D h_U_subset hn ht hf
 
 end MLC
