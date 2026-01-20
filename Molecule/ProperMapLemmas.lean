@@ -164,7 +164,7 @@ lemma component_invariant_under_rotation {deg : ℕ} (h_deg : 0 < deg)
     (fun z => ζ * z) '' C ⊆ C := by
   let g := fun z => ζ * z
   have hg_cont : Continuous g := continuous_mul_left ζ
-  
+
   -- Show 0 is in the preimage f⁻¹(D_target)
   have h0_pre : 0 ∈ f ⁻¹' D_target := by
     rw [mem_preimage, hf]
@@ -209,7 +209,7 @@ lemma component_invariant_under_rotation {deg : ℕ} (h_deg : 0 < deg)
   -- so it must be contained in the connected component of 0.
   let hgC_conn := hC_conn.image g hg_cont.continuousOn
   let target_comp := connectedComponentIn (f ⁻¹' D_target) 0
-  have h_goal : g '' C ⊆ target_comp := 
+  have h_goal : g '' C ⊆ target_comp :=
     IsPreconnected.subset_connectedComponentIn hgC_conn.isPreconnected h0_gC hgC_sub_pre
   rw [h_C_comp] at h_goal ⊢
   exact h_goal
@@ -275,7 +275,7 @@ lemma pow_image_closed_in_target
   have hfC_sub : f '' C ⊆ D_target := pow_image_subset_target C hC
   have h_maps_C : MapsTo f C_subtype D_target := fun x hx => hfC_sub ⟨x, hx, rfl⟩
   let f_C := MapsTo.restrict f C_subtype D_target h_maps_C
-  
+
   have h_f_C_proper : IsProperMap f_C := by
     have hD0_sub_pre : D0 ⊆ D_pre := h_maps
     have hC_sub_D0 : C ⊆ D0 := by
@@ -284,9 +284,9 @@ lemma pow_image_closed_in_target
       let U := {z : D_pre | z.val ∈ D0}
       have hU_clopen : IsClopen U := h_clopen
       have h0_U : (⟨0, h0_in_pre⟩ : D_pre) ∈ U := h_0_in_D0
-      have h_comp_sub : connectedComponent (⟨0, h0_in_pre⟩ : D_pre) ⊆ U := 
+      have h_comp_sub : connectedComponent (⟨0, h0_in_pre⟩ : D_pre) ⊆ U :=
         hU_clopen.connectedComponent_subset h0_U
-      
+
       -- x ∈ C means x ∈ D_pre and ⟨x, _⟩ ∈ connectedComponent ...
       have hx_pre : x ∈ D_pre := connectedComponentIn_subset (f ⁻¹' D_target) 0 (by rw [←hC]; exact hx)
       have hx_comp : (⟨x, hx_pre⟩ : D_pre) ∈ connectedComponent (⟨0, h0_in_pre⟩ : D_pre) := by
@@ -295,10 +295,10 @@ lemma pow_image_closed_in_target
         rw [dif_pos h0_in_pre] at hx
         rcases hx with ⟨y, hy, rfl⟩
         exact hy
-      
+
       have hx_U := h_comp_sub hx_comp
       exact hx_U
-      
+
     have hC_closed_in_D0 : IsClosed {x : D0 | x.val ∈ C} := by
       let inc : D0 → D_pre := fun x => ⟨x.val, hD0_sub_pre x.property⟩
       have h_inc_cont : Continuous inc := continuous_subtype_val.subtype_mk _
@@ -316,15 +316,15 @@ lemma pow_image_closed_in_target
           exact ⟨hD0_sub_pre x.property, hc⟩
       rw [this]
       apply IsClosed.preimage h_inc_cont hC_closed_in_pre
-    
+
     let f_res := MapsTo.restrict f D0 D_target h_maps
     let inc_C : C_subtype → D0 := Set.inclusion hC_sub_D0
-    have h_inc_C : IsClosedEmbedding inc_C := 
+    have h_inc_C : IsClosedEmbedding inc_C :=
       isClosedEmbedding_inclusion hC_sub_D0 hC_closed_in_D0
     have h_comp : f_C = f_res ∘ inc_C := by ext ⟨x, hx⟩; rfl
     rw [h_comp]
     apply IsProperMap.comp h_proper h_inc_C.isProperMap
-  
+
   have h_closed_map := h_f_C_proper.isClosedMap
   have h_univ_closed : IsClosed (univ : Set C_subtype) := isClosed_univ
   have h_img_eq : f_C '' univ = Subtype.val ⁻¹' (f '' C) := by
@@ -357,7 +357,7 @@ lemma pow_preimage_connected_component_eq {deg : ℕ} (h_deg : 0 < deg)
   let C := connectedComponentIn D_pre 0
   have h_f_cont : Continuous f := by rw [hf]; exact continuous_pow deg
   have h_pre_open : IsOpen D_pre := h_target_open.preimage h_f_cont
-  
+
   -- 1. C is open in ℂ
   have hC_open : IsOpen C := h_pre_open.connectedComponentIn
 
@@ -366,7 +366,7 @@ lemma pow_preimage_connected_component_eq {deg : ℕ} (h_deg : 0 < deg)
 
   -- 3. f(C) is open in D_target
   have hfC_open : IsOpen (f '' C) := hf_open C hC_open
-  
+
   -- 4. f(C) is closed in D_target
   have hfC_closed_in_target : IsClosed (Subtype.val ⁻¹' (f '' C) : Set D_target) :=
     pow_image_closed_in_target h_maps h_proper h_clopen h0_in_pre h_0_in_D0 C rfl
@@ -375,20 +375,20 @@ lemma pow_preimage_connected_component_eq {deg : ℕ} (h_deg : 0 < deg)
   have hfC_open_in_target : IsOpen (Subtype.val ⁻¹' (f '' C) : Set D_target) := by
     rw [isOpen_induced_iff]
     exact ⟨f '' C, hfC_open, rfl⟩
-  
+
   have hfC_clopen : IsClopen (Subtype.val ⁻¹' (f '' C) : Set D_target) := ⟨hfC_closed_in_target, hfC_open_in_target⟩
-  
+
   have hfC_nonempty : (Subtype.val ⁻¹' (f '' C) : Set D_target).Nonempty := by
     use ⟨f 0, h_maps h_0_in_D0⟩
     simp only [mem_preimage, mem_image]
     use 0
     exact ⟨mem_connectedComponentIn h0_in_pre, rfl⟩
 
-  have hfC_univ : Subtype.val ⁻¹' (f '' C) = univ := 
+  have hfC_univ : Subtype.val ⁻¹' (f '' C) = univ :=
     isClopen_iff.mp hfC_clopen |>.resolve_left hfC_nonempty.ne_empty
-  
+
   have hfC_eq_target : f '' C = D_target := by
-    have hfC_univ_pre : Subtype.val '' (Subtype.val ⁻¹' (f '' C)) = D_target ∩ f '' C := 
+    have hfC_univ_pre : Subtype.val '' (Subtype.val ⁻¹' (f '' C)) = D_target ∩ f '' C :=
       Subtype.image_preimage_coe D_target (f '' C)
     rw [inter_comm] at hfC_univ_pre
     rw [hfC_univ, image_univ, Subtype.range_coe] at hfC_univ_pre
@@ -432,7 +432,7 @@ lemma connectedSpace_pow_preimage {deg : ℕ} (h_deg : 0 < deg)
     (h_clopen : IsClopen {x : f ⁻¹' D_target | x.val ∈ D0}) :
     ConnectedSpace (f ⁻¹' D_target) := by
   let D_pre := f ⁻¹' D_target
-  
+
   have h0_in_pre : 0 ∈ D_pre := by
     rw [mem_preimage, hf]
     dsimp
@@ -449,9 +449,9 @@ lemma connectedSpace_pow_preimage {deg : ℕ} (h_deg : 0 < deg)
       constructor
       · exact ⟨0, mem_connectedComponentIn h0_in_pre⟩
       · exact isPreconnected_connectedComponentIn
-    
+
     have h_C_eq : C = D_pre := pow_preimage_connected_component_eq h_deg h_target_open h_0_in_D0 hf h_maps h_proper h_clopen h0_in_pre
-    
+
     rw [← h_C_eq]
     exact hC_conn
 
@@ -467,7 +467,57 @@ lemma isProperMap_restrict_connectedComponent {f : ℂ → ℂ} {D0 D_target : S
     (h_cont : Continuous f)
     (h_D0_open : IsOpen D0) (h_D_target_open : IsOpen D_target) :
     IsProperMap (MapsTo.restrict f (D0 ∩ f ⁻¹' connectedComponentIn D_target y0) (connectedComponentIn D_target y0) (fun x hx => hx.2)) := by
-  -- Structure provided, using sorry to fix build
-  sorry
+  let V := connectedComponentIn D_target y0
+  let U := D0 ∩ f ⁻¹' V
+  have hV_open : IsOpen V := h_D_target_open.connectedComponentIn
+  have hU_open : IsOpen U := h_D0_open.inter (hV_open.preimage h_cont)
+
+  haveI : LocallyCompactSpace V := hV_open.locallyCompactSpace
+  haveI : LocallyCompactSpace U := hU_open.locallyCompactSpace
+
+  let i : V → D_target := fun x => ⟨x.val, connectedComponentIn_subset D_target y0 x.2⟩
+  have hi_cont : Continuous i := Continuous.subtype_mk continuous_subtype_val _
+
+  rw [isProperMap_iff_isCompact_preimage]
+  constructor
+  · exact h_cont.continuousOn.mapsToRestrict _
+  · intro K hK
+    let K_in_target : Set D_target := i '' K
+    have hK_target : IsCompact K_in_target := hK.image hi_cont
+    let L_D0 := (MapsTo.restrict f D0 D_target h_maps) ⁻¹' K_in_target
+    have hL_D0_compact : IsCompact L_D0 := h_proper.isCompact_preimage hK_target
+
+    let pre_U := (MapsTo.restrict f U V (fun x hx => hx.2)) ⁻¹' K
+    have h_eq_image : (Subtype.val : U → ℂ) '' pre_U = (Subtype.val : D0 → ℂ) '' L_D0 := by
+      ext z
+      constructor
+      · rintro ⟨u, hu, rfl⟩
+        refine ⟨⟨u.val, u.2.1⟩, ?_, rfl⟩
+        use (MapsTo.restrict f U V (fun x hx => hx.2) u)
+        constructor
+        · exact hu
+        · ext
+          rfl
+      · rintro ⟨d, hd, rfl⟩
+        rcases hd with ⟨k, hk, hik⟩
+        have h_val : k.val = f d.val := by
+          rw [Subtype.ext_iff] at hik
+          exact hik
+        have hz_U : d.val ∈ U := ⟨d.2, by
+          show f d.val ∈ V
+          rw [← h_val]
+          exact k.2⟩
+        refine ⟨⟨d.val, hz_U⟩, ?_, rfl⟩
+        have h_eq : (MapsTo.restrict f U V (fun x hx => hx.2) ⟨d.val, hz_U⟩) = k := by
+          apply Subtype.ext
+          show f d.val = k.val
+          rw [h_val]
+        show (MapsTo.restrict f U V (fun x hx => hx.2) ⟨d.val, hz_U⟩) ∈ K
+        rw [h_eq]
+        exact hk
+
+    rw [IsEmbedding.subtypeVal.isCompact_iff]
+    rw [h_eq_image]
+    exact hL_D0_compact.image continuous_subtype_val
 
 end MLC
