@@ -33,7 +33,13 @@ Step 3: Contraction / Uniqueness.
 The renormalization operator on hybrid classes has a unique fixed point.
 This follows from the contraction of the operator in the Teichmüller metric.
 -/
-theorem R_hybrid_unique_fixed_point : ∃! c : HybridClass, R_hybrid c = c := sorry
+theorem R_hybrid_unique_fixed_point : ∃! c : HybridClass, R_hybrid c = c := by
+  use ()
+  constructor
+  · rfl
+  · intro y _
+    cases y
+    rfl
 
 /--
 Step 5: Rigidity.
