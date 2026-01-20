@@ -297,8 +297,7 @@ lemma y_in_component_of_ball {D_target : Set ℂ} {r : ℝ} (hr : 0 < r)
   have h_0_in : (0:ℂ) ∈ Metric.ball 0 r := by simp [Metric.mem_ball, dist_self, hr]
   have h_conn := Metric.isConnected_ball (x := (0:ℂ)) hr
   have h_pre := h_conn.isPreconnected
-  have h_inc : Metric.ball 0 r ⊆ connectedComponentIn D_target 0 := by
-    apply IsPreconnected.subset_connectedComponentIn (hs := h_pre) (hsF := h_sub) (hxs := h_0_in)
+  have h_inc := IsPreconnected.subset_connectedComponentIn h_pre h_0_in h_sub
   exact h_inc hy
 
 /--
@@ -308,9 +307,9 @@ lemma zero_in_component_of_D0 {f : ℂ → ℂ} {D0 D_target : Set ℂ} {n : ℕ
   (h_f_eq : ∀ z, f z = z^(2^n)) (h_n : n ≥ 1) (h_0_in_D0 : 0 ∈ D0) (h_0_in_Dt : 0 ∈ D_target)
   (h_maps : MapsTo f D0 D_target) :
   0 ∈ D0 ∩ f ⁻¹' connectedComponentIn D_target 0 := by
-  exact ⟨h_0_in_D0, by
-    rw [mem_preimage, h_f_eq, zero_pow (by norm_num; linarith)]
-    exact mem_connectedComponentIn h_0_in_Dt⟩
+  constructor
+  · exact h_0_in_D0
+  · simpa [mem_preimage, h_f_eq, zero_pow (by norm_num; linarith)] using mem_connectedComponentIn h_0_in_Dt
 
 lemma defaultBMol_contradicts_bounds {U : Set BMol} (h_default_in_U : defaultBMol ∈ U)
   (h_bounds_assumed : (∀ᶠ n in Filter.atTop, ∀ t ∈ ({n, n + 1} : Set ℕ),
