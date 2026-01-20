@@ -242,7 +242,7 @@ lemma proper_pow_preimage_eq_generalized {deg : ℕ} (h_deg : 0 < deg)
   -- 3. Conclusion
   have h_eq : {x : D_pre | x.val ∈ D0} = Set.univ := by
     apply IsClopen.eq_univ h_clopen
-    use ⟨(0:ℂ), by rw [mem_preimage]; dsimp [f]; rw [zero_pow (Nat.pos_iff_ne_zero.mp h_deg)]; convert h_maps h_0_in_D0; symm; rw [zero_pow (Nat.pos_iff_ne_zero.mp h_deg)]⟩
+    use ⟨(0:ℂ), h_maps h_0_in_D0⟩
     exact h_0_in_D0
 
   ext z
@@ -295,10 +295,11 @@ lemma y_in_component_of_ball {D_target : Set ℂ} {r : ℝ} (hr : 0 < r)
   (h_sub : Metric.ball 0 r ⊆ D_target) (y : ℂ) (hy : y ∈ Metric.ball 0 r) :
   y ∈ connectedComponentIn D_target 0 := by
   have h_0_in : (0:ℂ) ∈ Metric.ball 0 r := by simp [Metric.mem_ball, dist_self, hr]
-  apply IsPreconnected.subset_connectedComponentIn ((Metric.isConnected_ball hr).isPreconnected)
-  · exact h_sub
-  · exact h_0_in
-  · exact hy
+  have h_conn := Metric.isConnected_ball (x := (0:ℂ)) hr
+  have h_pre := h_conn.isPreconnected
+  have h_inc : Metric.ball 0 r ⊆ connectedComponentIn D_target 0 := by
+    apply IsPreconnected.subset_connectedComponentIn (hs := h_pre) (hsF := h_sub) (hxs := h_0_in)
+  exact h_inc hy
 
 /--
 Lemma: 0 in component
@@ -307,12 +308,9 @@ lemma zero_in_component_of_D0 {f : ℂ → ℂ} {D0 D_target : Set ℂ} {n : ℕ
   (h_f_eq : ∀ z, f z = z^(2^n)) (h_n : n ≥ 1) (h_0_in_D0 : 0 ∈ D0) (h_0_in_Dt : 0 ∈ D_target)
   (h_maps : MapsTo f D0 D_target) :
   0 ∈ D0 ∩ f ⁻¹' connectedComponentIn D_target 0 := by
-  refine ⟨_, _⟩
-  · exact h_0_in_D0
-  · rw [mem_preimage]
-    rw [h_f_eq]
-    rw [zero_pow (by norm_num; linarith)]
-    apply mem_connectedComponentIn h_0_in_Dt
+  exact ⟨h_0_in_D0, by
+    rw [mem_preimage, h_f_eq, zero_pow (by norm_num; linarith)]
+    exact mem_connectedComponentIn h_0_in_Dt⟩
 
 lemma defaultBMol_contradicts_bounds {U : Set BMol} (h_default_in_U : defaultBMol ∈ U)
   (h_bounds_assumed : (∀ᶠ n in Filter.atTop, ∀ t ∈ ({n, n + 1} : Set ℕ),
@@ -381,7 +379,7 @@ lemma defaultBMol_contradicts_bounds {U : Set BMol} (h_default_in_U : defaultBMo
     rw [Metric.mem_ball, dist_zero_right]
     have h_norm_y : ‖y‖ = r/2 := by
       dsimp [y]
-      rw [norm_div, Complex.norm_real, Complex.norm_natCast]
+      rw [norm_div, Complex.norm_real]
       rw [Real.norm_of_nonneg (le_of_lt hr_pos)]
       norm_num
     rw [h_norm_y]
@@ -396,7 +394,7 @@ lemma defaultBMol_contradicts_bounds {U : Set BMol} (h_default_in_U : defaultBMo
      rw [Metric.mem_ball, dist_zero_right]
      have h_norm_y : ‖y‖ = r/2 := by
       dsimp [y]
-      rw [norm_div, Complex.norm_real, Complex.norm_natCast]
+      rw [norm_div, Complex.norm_real]
       rw [Real.norm_of_nonneg (le_of_lt hr_pos)]
       norm_num
      rw [h_norm_y]
