@@ -75,7 +75,11 @@ lemma renorm_D0_open (f : BMol) (n : ℕ) : IsOpen (renorm_D0 f n) := by
   rw [h_psi, Set.image_id]
   exact (renorm_g f n).isOpen_U
 
-lemma renorm_D_target_open (f : BMol) (n : ℕ) : IsOpen (renorm_D_target f n) := by sorry
+lemma renorm_D_target_open (f : BMol) (n : ℕ) : IsOpen (renorm_D_target f n) := by
+  have h_psi : renorm_Ψ f n = id := by ext; rfl
+  dsimp [renorm_D_target]
+  rw [h_psi, Set.image_id]
+  exact (renorm_g f n).isOpen_V
 
 lemma renorm_critical_value_mem (f : BMol) (n : ℕ) :
   criticalValue f ∈ renorm_D0 f n := by sorry
