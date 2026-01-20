@@ -66,7 +66,7 @@ lemma iterate_defaultBMol (n : ℕ) (z : ℂ) : defaultBMol.f^[n] z = z^(2^n) :=
     rw [pow_two]
     rw [← pow_add]
     congr
-    simp [Nat.pow_succ, mul_comm]
+    simp [mul_comm]
 
 /--
 Lemma: Preimage of a ball under z^n.
