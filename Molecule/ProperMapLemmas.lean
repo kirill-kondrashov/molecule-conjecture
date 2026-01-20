@@ -463,10 +463,10 @@ Lemma 5: Proper restriction to a connected component.
 lemma isProperMap_restrict_connectedComponent {f : ℂ → ℂ} {D0 D_target : Set ℂ}
     (h_maps : MapsTo f D0 D_target)
     (h_proper : IsProperMap (MapsTo.restrict f D0 D_target h_maps))
-    (y0 : ℂ) (hy0 : y0 ∈ D_target)
+    (y0 : ℂ) (_ : y0 ∈ D_target)
     (h_cont : Continuous f)
     (h_D0_open : IsOpen D0) (h_D_target_open : IsOpen D_target) :
-    IsProperMap (MapsTo.restrict f (D0 ∩ f ⁻¹' connectedComponentIn D_target y0) (connectedComponentIn D_target y0) (fun x hx => hx.2)) := by
+    IsProperMap (MapsTo.restrict f (D0 ∩ f ⁻¹' connectedComponentIn D_target y0) (connectedComponentIn D_target y0) (fun _ hx => hx.2)) := by
   let V := connectedComponentIn D_target y0
   let U := D0 ∩ f ⁻¹' V
   have hV_open : IsOpen V := h_D_target_open.connectedComponentIn

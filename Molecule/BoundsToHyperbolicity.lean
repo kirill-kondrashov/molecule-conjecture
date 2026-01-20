@@ -18,7 +18,7 @@ Reference: Dudko, Lyubich, Selinger, arXiv:1703.01206, Section 7.1 "Banach slice
 -/
 theorem bounds_imply_banach_slice :
   PseudoSiegelAPrioriBoundsStatement →
-  ∃ (E : Type) (inst1 : NormedAddCommGroup E) (inst2 : NormedSpace ℂ E) (φ : BMol → E) (U : Set BMol) (f_star : BMol),
+  ∃ (E : Type) (_ : NormedAddCommGroup E) (_ : NormedSpace ℂ E) (φ : BMol → E) (U : Set BMol) (f_star : BMol),
     Rfast f_star = f_star ∧
     IsFastRenormalizable f_star ∧
     f_star ∈ U ∧

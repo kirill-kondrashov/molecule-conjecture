@@ -257,10 +257,10 @@ Given that D0 is the preimage of a ball under z^deg restricted properly,
 and y is in the ball, then the number of preimages in D0 is deg.
 -/
 lemma preimage_roots_cardinality {deg : ℕ} {y : ℂ} (h_deg : deg ≥ 1)
-    (h_y_in_D : y ∈ Metric.ball 0 0.1)
+    (_h_y_in_D : y ∈ Metric.ball 0 0.1)
     (D0 : Set ℂ) (h_D0_open : IsOpen D0) (h_0_in_D0 : 0 ∈ D0)
     (D_target : Set ℂ) (h_target_open : IsOpen D_target) [ConnectedSpace D_target]
-    (h_target_sub : D_target ⊆ Metric.ball 0 0.1)
+    (_h_target_sub : D_target ⊆ Metric.ball 0 0.1)
     (h_y_in_target : y ∈ D_target)
     (h_maps : MapsTo (fun z => z^deg) D0 D_target)
     (h_proper : IsProperMap (MapsTo.restrict (fun z => z^deg) D0 D_target h_maps))
@@ -304,8 +304,8 @@ lemma y_in_component_of_ball {D_target : Set ℂ} {r : ℝ} (hr : 0 < r)
 Lemma: 0 in component
 -/
 lemma zero_in_component_of_D0 {f : ℂ → ℂ} {D0 D_target : Set ℂ} {n : ℕ}
-  (h_f_eq : ∀ z, f z = z^(2^n)) (h_n : n ≥ 1) (h_0_in_D0 : 0 ∈ D0) (h_0_in_Dt : 0 ∈ D_target)
-  (h_maps : MapsTo f D0 D_target) :
+  (h_f_eq : ∀ z, f z = z^(2^n)) (_h_n : n ≥ 1) (h_0_in_D0 : 0 ∈ D0) (h_0_in_Dt : 0 ∈ D_target)
+  (_h_maps : MapsTo f D0 D_target) :
   0 ∈ D0 ∩ f ⁻¹' connectedComponentIn D_target 0 := by
   constructor
   · exact h_0_in_D0
@@ -465,13 +465,13 @@ lemma defaultBMol_contradicts_bounds {U : Set BMol} (h_default_in_U : defaultBMo
       (deg := deg)
       (y := y)
       (h_deg := by apply Nat.one_le_pow; norm_num)
-      (h_y_in_D := by apply h_Dt_sub hy_in_Dt)
+      (_h_y_in_D := by apply h_Dt_sub hy_in_Dt)
       (D0 := D0_comp)
       (h_D0_open := h_D0_comp_open)
       (h_0_in_D0 := h_0_in_D0_comp)
       (D_target := D_target_comp)
       (h_target_open := h_Dt_comp_open)
-      (h_target_sub := by apply Set.Subset.trans (connectedComponentIn_subset D_target 0) h_Dt_sub)
+      (_h_target_sub := by apply Set.Subset.trans (connectedComponentIn_subset D_target 0) h_Dt_sub)
       (h_y_in_target := h_y_in_comp)
       (h_maps := h_maps_cast)
       (h_proper := h_proper_cast)

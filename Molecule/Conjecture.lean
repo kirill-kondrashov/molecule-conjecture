@@ -86,7 +86,7 @@ def Rprm_combinatorial_model : {x : Mol // x ≠ cusp} → {x : Mol // x ≠ cus
 
 -- Link the axiomatic model to our construction
 lemma Rprm_model_consistent :
-  ∀ (c : {x : Mol // x ≠ cusp}),
+  ∀ (_ : {x : Mol // x ≠ cusp}),
     -- Placeholder: relating the abstract model to MoleculeMap or Rprm_angle
     True := Rprm_model_consistent_proof
 

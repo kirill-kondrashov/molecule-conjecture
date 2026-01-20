@@ -41,7 +41,7 @@ noncomputable def construct_pseudo_siegel_disk (f_star : BMol) (D : Set ℂ) : S
 
 /-- The constructed pseudo-Siegel disk is a quasidisk. -/
 lemma ps_disk_quasidisk (f_star : BMol) (D : Set ℂ)
-  (h_fixed : Rfast f_star = f_star) (h_fast : IsFastRenormalizable f_star)
+  (h_fixed : Rfast f_star = f_star) (_ : IsFastRenormalizable f_star)
   (h_open : IsOpen D) (h_crit : criticalValue f_star ∈ D) :
   IsQuasidisk (construct_pseudo_siegel_disk f_star D) := by
     rw [construct_pseudo_siegel_disk]
@@ -80,7 +80,7 @@ lemma ps_disk_subset (f_star : BMol) (D : Set ℂ) :
 
 /-- The constructed pseudo-Siegel disk is pseudo-invariant. -/
 lemma ps_disk_invariant (f_star : BMol) (D : Set ℂ)
-  (h_fixed : Rfast f_star = f_star) (h_fast : IsFastRenormalizable f_star)
+  (h_fixed : Rfast f_star = f_star) (_ : IsFastRenormalizable f_star)
   (h_open : IsOpen D) (h_crit : criticalValue f_star ∈ D) :
   PseudoInvariant f_star (construct_pseudo_siegel_disk f_star D) := by
     rw [construct_pseudo_siegel_disk]

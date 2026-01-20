@@ -41,7 +41,7 @@ noncomputable instance : NormedSpace ℂ SliceSpace := SliceSpace_normedSpace
 axiom slice_chart (f_star : BMol) : BMol → SliceSpace
 
 /-- The domain U of the chart. -/
-def slice_domain (f_star : BMol) : Set BMol := univ
+def slice_domain (_ : BMol) : Set BMol := univ
 
 /-- The operator F. -/
 axiom slice_operator (f_star : BMol) : SliceSpace → SliceSpace
