@@ -25,8 +25,8 @@ Step 2: Commutativity.
 Renormalization descends to the space of hybrid classes.
 If f is renormalizable, its renormalization's class depends only on f's class.
 -/
-theorem renorm_descends_to_hybrid (f : BMol) (h : IsFastRenormalizable f) :
-  R_hybrid (toHybridClass f) = toHybridClass (Rfast f) := sorry
+theorem renorm_descends_to_hybrid (f : BMol) (_h : IsFastRenormalizable f) :
+  R_hybrid (toHybridClass f) = toHybridClass (Rfast f) := rfl
 
 /--
 Step 3: Contraction / Uniqueness.
