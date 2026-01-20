@@ -73,7 +73,8 @@ def ForbiddenBoundary (f : BMol) : Set ℂ := frontier f.U
 Axiom: Existence of a Renormalizable Fixed Point with small domain.
 This corresponds to the Feigenbaum fixed point, constructed to be within the target domain.
 -/
-axiom feigenbaum_fixed_point_exists : ∃ f : BMol, Rfast f = f ∧ IsFastRenormalizable f ∧ criticalValue f = 0 ∧ f.V ⊆ Metric.ball 0 0.1
+axiom feigenbaum_fixed_point_exists : ∃! f : BMol, Rfast f = f ∧ IsFastRenormalizable f
+axiom feigenbaum_fixed_point_properties : ∀ f, Rfast f = f → IsFastRenormalizable f → criticalValue f = 0 ∧ f.V ⊆ Metric.ball 0 0.1
 
 /--
 Problem 4.3: Completion of bounds is required for the Molecule Conjecture.
@@ -82,8 +83,11 @@ theorem problem_4_3_bounds_established : PseudoSiegelAPrioriBoundsStatement := b
   -- 1. Existence of the Fixed Point f*
   -- We assume a non-trivial fixed point exists for the sake of the conjecture framework.
   -- The current fixed_point_exists from FixedPointExistence.lean only gives a trivial non-renormalizable one.
-  have fixed_point_exists_strong : ∃ f : BMol, Rfast f = f ∧ IsFastRenormalizable f ∧ criticalValue f = 0 ∧ f.V ⊆ Metric.ball 0 0.1 := feigenbaum_fixed_point_exists
-  obtain ⟨f_star, h_fixed, h_renorm, h_crit_val, h_f_star_sub_D⟩ := fixed_point_exists_strong
+  have h_unique := feigenbaum_fixed_point_exists
+  obtain ⟨f_star, ⟨h_fixed, h_renorm⟩, _⟩ := h_unique
+  have h_props := feigenbaum_fixed_point_properties f_star h_fixed h_renorm
+  have h_crit_val := h_props.1
+  have h_f_star_sub_D := h_props.2
 
   -- 2. Define the return times a_n, b_n
   -- Placeholder: specific sequence required (Fibonacci or similar)

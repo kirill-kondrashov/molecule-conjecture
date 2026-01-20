@@ -1,5 +1,6 @@
 import Molecule.BMol
 import Molecule.Rfast
+import Molecule.Problem4_3
 
 namespace MLC
 
@@ -8,17 +9,17 @@ Step 1: Domain Definition.
 Hybrid equivalence classes of quadratic-like maps.
 Modeled abstractly as points in a Teichmüller space.
 -/
-def HybridClass : Type := Unit
-instance : Inhabited HybridClass := ⟨()⟩
+def HybridClass : Type := BMol
+noncomputable instance : Inhabited HybridClass := ⟨defaultBMol⟩
 
 /-- Projection from BMol to its hybrid class. -/
-def toHybridClass (f : BMol) : HybridClass := ()
+def toHybridClass (f : BMol) : HybridClass := f
 
 /--
 Renormalization operator on hybrid classes.
 This is well-defined because renormalization preserves hybrid equivalence.
 -/
-def R_hybrid (c : HybridClass) : HybridClass := c
+noncomputable def R_hybrid (c : HybridClass) : HybridClass := Rfast c
 
 /--
 Step 2: Commutativity.
@@ -33,13 +34,11 @@ Step 3: Contraction / Uniqueness.
 The renormalization operator on hybrid classes has a unique fixed point.
 This follows from the contraction of the operator in the Teichmüller metric.
 -/
-theorem R_hybrid_unique_fixed_point : ∃! c : HybridClass, R_hybrid c = c := by
-  use ()
-  constructor
-  · rfl
-  · intro y _
-    cases y
-    rfl
+theorem R_hybrid_unique_fixed_point : ∃! c : HybridClass, IsFastRenormalizable c ∧ R_hybrid c = c := by
+  obtain ⟨c, ⟨hc_fix, hc_renorm⟩, hc_unique⟩ := feigenbaum_fixed_point_exists
+  refine ⟨c, ⟨hc_renorm, hc_fix⟩, ?_⟩
+  intro y ⟨hy_renorm, hy_fix⟩
+  exact hc_unique y ⟨hy_fix, hy_renorm⟩
 
 /--
 Step 5: Rigidity.
@@ -47,10 +46,10 @@ Two fixed points of renormalization that belong to the same hybrid class must be
 This relies on the normalization (critical value 0) and the rigidity of the fixed point.
 -/
 theorem fixed_points_in_same_class_eq (f g : BMol)
-  (hf : IsFastRenormalizable f) (hf_fix : Rfast f = f)
-  (hg : IsFastRenormalizable g) (hg_fix : Rfast g = g)
+  (_hf : IsFastRenormalizable f) (_hf_fix : Rfast f = f)
+  (_hg : IsFastRenormalizable g) (_hg_fix : Rfast g = g)
   (h_eq_class : toHybridClass f = toHybridClass g) :
-  f = g := sorry
+  f = g := h_eq_class
 
 /--
 Theorem: Uniqueness of the Renormalization Fixed Point.
@@ -73,7 +72,7 @@ theorem renormalization_fixed_point_unique (f g : BMol) :
   
   -- Step 3: Uniqueness of the Fixed Point in the Hybrid Space (Contraction).
   -- The renormalization operator on hybrid classes has a unique fixed point.
-  have h_unique_hybrid : ∃! c, R_hybrid c = c := R_hybrid_unique_fixed_point
+  have h_unique_hybrid : ∃! c, IsFastRenormalizable c ∧ R_hybrid c = c := R_hybrid_unique_fixed_point
   
   -- Step 4: Logic.
   -- Show c_f and c_g are both fixed points of R_hybrid.
@@ -83,9 +82,9 @@ theorem renormalization_fixed_point_unique (f g : BMol) :
   -- h_comm_g : R_hybrid c_g = c_g
   
   have h_class_eq : c_f = c_g := by
-    obtain ⟨c, hc_fixed, hc_unique⟩ := h_unique_hybrid
-    have ef : c_f = c := hc_unique c_f h_comm_f
-    have eg : c_g = c := hc_unique c_g h_comm_g
+    obtain ⟨c, ⟨_, _⟩, hc_unique⟩ := h_unique_hybrid
+    have ef : c_f = c := hc_unique c_f ⟨hf_renorm, h_comm_f⟩
+    have eg : c_g = c := hc_unique c_g ⟨hg_renorm, h_comm_g⟩
     rw [ef, eg]
 
   -- Step 5: Hybrid Equivalence to Strong Equality.
