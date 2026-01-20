@@ -250,8 +250,11 @@ lemma pow_image_subset_target {f : ℂ → ℂ} {D_target : Set ℂ}
 
 lemma isClosedEmbedding_inclusion {X : Type*} [TopologicalSpace X] {s t : Set X} (h : s ⊆ t)
     (h_closed : IsClosed {x : t | x.val ∈ s}) : IsClosedEmbedding (Set.inclusion h) := by
-  refine ⟨⟨⟨?_⟩, Set.inclusion_injective h⟩, ?_⟩
-  · sorry
+  constructor
+  · constructor
+    · rw [← IsInducing.of_comp_iff (g := (Subtype.val : t → X)) ⟨rfl⟩]
+      exact ⟨rfl⟩
+    · exact Set.inclusion_injective h
   · rw [Set.range_inclusion h]
     exact h_closed
 
