@@ -5,6 +5,7 @@ import Molecule.Problem4_3
 import Molecule.BoundsToHyperbolicity
 import Molecule.FixedPointExistence
 import Molecule.ProperMapLemmas
+import Molecule.RenormalizationFixedPointUniqueness
 import Mathlib.Analysis.Complex.Polynomial.Basic
 import Mathlib.Topology.Connected.Basic
 import Mathlib.Topology.Connected.LocallyConnected
@@ -510,15 +511,6 @@ theorem Rfast_theorem_1_1 :
     exact problem_4_3_bounds_established
   have h_exists : ∃ f, IsFastRenormalizable f ∧ Rfast f = f := renormalizable_fixed_point_exists
   exact ⟨h_hyp, h_exists⟩
-
-/--
-Axiom: Uniqueness of the Renormalization Fixed Point.
-This is a known result (universality) but we assume it here to link existence and hyperbolicity.
--/
-axiom renormalization_fixed_point_unique (f g : BMol) :
-  IsFastRenormalizable f → Rfast f = f →
-  IsFastRenormalizable g → Rfast g = g →
-  f = g
 
 theorem Rfast_fixed_point_properties :
   ∀ f, IsFastRenormalizable f → Rfast f = f →
