@@ -408,7 +408,7 @@ lemma pow_preimage_connected_component_eq {deg : ℕ} (h_deg : 0 < deg)
       · subst hx0; rw [zero_pow (Nat.pos_iff_ne_zero.mp h_deg)] at hfx_eq_fz
         have : z = 0 := eq_zero_of_pow_eq_zero hfx_eq_fz.symm
         refine ⟨1, ?_⟩
-        simp [h_deg, this]
+        simp [this]
       · refine ⟨z / x, ?_⟩
         constructor
         · rw [div_pow, hfx_eq_fz]
