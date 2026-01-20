@@ -380,15 +380,10 @@ lemma pow_preimage_connected_component_eq {deg : ℕ} (h_deg : 0 < deg)
   
   have hfC_nonempty : (Subtype.val ⁻¹' (f '' C) : Set D_target).Nonempty := by
     use ⟨f 0, h_maps h_0_in_D0⟩
-    simp only [mem_preimage, mem_image, Subtype.coe_mk]
+    simp only [mem_preimage, mem_image]
     use 0
-    constructor
-    · dsimp [C]
-      rw [connectedComponentIn, dif_pos h0_in_pre]
-      simp only [mem_image, Subtype.exists, exists_and_right, exists_eq_right]
-      exact ⟨h0_in_pre, mem_connectedComponent_refl _⟩
-    · rw [hf]; simp [zero_pow (Nat.pos_iff_ne_zero.mp h_deg)]
-  
+    exact ⟨mem_connectedComponentIn h0_in_pre, rfl⟩
+
   have hfC_univ : Subtype.val ⁻¹' (f '' C) = univ := 
     isClopen_iff.mp hfC_clopen |>.resolve_left hfC_nonempty.ne_empty
   
