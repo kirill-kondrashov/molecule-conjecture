@@ -69,7 +69,11 @@ lemma renorm_maps_to (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ →
   rw [h_psi, Set.image_id, Set.image_id]
   exact (renormalization_orbit_control f_star D U a b h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D n t f h_n_ge_1 h_t_in_set h_f_in_preimage).1
 
-lemma renorm_D0_open (f : BMol) (n : ℕ) : IsOpen (renorm_D0 f n) := by sorry
+lemma renorm_D0_open (f : BMol) (n : ℕ) : IsOpen (renorm_D0 f n) := by
+  have h_psi : renorm_Ψ f n = id := by ext; rfl
+  dsimp [renorm_D0]
+  rw [h_psi, Set.image_id]
+  exact (renorm_g f n).isOpen_U
 
 lemma renorm_D_target_open (f : BMol) (n : ℕ) : IsOpen (renorm_D_target f n) := by sorry
 
