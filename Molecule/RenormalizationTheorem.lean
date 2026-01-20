@@ -242,7 +242,7 @@ lemma proper_pow_preimage_eq_generalized {deg : ℕ} (h_deg : 0 < deg)
   -- 3. Conclusion
   have h_eq : {x : D_pre | x.val ∈ D0} = Set.univ := by
     apply IsClopen.eq_univ h_clopen
-    use ⟨(0:ℂ), by rw [mem_preimage]; dsimp [f]; rw [zero_pow (Nat.pos_iff_ne_zero.mp h_deg)]; apply h_maps h_0_in_D0⟩
+    use ⟨(0:ℂ), by rw [mem_preimage]; dsimp [f]; rw [zero_pow (Nat.pos_iff_ne_zero.mp h_deg)]; convert h_maps h_0_in_D0; symm; rw [zero_pow (Nat.pos_iff_ne_zero.mp h_deg)]⟩
     exact h_0_in_D0
 
   ext z

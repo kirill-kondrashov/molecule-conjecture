@@ -1,5 +1,9 @@
 import Mathlib.Analysis.Complex.Basic
+import Mathlib.Analysis.Complex.OpenMapping
 import Mathlib.Analysis.Analytic.Basic
+import Mathlib.Analysis.Analytic.Within
+import Mathlib.Analysis.Analytic.Linear
+import Mathlib.Analysis.Analytic.Constructions
 import Mathlib.Topology.Maps.Proper.Basic
 import Mathlib.Topology.Maps.Proper.CompactlyGenerated
 import Mathlib.Topology.Connected.LocallyConnected
@@ -11,7 +15,7 @@ import Mathlib.Data.Set.Card
 
 namespace MLC
 
-open Complex Topology Set
+open Complex Topology Set Filter
 
 /--
 Lemma: If a restriction of a continuous map to a subset D0 is proper, then D0 is closed in the preimage of the target.
@@ -136,12 +140,12 @@ lemma isClosed_intersection_with_component {D_pre D0 : Set ℂ}
   have h_cont : Continuous inc := continuous_subtype_val.subtype_mk _
   have : {x : D0 | ∃ h : x.val ∈ D_pre, (⟨x.val, h⟩ : D_pre) ∈ C} = inc ⁻¹' C := by
     ext x
-    simp [inc]
+    simp only [inc, mem_preimage]
     constructor
-    · intro ⟨h, hc⟩
+    · rintro ⟨h, hc⟩
       convert hc
     · intro hc
-      use (h_subset x.property)
+      exact ⟨_, hc⟩
   rw [this]
   exact IsClosed.preimage h_cont h_C_closed_in_pre
 
@@ -188,7 +192,7 @@ lemma component_invariant_under_rotation {deg : ℕ} (h_deg : 0 < deg)
     rw [mul_pow, hζ, one_mul]
     -- z ∈ C, so z ∈ f⁻¹(D_target)
     rw [h_C_comp] at hz
-    have : z ∈ f ⁻¹' D_target := connectedComponentIn_subset _ _ hz
+    have : z ∈ f ⁻¹' D_target := connectedComponentIn_subset (f ⁻¹' D_target) 0 hz
     rw [mem_preimage, hf] at this
     dsimp at this
     exact this
@@ -211,6 +215,120 @@ lemma component_invariant_under_rotation {deg : ℕ} (h_deg : 0 < deg)
   exact h_goal
 
 /--
+Helper lemma: The power map is an open map.
+-/
+lemma pow_isOpenMap {deg : ℕ} (h_deg : 0 < deg) {f : ℂ → ℂ} (hf : f = fun z => z^deg) :
+    IsOpenMap f := by
+  rw [hf]
+  let p := fun z : ℂ => z^deg
+  have h_anal : AnalyticOnNhd ℂ p univ := by
+    intro z _
+    have h_id : AnalyticAt ℂ (fun w => w) z := analyticAt_id
+    exact h_id.pow deg
+  rcases h_anal.is_constant_or_isOpen isPreconnected_univ with ⟨w, hw⟩ | h_open
+  · exfalso
+    have h0 : p 0 = w := hw 0 (mem_univ _)
+    have h1 : p 1 = w := hw 1 (mem_univ _)
+    dsimp [p] at h0 h1
+    rw [zero_pow (Nat.pos_iff_ne_zero.mp h_deg)] at h0
+    rw [one_pow] at h1
+    rw [← h0] at h1
+    exact one_ne_zero h1
+  · intro U hU
+    exact h_open U (subset_univ _) hU
+
+/--
+Helper lemma: The image of the connected component is a subset of the target.
+-/
+lemma pow_image_subset_target {f : ℂ → ℂ} {D_target : Set ℂ}
+    (C : Set ℂ) (hC : C = connectedComponentIn (f ⁻¹' D_target) 0) :
+    f '' C ⊆ D_target := by
+  rw [hC]
+  intro y hy
+  rcases hy with ⟨x, hx, rfl⟩
+  exact (connectedComponentIn_subset (f ⁻¹' D_target) 0 hx)
+
+lemma isClosedEmbedding_inclusion {X : Type*} [TopologicalSpace X] {s t : Set X} (h : s ⊆ t)
+    (h_closed : IsClosed {x : t | x.val ∈ s}) : IsClosedEmbedding (Set.inclusion h) := by
+  refine ⟨⟨⟨?_⟩, Set.inclusion_injective h⟩, ?_⟩
+  · sorry
+  · rw [Set.range_inclusion h]
+    exact h_closed
+
+/--
+Helper lemma: The image of the connected component is closed in the target.
+-/
+lemma pow_image_closed_in_target (deg : ℕ)
+    {D_target : Set ℂ} {D0 : Set ℂ} {f : ℂ → ℂ}
+    (h_maps : MapsTo f D0 D_target)
+    (h_proper : IsProperMap (MapsTo.restrict f D0 D_target h_maps))
+    (h_clopen : IsClopen {x : f ⁻¹' D_target | x.val ∈ D0})
+    (h0_in_pre : 0 ∈ f ⁻¹' D_target)
+    (h_0_in_D0 : 0 ∈ D0)
+    (C : Set ℂ) (hC : C = connectedComponentIn (f ⁻¹' D_target) 0) :
+    IsClosed (Subtype.val ⁻¹' (f '' C) : Set D_target) := by
+  let D_pre := f ⁻¹' D_target
+  let C_subtype := {x : ℂ | x ∈ C}
+  have hfC_sub : f '' C ⊆ D_target := pow_image_subset_target C hC
+  have h_maps_C : MapsTo f C_subtype D_target := fun x hx => hfC_sub ⟨x, hx, rfl⟩
+  let f_C := MapsTo.restrict f C_subtype D_target h_maps_C
+  
+  have h_f_C_proper : IsProperMap f_C := by
+    have hD0_sub_pre : D0 ⊆ D_pre := h_maps
+    have hC_sub_D0 : C ⊆ D0 := by
+      intro x hx
+      -- Need to show x ∈ D0.
+      let U := {z : D_pre | z.val ∈ D0}
+      have hU_clopen : IsClopen U := h_clopen
+      have h0_U : (⟨0, h0_in_pre⟩ : D_pre) ∈ U := h_0_in_D0
+      have h_comp_sub : connectedComponent (⟨0, h0_in_pre⟩ : D_pre) ⊆ U := 
+        hU_clopen.connectedComponent_subset h0_U
+      
+      -- x ∈ C means x ∈ D_pre and ⟨x, _⟩ ∈ connectedComponent ...
+      have hx_pre : x ∈ D_pre := connectedComponentIn_subset (f ⁻¹' D_target) 0 (by rw [←hC]; exact hx)
+      have hx_comp : (⟨x, hx_pre⟩ : D_pre) ∈ connectedComponent (⟨0, h0_in_pre⟩ : D_pre) := by
+        rw [hC] at hx
+        simp [connectedComponentIn] at hx
+        rw [dif_pos h0_in_pre] at hx
+        rcases hx with ⟨y, hy, rfl⟩
+        exact hy
+      
+      have hx_U := h_comp_sub hx_comp
+      exact hx_U
+      
+    have hC_closed_in_D0 : IsClosed {x : D0 | x.val ∈ C} := by
+      let inc : D0 → D_pre := fun x => ⟨x.val, hD0_sub_pre x.property⟩
+      have h_inc_cont : Continuous inc := continuous_subtype_val.subtype_mk _
+      have hC_closed_in_pre : IsClosed (connectedComponent (⟨0, h0_in_pre⟩ : D_pre)) := isClosed_connectedComponent
+      have : {x : D0 | x.val ∈ C} = inc ⁻¹' (connectedComponent (⟨0, h0_in_pre⟩ : D_pre)) := by
+        sorry
+      rw [this]
+      apply IsClosed.preimage h_inc_cont hC_closed_in_pre
+    
+    let f_res := MapsTo.restrict f D0 D_target h_maps
+    let inc_C : C_subtype → D0 := Set.inclusion hC_sub_D0
+    have h_inc_C : IsClosedEmbedding inc_C := 
+      isClosedEmbedding_inclusion hC_sub_D0 hC_closed_in_D0
+    have h_comp : f_C = f_res ∘ inc_C := by ext ⟨x, hx⟩; rfl
+    rw [h_comp]
+    apply IsProperMap.comp h_proper h_inc_C.isProperMap
+  
+  have h_closed_map := h_f_C_proper.isClosedMap
+  have h_univ_closed : IsClosed (univ : Set C_subtype) := isClosed_univ
+  have h_img_eq : f_C '' univ = Subtype.val ⁻¹' (f '' C) := by
+    ext y
+    constructor
+    · rintro ⟨⟨x, hx⟩, -, hy⟩
+      refine ⟨x, hx, ?_⟩
+      rw [← hy]; rfl
+    · rintro ⟨x, hx, hy⟩
+      refine ⟨⟨x, hx⟩, mem_univ _, ?_⟩
+      apply Subtype.ext
+      exact hy
+  rw [← h_img_eq]
+  apply h_closed_map univ h_univ_closed
+
+/--
 The connected component of the origin in the preimage of a disk under a power map
 is the entire preimage. This is a key step in showing the preimage is connected.
 -/
@@ -223,8 +341,63 @@ lemma pow_preimage_connected_component_eq {deg : ℕ} (h_deg : 0 < deg)
     (h_clopen : IsClopen {x : f ⁻¹' D_target | x.val ∈ D0})
     (h0_in_pre : 0 ∈ f ⁻¹' D_target) :
     connectedComponentIn (f ⁻¹' D_target) 0 = f ⁻¹' D_target := by
-  -- Structure provided, using sorry for the long topological proof
-  sorry
+  let D_pre := f ⁻¹' D_target
+  let C := connectedComponentIn D_pre 0
+  have h_f_cont : Continuous f := by rw [hf]; exact continuous_pow deg
+  have h_pre_open : IsOpen D_pre := h_target_open.preimage h_f_cont
+  
+  -- 1. C is open in ℂ
+  have hC_open : IsOpen C := h_pre_open.connectedComponentIn
+
+  -- 2. f is an open map
+  have hf_open : IsOpenMap f := pow_isOpenMap h_deg hf
+
+  -- 3. f(C) is open in D_target
+  have hfC_open : IsOpen (f '' C) := hf_open C hC_open
+  
+  -- 4. f(C) is closed in D_target
+  have hfC_closed_in_target : IsClosed (Subtype.val ⁻¹' (f '' C) : Set D_target) :=
+    pow_image_closed_in_target deg h_maps h_proper h_clopen h0_in_pre h_0_in_D0 C rfl
+
+  -- 5. f(C) = D_target
+  have hfC_open_in_target : IsOpen (Subtype.val ⁻¹' (f '' C) : Set D_target) := by
+    rw [isOpen_induced_iff]
+    exact ⟨f '' C, hfC_open, rfl⟩
+  
+  have hfC_clopen : IsClopen (Subtype.val ⁻¹' (f '' C) : Set D_target) := ⟨hfC_closed_in_target, hfC_open_in_target⟩
+  
+  have hfC_nonempty : (Subtype.val ⁻¹' (f '' C) : Set D_target).Nonempty := by
+    sorry
+  
+  have hfC_univ : Subtype.val ⁻¹' (f '' C) = univ := 
+    isClopen_iff.mp hfC_clopen |>.resolve_left hfC_nonempty.ne_empty
+  
+  have hfC_eq_target : f '' C = D_target := by
+    sorry
+
+  -- 6. C = D_pre
+  apply subset_antisymm
+  · exact connectedComponentIn_subset _ _
+  · intro z hz
+    rw [mem_preimage] at hz
+    have : f z ∈ f '' C := by rw [hfC_eq_target]; exact hz
+    rcases this with ⟨x, hx, hfx_eq_fz⟩
+    rw [hf] at hfx_eq_fz; dsimp at hfx_eq_fz
+    have h_ex_zeta : ∃ ζ : ℂ, ζ^deg = 1 ∧ z = ζ * x := by
+      by_cases hx0 : x = 0
+      · subst hx0; rw [zero_pow (Nat.pos_iff_ne_zero.mp h_deg)] at hfx_eq_fz
+        have : z = 0 := eq_zero_of_pow_eq_zero hfx_eq_fz.symm
+        refine ⟨1, ?_⟩
+        simp [h_deg, this]
+      · refine ⟨z / x, ?_⟩
+        constructor
+        · rw [div_pow, hfx_eq_fz]
+          rw [← hfx_eq_fz]
+          rw [div_self (pow_ne_zero deg hx0)]
+        · exact (div_mul_cancel₀ z hx0).symm
+    rcases h_ex_zeta with ⟨ζ, hζ, rfl⟩
+    apply component_invariant_under_rotation h_deg hf h_maps h_0_in_D0 C rfl ζ hζ
+    refine ⟨x, hx, rfl⟩
 
 /--
 Lemma 4: The preimage of a connected set under a proper power map is connected (if it contains 0).
