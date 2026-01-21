@@ -4,6 +4,7 @@ import Molecule.RfastHorseshoe
 import Molecule.Construction
 import Molecule.Problem4_3_Lemmas
 import Yoccoz.Quadratic.Complex.Basic
+import Molecule.FeigenbaumFixedPoint
 
 namespace MLC
 
@@ -69,12 +70,7 @@ Ideally, this is the boundary of the domain of definition of f.
 -/
 def ForbiddenBoundary (f : BMol) : Set ℂ := frontier f.U
 
-/--
-Axiom: Existence of a Renormalizable Fixed Point with small domain.
-This corresponds to the Feigenbaum fixed point, constructed to be within the target domain.
--/
-axiom feigenbaum_fixed_point_exists : ∃! f : BMol, Rfast f = f ∧ IsFastRenormalizable f
-axiom feigenbaum_fixed_point_properties : ∀ f, Rfast f = f → IsFastRenormalizable f → criticalValue f = 0 ∧ f.V ⊆ Metric.ball 0 0.1
+
 
 /--
 Problem 4.3: Completion of bounds is required for the Molecule Conjecture.
