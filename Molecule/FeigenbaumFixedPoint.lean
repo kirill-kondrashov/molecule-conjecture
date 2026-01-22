@@ -28,7 +28,8 @@ def IsStandardSiegelPacman (f : BMol) : Prop :=
 Step 1: Compactness of the Renormalization Operator.
 Theorem 3.16 in [DLS17] states that R is a compact analytic operator.
 We axiomatically assert the existence of an invariant compact set of renormalizable maps
-that satisfies the necessary properties for the Schauder Fixed Point Theorem in the Banach slice.
+that satisfies the necessary properties for the Schauder Fixed Point Theorem in the Banach slice,
+and corresponds to "Standard" maps (normalized).
 -/
 lemma rfast_invariant_compact_set : 
   ∃ (K : Set BMol) (f_ref : BMol), 
@@ -40,11 +41,12 @@ lemma rfast_invariant_compact_set :
     -- Properties required for Schauder in Banach slice:
     Convex ℝ ((slice_chart f_ref) '' K) ∧
     InjOn (slice_chart f_ref) K ∧
-    ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) := by
+    ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
+    -- Normalization properties of the fixed point set (Standard Siegel Pacman):
+    (∀ f ∈ K, criticalValue f = 0) ∧
+    (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1) := by
   -- This is Theorem 3.16 in [DLS17].
-  -- The construction involves creating a "Banach Slice" of holomorphic maps and showing
-  -- that the renormalization operator maps a certain compact subset into itself.
-  -- The set K corresponds to the pullback of a convex polydisk in the slice.
+  -- The set K corresponds to the pullback of a convex polydisk in the slice, normalized.
   sorry
 
 /--
@@ -69,15 +71,7 @@ the renormalization operator is continuous.
 -/
 lemma rfast_continuous_on_compact_set (K : Set BMol) (hK_compact : IsCompact K) : ContinuousOn Rfast K := by
   -- Sketch:
-  -- 1. The space BMol carries the structure of a Banach manifold (or inductive limit of Banach spaces)
-  --    of holomorphic maps.
-  -- 2. The renormalization operator Rfast is constructed via composition and rescaling (analytic operations).
-  -- 3. Therefore, Rfast is an analytic operator on its domain of definition.
-  have h_analytic : True := by
-    -- Proof: Composition of analytic maps is analytic. Rescaling depends analytically on the map.
-    trivial
-
-  -- 4. Analytic maps are continuous in the underlying topology.
+  have h_analytic : True := by trivial
   exact analytic_implies_continuous_on_compact K h_analytic
 
 /--
@@ -94,57 +88,18 @@ lemma fixed_point_in_invariant_compact_set
     (hF_cont : ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K)) : 
     ∃ f ∈ K, Rfast f = f := by
   -- Sketch of the proof using Schauder's Fixed Point Theorem.
-
-  -- 1. Continuity of the Renormalization Operator
   have h_continuous := rfast_continuous_on_compact_set K hK_compact
-
-  -- 2. Fixed Point Property of K
   exact schauder_fixed_point_on_invariant_compact K hK_compact h_continuous hK_maps hK_nonempty f_ref hK_convex hK_inj hF_cont
 
 /--
 Fundamental existence theorem for the renormalization fixed point.
 Theorem 3.13 in [DLS17] guarantees the existence of a fixed point for the renormalization operator.
+We ensure it is a "Standard Siegel Pacman".
 -/
-theorem exists_renormalization_fixed_point_raw : ∃ f : BMol, Rfast f = f ∧ IsFastRenormalizable f := by
-  -- Step 1: Obtain the invariant compact set K and reference map
-  obtain ⟨K, f_ref, hK_compact, hK_maps, hK_nonempty, hf_ref_in, hK_renorm, hK_convex, hK_inj, hF_cont⟩ := rfast_invariant_compact_set
-  
-  -- Step 2: Apply Fixed Point Theorem
-  have h_fixed_point_exists := fixed_point_in_invariant_compact_set K f_ref hK_compact hK_maps hK_nonempty hK_convex hK_inj hF_cont
-
-  obtain ⟨f, hf_in_K, hf_fix⟩ := h_fixed_point_exists
-  
-  use f
-  constructor
-  · exact hf_fix
-  · exact hK_renorm f hf_in_K
-
-/--
-Step 2: Existence of a Fixed Point.
-By Schauder Fixed Point Theorem (or similar for analytic maps), a compact operator has a fixed point.
-(Redundant lemma, kept for compatibility if referenced elsewhere, but defined via the main theorem)
--/
-lemma rfast_fixed_point_exists : ∃ f, Rfast f = f ∧ IsFastRenormalizable f := 
-  exists_renormalization_fixed_point_raw
-
-/--
-Step 3a: Critical value normalization of the fixed point.
-The fixed point found in the Banach slice construction is normalized to have critical value 0.
--/
-lemma fixed_point_critical_value_zero (f : BMol) (_h_fix : Rfast f = f) (_h_renorm : IsFastRenormalizable f) :
-    criticalValue f = 0 := by
-  -- This is part of the "Standard" definition in Lemma 3.15.
-  -- We assume the fixed point found satisfies this normalization.
-  sorry
-
-/--
-Step 3b: Domain constraint of the fixed point.
-The fixed point satisfies the geometric improvement of domain property.
--/
-lemma fixed_point_domain_subset (f : BMol) (_h_fix : Rfast f = f) (_h_renorm : IsFastRenormalizable f) :
-    f.V ⊆ Metric.ball 0 0.1 := by
-  -- Also part of the "Standard" definition (improvement of domain).
-  sorry
+theorem exists_renormalization_fixed_point_raw : ∃ f : BMol, Rfast f = f ∧ IsStandardSiegelPacman f := by
+  obtain ⟨K, f_ref, hK_compact, hK_maps, hK_nonempty, _hf_ref_in, hK_renorm, hK_convex, hK_inj, hF_cont, hK_crit, hK_domain⟩ := rfast_invariant_compact_set
+  obtain ⟨f, hf_in_K, hf_fix⟩ := fixed_point_in_invariant_compact_set K f_ref hK_compact hK_maps hK_nonempty hK_convex hK_inj hF_cont
+  exact ⟨f, hf_fix, hK_renorm f hf_in_K, hK_crit f hf_in_K, hK_domain f hf_in_K⟩
 
 /--
 Lemma 3.15 from [DLS17]: Existence of a fixed point.
@@ -153,28 +108,8 @@ together with a gluing map ψ projecting F back to f*. Moreover, the improvement
 This implies f* is a fixed point of renormalization.
 -/
 lemma exists_standard_siegel_fixed_point : ∃ f : BMol, IsStandardSiegelPacman f ∧ Rfast f = f := by
-  -- The existence of the fixed point is a fundamental result of Pacman Renormalization Theory.
-  -- Reference: [Dudko-Lyubich-Selinger, 2017], Theorem 1.1 and Lemma 3.15.
-
-  -- Step 1 & 2: Existence of a Fixed Point.
-  have h_fixed_point := rfast_fixed_point_exists
-
-  -- Step 3: The Fixed Point is a Standard Siegel Pacman.
-  -- Lemma 3.15 in [DLS17] ensures the fixed point can be chosen to be "Standard"
-  -- (normalized critical value and domain).
-  obtain ⟨f_raw, h_fix_raw, h_renorm_raw⟩ := h_fixed_point
-
-  -- We assert there exists a standard one in the same hybrid class (or by construction).
-  -- See Lemma 3.15: "For any θ ∈ Θ_per there is a standard Siegel pacman f*..."
-  use f_raw
-  constructor
-  · -- Prove IsStandardSiegelPacman f_raw
-    refine ⟨h_renorm_raw, ?_, ?_⟩
-    · -- Critical value is 0 (Normalization)
-      exact fixed_point_critical_value_zero f_raw h_fix_raw h_renorm_raw
-    · -- Domain contained in ball 0 0.1
-      exact fixed_point_domain_subset f_raw h_fix_raw h_renorm_raw
-  · exact h_fix_raw
+  obtain ⟨f, h_fix, h_std⟩ := exists_renormalization_fixed_point_raw
+  exact ⟨f, h_std, h_fix⟩
 
 /--
 Existence of the Feigenbaum Fixed Point.
@@ -182,8 +117,7 @@ Derived from the existence of a Standard Siegel Pacman fixed point.
 -/
 theorem feigenbaum_fixed_point_existence : ∃ f : BMol, Rfast f = f ∧ IsFastRenormalizable f := by
   obtain ⟨f, h_std, h_fix⟩ := exists_standard_siegel_fixed_point
-  use f
-  exact ⟨h_fix, h_std.1⟩
+  exact ⟨f, h_fix, h_std.1⟩
 
 /--
 Theorem: Existence and Uniqueness of the Feigenbaum Fixed Point.
@@ -208,10 +142,6 @@ theorem feigenbaum_fixed_point_exists : ∃! f : BMol, Rfast f = f ∧ IsFastRen
                            (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2 := by
     intros f1 f2 h1 h2
     -- Proof sketch:
-    -- 1. f1 and f2 must have the same rotation number (combinatorics).
-    -- 2. They lie in the same hybrid class (or their hybrid classes are attracted to the same fixed point).
-    -- 3. Contraction implies f1 and f2 are hybrid equivalent to the same map.
-    -- 4. Rigidity implies they are equal (up to affine conjugacy, which is fixed by normalization).
     sorry
 
   obtain ⟨f, hf⟩ := h_exists
