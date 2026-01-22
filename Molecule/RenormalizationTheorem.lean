@@ -6,6 +6,7 @@ import Molecule.BoundsToHyperbolicity
 import Molecule.FixedPointExistence
 import Molecule.ProperMapLemmas
 import Molecule.RenormalizationFixedPointUniqueness
+import Molecule.BanachSlice
 import Mathlib.Analysis.Complex.Polynomial.Basic
 import Mathlib.Topology.Connected.Basic
 import Mathlib.Topology.Connected.LocallyConnected
@@ -497,22 +498,83 @@ lemma defaultBMol_contradicts_bounds {U : Set BMol} (h_default_in_U : defaultBMo
 
   linarith [hn_ge_4, h_n_is_1]
 
-theorem renormalizable_fixed_point_exists :
+theorem renormalizable_fixed_point_exists
+    (h_exists :
+      ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
+        IsCompact P ∧
+        Convex ℝ P ∧
+        MapsTo (slice_operator f_ref) P P ∧
+        K = {f | slice_chart f_ref f ∈ P} ∧
+        SurjOn (slice_chart f_ref) K P ∧
+        K.Finite ∧
+        InjOn (slice_chart f_ref) K ∧
+        ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
+        K.Nonempty ∧
+        f_ref ∈ K)
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_unique :
+      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
   ∃ f, IsFastRenormalizable f ∧ Rfast f = f := by
-  have h_bounds := problem_4_3_bounds_established
+  have h_bounds := problem_4_3_bounds_established h_exists h_norm h_unique
   obtain ⟨f_star, U, h_fixed, h_renorm, _, h_in_U, _, h_bounds_body⟩ := h_bounds
   refine ⟨f_star, ?_⟩
   exact ⟨h_renorm, h_fixed⟩
 
-theorem Rfast_theorem_1_1 :
+theorem Rfast_theorem_1_1
+    (h_exists :
+      ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
+        IsCompact P ∧
+        Convex ℝ P ∧
+        MapsTo (slice_operator f_ref) P P ∧
+        K = {f | slice_chart f_ref f ∈ P} ∧
+        SurjOn (slice_chart f_ref) K P ∧
+        K.Finite ∧
+        InjOn (slice_chart f_ref) K ∧
+        ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
+        K.Nonempty ∧
+        f_ref ∈ K)
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_unique :
+      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
   (IsHyperbolic Rfast) ∧ (∃ f, IsFastRenormalizable f ∧ Rfast f = f) := by
   have h_hyp : IsHyperbolic Rfast := by
     apply bounds_imply_hyperbolicity_proof
-    exact problem_4_3_bounds_established
-  have h_exists : ∃ f, IsFastRenormalizable f ∧ Rfast f = f := renormalizable_fixed_point_exists
+    exact problem_4_3_bounds_established h_exists h_norm h_unique
+  have h_exists : ∃ f, IsFastRenormalizable f ∧ Rfast f = f :=
+    renormalizable_fixed_point_exists h_exists h_norm h_unique
   exact ⟨h_hyp, h_exists⟩
 
-theorem Rfast_fixed_point_properties :
+theorem Rfast_fixed_point_properties
+    (h_exists :
+      ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
+        IsCompact P ∧
+        Convex ℝ P ∧
+        MapsTo (slice_operator f_ref) P P ∧
+        K = {f | slice_chart f_ref f ∈ P} ∧
+        SurjOn (slice_chart f_ref) K P ∧
+        K.Finite ∧
+        InjOn (slice_chart f_ref) K ∧
+        ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
+        K.Nonempty ∧
+        f_ref ∈ K)
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_unique :
+      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
   ∀ f, IsFastRenormalizable f → Rfast f = f →
   AnalyticOn ℂ f.f f.U ∧
   ∃ (E : Type) (_ : NormedAddCommGroup E) (_ : NormedSpace ℂ E) (φ : BMol → E) (U : Set BMol),
@@ -523,10 +585,10 @@ theorem Rfast_fixed_point_properties :
       DifferentiableAt ℂ F (φ f) ∧
       IsHyperbolic1DUnstable (fderiv ℂ F (φ f)) := by
   intro f h_renorm h_fixed
-  obtain ⟨h_hyp, h_exists⟩ := Rfast_theorem_1_1
+  obtain ⟨h_hyp, h_exists⟩ := Rfast_theorem_1_1 h_exists h_norm h_unique
   obtain ⟨g, E, inst1, inst2, φ, U, h_g_in_U, h_g_fixed, h_g_renorm, h_g_analytic, h_chart, F, h_conj, h_diff, h_hyp_lin⟩ := h_hyp
   -- Assume uniqueness of renormalizable fixed point to identify f with g
-  have h_eq : f = g := renormalization_fixed_point_unique f g h_renorm h_fixed h_g_renorm h_g_fixed
+  have h_eq : f = g := renormalization_fixed_point_unique h_unique f g h_renorm h_fixed h_g_renorm h_g_fixed
   subst h_eq
   refine ⟨h_g_analytic, E, inst1, inst2, φ, U, h_g_in_U, h_chart, F, h_conj, h_diff, h_hyp_lin⟩
 

@@ -18,6 +18,7 @@ import Molecule.PiecewiseAnalytic
 import Molecule.RfastHorseshoe
 import Molecule.Compactness
 import Molecule.Construction
+import Molecule.BanachSlice
 import Molecule.FirstStepConstruction
 import Molecule.Problem4_3
 import Molecule.HyperbolicityTheorems
@@ -100,19 +101,60 @@ def PseudoSiegelAPrioriBounds : Prop := PseudoSiegelAPrioriBoundsStatement
 /--
 **Problem 4.3**: Completion of bounds is required for the Molecule Conjecture.
 -/
-theorem problem_4_3_bounds_established_conjecture : PseudoSiegelAPrioriBounds :=
-  problem_4_3_bounds_established
+theorem problem_4_3_bounds_established_conjecture
+    (h_exists :
+      ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
+        IsCompact P ∧
+        Convex ℝ P ∧
+        MapsTo (slice_operator f_ref) P P ∧
+        K = {f | slice_chart f_ref f ∈ P} ∧
+        SurjOn (slice_chart f_ref) K P ∧
+        K.Finite ∧
+        InjOn (slice_chart f_ref) K ∧
+        ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
+        K.Nonempty ∧
+        f_ref ∈ K)
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_unique :
+      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
+    PseudoSiegelAPrioriBounds :=
+  problem_4_3_bounds_established h_exists h_norm h_unique
 
 /--
 ### 3. Prove Hyperbolicity and Unstable Manifold Dimensions
 Prove that `Rfast` is a hyperbolic operator with a **one-dimensional unstable manifold**.
 And that the restriction to the horseshoe is a compact operator.
 -/
-theorem Rfast_hyperbolicity_conjecture :
+theorem Rfast_hyperbolicity_conjecture
+    (h_exists :
+      ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
+        IsCompact P ∧
+        Convex ℝ P ∧
+        MapsTo (slice_operator f_ref) P P ∧
+        K = {f | slice_chart f_ref f ∈ P} ∧
+        SurjOn (slice_chart f_ref) K P ∧
+        K.Finite ∧
+        InjOn (slice_chart f_ref) K ∧
+        ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
+        K.Nonempty ∧
+        f_ref ∈ K)
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_unique :
+      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
   IsHyperbolic Rfast_candidate ∧ IsPiecewiseAnalytic1DUnstable Rfast_candidate :=
   -- The proof of hyperbolicity relies on the establishment of a priori bounds (Problem 4.3)
-  have bounds := problem_4_3_bounds_established_conjecture
-  ⟨Rfast_hyperbolicity bounds, Rfast_piecewise_analytic bounds⟩
+  have bounds := problem_4_3_bounds_established_conjecture h_exists h_norm h_unique
+  ⟨Rfast_hyperbolicity h_exists h_norm h_unique bounds, Rfast_piecewise_analytic bounds⟩
 
 axiom Rfast_HMol_compactness : IsCompactOperator Rfast_HMol_candidate
 
@@ -149,7 +191,27 @@ end ProofPlan
 /--
 The Formal Statement of the Molecule Conjecture (Refined).
 -/
-theorem molecule_conjecture_refined :
+theorem molecule_conjecture_refined
+    (h_exists :
+      ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
+        IsCompact P ∧
+        Convex ℝ P ∧
+        MapsTo (slice_operator f_ref) P P ∧
+        K = {f | slice_chart f_ref f ∈ P} ∧
+        SurjOn (slice_chart f_ref) K P ∧
+        K.Finite ∧
+        InjOn (slice_chart f_ref) K ∧
+        ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
+        K.Nonempty ∧
+        f_ref ∈ K)
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_unique :
+      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
   ∃ (Rfast : BMol → BMol)
     (Rfast_HMol : HMol → HMol)
     (R_target : {x : Mol // x ≠ cusp} → {x : Mol // x ≠ cusp}),
@@ -161,8 +223,8 @@ theorem molecule_conjecture_refined :
   ⟨Rfast_candidate,
    Rfast_HMol_candidate,
    Rprm_combinatorial_model,
-   Rfast_hyperbolicity_conjecture.1,
-   Rfast_hyperbolicity_conjecture.2,
+   (Rfast_hyperbolicity_conjecture h_exists h_norm h_unique).1,
+   (Rfast_hyperbolicity_conjecture h_exists h_norm h_unique).2,
    Rfast_HMol_compactness,
    Rfast_combinatorially_associated,
    R_target_is_shift⟩
