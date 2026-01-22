@@ -76,6 +76,8 @@ instance : TopologicalSpace BMol :=
     isOpen_inter := fun _ _ _ _ => True.intro,
     isOpen_sUnion := fun _ _ => True.intro }
 
+instance : DiscreteTopology BMol := ⟨rfl⟩
+
 /-- The standard quadratic map f(z) = z^2 on disks D(0,2) -> D(0,4). -/
 noncomputable def defaultBMol : BMol :=
   let U := Metric.ball 0 2

@@ -4,6 +4,8 @@ import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Topology.Compactness.Compact
 import Molecule.Schauder
+import Molecule.BanachSlice
+import Mathlib.Analysis.Normed.Module.Basic
 
 namespace MLC
 
@@ -25,12 +27,24 @@ def IsStandardSiegelPacman (f : BMol) : Prop :=
 /--
 Step 1: Compactness of the Renormalization Operator.
 Theorem 3.16 in [DLS17] states that R is a compact analytic operator.
-We axiomatically assert the existence of an invariant compact set of renormalizable maps.
+We axiomatically assert the existence of an invariant compact set of renormalizable maps
+that satisfies the necessary properties for the Schauder Fixed Point Theorem in the Banach slice.
 -/
-lemma rfast_invariant_compact_set : ∃ (K : Set BMol), IsCompact K ∧ MapsTo Rfast K K ∧ K.Nonempty ∧ ∀ f ∈ K, IsFastRenormalizable f := by
+lemma rfast_invariant_compact_set : 
+  ∃ (K : Set BMol) (f_ref : BMol), 
+    IsCompact K ∧ 
+    MapsTo Rfast K K ∧ 
+    K.Nonempty ∧ 
+    f_ref ∈ K ∧
+    (∀ f ∈ K, IsFastRenormalizable f) ∧
+    -- Properties required for Schauder in Banach slice:
+    Convex ℝ ((slice_chart f_ref) '' K) ∧
+    InjOn (slice_chart f_ref) K ∧
+    ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) := by
   -- This is Theorem 3.16 in [DLS17].
   -- The construction involves creating a "Banach Slice" of holomorphic maps and showing
   -- that the renormalization operator maps a certain compact subset into itself.
+  -- The set K corresponds to the pullback of a convex polydisk in the slice.
   sorry
 
 /--
@@ -71,8 +85,13 @@ Step 2: Existence of a Fixed Point in the Invariant Compact Set.
 By Schauder Fixed Point Theorem (or Leray-Schauder for analytic maps on Banach spaces), 
 a compact operator on a convex set (or similar structure) has a fixed point.
 -/
-lemma fixed_point_in_invariant_compact_set (K : Set BMol) (hK_compact : IsCompact K) 
-    (hK_maps : MapsTo Rfast K K) (hK_nonempty : K.Nonempty) : 
+lemma fixed_point_in_invariant_compact_set 
+    (K : Set BMol) (f_ref : BMol)
+    (hK_compact : IsCompact K) 
+    (hK_maps : MapsTo Rfast K K) (hK_nonempty : K.Nonempty)
+    (hK_convex : Convex ℝ ((slice_chart f_ref) '' K))
+    (hK_inj : InjOn (slice_chart f_ref) K)
+    (hF_cont : ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K)) : 
     ∃ f ∈ K, Rfast f = f := by
   -- Sketch of the proof using Schauder's Fixed Point Theorem.
 
@@ -80,18 +99,18 @@ lemma fixed_point_in_invariant_compact_set (K : Set BMol) (hK_compact : IsCompac
   have h_continuous := rfast_continuous_on_compact_set K hK_compact
 
   -- 2. Fixed Point Property of K
-  exact schauder_fixed_point_on_invariant_compact K hK_compact h_continuous hK_maps hK_nonempty
+  exact schauder_fixed_point_on_invariant_compact K hK_compact h_continuous hK_maps hK_nonempty f_ref hK_convex hK_inj hF_cont
 
 /--
 Fundamental existence theorem for the renormalization fixed point.
 Theorem 3.13 in [DLS17] guarantees the existence of a fixed point for the renormalization operator.
 -/
 theorem exists_renormalization_fixed_point_raw : ∃ f : BMol, Rfast f = f ∧ IsFastRenormalizable f := by
-  -- Step 1: Obtain the invariant compact set K
-  obtain ⟨K, hK_compact, hK_maps, hK_nonempty, hK_renorm⟩ := rfast_invariant_compact_set
+  -- Step 1: Obtain the invariant compact set K and reference map
+  obtain ⟨K, f_ref, hK_compact, hK_maps, hK_nonempty, hf_ref_in, hK_renorm, hK_convex, hK_inj, hF_cont⟩ := rfast_invariant_compact_set
   
   -- Step 2: Apply Fixed Point Theorem
-  have h_fixed_point_exists := fixed_point_in_invariant_compact_set K hK_compact hK_maps hK_nonempty
+  have h_fixed_point_exists := fixed_point_in_invariant_compact_set K f_ref hK_compact hK_maps hK_nonempty hK_convex hK_inj hF_cont
 
   obtain ⟨f, hf_in_K, hf_fix⟩ := h_fixed_point_exists
   
