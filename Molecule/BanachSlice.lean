@@ -1,7 +1,6 @@
 import Molecule.BMol
 import Molecule.Hyperbolicity
 import Molecule.Rfast
-import Molecule.Problem4_3
 import Mathlib.Analysis.Normed.Module.Basic
 import Mathlib.Analysis.Complex.Basic
 
