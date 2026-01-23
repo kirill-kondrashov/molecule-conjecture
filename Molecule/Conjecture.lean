@@ -206,8 +206,10 @@ theorem Rfast_hyperbolicity_conjecture
 
 axiom Rfast_HMol_compactness : IsCompactOperator Rfast_HMol_candidate
 
-axiom Rfast_combinatorially_associated :
-  CombinatoriallyAssociated Rfast_HMol_candidate Rprm_combinatorial_model
+theorem Rfast_combinatorially_associated
+    (h_assoc : CombinatoriallyAssociated Rfast_HMol_candidate Rprm_combinatorial_model) :
+  CombinatoriallyAssociated Rfast_HMol_candidate Rprm_combinatorial_model :=
+  h_assoc
 
 def SymbolicShift (N : ℕ) := (Int → Fin N)
 
@@ -285,6 +287,7 @@ theorem molecule_conjecture_refined
           (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
     (h_piecewise : IsPiecewiseAnalytic1DUnstable Rfast)
     (h_shift : ∃ N, IsConjugateToShift Rprm_combinatorial_model N)
+    (h_assoc : CombinatoriallyAssociated Rfast_HMol_candidate Rprm_combinatorial_model)
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
@@ -302,7 +305,7 @@ theorem molecule_conjecture_refined
    (Rfast_hyperbolicity_conjecture h_exists h_conj h_norm h_ps h_orbit h_piecewise h_unique).1,
    (Rfast_hyperbolicity_conjecture h_exists h_conj h_norm h_ps h_orbit h_piecewise h_unique).2,
    Rfast_HMol_compactness,
-   Rfast_combinatorially_associated,
+   Rfast_combinatorially_associated h_assoc,
    R_target_is_shift h_shift⟩
 
 end
