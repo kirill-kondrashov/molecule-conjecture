@@ -46,14 +46,12 @@ All axioms used:
 - propext
 - Quot.sound
 - Classical.choice
-- Molecule.renormalization_implies_bounds
 - Molecule.SliceSpace
-- Molecule.slice_chart
-- Molecule.slice_operator
 - Molecule.SliceSpace_normedGroup
 - Molecule.SliceSpace_normedSpace
+- Molecule.slice_operator
+- Molecule.slice_chart
 - Molecule.slice_chart_open
-- Molecule.slice_conjugacy
 - Molecule.slice_spectral_gap
 - Molecule.bounds_imply_piecewise_analytic
 - Molecule.Rfast_HMol_compactness

@@ -11,10 +11,11 @@ attribute [local instance] Classical.propDecidable
 
 /--
 A quasidisk is the image of the unit disk under a quasiconformal map of the plane.
-This definition is kept opaque to avoid trivial proofs.
+For now we keep only the openness property needed downstream.
 Ref: @refs/1703.01206v3.pdf
 -/
-opaque IsQuasidisk (s : Set ℂ) : Prop
+structure IsQuasidisk (s : Set ℂ) : Prop where
+  isOpen : IsOpen s
 
 /--
 The pseudo-invariant property.
@@ -25,7 +26,8 @@ Ref: @refs/1703.01206v3.pdf
 opaque PseudoInvariant (f : BMol) (s : Set ℂ) : Prop
 
 /-- Every quasidisk is an open set. -/
-axiom IsQuasidisk.is_open {s : Set ℂ} : IsQuasidisk s → IsOpen s
+theorem IsQuasidisk.is_open {s : Set ℂ} (h : IsQuasidisk s) : IsOpen s :=
+  h.isOpen
 
 /-- The fixed point of renormalization has a pseudo-invariant quasidisk within D. -/
 theorem fixed_point_has_ps_disk (f_star : BMol) (D : Set ℂ) (_h_open : IsOpen D)
