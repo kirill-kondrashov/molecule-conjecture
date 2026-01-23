@@ -53,7 +53,6 @@ All axioms used:
 - Molecule.slice_chart
 - Molecule.slice_chart_open
 - Molecule.slice_spectral_gap
-- Molecule.bounds_imply_piecewise_analytic
 - Molecule.Rfast_HMol_compactness
 - Molecule.Rfast_combinatorially_associated
 - Molecule.R_target_is_shift

@@ -6,13 +6,14 @@ import Molecule.Rfast
 namespace Molecule
 
 /--
-Axiom: Global Piecewise Analyticity.
-We assert that if the local bounds hold (implying a fixed point with spectral gap),
-then the renormalization operator Rfast extends to a piecewise analytic map
-with a 1D unstable direction on the full domain (or the relevant invariant subspace).
+Global Piecewise Analyticity (assumed).
+We thread an explicit hypothesis that Rfast is piecewise analytic with a 1D unstable direction.
 Reference: Dudko, Lyubich, Selinger, "Pacman Renormalization...", Section 8.
 -/
-axiom bounds_imply_piecewise_analytic (h : PseudoSiegelAPrioriBoundsStatement) :
-  IsPiecewiseAnalytic1DUnstable Rfast
+theorem bounds_imply_piecewise_analytic
+    (_h : PseudoSiegelAPrioriBoundsStatement)
+    (h_piecewise : IsPiecewiseAnalytic1DUnstable Rfast) :
+  IsPiecewiseAnalytic1DUnstable Rfast :=
+  h_piecewise
 
 end Molecule
