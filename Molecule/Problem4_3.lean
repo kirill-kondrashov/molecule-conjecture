@@ -100,6 +100,22 @@ theorem problem_4_3_bounds_established
     (h_ps :
       ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
         ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
+    (h_orbit :
+      ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
+        Rfast f_star = f_star →
+        IsFastRenormalizable f_star →
+        IsOpen D → IsOpen U →
+        f_star ∈ U →
+        criticalValue f_star ∈ D →
+        (∀ (n t : ℕ) (f : BMol),
+          n ≥ 1 →
+          t ∈ ({a n, b n} : Set ℕ) →
+          f ∈ (Rfast^[n]) ⁻¹' U →
+          MapsTo (f.f^[t]) (Rfast^[n] f).U (Rfast^[n] f).V ∧
+          criticalValue f ∈ (Rfast^[n] f).U ∧
+          (f.f^[t] (criticalValue f)) ∈ D ∧
+          (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
+          (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
@@ -149,7 +165,8 @@ theorem problem_4_3_bounds_established
   -- 4. The Main Bounds Argument
   -- We use the axiom stating that renormalization implies these bounds.
   have h_main := renormalization_implies_bounds f_star D U a b (h_ps f_star D)
-    h_fixed h_renorm h_D_open h_U_open h_f_in_U h_c1_in_D h_U_subset
+    h_fixed h_renorm h_D_open h_U_open h_f_in_U h_c1_in_D
+    (h_orbit f_star D U a b h_fixed h_renorm h_D_open h_U_open h_f_in_U h_c1_in_D) h_U_subset
 
   exact ⟨f_star, U, h_fixed, h_renorm, h_U_open, h_f_in_U, h_c1_in_D, h_main⟩
 

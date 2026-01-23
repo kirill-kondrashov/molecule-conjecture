@@ -24,6 +24,15 @@ theorem renormalization_implies_bounds (f_star : BMol) (D : Set ℂ) (U : Set BM
   IsOpen D → IsOpen U →
   f_star ∈ U →
   criticalValue f_star ∈ D →
+  (∀ (n t : ℕ) (f : BMol),
+    n ≥ 1 →
+    t ∈ ({a n, b n} : Set ℕ) →
+    f ∈ (Rfast^[n]) ⁻¹' U →
+    MapsTo (f.f^[t]) (Rfast^[n] f).U (Rfast^[n] f).V ∧
+    criticalValue f ∈ (Rfast^[n] f).U ∧
+    (f.f^[t] (criticalValue f)) ∈ D ∧
+    (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
+    (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)) →
   (∀ g ∈ U, g.V ⊆ D) →
   (∀ᶠ n in atTop, ∀ t ∈ ({a n, b n} : Set ℕ),
       ∀ f, f ∈ (Rfast^[n]) ⁻¹' U →
@@ -37,7 +46,7 @@ theorem renormalization_implies_bounds (f_star : BMol) (D : Set ℂ) (U : Set BM
           IsProperMap (MapsTo.restrict ft D0 D_target h_maps) ∧
           ∀ y ∈ D_target, Set.ncard {x ∈ D0 | ft x = y} = 2
   ) := by
-  intro h_ps h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D h_U_subset
+  intro h_ps h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D h_orbit h_U_subset
 
   -- Proof Sketch following Dudko-Lyubich-Selinger (arXiv:1703.01206), Key Lemma 4.8.
 
@@ -55,9 +64,9 @@ theorem renormalization_implies_bounds (f_star : BMol) (D : Set ℂ) (U : Set BM
 
   constructor
   · -- Condition 1: Orbit lands in D
-    exact renormalization_orbit_lands_in_D f_star D U a b n t f h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D hn ht hf
+    exact renormalization_orbit_lands_in_D f_star D U a b n t f h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D h_orbit hn ht hf
 
   · -- Condition 2: Branched Covering Property
-    exact renormalization_pullback_property f_star D U a b n t f h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D h_U_subset hn ht hf
+    exact renormalization_pullback_property f_star D U a b n t f h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D h_orbit h_U_subset hn ht hf
 
 end Molecule
