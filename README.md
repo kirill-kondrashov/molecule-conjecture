@@ -46,6 +46,5 @@ All axioms used:
 - propext
 - Quot.sound
 - Classical.choice
-- Molecule.slice_chart_open
 - Molecule.slice_spectral_gap
 ```

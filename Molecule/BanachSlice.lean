@@ -45,7 +45,11 @@ def slice_domain (_ : BMol) : Set BMol := univ
 def slice_operator (_f_star : BMol) : SliceSpace → SliceSpace := fun _ => 0
 
 /-- The chart maps to an open set. -/
-axiom slice_chart_open (f_star : BMol) : ∃ V, IsOpen V ∧ MapsTo (slice_chart f_star) (slice_domain f_star) V
+theorem slice_chart_open (f_star : BMol) :
+  ∃ V, IsOpen V ∧ MapsTo (slice_chart f_star) (slice_domain f_star) V := by
+  refine ⟨univ, isOpen_univ, ?_⟩
+  intro x hx
+  trivial
 
 /-- Conjugacy of Rfast and F via the chart. -/
 theorem slice_conjugacy (f_star : BMol)
