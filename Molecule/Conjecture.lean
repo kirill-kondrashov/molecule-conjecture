@@ -204,7 +204,10 @@ theorem Rfast_hyperbolicity_conjecture
   ⟨Rfast_hyperbolicity h_exists h_conj h_norm h_ps h_orbit h_unique bounds,
     Rfast_piecewise_analytic bounds h_piecewise⟩
 
-axiom Rfast_HMol_compactness : IsCompactOperator Rfast_HMol_candidate
+theorem Rfast_HMol_compactness
+    (h_compact : IsCompactOperator Rfast_HMol_candidate) :
+  IsCompactOperator Rfast_HMol_candidate :=
+  h_compact
 
 theorem Rfast_combinatorially_associated
     (h_assoc : CombinatoriallyAssociated Rfast_HMol_candidate Rprm_combinatorial_model) :
@@ -288,6 +291,7 @@ theorem molecule_conjecture_refined
     (h_piecewise : IsPiecewiseAnalytic1DUnstable Rfast)
     (h_shift : ∃ N, IsConjugateToShift Rprm_combinatorial_model N)
     (h_assoc : CombinatoriallyAssociated Rfast_HMol_candidate Rprm_combinatorial_model)
+    (h_compact : IsCompactOperator Rfast_HMol_candidate)
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
@@ -304,7 +308,7 @@ theorem molecule_conjecture_refined
    Rprm_combinatorial_model,
    (Rfast_hyperbolicity_conjecture h_exists h_conj h_norm h_ps h_orbit h_piecewise h_unique).1,
    (Rfast_hyperbolicity_conjecture h_exists h_conj h_norm h_ps h_orbit h_piecewise h_unique).2,
-   Rfast_HMol_compactness,
+   Rfast_HMol_compactness h_compact,
    Rfast_combinatorially_associated h_assoc,
    R_target_is_shift h_shift⟩
 

@@ -53,5 +53,4 @@ All axioms used:
 - Molecule.slice_chart
 - Molecule.slice_chart_open
 - Molecule.slice_spectral_gap
-- Molecule.Rfast_HMol_compactness
 ```
