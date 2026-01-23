@@ -46,9 +46,6 @@ All axioms used:
 - propext
 - Quot.sound
 - Classical.choice
-- Molecule.SliceSpace
-- Molecule.SliceSpace_normedGroup
-- Molecule.SliceSpace_normedSpace
 - Molecule.slice_operator
 - Molecule.slice_chart
 - Molecule.slice_chart_open

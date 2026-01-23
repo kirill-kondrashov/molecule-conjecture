@@ -30,11 +30,10 @@ def HasSiegelBounds (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → 
     )
 
 /-- The Banach Space for the slice. -/
-axiom SliceSpace : Type
-axiom SliceSpace_normedGroup : NormedAddCommGroup SliceSpace
-noncomputable instance : NormedAddCommGroup SliceSpace := SliceSpace_normedGroup
-axiom SliceSpace_normedSpace : NormedSpace ℂ SliceSpace
-noncomputable instance : NormedSpace ℂ SliceSpace := SliceSpace_normedSpace
+abbrev SliceSpace := ℂ
+
+noncomputable instance : NormedAddCommGroup SliceSpace := inferInstance
+noncomputable instance : NormedSpace ℂ SliceSpace := inferInstance
 
 /-- The chart φ. Depends on the fixed point f_star. -/
 axiom slice_chart (f_star : BMol) : BMol → SliceSpace
