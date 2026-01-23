@@ -119,11 +119,14 @@ theorem problem_4_3_bounds_established_conjecture
         (∀ f ∈ K, IsFastRenormalizable f) ∧
         (∀ f ∈ K, criticalValue f = 0) ∧
         (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_ps :
+      ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
+        ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
     PseudoSiegelAPrioriBounds :=
-  problem_4_3_bounds_established h_exists h_norm h_unique
+  problem_4_3_bounds_established h_exists h_norm h_ps h_unique
 
 /--
 ### 3. Prove Hyperbolicity and Unstable Manifold Dimensions
@@ -148,13 +151,16 @@ theorem Rfast_hyperbolicity_conjecture
         (∀ f ∈ K, IsFastRenormalizable f) ∧
         (∀ f ∈ K, criticalValue f = 0) ∧
         (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_ps :
+      ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
+        ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
   IsHyperbolic Rfast_candidate ∧ IsPiecewiseAnalytic1DUnstable Rfast_candidate :=
   -- The proof of hyperbolicity relies on the establishment of a priori bounds (Problem 4.3)
-  have bounds := problem_4_3_bounds_established_conjecture h_exists h_norm h_unique
-  ⟨Rfast_hyperbolicity h_exists h_norm h_unique bounds, Rfast_piecewise_analytic bounds⟩
+  have bounds := problem_4_3_bounds_established_conjecture h_exists h_norm h_ps h_unique
+  ⟨Rfast_hyperbolicity h_exists h_norm h_ps h_unique bounds, Rfast_piecewise_analytic bounds⟩
 
 axiom Rfast_HMol_compactness : IsCompactOperator Rfast_HMol_candidate
 
@@ -209,6 +215,9 @@ theorem molecule_conjecture_refined
         (∀ f ∈ K, IsFastRenormalizable f) ∧
         (∀ f ∈ K, criticalValue f = 0) ∧
         (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_ps :
+      ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
+        ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
@@ -223,8 +232,8 @@ theorem molecule_conjecture_refined
   ⟨Rfast_candidate,
    Rfast_HMol_candidate,
    Rprm_combinatorial_model,
-   (Rfast_hyperbolicity_conjecture h_exists h_norm h_unique).1,
-   (Rfast_hyperbolicity_conjecture h_exists h_norm h_unique).2,
+   (Rfast_hyperbolicity_conjecture h_exists h_norm h_ps h_unique).1,
+   (Rfast_hyperbolicity_conjecture h_exists h_norm h_ps h_unique).2,
    Rfast_HMol_compactness,
    Rfast_combinatorially_associated,
    R_target_is_shift⟩

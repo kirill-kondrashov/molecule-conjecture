@@ -183,7 +183,10 @@ Lemma: Assumed bounds for defaultBMol (for contradiction).
 This lemma assumes the conclusion of renormalization_implies_bounds holds for defaultBMol.
 This is false because defaultBMol is not renormalizable, but we use it to prove contradiction.
 -/
-lemma defaultBMol_assumed_bounds (h_renorm : IsFastRenormalizable defaultBMol) :
+lemma defaultBMol_assumed_bounds (h_renorm : IsFastRenormalizable defaultBMol)
+    (h_ps :
+      ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
+        ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps) :
     (∀ᶠ n in Filter.atTop, ∀ t ∈ ({fun n => n, fun n => n + 1} : Set (ℕ → ℕ)).image (fun f => f n),
       ∀ f, f ∈ (Rfast^[n]) ⁻¹' {defaultBMol} →
         let c1 := criticalValue f
@@ -201,7 +204,6 @@ lemma defaultBMol_assumed_bounds (h_renorm : IsFastRenormalizable defaultBMol) :
   let U : Set BMol := {defaultBMol}
   let a : ℕ → ℕ := fun n => n
   let b : ℕ → ℕ := fun n => n + 1
-
   -- We assume (incorrectly) that defaultBMol satisfies the bounds theorem premises
   have h_f_star_fixed : Rfast f_star = f_star := defaultBMol_is_fixed_point
   have h_f_star_renorm : IsFastRenormalizable f_star := h_renorm
@@ -218,7 +220,7 @@ lemma defaultBMol_assumed_bounds (h_renorm : IsFastRenormalizable defaultBMol) :
     rw [mem_singleton_iff.mp hg]
     exact Metric.ball_subset_ball (by norm_num)
 
-  have h_bounds := renormalization_implies_bounds f_star D U a b
+  have h_bounds := renormalization_implies_bounds f_star D U a b (h_ps f_star D)
     h_f_star_fixed h_f_star_renorm h_D_open h_U_open h_f_star_in_U h_cv_in_D h_U_subset
 
   -- Align the set notation
@@ -516,11 +518,14 @@ theorem renormalizable_fixed_point_exists
         (∀ f ∈ K, IsFastRenormalizable f) ∧
         (∀ f ∈ K, criticalValue f = 0) ∧
         (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_ps :
+      ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
+        ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
   ∃ f, IsFastRenormalizable f ∧ Rfast f = f := by
-  have h_bounds := problem_4_3_bounds_established h_exists h_norm h_unique
+  have h_bounds := problem_4_3_bounds_established h_exists h_norm h_ps h_unique
   obtain ⟨f_star, U, h_fixed, h_renorm, _, h_in_U, _, h_bounds_body⟩ := h_bounds
   refine ⟨f_star, ?_⟩
   exact ⟨h_renorm, h_fixed⟩
@@ -543,15 +548,18 @@ theorem Rfast_theorem_1_1
         (∀ f ∈ K, IsFastRenormalizable f) ∧
         (∀ f ∈ K, criticalValue f = 0) ∧
         (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_ps :
+      ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
+        ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
   (IsHyperbolic Rfast) ∧ (∃ f, IsFastRenormalizable f ∧ Rfast f = f) := by
   have h_hyp : IsHyperbolic Rfast := by
     apply bounds_imply_hyperbolicity_proof
-    exact problem_4_3_bounds_established h_exists h_norm h_unique
+    exact problem_4_3_bounds_established h_exists h_norm h_ps h_unique
   have h_exists : ∃ f, IsFastRenormalizable f ∧ Rfast f = f :=
-    renormalizable_fixed_point_exists h_exists h_norm h_unique
+    renormalizable_fixed_point_exists h_exists h_norm h_ps h_unique
   exact ⟨h_hyp, h_exists⟩
 
 theorem Rfast_fixed_point_properties
@@ -572,6 +580,9 @@ theorem Rfast_fixed_point_properties
         (∀ f ∈ K, IsFastRenormalizable f) ∧
         (∀ f ∈ K, criticalValue f = 0) ∧
         (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_ps :
+      ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
+        ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
@@ -585,7 +596,7 @@ theorem Rfast_fixed_point_properties
       DifferentiableAt ℂ F (φ f) ∧
       IsHyperbolic1DUnstable (fderiv ℂ F (φ f)) := by
   intro f h_renorm h_fixed
-  obtain ⟨h_hyp, h_exists⟩ := Rfast_theorem_1_1 h_exists h_norm h_unique
+  obtain ⟨h_hyp, h_exists⟩ := Rfast_theorem_1_1 h_exists h_norm h_ps h_unique
   obtain ⟨g, E, inst1, inst2, φ, U, h_g_in_U, h_g_fixed, h_g_renorm, h_g_analytic, h_chart, F, h_conj, h_diff, h_hyp_lin⟩ := h_hyp
   -- Assume uniqueness of renormalizable fixed point to identify f with g
   have h_eq : f = g := renormalization_fixed_point_unique h_unique f g h_renorm h_fixed h_g_renorm h_g_fixed

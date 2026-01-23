@@ -17,6 +17,8 @@ If f renormalizes to the fixed point, its critical orbit stays in a small disk a
 This encapsulates the "Key Lemma 4.8" dynamic content.
 -/
 theorem renormalization_implies_bounds (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ) :
+  (IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
+    ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps) →
   Rfast f_star = f_star →
   IsFastRenormalizable f_star →
   IsOpen D → IsOpen U →
@@ -35,12 +37,12 @@ theorem renormalization_implies_bounds (f_star : BMol) (D : Set ℂ) (U : Set BM
           IsProperMap (MapsTo.restrict ft D0 D_target h_maps) ∧
           ∀ y ∈ D_target, Set.ncard {x ∈ D0 | ft x = y} = 2
   ) := by
-  intro h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D h_U_subset
+  intro h_ps h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D h_U_subset
 
   -- Proof Sketch following Dudko-Lyubich-Selinger (arXiv:1703.01206), Key Lemma 4.8.
 
   -- Step 1: Construction of Pseudo-Siegel Disks
-  have h_pseudo_siegel := exists_pseudo_siegel_disk f_star D h_fixed h_renorm h_open_D h_cv_in_D
+  have h_pseudo_siegel := exists_pseudo_siegel_disk f_star D h_ps h_fixed h_renorm h_open_D h_cv_in_D
 
   -- Step 2: Uniform Quasiconformal Geometry
   -- The moduli of annuli and sectors around the fixed point are uniformly bounded below.

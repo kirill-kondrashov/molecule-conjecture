@@ -93,6 +93,9 @@ theorem problem_4_3_bounds_established
         (∀ f ∈ K, IsFastRenormalizable f) ∧
         (∀ f ∈ K, criticalValue f = 0) ∧
         (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_ps :
+      ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
+        ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
@@ -141,7 +144,8 @@ theorem problem_4_3_bounds_established
 
   -- 4. The Main Bounds Argument
   -- We use the axiom stating that renormalization implies these bounds.
-  have h_main := renormalization_implies_bounds f_star D U a b h_fixed h_renorm h_D_open h_U_open h_f_in_U h_c1_in_D h_U_subset
+  have h_main := renormalization_implies_bounds f_star D U a b (h_ps f_star D)
+    h_fixed h_renorm h_D_open h_U_open h_f_in_U h_c1_in_D h_U_subset
 
   exact ⟨f_star, U, h_fixed, h_renorm, h_U_open, h_f_in_U, h_c1_in_D, h_main⟩
 
