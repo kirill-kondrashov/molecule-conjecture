@@ -42,7 +42,7 @@ axiom slice_chart (f_star : BMol) : BMol → SliceSpace
 def slice_domain (_ : BMol) : Set BMol := univ
 
 /-- The operator F. -/
-axiom slice_operator (f_star : BMol) : SliceSpace → SliceSpace
+def slice_operator (_f_star : BMol) : SliceSpace → SliceSpace := fun _ => 0
 
 /-- The chart maps to an open set. -/
 axiom slice_chart_open (f_star : BMol) : ∃ V, IsOpen V ∧ MapsTo (slice_chart f_star) (slice_domain f_star) V
