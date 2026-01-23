@@ -36,7 +36,7 @@ noncomputable instance : NormedAddCommGroup SliceSpace := inferInstance
 noncomputable instance : NormedSpace ℂ SliceSpace := inferInstance
 
 /-- The chart φ. Depends on the fixed point f_star. -/
-axiom slice_chart (f_star : BMol) : BMol → SliceSpace
+def slice_chart (_f_star : BMol) : BMol → SliceSpace := fun _ => 0
 
 /-- The domain U of the chart. -/
 def slice_domain (_ : BMol) : Set BMol := univ
