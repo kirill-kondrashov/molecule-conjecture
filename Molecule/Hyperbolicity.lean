@@ -1,4 +1,5 @@
 import Molecule.BMol
+import Molecule.Rfast
 import Mathlib.Analysis.Normed.Operator.Basic
 import Mathlib.Analysis.Normed.Module.Basic
 import Mathlib.Analysis.Calculus.FDeriv.Basic
@@ -8,7 +9,7 @@ import Mathlib.Analysis.Analytic.Basic
 
 import Mathlib.LinearAlgebra.FiniteDimensional.Defs
 
-namespace MLC
+namespace Molecule
 
 open Complex Topology Filter Set
 
@@ -46,6 +47,7 @@ def IsHyperbolic (f : BMol → BMol) : Prop :=
     ∃ (φ : BMol → E) (U : Set BMol),
       g ∈ U ∧
       f g = g ∧ -- Fixed point
+      IsFastRenormalizable g ∧ -- The fixed point must be renormalizable
       AnalyticOn ℂ g.f g.U ∧ -- f itself should be analytic in its domain
       -- φ is a "chart" around g
       (∃ (V : Set E), IsOpen V ∧ MapsTo φ U V) ∧
@@ -56,4 +58,4 @@ def IsHyperbolic (f : BMol → BMol) : Prop :=
         -- The derivative is hyperbolic with 1D unstable manifold
         IsHyperbolic1DUnstable (fderiv ℂ F (φ g))
 
-end MLC
+end Molecule

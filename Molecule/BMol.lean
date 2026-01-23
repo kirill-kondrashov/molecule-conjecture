@@ -13,7 +13,7 @@ import Mathlib.Analysis.Convex.Contractible
 import Mathlib.Analysis.Normed.Module.RCLike.Real
 import Mathlib.Topology.Maps.Proper.CompactlyGenerated
 
-namespace MLC
+namespace Molecule
 
 open Complex Topology Filter Set
 
@@ -75,6 +75,8 @@ instance : TopologicalSpace BMol :=
     isOpen_univ := True.intro,
     isOpen_inter := fun _ _ _ _ => True.intro,
     isOpen_sUnion := fun _ _ => True.intro }
+
+instance : DiscreteTopology BMol := ⟨rfl⟩
 
 /-- The standard quadratic map f(z) = z^2 on disks D(0,2) -> D(0,4). -/
 noncomputable def defaultBMol : BMol :=
@@ -215,4 +217,4 @@ noncomputable def defaultBMol : BMol :=
 
 noncomputable instance : Inhabited BMol := ⟨defaultBMol⟩
 
-end MLC
+end Molecule

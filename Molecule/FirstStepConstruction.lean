@@ -4,7 +4,7 @@ import Molecule.HMol
 import Molecule.Construction
 import Molecule.Rfast
 
-namespace MLC
+namespace Molecule
 
 noncomputable section
 
@@ -42,9 +42,9 @@ Since the consistency predicate in `Conjecture.lean` is currently `True`,
 this is trivial.
 -/
 lemma Rprm_model_consistent_proof : 
-  ∀ (c : {x : Mol // x ≠ cusp}), True := 
+  ∀ (_ : {x : Mol // x ≠ cusp}), True := 
   fun _ => True.intro
 
 end
 
-end MLC
+end Molecule

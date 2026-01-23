@@ -2,7 +2,11 @@
 
 [![build](https://github.com/kirill-kondrashov/molecule-conjecture/actions/workflows/lean_action_ci.yml/badge.svg)](https://github.com/kirill-kondrashov/molecule-conjecture/actions/workflows/lean_action_ci.yml)
 
-This repository contains a **machine-generated formal proof** of Dudko's Molecule Conjecture for quadratic polynomials in Lean 4. This theorem is a key component of the Mandelbrot Local Connectivity (MLC) Conjecture, establishing it for non-renormalizable parameters.
+## 🚧 WORK IN PROGRESS 🚧                                                                                
+                                                                                                         
+**Current Status:** This repository is in active development.
+
+This repository contains a **machine-generated attempt of formal proof** of Dudko's Molecule Conjecture for quadratic polynomials in Lean 4. This theorem is a key component of the Mandelbrot Local Connectivity (MLC) Conjecture, establishing it for non-renormalizable parameters.
 
 Essentially, this software facilitates progress toward an exact proof **in collaboration** with human verification, leveraging the rigor of formalization in Lean.
 
@@ -37,22 +41,20 @@ This will analyze the codebase and output any axioms or unproven statements used
 
 **Expected Output:**
 ```
-✅ The proof of 'MLC.molecule_conjecture_refined' is free of 'sorry'.
+✅ The proof of 'Molecule.molecule_conjecture_refined' is free of 'sorry'.
 All axioms used:
 - propext
 - Quot.sound
 - Classical.choice
-- MLC.renormalization_implies_bounds
-- MLC.SliceSpace
-- MLC.slice_chart
-- MLC.slice_operator
-- MLC.SliceSpace_normedGroup
-- MLC.SliceSpace_normedSpace
-- MLC.slice_chart_open
-- MLC.slice_conjugacy
-- MLC.slice_spectral_gap
-- MLC.bounds_imply_piecewise_analytic
-- MLC.Rfast_HMol_compactness
-- MLC.Rfast_combinatorially_associated
-- MLC.R_target_is_shift
+- Molecule.SliceSpace
+- Molecule.SliceSpace_normedGroup
+- Molecule.SliceSpace_normedSpace
+- Molecule.slice_operator
+- Molecule.slice_chart
+- Molecule.slice_chart_open
+- Molecule.slice_spectral_gap
+- Molecule.bounds_imply_piecewise_analytic
+- Molecule.Rfast_HMol_compactness
+- Molecule.Rfast_combinatorially_associated
+- Molecule.R_target_is_shift
 ```

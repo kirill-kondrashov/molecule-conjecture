@@ -22,7 +22,7 @@ import Mathlib.Analysis.Normed.Group.CocompactMap
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 import Mathlib.Analysis.Normed.Group.Bounded
 
-namespace MLC
+namespace Molecule
 
 open Complex Topology Filter Set
 
@@ -49,14 +49,14 @@ structure HorseshoeMap where
   maps_to : MapsTo f U V
   -- Properness using IsProperMap on the restricted map
   proper : IsProperMap (maps_to.restrict f U V)
-  
+
   /-- Ensures it is a degree-d horseshoe (usually degree 2 for the molecule conjecture) -/
   degree : ∃ d : ℕ, d ≥ 2 ∧ ∀ y ∈ V, {x ∈ U | f x = y}.Finite ∧ Set.ncard {x ∈ U | f x = y} = d
 
-  /-- A Horseshoe must have multiple "legs" or intersections with the original domain. 
+  /-- A Horseshoe must have multiple "legs" or intersections with the original domain.
       We require at least two disjoint regions that map back into U. -/
   intersections : ∃ (H₁ H₂ : Set ℂ), Disjoint H₁ H₂ ∧ H₁ ⊆ U ∩ f ⁻¹' U ∧ H₂ ⊆ U ∩ f ⁻¹' U
-  
+
   /-- Horseshoe maps are locally injective on U (no critical points in U). -/
   locally_injective : ∀ x ∈ U, deriv f x ≠ 0
 
@@ -95,7 +95,7 @@ noncomputable def defaultHMol : HMol :=
         exact h2
       simp only [dist_zero_right]
       apply lt_of_lt_of_le h_abs
-      rw [Real.sqrt_le_iff] <;> norm_num
+      rw [Real.sqrt_le_iff]; norm_num
     closure_subset := by
       have h_cont : Continuous f := (continuous_id.pow 2).sub continuous_const
       have h_subset : closure U ⊆ f ⁻¹' (closure V) := h_cont.closure_preimage_subset V
@@ -235,19 +235,19 @@ noncomputable def defaultHMol : HMol :=
        have hz2 : z2 ∈ V := by simp [V, Metric.mem_ball, z2]; norm_num
        have hz1_U : z1 ∈ U := by simp [U, mem_preimage]; rw [h1]; exact hz1
        have hz2_U : z2 ∈ U := by simp [U, mem_preimage]; rw [h2]; exact hz2
-       
+
        let S := U ∩ f ⁻¹' U
        have hS_open' : IsOpen S := IsOpen.inter hU_open (hU_open.preimage (continuous_id.pow 2 |>.sub continuous_const))
-       
+
        have hz1_S : z1 ∈ S := ⟨hz1_U, by simp [mem_preimage]; rw [h1]; exact hz1_U⟩
        have hz2_S : z2 ∈ S := ⟨hz2_U, by simp [mem_preimage]; rw [h2]; exact hz2_U⟩
-       
+
        obtain ⟨r1, hr1_pos, hr1_sub⟩ := Metric.isOpen_iff.1 hS_open' z1 hz1_S
        obtain ⟨r2, hr2_pos, hr2_sub⟩ := Metric.isOpen_iff.1 hS_open' z2 hz2_S
-       
+
        let ε := min (1:ℝ) (min r1 r2)
        have he_pos : 0 < ε := lt_min (by norm_num) (lt_min hr1_pos hr2_pos)
-       
+
        use Metric.ball z1 ε, Metric.ball z2 ε
        constructor
        · rw [Set.disjoint_left]
@@ -291,4 +291,4 @@ noncomputable instance : Inhabited HMol := ⟨defaultHMol⟩
 
 instance : TopologicalSpace HMol := ⊥
 
-end MLC
+end Molecule

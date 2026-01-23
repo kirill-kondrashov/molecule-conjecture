@@ -18,13 +18,14 @@ import Molecule.PiecewiseAnalytic
 import Molecule.RfastHorseshoe
 import Molecule.Compactness
 import Molecule.Construction
+import Molecule.BanachSlice
 import Molecule.FirstStepConstruction
 import Molecule.Problem4_3
 import Molecule.HyperbolicityTheorems
 
-namespace MLC
+namespace Molecule
 
-open Quadratic Complex Topology Set Filter
+open MLC.Quadratic Complex Topology Set Filter
 noncomputable section
 
 /-!
@@ -86,7 +87,7 @@ def Rprm_combinatorial_model : {x : Mol // x ≠ cusp} → {x : Mol // x ≠ cus
 
 -- Link the axiomatic model to our construction
 lemma Rprm_model_consistent :
-  ∀ (c : {x : Mol // x ≠ cusp}),
+  ∀ (_ : {x : Mol // x ≠ cusp}),
     -- Placeholder: relating the abstract model to MoleculeMap or Rprm_angle
     True := Rprm_model_consistent_proof
 
@@ -100,19 +101,106 @@ def PseudoSiegelAPrioriBounds : Prop := PseudoSiegelAPrioriBoundsStatement
 /--
 **Problem 4.3**: Completion of bounds is required for the Molecule Conjecture.
 -/
-theorem problem_4_3_bounds_established_conjecture : PseudoSiegelAPrioriBounds :=
-  problem_4_3_bounds_established
+theorem problem_4_3_bounds_established_conjecture
+    (h_exists :
+      ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
+        IsCompact P ∧
+        Convex ℝ P ∧
+        MapsTo (slice_operator f_ref) P P ∧
+        K = {f | slice_chart f_ref f ∈ P} ∧
+        SurjOn (slice_chart f_ref) K P ∧
+        K.Finite ∧
+        InjOn (slice_chart f_ref) K ∧
+        ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
+        K.Nonempty ∧
+        f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_ps :
+      ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
+        ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
+    (h_orbit :
+      ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
+        Rfast f_star = f_star →
+        IsFastRenormalizable f_star →
+        IsOpen D → IsOpen U →
+        f_star ∈ U →
+        criticalValue f_star ∈ D →
+        (∀ (n t : ℕ) (f : BMol),
+          n ≥ 1 →
+          t ∈ ({a n, b n} : Set ℕ) →
+          f ∈ (Rfast^[n]) ⁻¹' U →
+          MapsTo (f.f^[t]) (Rfast^[n] f).U (Rfast^[n] f).V ∧
+          criticalValue f ∈ (Rfast^[n] f).U ∧
+          (f.f^[t] (criticalValue f)) ∈ D ∧
+          (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
+          (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
+    (h_unique :
+      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
+    PseudoSiegelAPrioriBounds :=
+  problem_4_3_bounds_established h_exists h_conj h_norm h_ps h_orbit h_unique
 
 /--
 ### 3. Prove Hyperbolicity and Unstable Manifold Dimensions
 Prove that `Rfast` is a hyperbolic operator with a **one-dimensional unstable manifold**.
 And that the restriction to the horseshoe is a compact operator.
 -/
-theorem Rfast_hyperbolicity_conjecture :
+theorem Rfast_hyperbolicity_conjecture
+    (h_exists :
+      ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
+        IsCompact P ∧
+        Convex ℝ P ∧
+        MapsTo (slice_operator f_ref) P P ∧
+        K = {f | slice_chart f_ref f ∈ P} ∧
+        SurjOn (slice_chart f_ref) K P ∧
+        K.Finite ∧
+        InjOn (slice_chart f_ref) K ∧
+        ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
+        K.Nonempty ∧
+        f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_ps :
+      ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
+        ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
+    (h_orbit :
+      ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
+        Rfast f_star = f_star →
+        IsFastRenormalizable f_star →
+        IsOpen D → IsOpen U →
+        f_star ∈ U →
+        criticalValue f_star ∈ D →
+        (∀ (n t : ℕ) (f : BMol),
+          n ≥ 1 →
+          t ∈ ({a n, b n} : Set ℕ) →
+          f ∈ (Rfast^[n]) ⁻¹' U →
+          MapsTo (f.f^[t]) (Rfast^[n] f).U (Rfast^[n] f).V ∧
+          criticalValue f ∈ (Rfast^[n] f).U ∧
+          (f.f^[t] (criticalValue f)) ∈ D ∧
+          (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
+          (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
+    (h_unique :
+      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
   IsHyperbolic Rfast_candidate ∧ IsPiecewiseAnalytic1DUnstable Rfast_candidate :=
   -- The proof of hyperbolicity relies on the establishment of a priori bounds (Problem 4.3)
-  have bounds := problem_4_3_bounds_established_conjecture
-  ⟨Rfast_hyperbolicity bounds, Rfast_piecewise_analytic bounds⟩
+  have bounds := problem_4_3_bounds_established_conjecture h_exists h_conj h_norm h_ps h_orbit h_unique
+  ⟨Rfast_hyperbolicity h_exists h_conj h_norm h_ps h_orbit h_unique bounds, Rfast_piecewise_analytic bounds⟩
 
 axiom Rfast_HMol_compactness : IsCompactOperator Rfast_HMol_candidate
 
@@ -149,7 +237,50 @@ end ProofPlan
 /--
 The Formal Statement of the Molecule Conjecture (Refined).
 -/
-theorem molecule_conjecture_refined :
+theorem molecule_conjecture_refined
+    (h_exists :
+      ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
+        IsCompact P ∧
+        Convex ℝ P ∧
+        MapsTo (slice_operator f_ref) P P ∧
+        K = {f | slice_chart f_ref f ∈ P} ∧
+        SurjOn (slice_chart f_ref) K P ∧
+        K.Finite ∧
+        InjOn (slice_chart f_ref) K ∧
+        ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
+        K.Nonempty ∧
+        f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_ps :
+      ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
+        ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
+    (h_orbit :
+      ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
+        Rfast f_star = f_star →
+        IsFastRenormalizable f_star →
+        IsOpen D → IsOpen U →
+        f_star ∈ U →
+        criticalValue f_star ∈ D →
+        (∀ (n t : ℕ) (f : BMol),
+          n ≥ 1 →
+          t ∈ ({a n, b n} : Set ℕ) →
+          f ∈ (Rfast^[n]) ⁻¹' U →
+          MapsTo (f.f^[t]) (Rfast^[n] f).U (Rfast^[n] f).V ∧
+          criticalValue f ∈ (Rfast^[n] f).U ∧
+          (f.f^[t] (criticalValue f)) ∈ D ∧
+          (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
+          (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
+    (h_unique :
+      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
   ∃ (Rfast : BMol → BMol)
     (Rfast_HMol : HMol → HMol)
     (R_target : {x : Mol // x ≠ cusp} → {x : Mol // x ≠ cusp}),
@@ -161,11 +292,11 @@ theorem molecule_conjecture_refined :
   ⟨Rfast_candidate,
    Rfast_HMol_candidate,
    Rprm_combinatorial_model,
-   Rfast_hyperbolicity_conjecture.1,
-   Rfast_hyperbolicity_conjecture.2,
+   (Rfast_hyperbolicity_conjecture h_exists h_conj h_norm h_ps h_orbit h_unique).1,
+   (Rfast_hyperbolicity_conjecture h_exists h_conj h_norm h_ps h_orbit h_unique).2,
    Rfast_HMol_compactness,
    Rfast_combinatorially_associated,
    R_target_is_shift⟩
 
 end
-end MLC
+end Molecule

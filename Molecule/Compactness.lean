@@ -2,7 +2,7 @@ import Molecule.HMol
 import Mathlib.Topology.Basic
 import Mathlib.Topology.Compactness.Compact
 
-namespace MLC
+namespace Molecule
 
 open Topology
 
@@ -19,4 +19,4 @@ signature to match the conjecture's structure where the operator defines the hor
 -/
 def IsCompactOperator (_ : HMol → HMol) : Prop := CompactSpace HMol
 
-end MLC
+end Molecule

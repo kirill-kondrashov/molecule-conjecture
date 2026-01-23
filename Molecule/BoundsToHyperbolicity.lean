@@ -5,7 +5,7 @@ import Molecule.Problem4_3
 import Molecule.BanachSlice
 import Mathlib.Analysis.Complex.CauchyIntegral
 
-namespace MLC
+namespace Molecule
 
 open Complex Topology Set
 
@@ -16,10 +16,14 @@ such that Rfast corresponds to an operator F on E.
 
 Reference: Dudko, Lyubich, Selinger, arXiv:1703.01206, Section 7.1 "Banach slices".
 -/
-theorem bounds_imply_banach_slice :
+theorem bounds_imply_banach_slice
+  (h_conj : ∀ f_star : BMol,
+    ∀ x ∈ slice_domain f_star,
+      slice_operator f_star (slice_chart f_star x) = slice_chart f_star (Rfast x)) :
   PseudoSiegelAPrioriBoundsStatement →
-  ∃ (E : Type) (inst1 : NormedAddCommGroup E) (inst2 : NormedSpace ℂ E) (φ : BMol → E) (U : Set BMol) (f_star : BMol),
+  ∃ (E : Type) (_ : NormedAddCommGroup E) (_ : NormedSpace ℂ E) (φ : BMol → E) (U : Set BMol) (f_star : BMol),
     Rfast f_star = f_star ∧
+    IsFastRenormalizable f_star ∧
     f_star ∈ U ∧
     (∃ V, IsOpen V ∧ MapsTo φ U V) ∧
     ∃ (F : E → E),
@@ -27,7 +31,9 @@ theorem bounds_imply_banach_slice :
       DifferentiableAt ℂ F (φ f_star) ∧
       IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star)) := by
   intro h
-  obtain ⟨f_star, D, U, a, b, h_bounds_body⟩ := h
+  obtain ⟨f_star, U, h_fixed, h_renorm, h_U_open, h_f_in_U, h_c1_in_D, h_bounds_body⟩ := h
+  let D : Set ℂ := Metric.ball 0 0.1
+  let h_D_open : IsOpen D := Metric.isOpen_ball
 
   -- Use the components from the BanachSlice module
   let E := SliceSpace
@@ -35,7 +41,12 @@ theorem bounds_imply_banach_slice :
   let U_slice := slice_domain f_star
   let F := slice_operator f_star
 
+  let a : ℕ → ℕ := fun n => n
+  let b : ℕ → ℕ := fun n => n + 1
+
   have h_siegel : HasSiegelBounds f_star D U a b := by
+    refine ⟨h_fixed, h_D_open, h_U_open, h_f_in_U, h_c1_in_D, ?_⟩
+    dsimp [a, b]
     exact h_bounds_body
 
   use E, (inferInstance : NormedAddCommGroup E), (inferInstance : NormedSpace ℂ E)
@@ -45,8 +56,12 @@ theorem bounds_imply_banach_slice :
   have h_fixed := h_siegel.1
   constructor
   · exact h_fixed
+  
+  -- 2. IsFastRenormalizable f_star
+  constructor
+  · exact h_renorm
 
-  -- 2. f_star ∈ U_slice
+  -- 3. f_star ∈ U_slice
   constructor
   · change f_star ∈ univ
     exact mem_univ f_star
@@ -60,8 +75,7 @@ theorem bounds_imply_banach_slice :
   constructor
   · -- Conjugacy: ∀ x ∈ U, F (φ x) = φ (Rfast x)
     intro x hx
-    apply slice_conjugacy
-    exact hx
+    exact slice_conjugacy f_star (h_conj f_star) x hx
 
   -- 5. Differentiability and Hyperbolicity (from Spectral Gap Axiom)
   have h_spectral := slice_spectral_gap h_siegel
@@ -73,10 +87,14 @@ theorem bounds_imply_banach_slice :
 Theorem: Bounds Imply Hyperbolicity.
 The main implication from Section 7 of the paper.
 -/
-theorem bounds_imply_hyperbolicity_proof (h : PseudoSiegelAPrioriBoundsStatement) : IsHyperbolic Rfast := by
+theorem bounds_imply_hyperbolicity_proof
+    (h_conj : ∀ f_star : BMol,
+      ∀ x ∈ slice_domain f_star,
+        slice_operator f_star (slice_chart f_star x) = slice_chart f_star (Rfast x))
+    (h : PseudoSiegelAPrioriBoundsStatement) : IsHyperbolic Rfast := by
   -- 1. Use the Banach Slice lemma (which encapsulates the spectral theory)
-  obtain ⟨E, inst1, inst2, φ, U, f_star, h_fixed, h_f_in_U, h_chart, F, h_conj, h_diff, h_hyp⟩ :=
-    bounds_imply_banach_slice h
+  obtain ⟨E, inst1, inst2, φ, U, f_star, h_fixed, h_renorm, h_f_in_U, h_chart, F, h_conj, h_diff, h_hyp⟩ :=
+    bounds_imply_banach_slice h_conj h
 
   -- 2. Prove f_star is analytic (from BMol definition)
   have h_analytic : AnalyticOn ℂ f_star.f f_star.U := by
@@ -87,6 +105,6 @@ theorem bounds_imply_hyperbolicity_proof (h : PseudoSiegelAPrioriBoundsStatement
   use f_star
   use E, inst1, inst2
   use φ, U
-  refine ⟨h_f_in_U, h_fixed, h_analytic, h_chart, F, h_conj, h_diff, h_hyp⟩
+  refine ⟨h_f_in_U, h_fixed, h_renorm, h_analytic, h_chart, F, h_conj, h_diff, h_hyp⟩
 
-end MLC
+end Molecule

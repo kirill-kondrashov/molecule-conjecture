@@ -7,7 +7,7 @@ import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Calculus.Deriv.Pow
 import Mathlib.Data.Nat.Basic
 
-namespace MLC
+namespace Molecule
 
 open Complex Topology Set Filter
 
@@ -248,4 +248,4 @@ theorem fixed_point_exists : ∃ f : BMol, Rfast f = f ∧ criticalValue f = 0 :
     dsimp [defaultBMol]
     simp
 
-end MLC
+end Molecule

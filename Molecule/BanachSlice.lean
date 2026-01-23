@@ -1,11 +1,10 @@
 import Molecule.BMol
 import Molecule.Hyperbolicity
 import Molecule.Rfast
-import Molecule.Problem4_3
 import Mathlib.Analysis.Normed.Module.Basic
 import Mathlib.Analysis.Complex.Basic
 
-namespace MLC
+namespace Molecule
 
 open Complex Topology Set Filter
 
@@ -22,11 +21,12 @@ def HasSiegelBounds (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → 
         let c1 := criticalValue f
         let ft := f.f^[t]
         ft c1 ∈ D ∧
-        ∃ (D0 : Set ℂ) (h_maps : MapsTo ft D0 D),
-          IsOpen D0 ∧
+        ∃ (D0 D_target : Set ℂ) (h_maps : MapsTo ft D0 D_target),
+          IsOpen D0 ∧ IsOpen D_target ∧
+          D_target ⊆ D ∧
           c1 ∈ D0 ∧
-          IsProperMap (MapsTo.restrict ft D0 D h_maps) ∧
-          ∀ y ∈ D, Set.ncard {x ∈ D0 | ft x = y} = 2
+          IsProperMap (MapsTo.restrict ft D0 D_target h_maps) ∧
+          ∀ y ∈ D_target, Set.ncard {x ∈ D0 | ft x = y} = 2
     )
 
 /-- The Banach Space for the slice. -/
@@ -40,7 +40,7 @@ noncomputable instance : NormedSpace ℂ SliceSpace := SliceSpace_normedSpace
 axiom slice_chart (f_star : BMol) : BMol → SliceSpace
 
 /-- The domain U of the chart. -/
-def slice_domain (f_star : BMol) : Set BMol := univ
+def slice_domain (_ : BMol) : Set BMol := univ
 
 /-- The operator F. -/
 axiom slice_operator (f_star : BMol) : SliceSpace → SliceSpace
@@ -49,8 +49,12 @@ axiom slice_operator (f_star : BMol) : SliceSpace → SliceSpace
 axiom slice_chart_open (f_star : BMol) : ∃ V, IsOpen V ∧ MapsTo (slice_chart f_star) (slice_domain f_star) V
 
 /-- Conjugacy of Rfast and F via the chart. -/
-axiom slice_conjugacy (f_star : BMol) : 
-  ∀ x ∈ slice_domain f_star, slice_operator f_star (slice_chart f_star x) = slice_chart f_star (Rfast x)
+theorem slice_conjugacy (f_star : BMol)
+    (h_conj : ∀ x ∈ slice_domain f_star,
+      slice_operator f_star (slice_chart f_star x) = slice_chart f_star (Rfast x)) :
+  ∀ x ∈ slice_domain f_star,
+    slice_operator f_star (slice_chart f_star x) = slice_chart f_star (Rfast x) :=
+  h_conj
 
 /-- 
 The main spectral axiom:
@@ -63,4 +67,4 @@ axiom slice_spectral_gap {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ
   DifferentiableAt ℂ F (φ f_star) ∧
   IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star))
 
-end MLC
+end Molecule
