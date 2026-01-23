@@ -232,7 +232,10 @@ def IsConjugateToShift {α : Type*} (f : α → α) (N : ℕ) : Prop :=
     Function.Bijective φ ∧
     ∀ x, φ (f x) = shift_map (φ x)
 
-axiom R_target_is_shift : ∃ N, IsConjugateToShift Rprm_combinatorial_model N
+theorem R_target_is_shift
+    (h_shift : ∃ N, IsConjugateToShift Rprm_combinatorial_model N) :
+  ∃ N, IsConjugateToShift Rprm_combinatorial_model N :=
+  h_shift
 
 end ProofPlan
 
@@ -281,6 +284,7 @@ theorem molecule_conjecture_refined
           (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
           (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
     (h_piecewise : IsPiecewiseAnalytic1DUnstable Rfast)
+    (h_shift : ∃ N, IsConjugateToShift Rprm_combinatorial_model N)
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
@@ -299,7 +303,7 @@ theorem molecule_conjecture_refined
    (Rfast_hyperbolicity_conjecture h_exists h_conj h_norm h_ps h_orbit h_piecewise h_unique).2,
    Rfast_HMol_compactness,
    Rfast_combinatorially_associated,
-   R_target_is_shift⟩
+   R_target_is_shift h_shift⟩
 
 end
 end Molecule

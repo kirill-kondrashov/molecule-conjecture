@@ -55,5 +55,4 @@ All axioms used:
 - Molecule.slice_spectral_gap
 - Molecule.Rfast_HMol_compactness
 - Molecule.Rfast_combinatorially_associated
-- Molecule.R_target_is_shift
 ```
