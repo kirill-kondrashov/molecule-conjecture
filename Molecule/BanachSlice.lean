@@ -49,8 +49,12 @@ axiom slice_operator (f_star : BMol) : SliceSpace → SliceSpace
 axiom slice_chart_open (f_star : BMol) : ∃ V, IsOpen V ∧ MapsTo (slice_chart f_star) (slice_domain f_star) V
 
 /-- Conjugacy of Rfast and F via the chart. -/
-axiom slice_conjugacy (f_star : BMol) : 
-  ∀ x ∈ slice_domain f_star, slice_operator f_star (slice_chart f_star x) = slice_chart f_star (Rfast x)
+theorem slice_conjugacy (f_star : BMol)
+    (h_conj : ∀ x ∈ slice_domain f_star,
+      slice_operator f_star (slice_chart f_star x) = slice_chart f_star (Rfast x)) :
+  ∀ x ∈ slice_domain f_star,
+    slice_operator f_star (slice_chart f_star x) = slice_chart f_star (Rfast x) :=
+  h_conj
 
 /-- 
 The main spectral axiom:

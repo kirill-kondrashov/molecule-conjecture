@@ -50,6 +50,10 @@ theorem fixed_points_have_spectral_gap
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
     (h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
@@ -73,7 +77,7 @@ theorem fixed_points_have_spectral_gap
     -- This follows from the renormalization axioms encapsulating the deep spectral theory.
     -- Obtain the Banach chart, differentiability, and hyperbolicity from the properties theorem
     obtain ⟨_, E, inst1, inst2, φ, U, h_f_in_U, h_chart, F, h_conj, h_diff, h_hyp⟩ := 
-      Rfast_fixed_point_properties h_exists h_norm h_ps h_unique f h_renorm h_fixed
+      Rfast_fixed_point_properties h_exists h_conj h_norm h_ps h_unique f h_renorm h_fixed
     
     -- Package everything into the existential witness
     use E, inst1, inst2
@@ -99,6 +103,10 @@ theorem spectral_gap
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
     (h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
@@ -124,7 +132,7 @@ theorem spectral_gap
         DifferentiableAt ℂ F (φ f) ∧
         IsHyperbolic1DUnstable (fderiv ℂ F (φ f)) := by
   intro h_renorm h_fixed
-  have h_prop := fixed_points_have_spectral_gap h_exists h_norm h_ps h_unique f
+  have h_prop := fixed_points_have_spectral_gap h_exists h_conj h_norm h_ps h_unique f
   exact h_prop h_renorm h_fixed
 
 /--
@@ -146,6 +154,10 @@ theorem bounds_implies_hyperbolicity
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
     (h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
@@ -167,7 +179,7 @@ theorem bounds_implies_hyperbolicity
 
 
   -- Use the spectral gap axiom for this fixed point
-  have h_spectral := spectral_gap h_exists h_norm h_ps h_unique f_star h_renorm h_fixed
+  have h_spectral := spectral_gap h_exists h_conj h_norm h_ps h_unique f_star h_renorm h_fixed
 
   -- Unpack the spectral properties
   obtain ⟨h_analytic, E, inst1, inst2, φ, U, h_f_in_U, h_chart, F, h_conj, h_diff, h_hyp⟩ := h_spectral
@@ -198,6 +210,10 @@ theorem Rfast_hyperbolicity
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
     (h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
@@ -212,7 +228,7 @@ theorem Rfast_hyperbolicity
   PseudoSiegelAPrioriBoundsStatement → IsHyperbolic Rfast_constructed := by
   intro h
   rw [Rfast_constructed]
-  exact bounds_implies_hyperbolicity h_exists h_norm h_ps h_unique h
+  exact bounds_implies_hyperbolicity h_exists h_conj h_norm h_ps h_unique h
 
 /--
 Theorem 2: Analytic properties of Rfast.

@@ -115,6 +115,10 @@ lemma rfast_invariant_compact_set
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
     (h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
@@ -165,9 +169,9 @@ lemma rfast_invariant_compact_set
         simpa [hK_def] using hfK
       exact this
     have hP_image : slice_operator f_ref (slice_chart f_ref f) ∈ P := hP_maps hfP
-    have h_conj := slice_conjugacy f_ref f (by simp [slice_domain])
+    have h_conj' := slice_conjugacy f_ref (h_conj f_ref) f (by simp [slice_domain])
     -- Now the result is in K by definition.
-    simpa [hK_def, h_conj] using hP_image
+    simpa [hK_def, h_conj'] using hP_image
 
   exact ⟨K, f_ref, hK_compact, hK_maps, hK_nonempty, hf_ref_in,
     hK_renorm, hK_convex, hK_inj, hF_cont, hK_crit, hK_domain⟩
@@ -208,13 +212,15 @@ lemma fixed_point_in_invariant_compact_set
     (K : Set BMol) (f_ref : BMol)
     (hK_compact : IsCompact K) 
     (hK_maps : MapsTo Rfast K K) (hK_nonempty : K.Nonempty)
+    (h_conj : ∀ x ∈ slice_domain f_ref,
+      slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
     (hK_convex : Convex ℝ ((slice_chart f_ref) '' K))
     (hK_inj : InjOn (slice_chart f_ref) K)
     (hF_cont : ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K)) : 
     ∃ f ∈ K, Rfast f = f := by
   -- Sketch of the proof using Schauder's Fixed Point Theorem.
   have h_continuous := rfast_continuous_on_compact_set K hK_compact
-  exact schauder_fixed_point_on_invariant_compact K hK_compact h_continuous hK_maps hK_nonempty f_ref hK_convex hK_inj hF_cont
+  exact schauder_fixed_point_on_invariant_compact K hK_compact h_continuous hK_maps hK_nonempty f_ref h_conj hK_convex hK_inj hF_cont
 
 /--
 Fundamental existence theorem for the renormalization fixed point.
@@ -234,6 +240,10 @@ theorem exists_renormalization_fixed_point_raw
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
     (h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
@@ -241,8 +251,9 @@ theorem exists_renormalization_fixed_point_raw
         (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1)) :
     ∃ f : BMol, Rfast f = f ∧ IsStandardSiegelPacman f := by
   obtain ⟨K, f_ref, hK_compact, hK_maps, hK_nonempty, _hf_ref_in, hK_renorm, hK_convex, hK_inj, hF_cont, hK_crit, hK_domain⟩ :=
-    rfast_invariant_compact_set h_exists h_norm
-  obtain ⟨f, hf_in_K, hf_fix⟩ := fixed_point_in_invariant_compact_set K f_ref hK_compact hK_maps hK_nonempty hK_convex hK_inj hF_cont
+    rfast_invariant_compact_set h_exists h_conj h_norm
+  obtain ⟨f, hf_in_K, hf_fix⟩ :=
+    fixed_point_in_invariant_compact_set K f_ref hK_compact hK_maps hK_nonempty (h_conj f_ref) hK_convex hK_inj hF_cont
   exact ⟨f, hf_fix, hK_renorm f hf_in_K, hK_crit f hf_in_K, hK_domain f hf_in_K⟩
 
 /--
@@ -264,13 +275,17 @@ lemma exists_standard_siegel_fixed_point
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
     (h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
         (∀ f ∈ K, criticalValue f = 0) ∧
         (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1)) :
     ∃ f : BMol, IsStandardSiegelPacman f ∧ Rfast f = f := by
-  obtain ⟨f, h_fix, h_std⟩ := exists_renormalization_fixed_point_raw h_exists h_norm
+  obtain ⟨f, h_fix, h_std⟩ := exists_renormalization_fixed_point_raw h_exists h_conj h_norm
   exact ⟨f, h_std, h_fix⟩
 
 /--
@@ -290,13 +305,17 @@ theorem feigenbaum_fixed_point_existence
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
     (h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
         (∀ f ∈ K, criticalValue f = 0) ∧
         (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1)) :
     ∃ f : BMol, Rfast f = f ∧ IsFastRenormalizable f := by
-  obtain ⟨f, h_std, h_fix⟩ := exists_standard_siegel_fixed_point h_exists h_norm
+  obtain ⟨f, h_std, h_fix⟩ := exists_standard_siegel_fixed_point h_exists h_conj h_norm
   exact ⟨f, h_fix, h_std.1⟩
 
 /--
@@ -320,6 +339,10 @@ theorem feigenbaum_fixed_point_exists
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
     (h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
@@ -330,7 +353,7 @@ theorem feigenbaum_fixed_point_exists
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
     ∃! f : BMol, Rfast f = f ∧ IsFastRenormalizable f := by
   -- 1. Existence:
-  have h_exists := feigenbaum_fixed_point_existence h_exists h_norm
+  have h_exists := feigenbaum_fixed_point_existence h_exists h_conj h_norm
 
   -- 2. Uniqueness:
   -- According to [DLS17] Theorem 1.1 (Hyperbolicity), the renormalization operator
@@ -367,6 +390,10 @@ theorem feigenbaum_fixed_point_properties
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
     (h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
@@ -380,11 +407,11 @@ theorem feigenbaum_fixed_point_properties
 
   -- We assume f is the unique fixed point found above.
   -- Since uniqueness holds, f must be the "Standard Siegel Pacman" from exists_standard_siegel_fixed_point.
-  obtain ⟨f_std, h_std_prop, h_std_fix⟩ := exists_standard_siegel_fixed_point h_exists h_norm
+  obtain ⟨f_std, h_std_prop, h_std_fix⟩ := exists_standard_siegel_fixed_point h_exists h_conj h_norm
 
   have h_eq : f = f_std := by
     -- Use uniqueness
-    have h_unique_ex := feigenbaum_fixed_point_exists h_exists h_norm h_unique
+    have h_unique_ex := feigenbaum_fixed_point_exists h_exists h_conj h_norm h_unique
     obtain ⟨c, _, hc_uniq⟩ := h_unique_ex
     -- f is unique, so f = c
     have h_f_eq_c : f = c := hc_uniq f ⟨h_fixed, h_renorm⟩

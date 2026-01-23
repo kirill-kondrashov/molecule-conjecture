@@ -114,6 +114,10 @@ theorem problem_4_3_bounds_established_conjecture
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
     (h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
@@ -126,7 +130,7 @@ theorem problem_4_3_bounds_established_conjecture
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
     PseudoSiegelAPrioriBounds :=
-  problem_4_3_bounds_established h_exists h_norm h_ps h_unique
+  problem_4_3_bounds_established h_exists h_conj h_norm h_ps h_unique
 
 /--
 ### 3. Prove Hyperbolicity and Unstable Manifold Dimensions
@@ -146,6 +150,10 @@ theorem Rfast_hyperbolicity_conjecture
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
     (h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
@@ -159,8 +167,8 @@ theorem Rfast_hyperbolicity_conjecture
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
   IsHyperbolic Rfast_candidate ∧ IsPiecewiseAnalytic1DUnstable Rfast_candidate :=
   -- The proof of hyperbolicity relies on the establishment of a priori bounds (Problem 4.3)
-  have bounds := problem_4_3_bounds_established_conjecture h_exists h_norm h_ps h_unique
-  ⟨Rfast_hyperbolicity h_exists h_norm h_ps h_unique bounds, Rfast_piecewise_analytic bounds⟩
+  have bounds := problem_4_3_bounds_established_conjecture h_exists h_conj h_norm h_ps h_unique
+  ⟨Rfast_hyperbolicity h_exists h_conj h_norm h_ps h_unique bounds, Rfast_piecewise_analytic bounds⟩
 
 axiom Rfast_HMol_compactness : IsCompactOperator Rfast_HMol_candidate
 
@@ -210,6 +218,10 @@ theorem molecule_conjecture_refined
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
     (h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
@@ -232,8 +244,8 @@ theorem molecule_conjecture_refined
   ⟨Rfast_candidate,
    Rfast_HMol_candidate,
    Rprm_combinatorial_model,
-   (Rfast_hyperbolicity_conjecture h_exists h_norm h_ps h_unique).1,
-   (Rfast_hyperbolicity_conjecture h_exists h_norm h_ps h_unique).2,
+   (Rfast_hyperbolicity_conjecture h_exists h_conj h_norm h_ps h_unique).1,
+   (Rfast_hyperbolicity_conjecture h_exists h_conj h_norm h_ps h_unique).2,
    Rfast_HMol_compactness,
    Rfast_combinatorially_associated,
    R_target_is_shift⟩

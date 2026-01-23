@@ -88,6 +88,10 @@ theorem problem_4_3_bounds_established
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
     (h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
@@ -103,9 +107,9 @@ theorem problem_4_3_bounds_established
   -- 1. Existence of the Fixed Point f*
   -- We assume a non-trivial fixed point exists for the sake of the conjecture framework.
   -- The current fixed_point_exists from FixedPointExistence.lean only gives a trivial non-renormalizable one.
-  have h_unique := feigenbaum_fixed_point_exists h_exists h_norm h_unique
+  have h_unique := feigenbaum_fixed_point_exists h_exists h_conj h_norm h_unique
   obtain ⟨f_star, ⟨h_fixed, h_renorm⟩, _⟩ := h_unique
-  have h_props := feigenbaum_fixed_point_properties h_exists h_norm h_unique f_star h_fixed h_renorm
+  have h_props := feigenbaum_fixed_point_properties h_exists h_conj h_norm h_unique f_star h_fixed h_renorm
   have h_crit_val := h_props.1
   have h_f_star_sub_D := h_props.2
 

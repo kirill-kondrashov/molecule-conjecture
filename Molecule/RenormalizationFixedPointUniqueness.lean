@@ -48,6 +48,10 @@ theorem R_hybrid_unique_fixed_point
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
     (h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
@@ -57,7 +61,7 @@ theorem R_hybrid_unique_fixed_point
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
     ∃! c : HybridClass, IsFastRenormalizable c ∧ R_hybrid c = c := by
-  obtain ⟨c, ⟨hc_fix, hc_renorm⟩, hc_unique⟩ := feigenbaum_fixed_point_exists h_exists h_norm h_unique
+  obtain ⟨c, ⟨hc_fix, hc_renorm⟩, hc_unique⟩ := feigenbaum_fixed_point_exists h_exists h_conj h_norm h_unique
   refine ⟨c, ⟨hc_renorm, hc_fix⟩, ?_⟩
   intro y ⟨hy_renorm, hy_fix⟩
   exact hc_unique y ⟨hy_fix, hy_renorm⟩

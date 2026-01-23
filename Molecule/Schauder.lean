@@ -90,13 +90,15 @@ lemma slice_chart_continuous (f_ref : BMol) :
   apply continuous_of_discreteTopology
 
 /-- Lemma: The slice operator maps the Banach image of K to itself. -/
-lemma slice_operator_maps_to (f_ref : BMol) (K : Set BMol) (hK_maps : MapsTo Rfast K K) : 
+lemma slice_operator_maps_to (f_ref : BMol) (K : Set BMol) (hK_maps : MapsTo Rfast K K)
+    (h_conj : ∀ x ∈ slice_domain f_ref,
+      slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x)) :
     MapsTo (slice_operator f_ref) ((slice_chart f_ref) '' K) ((slice_chart f_ref) '' K) := by
   intro y hy
   obtain ⟨x, hx_in, hx_eq⟩ := hy
   rw [← hx_eq]
   -- Use conjugacy: F (φ x) = φ (Rfast x)
-  rw [slice_conjugacy f_ref x (Set.mem_univ x)]
+  rw [slice_conjugacy f_ref h_conj x (Set.mem_univ x)]
   apply mem_image_of_mem
   apply hK_maps
   exact hx_in
@@ -139,6 +141,8 @@ lemma schauder_fixed_point_on_invariant_compact (K : Set BMol) (hK_compact : IsC
     (_h_continuous : ContinuousOn Rfast K) (hK_maps : MapsTo Rfast K K) (hK_nonempty : K.Nonempty)
     -- New hypotheses required for the Banach slice argument
     (f_ref : BMol := hK_nonempty.some)
+    (h_conj : ∀ x ∈ slice_domain f_ref,
+      slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
     (h_convex : Convex ℝ ((slice_chart f_ref) '' K))
     (h_inj : InjOn (slice_chart f_ref) K)
     (h_F_cont : ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K)) : 
@@ -158,7 +162,7 @@ lemma schauder_fixed_point_on_invariant_compact (K : Set BMol) (hK_compact : IsC
 
   -- 4. The operator F (slice_operator) maps K_banach to itself.
   let F := slice_operator f_ref
-  have hF_maps : MapsTo F K_banach K_banach := slice_operator_maps_to f_ref K hK_maps
+  have hF_maps : MapsTo F K_banach K_banach := slice_operator_maps_to f_ref K hK_maps h_conj
 
   -- 5. Apply Schauder Fixed Point Theorem in the Banach Space.
   have h_fixed_banach : ∃ x ∈ K_banach, F x = x := 
@@ -185,6 +189,6 @@ lemma schauder_fixed_point_on_invariant_compact (K : Set BMol) (hK_compact : IsC
     -- Goal: F x_fix = slice_chart f_ref (Rfast f_fix)
     rw [← h_f_phi]
     -- Goal: F (slice_chart f_ref f_fix) = slice_chart f_ref (Rfast f_fix)
-    apply slice_conjugacy f_ref f_fix (Set.mem_univ f_fix)
+    apply slice_conjugacy f_ref h_conj f_fix (Set.mem_univ f_fix)
 
 end Molecule
