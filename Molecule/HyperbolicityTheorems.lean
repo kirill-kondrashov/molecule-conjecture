@@ -299,12 +299,13 @@ Theorem 2: Analytic properties of Rfast.
 We prove the operator is piecewise analytic with a 1D unstable direction.
 -/
 theorem Rfast_piecewise_analytic :
-  PseudoSiegelAPrioriBoundsStatement → IsPiecewiseAnalytic1DUnstable Rfast_constructed := by
-  intro h
+  PseudoSiegelAPrioriBoundsStatement →
+    IsPiecewiseAnalytic1DUnstable Rfast →
+    IsPiecewiseAnalytic1DUnstable Rfast_constructed := by
+  intro h h_piecewise
   rw [Rfast_constructed]
   -- We rely on the global extension axiom which connects the bounds (local spectral gap)
   -- to the global piecewise analytic structure.
-  apply bounds_imply_piecewise_analytic
-  exact h
+  exact bounds_imply_piecewise_analytic h h_piecewise
 
 end Molecule
