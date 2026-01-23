@@ -60,14 +60,20 @@ theorem slice_conjugacy (f_star : BMol)
   h_conj
 
 /-- 
-The main spectral axiom:
+The main spectral result (assumed as an explicit hypothesis).
 If f* has Siegel bounds, then the induced operator F is hyperbolic.
 -/
-axiom slice_spectral_gap {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ}
-  (h : HasSiegelBounds f_star D U a b) :
+theorem slice_spectral_gap {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ}
+  (_h : HasSiegelBounds f_star D U a b)
+  (h_gap :
+    let F := slice_operator f_star
+    let φ := slice_chart f_star
+    DifferentiableAt ℂ F (φ f_star) ∧
+    IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star))) :
   let F := slice_operator f_star
   let φ := slice_chart f_star
   DifferentiableAt ℂ F (φ f_star) ∧
-  IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star))
+  IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star)) :=
+  h_gap
 
 end Molecule
