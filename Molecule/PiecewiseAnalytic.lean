@@ -5,7 +5,7 @@ import Mathlib.Analysis.Analytic.Basic
 import Mathlib.Topology.Basic
 import Mathlib.Data.Set.Countable
 
-namespace MLC
+namespace Molecule
 
 open Complex Topology Filter Set
 
@@ -59,4 +59,4 @@ Reference: Dudko, Lyubich, Selinger, "Pacman renormalization...", arXiv:1703.012
 def IsPiecewiseAnalytic1DUnstable (f : BMol → BMol) : Prop :=
   IsPiecewiseAnalytic f ∧ Has1DUnstableDirection f
 
-end MLC
+end Molecule

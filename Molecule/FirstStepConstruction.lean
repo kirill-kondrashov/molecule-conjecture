@@ -4,7 +4,7 @@ import Molecule.HMol
 import Molecule.Construction
 import Molecule.Rfast
 
-namespace MLC
+namespace Molecule
 
 noncomputable section
 
@@ -47,4 +47,4 @@ lemma Rprm_model_consistent_proof :
 
 end
 
-end MLC
+end Molecule

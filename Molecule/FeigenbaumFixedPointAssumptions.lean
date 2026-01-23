@@ -4,7 +4,7 @@ import Molecule.BanachSlice
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Analysis.Normed.Module.Basic
 
-namespace MLC
+namespace Molecule
 
 open Topology Metric Complex Set
 
@@ -127,4 +127,4 @@ theorem renormalizable_fixed_point_unique_axiom
   exact renormalizable_fixed_point_unique f1 f2 (h_unique f1 f2) h1 h2
 
 end
-end MLC
+end Molecule

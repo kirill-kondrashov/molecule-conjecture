@@ -3,9 +3,11 @@ import Molecule.Rfast
 import Yoccoz.Quadratic.Complex.Basic
 import Molecule.FixedPointExistence
 
-namespace MLC
+namespace Molecule
 
-open Quadratic Complex Topology Set Filter Classical
+open MLC.Quadratic Complex Topology Set Filter Classical
+
+attribute [local instance] Classical.propDecidable
 
 /--
 A quasidisk is the image of the unit disk under a quasiconformal map of the plane.
@@ -134,4 +136,4 @@ lemma exists_pseudo_siegel_disk (f_star : BMol) (D : Set ℂ)
   · exact ps_disk_quasidisk f_star D h_ps h_fixed h_fast h_open h_crit
   · exact ps_disk_invariant f_star D h_ps h_fixed h_fast h_open h_crit
 
-end MLC
+end Molecule

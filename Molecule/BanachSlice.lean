@@ -4,7 +4,7 @@ import Molecule.Rfast
 import Mathlib.Analysis.Normed.Module.Basic
 import Mathlib.Analysis.Complex.Basic
 
-namespace MLC
+namespace Molecule
 
 open Complex Topology Set Filter
 
@@ -63,4 +63,4 @@ axiom slice_spectral_gap {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ
   DifferentiableAt ℂ F (φ f_star) ∧
   IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star))
 
-end MLC
+end Molecule

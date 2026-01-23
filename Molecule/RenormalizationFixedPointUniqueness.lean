@@ -2,7 +2,7 @@ import Molecule.BMol
 import Molecule.Rfast
 import Molecule.Problem4_3
 
-namespace MLC
+namespace Molecule
 
 open Set
 /--
@@ -88,4 +88,4 @@ theorem renormalization_fixed_point_unique
   intro hf_renorm hf_fixed hg_renorm hg_fixed
   exact h_unique f g ⟨hf_fixed, hf_renorm⟩ ⟨hg_fixed, hg_renorm⟩
 
-end MLC
+end Molecule

@@ -7,9 +7,9 @@ import Mathlib.Analysis.Complex.CauchyIntegral
 import Molecule.RenormalizationTheorem
 import Molecule.GlobalAnalyticity
 
-namespace MLC
+namespace Molecule
 
-open Quadratic Complex Topology Set Filter
+open MLC.Quadratic Complex Topology Set Filter
 
 /--
 Property: Renormalization Fixed Point Spectral Properties.
@@ -227,4 +227,4 @@ theorem Rfast_piecewise_analytic :
   apply bounds_imply_piecewise_analytic
   exact h
 
-end MLC
+end Molecule

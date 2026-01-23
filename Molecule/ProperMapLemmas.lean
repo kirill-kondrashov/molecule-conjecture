@@ -13,7 +13,7 @@ import Mathlib.Analysis.Complex.Polynomial.Basic
 import Mathlib.Topology.Basic
 import Mathlib.Data.Set.Card
 
-namespace MLC
+namespace Molecule
 
 open Complex Topology Set Filter
 
@@ -536,4 +536,4 @@ lemma isProperMap_congr {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
   rw [← h_restrict_eq]
   exact h_proper
 
-end MLC
+end Molecule

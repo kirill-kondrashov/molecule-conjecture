@@ -4,7 +4,7 @@ import Molecule.Rfast
 import Mathlib.Topology.Basic
 import Mathlib.Analysis.Complex.Basic
 
-namespace MLC
+namespace Molecule
 
 open Complex Topology Set Classical
 
@@ -52,4 +52,4 @@ applying Rfast, and converting back to HMol.
 noncomputable def Rfast_HMol (h : HMol) : HMol :=
   associated_HMol (Rfast (associated_BMol h))
 
-end MLC
+end Molecule

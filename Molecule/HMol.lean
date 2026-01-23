@@ -22,7 +22,7 @@ import Mathlib.Analysis.Normed.Group.CocompactMap
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 import Mathlib.Analysis.Normed.Group.Bounded
 
-namespace MLC
+namespace Molecule
 
 open Complex Topology Filter Set
 
@@ -291,4 +291,4 @@ noncomputable instance : Inhabited HMol := ⟨defaultHMol⟩
 
 instance : TopologicalSpace HMol := ⊥
 
-end MLC
+end Molecule

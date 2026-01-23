@@ -17,7 +17,7 @@ import Mathlib.Analysis.Normed.Module.Connected
 import Yoccoz.Quadratic.Complex.Basic
 import Yoccoz.Quadratic.Complex.Escape
 
-namespace MLC
+namespace Molecule
 
 open Complex
 
@@ -107,7 +107,7 @@ A property identifying if a parameter belongs to the main molecule branches.
 Currently defined as simply belonging to the Mandelbrot set, as a placeholder
 for the full definition involving hyperbolic components.
 -/
-def IsMainMoleculeComponent (c : ℂ) : Prop := c ∈ Quadratic.MandelbrotSet
+def IsMainMoleculeComponent (c : ℂ) : Prop := c ∈ MLC.Quadratic.MandelbrotSet
 
 
 /-- The type Mol is the subtype of complex numbers in the MolSet. -/
@@ -119,28 +119,28 @@ instance : TopologicalSpace Mol := by unfold Mol; infer_instance
 /--
 Helper lemma: The orbit map is continuous in c.
 -/
-lemma continuous_orbit (n : ℕ) : Continuous (fun c : ℂ => Quadratic.orbit c 0 n) := by
+lemma continuous_orbit (n : ℕ) : Continuous (fun c : ℂ => MLC.Quadratic.orbit c 0 n) := by
   induction n with
-  | zero => simp [Quadratic.orbit]; exact continuous_const
+  | zero => simp [MLC.Quadratic.orbit]; exact continuous_const
   | succ n ih =>
-    simp [Quadratic.orbit_succ]
+    simp [MLC.Quadratic.orbit_succ]
     exact (ih.pow 2).add continuous_id
 
 /--
 General escape lemma: if |z| > 2 and |z| ≥ |c|, the orbit escapes.
 -/
 lemma escapes_of_large_norm_and_ge_c {c z : ℂ} (hz : ‖z‖ > 2) (hcz : ‖c‖ ≤ ‖z‖) :
-    ¬ Quadratic.boundedOrbit c z := by
+    ¬ MLC.Quadratic.boundedOrbit c z := by
   intro h_bounded
   rcases h_bounded with ⟨M, hM⟩
   -- We prove by induction that |z_n| ≥ 2 + 3^n * (|z| - 2)
-  have growth : ∀ n, ‖Quadratic.orbit c z n‖ ≥ 2 + 3^n * (‖z‖ - 2) := by
+  have growth : ∀ n, ‖MLC.Quadratic.orbit c z n‖ ≥ 2 + 3^n * (‖z‖ - 2) := by
     intro n
     induction n with
     | zero =>
       simp
     | succ n ih =>
-      let zn := Quadratic.orbit c z n
+      let zn := MLC.Quadratic.orbit c z n
       have h_zn_ge_2 : ‖zn‖ ≥ 2 + 3^n * (‖z‖ - 2) := ih
       have h_zn_gt_2 : ‖zn‖ > 2 := by
         have : 3^n * (‖z‖ - 2) > 0 := mul_pos (pow_pos (by norm_num) n) (sub_pos.mpr hz)
@@ -150,7 +150,7 @@ lemma escapes_of_large_norm_and_ge_c {c z : ℂ} (hz : ‖z‖ > 2) (hcz : ‖c�
         have : 3^n * (‖z‖ - 2) ≥ 1 * (‖z‖ - 2) := mul_le_mul_of_nonneg_right (one_le_pow₀ (by norm_num)) (sub_nonneg.mpr (le_of_lt hz))
         linarith
 
-      rw [Quadratic.orbit_succ]
+      rw [MLC.Quadratic.orbit_succ]
       have tri : ‖zn^2 + c‖ ≥ ‖zn‖^2 - ‖c‖ := by
         have := norm_add_le (zn^2 + c) (-c)
         simp only [add_neg_cancel_right, norm_neg] at this
@@ -196,7 +196,7 @@ lemma escapes_of_large_norm_and_ge_c {c z : ℂ} (hz : ‖z‖ > 2) (hcz : ‖c�
     exact this N
 
   specialize hM N
-  have : ‖Quadratic.orbit c z N‖ ≥ 2 + 3^N * C := growth N
+  have : ‖MLC.Quadratic.orbit c z N‖ ≥ 2 + 3^N * C := growth N
   have : 3^N * C > M - 2 := by
     calc (3:ℝ)^N * C ≥ N * C := mul_le_mul_of_nonneg_right h3N (le_of_lt hC)
          _ ≥ ((M - 2) / C + 1) * C := mul_le_mul_of_nonneg_right hN_pow (le_of_lt hC)
@@ -208,7 +208,7 @@ lemma escapes_of_large_norm_and_ge_c {c z : ℂ} (hz : ‖z‖ > 2) (hcz : ‖c�
 If |z| > 2 and |c| ≤ 2, the orbit escapes to infinity.
 -/
 lemma escapes_if_gt_2 (c z : ℂ) (hc : ‖c‖ ≤ 2) (hz : ‖z‖ > 2) :
-    ¬ Quadratic.boundedOrbit c z := by
+    ¬ MLC.Quadratic.boundedOrbit c z := by
   apply escapes_of_large_norm_and_ge_c hz
   trans 2
   exact hc
@@ -217,24 +217,24 @@ lemma escapes_if_gt_2 (c z : ℂ) (hc : ‖c‖ ≤ 2) (hz : ‖z‖ > 2) :
 /--
 If |c| > 2, the orbit of 0 escapes.
 -/
-lemma c_gt_2_escapes (c : ℂ) (hc : ‖c‖ > 2) : ¬ Quadratic.boundedOrbit c 0 := by
-  have h_esc_c : ¬ Quadratic.boundedOrbit c c := by
+lemma c_gt_2_escapes (c : ℂ) (hc : ‖c‖ > 2) : ¬ MLC.Quadratic.boundedOrbit c 0 := by
+  have h_esc_c : ¬ MLC.Quadratic.boundedOrbit c c := by
     apply escapes_of_large_norm_and_ge_c hc (le_refl _)
   intro h_bounded
   apply h_esc_c
   cases h_bounded with | intro M hM =>
   use M
   intro n
-  have : Quadratic.orbit c c n = Quadratic.orbit c 0 (n+1) := by
-    dsimp [Quadratic.orbit]
-    simp [Quadratic.fc]
+  have : MLC.Quadratic.orbit c c n = MLC.Quadratic.orbit c 0 (n+1) := by
+    dsimp [MLC.Quadratic.orbit]
+    simp [MLC.Quadratic.fc]
   rw [this]
   exact hM (n+1)
 
 /--
 Mandelbrot set is contained in the closed disk of radius 2.
 -/
-lemma mandelbrot_subset_ball : Quadratic.MandelbrotSet ⊆ Metric.closedBall 0 2 := by
+lemma mandelbrot_subset_ball : MLC.Quadratic.MandelbrotSet ⊆ Metric.closedBall 0 2 := by
   intro c hc
   by_contra h
   rw [Metric.mem_closedBall, dist_zero_right] at h
@@ -245,7 +245,7 @@ lemma mandelbrot_subset_ball : Quadratic.MandelbrotSet ⊆ Metric.closedBall 0 2
 The Mandelbrot set is the intersection of preimages of the closed disk of radius 2 under the orbit maps.
 M = ⋂_n {c | |f_c^n(0)| ≤ 2}
 -/
-lemma mandelbrot_eq_inter : Quadratic.MandelbrotSet = ⋂ n, {c : ℂ | ‖Quadratic.orbit c 0 n‖ ≤ 2} := by
+lemma mandelbrot_eq_inter : MLC.Quadratic.MandelbrotSet = ⋂ n, {c : ℂ | ‖MLC.Quadratic.orbit c 0 n‖ ≤ 2} := by
   ext c
   constructor
   · intro h
@@ -257,14 +257,14 @@ lemma mandelbrot_eq_inter : Quadratic.MandelbrotSet = ⋂ n, {c : ℂ | ‖Quadr
       by_contra h_big
       push_neg at h_big
       exact c_gt_2_escapes c h_big h
-    have : ¬ Quadratic.boundedOrbit c 0 := by
-       have h_esc := escapes_if_gt_2 c (Quadratic.orbit c 0 n) hc_le_2 h_gt
+    have : ¬ MLC.Quadratic.boundedOrbit c 0 := by
+       have h_esc := escapes_if_gt_2 c (MLC.Quadratic.orbit c 0 n) hc_le_2 h_gt
        intro h_bounded
        apply h_esc
        rcases h_bounded with ⟨M, hM⟩
        use M
        intro k
-       simp [Quadratic.orbit, ← Function.iterate_add_apply, add_comm]
+       simp [MLC.Quadratic.orbit, ← Function.iterate_add_apply, add_comm]
        exact hM (n + k)
     exact this h
   · intro h
@@ -274,7 +274,7 @@ lemma mandelbrot_eq_inter : Quadratic.MandelbrotSet = ⋂ n, {c : ℂ | ‖Quadr
 /--
 Mandelbrot set is closed.
 -/
-lemma isClosed_mandelbrot : IsClosed Quadratic.MandelbrotSet := by
+lemma isClosed_mandelbrot : IsClosed MLC.Quadratic.MandelbrotSet := by
   rw [mandelbrot_eq_inter]
   apply isClosed_iInter
   intro n
@@ -283,7 +283,7 @@ lemma isClosed_mandelbrot : IsClosed Quadratic.MandelbrotSet := by
 /--
 Mandelbrot set is compact.
 -/
-lemma isCompact_mandelbrot : IsCompact Quadratic.MandelbrotSet := by
+lemma isCompact_mandelbrot : IsCompact MLC.Quadratic.MandelbrotSet := by
   apply IsCompact.of_isClosed_subset
   · exact isCompact_closedBall 0 2
   · exact isClosed_mandelbrot
@@ -356,4 +356,4 @@ def cusp : Mol := ⟨cuspVal, cusp_in_Mol⟩
 instance : Inhabited Mol := ⟨cusp⟩
 
 end
-end MLC
+end Molecule

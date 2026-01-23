@@ -8,7 +8,7 @@ import Molecule.Schauder
 import Molecule.BanachSlice
 import Mathlib.Analysis.Normed.Module.Basic
 
-namespace MLC
+namespace Molecule
 
 open Topology Metric Complex Set
 
@@ -396,4 +396,4 @@ theorem feigenbaum_fixed_point_properties
   exact ⟨h_std_prop.2.1, h_std_prop.2.2⟩
 
 end
-end MLC
+end Molecule

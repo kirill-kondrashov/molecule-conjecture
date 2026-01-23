@@ -6,9 +6,9 @@ import Molecule.PseudoSiegelDisk
 import Molecule.RenormalizationOrbit
 import Molecule.RenormalizationPullback
 
-namespace MLC
+namespace Molecule
 
-open Quadratic Complex Topology Set Filter
+open MLC.Quadratic Complex Topology Set Filter
 
 
 /--
@@ -60,4 +60,4 @@ theorem renormalization_implies_bounds (f_star : BMol) (D : Set ℂ) (U : Set BM
   · -- Condition 2: Branched Covering Property
     exact renormalization_pullback_property f_star D U a b n t f h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D h_U_subset hn ht hf
 
-end MLC
+end Molecule

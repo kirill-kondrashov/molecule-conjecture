@@ -5,7 +5,7 @@ import Molecule.Problem4_3
 import Molecule.BanachSlice
 import Mathlib.Analysis.Complex.CauchyIntegral
 
-namespace MLC
+namespace Molecule
 
 open Complex Topology Set
 
@@ -101,4 +101,4 @@ theorem bounds_imply_hyperbolicity_proof (h : PseudoSiegelAPrioriBoundsStatement
   use φ, U
   refine ⟨h_f_in_U, h_fixed, h_renorm, h_analytic, h_chart, F, h_conj, h_diff, h_hyp⟩
 
-end MLC
+end Molecule

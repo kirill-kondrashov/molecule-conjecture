@@ -23,9 +23,9 @@ import Molecule.FirstStepConstruction
 import Molecule.Problem4_3
 import Molecule.HyperbolicityTheorems
 
-namespace MLC
+namespace Molecule
 
-open Quadratic Complex Topology Set Filter
+open MLC.Quadratic Complex Topology Set Filter
 noncomputable section
 
 /-!
@@ -239,4 +239,4 @@ theorem molecule_conjecture_refined
    R_target_is_shift⟩
 
 end
-end MLC
+end Molecule

@@ -6,9 +6,9 @@ import Molecule.PseudoSiegelDisk
 import Molecule.RenormalizationOrbit
 import Molecule.ProperMapLemmas
 
-namespace MLC
+namespace Molecule
 
-open Quadratic Complex Topology Set Filter
+open MLC.Quadratic Complex Topology Set Filter
 
 /--
 The n-th renormalization of f.
@@ -208,4 +208,4 @@ lemma renormalization_pullback_property (f_star : BMol) (D : Set ℂ) (U : Set B
   · exact renorm_D_target_open f n
   · exact renorm_critical_value_mem f_star D U a b n t f h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D h_n_ge_1 h_t_in_set h_f_in_preimage
 
-end MLC
+end Molecule

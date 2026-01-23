@@ -13,7 +13,7 @@ import Mathlib.Analysis.Convex.Contractible
 import Mathlib.Analysis.Normed.Module.RCLike.Real
 import Mathlib.Topology.Maps.Proper.CompactlyGenerated
 
-namespace MLC
+namespace Molecule
 
 open Complex Topology Filter Set
 
@@ -217,4 +217,4 @@ noncomputable def defaultBMol : BMol :=
 
 noncomputable instance : Inhabited BMol := ⟨defaultBMol⟩
 
-end MLC
+end Molecule

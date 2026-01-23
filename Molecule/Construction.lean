@@ -4,7 +4,7 @@ import Mathlib.Analysis.Complex.Polynomial.Basic
 import Mathlib.Dynamics.FixedPoints.Basic
 import Mathlib.Topology.Algebra.Module.Basic
 
-namespace MLC
+namespace Molecule
 
 open Complex Topology Filter Set
 
@@ -166,4 +166,4 @@ def Rprm_boundary (c : ℂ) : ℂ :=
 
 end
 
-end MLC
+end Molecule

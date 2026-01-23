@@ -3,7 +3,7 @@ import Molecule.PiecewiseAnalytic
 import Molecule.Problem4_3
 import Molecule.Rfast
 
-namespace MLC
+namespace Molecule
 
 /--
 Axiom: Global Piecewise Analyticity.
@@ -15,4 +15,4 @@ Reference: Dudko, Lyubich, Selinger, "Pacman Renormalization...", Section 8.
 axiom bounds_imply_piecewise_analytic (h : PseudoSiegelAPrioriBoundsStatement) :
   IsPiecewiseAnalytic1DUnstable Rfast
 
-end MLC
+end Molecule

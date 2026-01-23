@@ -21,7 +21,7 @@ import Mathlib.Algebra.Polynomial.Degree.Operations
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 import Mathlib.Data.Set.Card
 
-namespace MLC
+namespace Molecule
 
 open Complex Topology Set Polynomial
 
@@ -603,4 +603,4 @@ theorem Rfast_fixed_point_properties
   subst h_eq
   refine ⟨h_g_analytic, E, inst1, inst2, φ, U, h_g_in_U, h_chart, F, h_conj, h_diff, h_hyp_lin⟩
 
-end MLC
+end Molecule

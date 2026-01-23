@@ -5,7 +5,7 @@ import Mathlib.Analysis.Normed.Module.Basic
 import Mathlib.Analysis.Convex.Segment
 import Mathlib.Order.Interval.Set.Infinite
 
-namespace MLC
+namespace Molecule
 
 open Topology Set
 
@@ -187,4 +187,4 @@ lemma schauder_fixed_point_on_invariant_compact (K : Set BMol) (hK_compact : IsC
     -- Goal: F (slice_chart f_ref f_fix) = slice_chart f_ref (Rfast f_fix)
     apply slice_conjugacy f_ref f_fix (Set.mem_univ f_fix)
 
-end MLC
+end Molecule

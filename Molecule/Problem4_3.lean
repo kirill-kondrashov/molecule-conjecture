@@ -6,9 +6,9 @@ import Molecule.Problem4_3_Lemmas
 import Yoccoz.Quadratic.Complex.Basic
 import Molecule.FeigenbaumFixedPoint
 
-namespace MLC
+namespace Molecule
 
-open Quadratic Complex Topology Set Filter
+open MLC.Quadratic Complex Topology Set Filter
 
 /--
 Key Lemma 4.8 from the paper (Pseudo-Siegel A Priori Bounds).
@@ -149,4 +149,4 @@ theorem problem_4_3_bounds_established
 
   exact ⟨f_star, U, h_fixed, h_renorm, h_U_open, h_f_in_U, h_c1_in_D, h_main⟩
 
-end MLC
+end Molecule

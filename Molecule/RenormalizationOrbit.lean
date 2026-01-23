@@ -4,9 +4,9 @@ import Yoccoz.Quadratic.Complex.Basic
 import Molecule.FixedPointExistence
 import Molecule.PseudoSiegelDisk
 
-namespace MLC
+namespace Molecule
 
-open Quadratic Complex Topology Set Filter
+open MLC.Quadratic Complex Topology Set Filter
 
 /--
 Axiom: Renormalization convergence implies orbit control.
@@ -60,4 +60,4 @@ lemma renormalization_orbit_lands_in_D (f_star : BMol) (D : Set ℂ) (U : Set BM
   (f.f^[t] (criticalValue f)) ∈ D := by
   exact (renormalization_orbit_control f_star D U a b h_fixed h_renorm h_open_D h_open_U h_f_star_in_U h_cv_in_D n t f h_n_ge_1 h_t_in_set h_f_in_preimage).2.2.1
 
-end MLC
+end Molecule

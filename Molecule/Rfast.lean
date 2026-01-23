@@ -3,7 +3,7 @@ import Mathlib.Analysis.Complex.Basic
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Topology.Basic
 
-namespace MLC
+namespace Molecule
 
 open Complex Topology Set
 
@@ -65,4 +65,4 @@ lemma Rfast_spec (g : BMol) (h : IsFastRenormalizable g) :
   rw [Rfast, dif_pos h]
   exact Classical.choose_spec h
 
-end MLC
+end Molecule

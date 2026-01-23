@@ -9,7 +9,7 @@ import Mathlib.Analysis.Analytic.Basic
 
 import Mathlib.LinearAlgebra.FiniteDimensional.Defs
 
-namespace MLC
+namespace Molecule
 
 open Complex Topology Filter Set
 
@@ -58,4 +58,4 @@ def IsHyperbolic (f : BMol → BMol) : Prop :=
         -- The derivative is hyperbolic with 1D unstable manifold
         IsHyperbolic1DUnstable (fderiv ℂ F (φ g))
 
-end MLC
+end Molecule
