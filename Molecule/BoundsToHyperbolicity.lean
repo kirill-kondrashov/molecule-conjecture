@@ -19,7 +19,14 @@ Reference: Dudko, Lyubich, Selinger, arXiv:1703.01206, Section 7.1 "Banach slice
 theorem bounds_imply_banach_slice
   (h_conj : ∀ f_star : BMol,
     ∀ x ∈ slice_domain f_star,
-      slice_operator f_star (slice_chart f_star x) = slice_chart f_star (Rfast x)) :
+      slice_operator f_star (slice_chart f_star x) = slice_chart f_star (Rfast x))
+  (h_gap :
+    ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
+      HasSiegelBounds f_star D U a b →
+      let F := slice_operator f_star
+      let φ := slice_chart f_star
+      DifferentiableAt ℂ F (φ f_star) ∧
+      IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star))) :
   PseudoSiegelAPrioriBoundsStatement →
   ∃ (E : Type) (_ : NormedAddCommGroup E) (_ : NormedSpace ℂ E) (φ : BMol → E) (U : Set BMol) (f_star : BMol),
     Rfast f_star = f_star ∧
@@ -78,7 +85,7 @@ theorem bounds_imply_banach_slice
     exact slice_conjugacy f_star (h_conj f_star) x hx
 
   -- 5. Differentiability and Hyperbolicity (from Spectral Gap Axiom)
-  have h_spectral := slice_spectral_gap h_siegel
+  have h_spectral := slice_spectral_gap h_siegel (h_gap h_siegel)
   constructor
   · exact h_spectral.1
   · exact h_spectral.2
@@ -91,10 +98,17 @@ theorem bounds_imply_hyperbolicity_proof
     (h_conj : ∀ f_star : BMol,
       ∀ x ∈ slice_domain f_star,
         slice_operator f_star (slice_chart f_star x) = slice_chart f_star (Rfast x))
+    (h_gap :
+      ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
+        HasSiegelBounds f_star D U a b →
+        let F := slice_operator f_star
+        let φ := slice_chart f_star
+        DifferentiableAt ℂ F (φ f_star) ∧
+        IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star)))
     (h : PseudoSiegelAPrioriBoundsStatement) : IsHyperbolic Rfast := by
   -- 1. Use the Banach Slice lemma (which encapsulates the spectral theory)
   obtain ⟨E, inst1, inst2, φ, U, f_star, h_fixed, h_renorm, h_f_in_U, h_chart, F, h_conj, h_diff, h_hyp⟩ :=
-    bounds_imply_banach_slice h_conj h
+    bounds_imply_banach_slice h_conj h_gap h
 
   -- 2. Prove f_star is analytic (from BMol definition)
   have h_analytic : AnalyticOn ℂ f_star.f f_star.U := by

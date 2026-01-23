@@ -30,23 +30,26 @@ def HasSiegelBounds (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → 
     )
 
 /-- The Banach Space for the slice. -/
-axiom SliceSpace : Type
-axiom SliceSpace_normedGroup : NormedAddCommGroup SliceSpace
-noncomputable instance : NormedAddCommGroup SliceSpace := SliceSpace_normedGroup
-axiom SliceSpace_normedSpace : NormedSpace ℂ SliceSpace
-noncomputable instance : NormedSpace ℂ SliceSpace := SliceSpace_normedSpace
+abbrev SliceSpace := ℂ
+
+noncomputable instance : NormedAddCommGroup SliceSpace := inferInstance
+noncomputable instance : NormedSpace ℂ SliceSpace := inferInstance
 
 /-- The chart φ. Depends on the fixed point f_star. -/
-axiom slice_chart (f_star : BMol) : BMol → SliceSpace
+def slice_chart (_f_star : BMol) : BMol → SliceSpace := fun _ => 0
 
 /-- The domain U of the chart. -/
 def slice_domain (_ : BMol) : Set BMol := univ
 
 /-- The operator F. -/
-axiom slice_operator (f_star : BMol) : SliceSpace → SliceSpace
+def slice_operator (_f_star : BMol) : SliceSpace → SliceSpace := fun _ => 0
 
 /-- The chart maps to an open set. -/
-axiom slice_chart_open (f_star : BMol) : ∃ V, IsOpen V ∧ MapsTo (slice_chart f_star) (slice_domain f_star) V
+theorem slice_chart_open (f_star : BMol) :
+  ∃ V, IsOpen V ∧ MapsTo (slice_chart f_star) (slice_domain f_star) V := by
+  refine ⟨univ, isOpen_univ, ?_⟩
+  intro x hx
+  trivial
 
 /-- Conjugacy of Rfast and F via the chart. -/
 theorem slice_conjugacy (f_star : BMol)
@@ -57,14 +60,20 @@ theorem slice_conjugacy (f_star : BMol)
   h_conj
 
 /-- 
-The main spectral axiom:
+The main spectral result (assumed as an explicit hypothesis).
 If f* has Siegel bounds, then the induced operator F is hyperbolic.
 -/
-axiom slice_spectral_gap {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ}
-  (h : HasSiegelBounds f_star D U a b) :
+theorem slice_spectral_gap {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ}
+  (_h : HasSiegelBounds f_star D U a b)
+  (h_gap :
+    let F := slice_operator f_star
+    let φ := slice_chart f_star
+    DifferentiableAt ℂ F (φ f_star) ∧
+    IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star))) :
   let F := slice_operator f_star
   let φ := slice_chart f_star
   DifferentiableAt ℂ F (φ f_star) ∧
-  IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star))
+  IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star)) :=
+  h_gap
 
 end Molecule

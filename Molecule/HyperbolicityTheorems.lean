@@ -78,6 +78,13 @@ theorem fixed_points_have_spectral_gap
           (f.f^[t] (criticalValue f)) ∈ D ∧
           (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
           (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
+    (h_gap :
+      ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
+        HasSiegelBounds f_star D U a b →
+        let F := slice_operator f_star
+        let φ := slice_chart f_star
+        DifferentiableAt ℂ F (φ f_star) ∧
+        IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star)))
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
@@ -93,7 +100,7 @@ theorem fixed_points_have_spectral_gap
     -- This follows from the renormalization axioms encapsulating the deep spectral theory.
     -- Obtain the Banach chart, differentiability, and hyperbolicity from the properties theorem
     obtain ⟨_, E, inst1, inst2, φ, U, h_f_in_U, h_chart, F, h_conj, h_diff, h_hyp⟩ := 
-      Rfast_fixed_point_properties h_exists h_conj h_norm h_ps h_orbit h_unique f h_renorm h_fixed
+      Rfast_fixed_point_properties h_exists h_conj h_norm h_ps h_orbit h_gap h_unique f h_renorm h_fixed
     
     -- Package everything into the existential witness
     use E, inst1, inst2
@@ -147,6 +154,13 @@ theorem spectral_gap
           (f.f^[t] (criticalValue f)) ∈ D ∧
           (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
           (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
+    (h_gap :
+      ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
+        HasSiegelBounds f_star D U a b →
+        let F := slice_operator f_star
+        let φ := slice_chart f_star
+        DifferentiableAt ℂ F (φ f_star) ∧
+        IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star)))
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2)
@@ -164,7 +178,7 @@ theorem spectral_gap
         DifferentiableAt ℂ F (φ f) ∧
         IsHyperbolic1DUnstable (fderiv ℂ F (φ f)) := by
   intro h_renorm h_fixed
-  have h_prop := fixed_points_have_spectral_gap h_exists h_conj h_norm h_ps h_orbit h_unique f
+  have h_prop := fixed_points_have_spectral_gap h_exists h_conj h_norm h_ps h_orbit h_gap h_unique f
   exact h_prop h_renorm h_fixed
 
 /--
@@ -214,6 +228,13 @@ theorem bounds_implies_hyperbolicity
           (f.f^[t] (criticalValue f)) ∈ D ∧
           (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
           (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
+    (h_gap :
+      ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
+        HasSiegelBounds f_star D U a b →
+        let F := slice_operator f_star
+        let φ := slice_chart f_star
+        DifferentiableAt ℂ F (φ f_star) ∧
+        IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star)))
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
@@ -227,7 +248,7 @@ theorem bounds_implies_hyperbolicity
 
 
   -- Use the spectral gap axiom for this fixed point
-  have h_spectral := spectral_gap h_exists h_conj h_norm h_ps h_orbit h_unique f_star h_renorm h_fixed
+  have h_spectral := spectral_gap h_exists h_conj h_norm h_ps h_orbit h_gap h_unique f_star h_renorm h_fixed
 
   -- Unpack the spectral properties
   obtain ⟨h_analytic, E, inst1, inst2, φ, U, h_f_in_U, h_chart, F, h_conj, h_diff, h_hyp⟩ := h_spectral
@@ -286,13 +307,20 @@ theorem Rfast_hyperbolicity
           (f.f^[t] (criticalValue f)) ∈ D ∧
           (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
           (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
+    (h_gap :
+      ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
+        HasSiegelBounds f_star D U a b →
+        let F := slice_operator f_star
+        let φ := slice_chart f_star
+        DifferentiableAt ℂ F (φ f_star) ∧
+        IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star)))
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
   PseudoSiegelAPrioriBoundsStatement → IsHyperbolic Rfast_constructed := by
   intro h
   rw [Rfast_constructed]
-  exact bounds_implies_hyperbolicity h_exists h_conj h_norm h_ps h_orbit h_unique h
+  exact bounds_implies_hyperbolicity h_exists h_conj h_norm h_ps h_orbit h_gap h_unique h
 
 /--
 Theorem 2: Analytic properties of Rfast.

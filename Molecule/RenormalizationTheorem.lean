@@ -608,12 +608,19 @@ theorem Rfast_theorem_1_1
           (f.f^[t] (criticalValue f)) ∈ D ∧
           (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
           (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
+    (h_gap :
+      ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
+        HasSiegelBounds f_star D U a b →
+        let F := slice_operator f_star
+        let φ := slice_chart f_star
+        DifferentiableAt ℂ F (φ f_star) ∧
+        IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star)))
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
   (IsHyperbolic Rfast) ∧ (∃ f, IsFastRenormalizable f ∧ Rfast f = f) := by
   have h_hyp : IsHyperbolic Rfast := by
-    apply bounds_imply_hyperbolicity_proof h_conj
+    apply bounds_imply_hyperbolicity_proof h_conj h_gap
     exact problem_4_3_bounds_established h_exists h_conj h_norm h_ps h_orbit h_unique
   have h_exists : ∃ f, IsFastRenormalizable f ∧ Rfast f = f :=
     renormalizable_fixed_point_exists h_exists h_conj h_norm h_ps h_orbit h_unique
@@ -660,6 +667,13 @@ theorem Rfast_fixed_point_properties
           (f.f^[t] (criticalValue f)) ∈ D ∧
           (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
           (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
+    (h_gap :
+      ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
+        HasSiegelBounds f_star D U a b →
+        let F := slice_operator f_star
+        let φ := slice_chart f_star
+        DifferentiableAt ℂ F (φ f_star) ∧
+        IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star)))
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
@@ -673,7 +687,7 @@ theorem Rfast_fixed_point_properties
       DifferentiableAt ℂ F (φ f) ∧
       IsHyperbolic1DUnstable (fderiv ℂ F (φ f)) := by
   intro f h_renorm h_fixed
-  obtain ⟨h_hyp, h_exists⟩ := Rfast_theorem_1_1 h_exists h_conj h_norm h_ps h_orbit h_unique
+  obtain ⟨h_hyp, h_exists⟩ := Rfast_theorem_1_1 h_exists h_conj h_norm h_ps h_orbit h_gap h_unique
   obtain ⟨g, E, inst1, inst2, φ, U, h_g_in_U, h_g_fixed, h_g_renorm, h_g_analytic, h_chart, F, h_conj, h_diff, h_hyp_lin⟩ := h_hyp
   -- Assume uniqueness of renormalizable fixed point to identify f with g
   have h_eq : f = g := renormalization_fixed_point_unique h_unique f g h_renorm h_fixed h_g_renorm h_g_fixed

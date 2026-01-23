@@ -194,6 +194,13 @@ theorem Rfast_hyperbolicity_conjecture
           (f.f^[t] (criticalValue f)) ∈ D ∧
           (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
           (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
+    (h_gap :
+      ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
+        HasSiegelBounds f_star D U a b →
+        let F := slice_operator f_star
+        let φ := slice_chart f_star
+        DifferentiableAt ℂ F (φ f_star) ∧
+        IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star)))
     (h_piecewise : IsPiecewiseAnalytic1DUnstable Rfast)
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
@@ -201,7 +208,7 @@ theorem Rfast_hyperbolicity_conjecture
   IsHyperbolic Rfast_candidate ∧ IsPiecewiseAnalytic1DUnstable Rfast_candidate :=
   -- The proof of hyperbolicity relies on the establishment of a priori bounds (Problem 4.3)
   have bounds := problem_4_3_bounds_established_conjecture h_exists h_conj h_norm h_ps h_orbit h_unique
-  ⟨Rfast_hyperbolicity h_exists h_conj h_norm h_ps h_orbit h_unique bounds,
+  ⟨Rfast_hyperbolicity h_exists h_conj h_norm h_ps h_orbit h_gap h_unique bounds,
     Rfast_piecewise_analytic bounds h_piecewise⟩
 
 theorem Rfast_HMol_compactness
@@ -292,6 +299,13 @@ theorem molecule_conjecture_refined
     (h_shift : ∃ N, IsConjugateToShift Rprm_combinatorial_model N)
     (h_assoc : CombinatoriallyAssociated Rfast_HMol_candidate Rprm_combinatorial_model)
     (h_compact : IsCompactOperator Rfast_HMol_candidate)
+    (h_gap :
+      ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
+        HasSiegelBounds f_star D U a b →
+        let F := slice_operator f_star
+        let φ := slice_chart f_star
+        DifferentiableAt ℂ F (φ f_star) ∧
+        IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star)))
     (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
@@ -306,8 +320,8 @@ theorem molecule_conjecture_refined
   ⟨Rfast_candidate,
    Rfast_HMol_candidate,
    Rprm_combinatorial_model,
-   (Rfast_hyperbolicity_conjecture h_exists h_conj h_norm h_ps h_orbit h_piecewise h_unique).1,
-   (Rfast_hyperbolicity_conjecture h_exists h_conj h_norm h_ps h_orbit h_piecewise h_unique).2,
+   (Rfast_hyperbolicity_conjecture h_exists h_conj h_norm h_ps h_orbit h_gap h_piecewise h_unique).1,
+   (Rfast_hyperbolicity_conjecture h_exists h_conj h_norm h_ps h_orbit h_gap h_piecewise h_unique).2,
    Rfast_HMol_compactness h_compact,
    Rfast_combinatorially_associated h_assoc,
    R_target_is_shift h_shift⟩
