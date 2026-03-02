@@ -319,6 +319,36 @@ theorem feigenbaum_fixed_point_existence
   exact ⟨f, h_fix, h_std.1⟩
 
 /--
+Existence of renormalizable fixed-point data for `Rfast`,
+packaged in the order expected by downstream core-data consumers.
+-/
+theorem exists_rfast_fixed_point_data
+    (h_exists :
+      ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
+        IsCompact P ∧
+        Convex ℝ P ∧
+        MapsTo (slice_operator f_ref) P P ∧
+        K = {f | slice_chart f_ref f ∈ P} ∧
+        SurjOn (slice_chart f_ref) K P ∧
+        K.Finite ∧
+        InjOn (slice_chart f_ref) K ∧
+        ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
+        K.Nonempty ∧
+        f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1)) :
+    ∃ g : BMol, IsFastRenormalizable g ∧ Rfast g = g := by
+  obtain ⟨g, hg_fix, hg_renorm⟩ := feigenbaum_fixed_point_existence h_exists h_conj h_norm
+  exact ⟨g, hg_renorm, hg_fix⟩
+
+/--
 Theorem: Existence and Uniqueness of the Feigenbaum Fixed Point.
 References:
 * [DLS17] Dudko, Lyubich, Selinger, "Pacman Renormalization...", arXiv:1703.01206.
