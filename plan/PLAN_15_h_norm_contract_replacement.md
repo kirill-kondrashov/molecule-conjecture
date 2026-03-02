@@ -1,7 +1,7 @@
 # PLAN 15 - Replace Global `h_norm` Contract
 
 Status: ACTIVE
-Progress: [######----] 60%
+Progress: [#######---] 70%
 Scope: Remove dependence on the contradictory global `h_norm` by replacing theorem interfaces with localized normalization contracts.
 Acceptance: `molecule_conjecture_refined` no longer depends on `molecule_h_norm`.
 Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/HyperbolicityTheorems.lean`
@@ -25,3 +25,4 @@ Last Updated: 2026-03-02
   - `Rfast_hyperbolicity_conjecture_localized`
   - updated `molecule_conjecture_refined_with_localized_slice_data` signature
     to consume fixed-point/spectral contracts instead of explicit global `h_norm`.
+- Removed unused legacy `h_norm`-era fields from `MoleculeHypothesisPack`.

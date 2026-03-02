@@ -822,15 +822,6 @@ structure MoleculeHypothesisPack where
           (∀ x ∈ U, F (φ x) = φ (Rfast x)) ∧
           DifferentiableAt ℂ F (φ f) ∧
           IsHyperbolic1DUnstable (fderiv ℂ F (φ f))
-  h_conj :
-    ∀ f_ref : BMol,
-      ∀ x ∈ slice_domain f_ref,
-        slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x)
-  h_norm :
-    ∀ K : Set BMol,
-      (∀ f ∈ K, IsFastRenormalizable f) ∧
-      (∀ f ∈ K, criticalValue f = 0) ∧
-      (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1)
   h_ps :
     ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
       ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps
@@ -854,31 +845,17 @@ structure MoleculeHypothesisPack where
   h_shift : ∃ N, IsConjugateToShift Rprm_combinatorial_model N
   h_assoc : CombinatoriallyAssociated Rfast_HMol_candidate Rprm_combinatorial_model
   h_compact : IsCompactOperator Rfast_HMol_candidate
-  h_gap :
-    ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
-      HasSiegelBounds f_star D U a b →
-      let F := slice_operator f_star
-      let φ := slice_chart f_star
-      DifferentiableAt ℂ F (φ f_star) ∧
-      IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star))
-  h_unique :
-    ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
-             (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2
 
 theorem molecule_hypothesis_pack : MoleculeHypothesisPack where
   h_data := molecule_h_data
   h_fixed_data := molecule_h_fixed_data
   h_spectral_data := molecule_h_spectral_data
-  h_conj := molecule_h_conj
-  h_norm := molecule_h_norm
   h_ps := molecule_h_ps
   h_orbit := molecule_h_orbit
   h_piecewise := molecule_h_piecewise
   h_shift := molecule_h_shift
   h_assoc := molecule_h_assoc
   h_compact := molecule_h_compact
-  h_gap := molecule_h_gap
-  h_unique := molecule_h_unique
 
 theorem molecule_conjecture_refined_of_pack
     (hpack : MoleculeHypothesisPack) :

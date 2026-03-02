@@ -17,14 +17,14 @@ Last Updated: 2026-03-02
 | PLAN_11 | Full axiom burndown | ACTIVE | [#########-] 90% |
 | PLAN_12 | h_exists/h_norm localization | DONE | [##########] 100% |
 | PLAN_13 | h_orbit non-circular path | DONE | [##########] 100% |
-| PLAN_15 | Replace global h_norm contract | ACTIVE | [######----] 60% |
-| PLAN_17 | Signature migration to local norm | ACTIVE | [#######---] 70% |
-| PLAN_18 | Global norm signature cutover | ACTIVE | [#########-] 90% |
+| PLAN_15 | Replace global h_norm contract | ACTIVE | [#######---] 70% |
+| PLAN_17 | Signature migration to local norm | ACTIVE | [########--] 80% |
+| PLAN_18 | Global norm signature cutover | DONE | [##########] 100% |
 | PLAN_20 | Problem4_3 local norm cutover | DONE | [##########] 100% |
-| PLAN_21 | Axiom audit driven refactor | ACTIVE | [#######---] 70% |
+| PLAN_21 | Axiom audit driven refactor | ACTIVE | [########--] 80% |
 | PLAN_22 | Hyperbolicity local fixed-point cutover | DONE | [##########] 100% |
 | PLAN_23 | Zero-arg theorem de-ex-falso | DONE | [##########] 100% |
-| PLAN_24 | Root h_norm axiom exit strategy | ACTIVE | [#######---] 70% |
+| PLAN_24 | Root h_norm axiom exit strategy | ACTIVE | [########--] 80% |
 
 ## Dependency Map
 
@@ -61,6 +61,10 @@ Last Updated: 2026-03-02
     `molecule_h_fixed_data`, `molecule_h_spectral_data`
 - `molecule_conjecture_refined_with_localized_slice_data` now consumes localized
   fixed-point/spectral contracts in place of an explicit global `h_norm` argument.
+- Packed-route cleanup completed:
+  - removed unused legacy `h_norm`/`h_conj`/`h_gap`/`h_unique` fields
+    from `MoleculeHypothesisPack`
+- PLAN_18 is now complete.
 - PLAN_12 completed conjecture-level rewiring:
   - `problem_4_3_bounds_established_conjecture_localized`
   - `problem_4_3_fixed_point_data_of_global`
