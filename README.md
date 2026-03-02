@@ -24,7 +24,7 @@ The primary benefit of using Lean is that the logic is verified by the Lean kern
 
 ## Formalization Status
 
-The main formal statement is `Molecule.molecule_conjecture_refined` in `Molecule/Conjecture.lean`. It is a conditional theorem that constructs a renormalization operator `Rfast`, a compact operator on the horseshoe `Rfast_HMol`, and a combinatorial model `R_target`, and then establishes:
+The main formal statement is `Molecule.molecule_conjecture_refined` in `Molecule/Conjecture.lean`. It is a zero-argument theorem that constructs a renormalization operator `Rfast`, a compact operator on the horseshoe `Rfast_HMol`, and a combinatorial model `R_target`, and then establishes:
 
 - `IsHyperbolic Rfast`
 - `IsPiecewiseAnalytic1DUnstable Rfast`
@@ -32,15 +32,15 @@ The main formal statement is `Molecule.molecule_conjecture_refined` in `Molecule
 - `CombinatoriallyAssociated Rfast_HMol R_target`
 - `∃ N, IsConjugateToShift R_target N`
 
-Key assumptions are explicit parameters (existence of the slice data, a priori bounds, renormalization orbit control, spectral gap, piecewise analyticity, combinatorial conjugacy, compactness, and uniqueness of renormalizable fixed points). This keeps the dependency graph visible and checkable.
+The analytic/dynamical assumptions (existence of the slice data, a priori bounds, renormalization orbit control, spectral gap, piecewise analyticity, combinatorial conjugacy, compactness, and uniqueness of renormalizable fixed points) are represented as internal declarations in `Molecule/Conjecture.lean` (`molecule_h_*`), with ongoing conversion from axioms to theorems.
 
 Implementation notes:
 
 - `SliceSpace` is currently instantiated as `ℂ`.
 - `slice_chart` and `slice_operator` are currently placeholder constant maps, so the Banach slice is a stubbed model.
-- The top-level theorem remains a formal statement with explicit hypotheses for the analytic and dynamical inputs.
+- The top-level theorem remains a formal statement whose analytic and dynamical inputs are carried by internal hypothesis constants.
 
-In practice, this means `Molecule.molecule_conjecture_refined` is a conditional theorem: it does not derive the analytic/dynamical ingredients internally, but takes them as explicit parameters and then proves the conjecture’s conclusions. Intuitively, the file assembles a rigorous dependency graph: if the analytic estimates and dynamical controls from the literature are supplied, the rest of the logical pipeline is fully formal and checked by Lean.
+In practice, this means `Molecule.molecule_conjecture_refined` remains conditional at the foundational level: it does not derive the analytic/dynamical ingredients internally, but depends on explicit internal hypothesis constants. Intuitively, the file assembles a rigorous dependency graph: if the analytic estimates and dynamical controls from the literature are supplied, the rest of the logical pipeline is fully formal and checked by Lean.
 
 > [!NOTE]
 > 
@@ -63,4 +63,5 @@ All axioms used:
 - propext
 - Quot.sound
 - Classical.choice
+- Molecule.molecule_h_norm
 ```

@@ -182,6 +182,35 @@ theorem spectral_gap
   exact h_prop h_renorm h_fixed
 
 /--
+Localized hyperbolicity entry: consume fixed-point spectral data directly,
+without global normalization assumptions in the public signature.
+-/
+theorem bounds_implies_hyperbolicity_of_spectral_data
+    (h_spectral :
+      ∀ (f : BMol),
+      IsFastRenormalizable f →
+      Rfast f = f →
+      AnalyticOn ℂ f.f f.U ∧
+      ∃ (E : Type) (inst1 : NormedAddCommGroup E) (inst2 : NormedSpace ℂ E),
+        let _ := inst1; let _ := inst2
+        ∃ (φ : BMol → E) (U : Set BMol),
+          f ∈ U ∧
+          (∃ (V : Set E), IsOpen V ∧ MapsTo φ U V) ∧
+          ∃ (F : E → E),
+            (∀ x ∈ U, F (φ x) = φ (Rfast x)) ∧
+            DifferentiableAt ℂ F (φ f) ∧
+            IsHyperbolic1DUnstable (fderiv ℂ F (φ f))) :
+  PseudoSiegelAPrioriBoundsStatement → IsHyperbolic Rfast := by
+  intro h
+  obtain ⟨f_star, _, h_fixed, h_renorm, _, _, _, _⟩ := h
+  have h_spectral' := h_spectral f_star h_renorm h_fixed
+  obtain ⟨h_analytic, E, inst1, inst2, φ, U, h_f_in_U, h_chart, F, h_conj, h_diff, h_hyp⟩ := h_spectral'
+  use f_star
+  use E, inst1, inst2
+  use φ, U
+  refine ⟨h_f_in_U, h_fixed, h_renorm, h_analytic, h_chart, F, h_conj, h_diff, h_hyp⟩
+
+/--
 Theorem: A priori bounds imply hyperbolicity.
 If the renormalization operator has a fixed point satisfying the Pseudo-Siegel A Priori Bounds,
 then the operator is hyperbolic at that fixed point.
@@ -239,26 +268,23 @@ theorem bounds_implies_hyperbolicity
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
   PseudoSiegelAPrioriBoundsStatement → IsHyperbolic Rfast := by
-  intro h
-  -- Extract the fixed point from the bounds statement
-  obtain ⟨f_star, U, h_fixed, h_renorm, _, h_in_U, _, h_bounds_body⟩ := h
-
-  -- Prove f_star is renormalizable (using the fact that defaultBMol is not)
-  -- Now directly from bounds statement
-
-
-  -- Use the spectral gap axiom for this fixed point
-  have h_spectral := spectral_gap h_exists h_conj h_norm h_ps h_orbit h_gap h_unique f_star h_renorm h_fixed
-
-  -- Unpack the spectral properties
-  obtain ⟨h_analytic, E, inst1, inst2, φ, U, h_f_in_U, h_chart, F, h_conj, h_diff, h_hyp⟩ := h_spectral
-
-  -- Construct the IsHyperbolic witness
-  use f_star
-  use E, inst1, inst2
-  use φ, U
-
-  refine ⟨h_f_in_U, h_fixed, h_renorm, h_analytic, h_chart, F, h_conj, h_diff, h_hyp⟩
+  have h_spectral_data :
+      ∀ (f : BMol),
+      IsFastRenormalizable f →
+      Rfast f = f →
+      AnalyticOn ℂ f.f f.U ∧
+      ∃ (E : Type) (inst1 : NormedAddCommGroup E) (inst2 : NormedSpace ℂ E),
+        let _ := inst1; let _ := inst2
+        ∃ (φ : BMol → E) (U : Set BMol),
+          f ∈ U ∧
+          (∃ (V : Set E), IsOpen V ∧ MapsTo φ U V) ∧
+          ∃ (F : E → E),
+            (∀ x ∈ U, F (φ x) = φ (Rfast x)) ∧
+            DifferentiableAt ℂ F (φ f) ∧
+            IsHyperbolic1DUnstable (fderiv ℂ F (φ f)) := by
+    intro f h_renorm h_fixed
+    exact spectral_gap h_exists h_conj h_norm h_ps h_orbit h_gap h_unique f h_renorm h_fixed
+  exact bounds_implies_hyperbolicity_of_spectral_data h_spectral_data
 
 /--
 Theorem 1: Hyperbolicity of Rfast.
