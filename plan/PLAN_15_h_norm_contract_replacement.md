@@ -1,7 +1,7 @@
 # PLAN 15 - Replace Global `h_norm` Contract
 
 Status: ACTIVE
-Progress: [####------] 40%
+Progress: [######----] 60%
 Scope: Remove dependence on the contradictory global `h_norm` by replacing theorem interfaces with localized normalization contracts.
 Acceptance: `molecule_conjecture_refined` no longer depends on `molecule_h_norm`.
 Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/HyperbolicityTheorems.lean`
@@ -12,7 +12,7 @@ Last Updated: 2026-03-02
 
 - [x] Added plan.
 - [x] Introduce replacement signatures using localized normalization package.
-- [ ] Migrate top-level theorem path to replacement signatures.
+- [x] Migrate top-level theorem path to replacement signatures.
 
 ## Current Outcome
 
@@ -21,3 +21,7 @@ Last Updated: 2026-03-02
 - Legacy Problem 4.3 theorem now bridges through the localized signature.
 - Top-level export now routes through `molecule_conjecture_refined_of_pack`
   (non-ex-falso path), but still carries `h_norm` via packed assumptions.
+- Added localized conjecture-level route in `Molecule/Conjecture.lean`:
+  - `Rfast_hyperbolicity_conjecture_localized`
+  - updated `molecule_conjecture_refined_with_localized_slice_data` signature
+    to consume fixed-point/spectral contracts instead of explicit global `h_norm`.

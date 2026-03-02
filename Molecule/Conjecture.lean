@@ -439,6 +439,57 @@ theorem Rfast_hyperbolicity_conjecture
   refine ⟨?_, h_piecewise_candidate⟩
   simpa [Rfast_candidate, Rfast_constructed] using h_hyperbolic_rfast
 
+/--
+Localized hyperbolicity route:
+use fixed-point and spectral contracts directly instead of the global `h_norm` edge.
+-/
+theorem Rfast_hyperbolicity_conjecture_localized
+    (h_data : InvariantSliceDataWithNormalization)
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_spectral_data :
+      ∀ (f : BMol),
+      IsFastRenormalizable f →
+      Rfast f = f →
+      AnalyticOn ℂ f.f f.U ∧
+      ∃ (E : Type) (inst1 : NormedAddCommGroup E) (inst2 : NormedSpace ℂ E),
+        let _ := inst1; let _ := inst2
+        ∃ (φ : BMol → E) (U : Set BMol),
+          f ∈ U ∧
+          (∃ (V : Set E), IsOpen V ∧ MapsTo φ U V) ∧
+          ∃ (F : E → E),
+            (∀ x ∈ U, F (φ x) = φ (Rfast x)) ∧
+            DifferentiableAt ℂ F (φ f) ∧
+            IsHyperbolic1DUnstable (fderiv ℂ F (φ f)))
+    (h_ps :
+      ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
+        ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
+    (h_orbit :
+      ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
+        Rfast f_star = f_star →
+        IsFastRenormalizable f_star →
+        IsOpen D → IsOpen U →
+        f_star ∈ U →
+        criticalValue f_star ∈ D →
+        (∀ (n t : ℕ) (f : BMol),
+          n ≥ 1 →
+          t ∈ ({a n, b n} : Set ℕ) →
+          f ∈ (Rfast^[n]) ⁻¹' U →
+          MapsTo (f.f^[t]) (Rfast^[n] f).U (Rfast^[n] f).V ∧
+          criticalValue f ∈ (Rfast^[n] f).U ∧
+          (f.f^[t] (criticalValue f)) ∈ D ∧
+          (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
+          (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
+    (h_piecewise : IsPiecewiseAnalytic1DUnstable Rfast) :
+  IsHyperbolic Rfast_candidate ∧ IsPiecewiseAnalytic1DUnstable Rfast_candidate := by
+  have bounds : PseudoSiegelAPrioriBounds :=
+    problem_4_3_bounds_established_conjecture_localized h_data h_fixed_data h_ps h_orbit
+  have h_hyperbolic_rfast : IsHyperbolic Rfast :=
+    bounds_implies_hyperbolicity_of_spectral_data h_spectral_data bounds
+  have h_piecewise_candidate : IsPiecewiseAnalytic1DUnstable Rfast_candidate := by
+    simpa [Rfast_candidate, Rfast_constructed] using Rfast_piecewise_analytic bounds h_piecewise
+  refine ⟨?_, h_piecewise_candidate⟩
+  simpa [Rfast_candidate, Rfast_constructed] using h_hyperbolic_rfast
+
 theorem Rfast_HMol_compactness
     (h_compact : IsCompactOperator Rfast_HMol_candidate) :
   IsCompactOperator Rfast_HMol_candidate :=
@@ -561,15 +612,21 @@ while bridging to the legacy theorem chain internally.
 -/
 theorem molecule_conjecture_refined_with_localized_slice_data
     (h_data : InvariantSliceDataWithNormalization)
-    (h_conj :
-      ∀ f_ref : BMol,
-        ∀ x ∈ slice_domain f_ref,
-          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
-    (h_norm :
-      ∀ K : Set BMol,
-        (∀ f ∈ K, IsFastRenormalizable f) ∧
-        (∀ f ∈ K, criticalValue f = 0) ∧
-        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_spectral_data :
+      ∀ (f : BMol),
+      IsFastRenormalizable f →
+      Rfast f = f →
+      AnalyticOn ℂ f.f f.U ∧
+      ∃ (E : Type) (inst1 : NormedAddCommGroup E) (inst2 : NormedSpace ℂ E),
+        let _ := inst1; let _ := inst2
+        ∃ (φ : BMol → E) (U : Set BMol),
+          f ∈ U ∧
+          (∃ (V : Set E), IsOpen V ∧ MapsTo φ U V) ∧
+          ∃ (F : E → E),
+            (∀ x ∈ U, F (φ x) = φ (Rfast x)) ∧
+            DifferentiableAt ℂ F (φ f) ∧
+            IsHyperbolic1DUnstable (fderiv ℂ F (φ f)))
     (h_ps :
       ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
         ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
@@ -592,17 +649,7 @@ theorem molecule_conjecture_refined_with_localized_slice_data
     (h_piecewise : IsPiecewiseAnalytic1DUnstable Rfast)
     (h_shift : ∃ N, IsConjugateToShift Rprm_combinatorial_model N)
     (h_assoc : CombinatoriallyAssociated Rfast_HMol_candidate Rprm_combinatorial_model)
-    (h_compact : IsCompactOperator Rfast_HMol_candidate)
-    (h_gap :
-      ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
-        HasSiegelBounds f_star D U a b →
-        let F := slice_operator f_star
-        let φ := slice_chart f_star
-        DifferentiableAt ℂ F (φ f_star) ∧
-        IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star)))
-    (h_unique :
-      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
-               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
+    (h_compact : IsCompactOperator Rfast_HMol_candidate) :
   ∃ (Rfast : BMol → BMol)
     (Rfast_HMol : HMol → HMol)
     (R_target : {x : Mol // x ≠ cusp} → {x : Mol // x ≠ cusp}),
@@ -610,33 +657,17 @@ theorem molecule_conjecture_refined_with_localized_slice_data
     IsPiecewiseAnalytic1DUnstable Rfast ∧
     IsCompactOperator Rfast_HMol ∧
     CombinatoriallyAssociated Rfast_HMol R_target ∧
-    (∃ N, IsConjugateToShift R_target N) := by
-  rcases h_data with ⟨K, f_ref, P, hP_comp, hP_conv, h_maps, hK_def, h_surj, h_fin, h_inj, h_cont, h_nonempty, h_mem, h_normK⟩
-  have h_exists :
-      ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
-        IsCompact P ∧
-        Convex ℝ P ∧
-        MapsTo (slice_operator f_ref) P P ∧
-        K = {f | slice_chart f_ref f ∈ P} ∧
-        SurjOn (slice_chart f_ref) K P ∧
-        K.Finite ∧
-        InjOn (slice_chart f_ref) K ∧
-        ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
-        K.Nonempty ∧
-        f_ref ∈ K :=
-    ⟨K, f_ref, P, hP_comp, hP_conv, h_maps, hK_def, h_surj, h_fin, h_inj, h_cont, h_nonempty, h_mem⟩
-  exact molecule_conjecture_refined_with_hypotheses
-    h_exists
-    h_conj
-    h_norm
-    h_ps
-    h_orbit
-    h_piecewise
-    h_shift
-    h_assoc
-    h_compact
-    h_gap
-    h_unique
+    (∃ N, IsConjugateToShift R_target N) :=
+  ⟨Rfast_candidate,
+   Rfast_HMol_candidate,
+   Rprm_combinatorial_model,
+   (Rfast_hyperbolicity_conjecture_localized
+      h_data h_fixed_data h_spectral_data h_ps h_orbit h_piecewise).1,
+   (Rfast_hyperbolicity_conjecture_localized
+      h_data h_fixed_data h_spectral_data h_ps h_orbit h_piecewise).2,
+   Rfast_HMol_compactness h_compact,
+   Rfast_combinatorially_associated h_assoc,
+   R_target_is_shift h_shift⟩
 
 /--
 Internal hypothesis constants used to expose a zero-argument top theorem.
@@ -734,8 +765,63 @@ theorem molecule_h_unique :
 theorem molecule_h_data : InvariantSliceDataWithNormalization :=
   invariant_slice_data_with_normalization_of_global molecule_h_exists molecule_h_norm
 
+/--
+Localized fixed-point data witness used by the packed top-theorem route.
+-/
+theorem molecule_h_fixed_data : FixedPointNormalizationData :=
+  problem_4_3_fixed_point_data_of_global
+    molecule_h_exists
+    molecule_h_conj
+    molecule_h_norm
+    molecule_h_unique
+
+/--
+Localized spectral-data witness used by the packed top-theorem route.
+-/
+theorem molecule_h_spectral_data :
+    ∀ (f : BMol),
+    IsFastRenormalizable f →
+    Rfast f = f →
+    AnalyticOn ℂ f.f f.U ∧
+    ∃ (E : Type) (inst1 : NormedAddCommGroup E) (inst2 : NormedSpace ℂ E),
+      let _ := inst1; let _ := inst2
+      ∃ (φ : BMol → E) (U : Set BMol),
+        f ∈ U ∧
+        (∃ (V : Set E), IsOpen V ∧ MapsTo φ U V) ∧
+        ∃ (F : E → E),
+          (∀ x ∈ U, F (φ x) = φ (Rfast x)) ∧
+          DifferentiableAt ℂ F (φ f) ∧
+          IsHyperbolic1DUnstable (fderiv ℂ F (φ f)) := by
+  intro f h_renorm h_fixed
+  exact spectral_gap
+    molecule_h_exists
+    molecule_h_conj
+    molecule_h_norm
+    molecule_h_ps
+    molecule_h_orbit
+    molecule_h_gap
+    molecule_h_unique
+    f
+    h_renorm
+    h_fixed
+
 structure MoleculeHypothesisPack where
   h_data : InvariantSliceDataWithNormalization
+  h_fixed_data : FixedPointNormalizationData
+  h_spectral_data :
+    ∀ (f : BMol),
+    IsFastRenormalizable f →
+    Rfast f = f →
+    AnalyticOn ℂ f.f f.U ∧
+    ∃ (E : Type) (inst1 : NormedAddCommGroup E) (inst2 : NormedSpace ℂ E),
+      let _ := inst1; let _ := inst2
+      ∃ (φ : BMol → E) (U : Set BMol),
+        f ∈ U ∧
+        (∃ (V : Set E), IsOpen V ∧ MapsTo φ U V) ∧
+        ∃ (F : E → E),
+          (∀ x ∈ U, F (φ x) = φ (Rfast x)) ∧
+          DifferentiableAt ℂ F (φ f) ∧
+          IsHyperbolic1DUnstable (fderiv ℂ F (φ f))
   h_conj :
     ∀ f_ref : BMol,
       ∀ x ∈ slice_domain f_ref,
@@ -781,6 +867,8 @@ structure MoleculeHypothesisPack where
 
 theorem molecule_hypothesis_pack : MoleculeHypothesisPack where
   h_data := molecule_h_data
+  h_fixed_data := molecule_h_fixed_data
+  h_spectral_data := molecule_h_spectral_data
   h_conj := molecule_h_conj
   h_norm := molecule_h_norm
   h_ps := molecule_h_ps
@@ -804,16 +892,14 @@ theorem molecule_conjecture_refined_of_pack
     (∃ N, IsConjugateToShift R_target N) :=
   molecule_conjecture_refined_with_localized_slice_data
     hpack.h_data
-    hpack.h_conj
-    hpack.h_norm
+    hpack.h_fixed_data
+    hpack.h_spectral_data
     hpack.h_ps
     hpack.h_orbit
     hpack.h_piecewise
     hpack.h_shift
     hpack.h_assoc
     hpack.h_compact
-    hpack.h_gap
-    hpack.h_unique
 
 /--
 Zero-argument exported statement of the refined molecule conjecture.

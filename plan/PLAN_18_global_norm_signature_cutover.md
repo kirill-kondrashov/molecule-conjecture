@@ -1,7 +1,7 @@
 # PLAN 18 - Global Norm Signature Cutover
 
 Status: ACTIVE
-Progress: [########--] 80%
+Progress: [#########-] 90%
 Scope: Replace global `h_norm` parameters in conjecture-level theorem signatures with localized normalization contracts and compatibility bridges.
 Acceptance: One full conjecture-layer theorem chain compiles without requiring the global `h_norm` type in its public signature.
 Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/HyperbolicityTheorems.lean`
@@ -15,6 +15,7 @@ Last Updated: 2026-03-02
 - [x] Implement bridge theorem from old signature to localized signature.
 - [x] Switch one caller chain to localized signature.
 - [x] Route Problem4_3 conjecture theorem through localized fixed-point-data bridge.
+- [x] Route conjecture-level hyperbolicity through localized spectral-data contract.
 
 ## Current Outcome
 
@@ -23,3 +24,9 @@ Last Updated: 2026-03-02
 - Top-level theorem route has now switched to the cutover theorem.
 - Added localized Problem4_3 cutover entry in `Molecule/Conjecture.lean`:
   - `problem_4_3_bounds_established_conjecture_localized`
+- Added localized hyperbolicity cutover entry in `Molecule/Conjecture.lean`:
+  - `Rfast_hyperbolicity_conjecture_localized`
+- `molecule_conjecture_refined_with_localized_slice_data` now takes:
+  - `FixedPointNormalizationData`
+  - localized spectral-data contract
+  instead of the explicit global `h_norm` argument.
