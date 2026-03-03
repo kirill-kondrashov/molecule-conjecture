@@ -154,6 +154,82 @@ def InvariantSliceDataWithNormalization : Prop :=
     NormalizationOn K
 
 /--
+Chart-parameterized localized contract: invariant slice-data paired with
+normalization on the same set `K`.
+-/
+def InvariantSliceDataWithNormalizationWith
+    (chart : BMol → BMol → SliceSpace)
+    (op : BMol → SliceSpace → SliceSpace) : Prop :=
+  ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
+    IsCompact P ∧
+    Convex ℝ P ∧
+    MapsTo (op f_ref) P P ∧
+    K = {f | chart f_ref f ∈ P} ∧
+    SurjOn (chart f_ref) K P ∧
+    K.Finite ∧
+    InjOn (chart f_ref) K ∧
+    ContinuousOn (op f_ref) ((chart f_ref) '' K) ∧
+    K.Nonempty ∧
+    f_ref ∈ K ∧
+    NormalizationOn K
+
+/--
+Legacy normalized package as a parameterized-instance identity.
+-/
+theorem invariant_slice_data_with_normalization_iff_with_legacy :
+    InvariantSliceDataWithNormalization ↔
+      InvariantSliceDataWithNormalizationWith slice_chart slice_operator := by
+  rfl
+
+/--
+Constructive refined-chart normalized witness from local normalization data
+at a designated reference map.
+-/
+theorem invariant_slice_data_with_normalization_with_refined_of_local
+    (f_ref : BMol)
+    (h_renorm_ref : IsFastRenormalizable f_ref)
+    (h_crit_ref : criticalValue f_ref = 0)
+    (h_domain_ref : f_ref.V ⊆ Metric.ball 0 0.1) :
+    InvariantSliceDataWithNormalizationWith slice_chart_refined slice_operator := by
+  let K : Set BMol := {f_ref}
+  let P : Set SliceSpace := {(0 : SliceSpace)}
+  have h_normK : NormalizationOn K := by
+    constructor
+    · intro f hf
+      have hf_ref : f = f_ref := by simpa [K] using hf
+      simpa [hf_ref] using h_renorm_ref
+    constructor
+    · intro f hf
+      have hf_ref : f = f_ref := by simpa [K] using hf
+      simpa [hf_ref] using h_crit_ref
+    · intro f hf
+      have hf_ref : f = f_ref := by simpa [K] using hf
+      simpa [hf_ref] using h_domain_ref
+  refine ⟨K, f_ref, P, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, h_normK⟩
+  · simp [P]
+  · simp [P]
+  · intro x hx
+    simp [P, slice_operator] at hx ⊢
+  · ext f
+    simp [K, P, slice_chart_refined]
+  · intro y hy
+    refine ⟨f_ref, by simp [K], ?_⟩
+    have hy0 : y = 0 := by
+      simp [P] at hy
+      exact hy
+    simp [slice_chart_refined, hy0]
+  · simp [K]
+  · intro x hx y hy hxy
+    simp [K] at hx hy
+    simp [hx, hy]
+  · simpa [slice_operator] using
+      (continuousOn_const :
+        ContinuousOn (fun _ : SliceSpace => (0 : SliceSpace))
+          ((slice_chart_refined f_ref) '' K))
+  · simp [K]
+  · simp [K]
+
+/--
 With the current scaffold (`slice_chart` is constant), any witness of
 `HasInvariantSliceData` forces the entire `BMol` space to be finite.
 This is a structural obstruction for constructive witness extraction.

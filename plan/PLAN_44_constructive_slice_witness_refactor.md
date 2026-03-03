@@ -1,7 +1,7 @@
 # PLAN 44 - Constructive Slice Witness Refactor
 
 Status: ACTIVE
-Progress: [#####-----] 50%
+Progress: [######----] 60%
 Scope: Remove the current constant-chart/finiteness bottleneck by refactoring slice witness infrastructure so `h_exists`-style data can be built constructively (without `molecule_h_norm`/ex-falso).
 Acceptance: Introduce a constructive `HasInvariantSliceData` witness path that does not use `False.elim` and does not depend on `Molecule.molecule_h_norm`.
 Dependencies: `Molecule/BanachSlice.lean`, `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `plan/PLAN_42_post_axiom_contract_hardening.md`
@@ -27,6 +27,9 @@ Last Updated: 2026-03-03
   - `has_invariant_slice_data_with_refined`
 - [x] Export zero-arg refined-chart witness:
   - `has_invariant_slice_data_with_refined_default`
+- [x] Add chart-parameterized normalized slice package and constructive local theorem:
+  - `InvariantSliceDataWithNormalizationWith`
+  - `invariant_slice_data_with_normalization_with_refined_of_local`
 - [ ] Redesign slice chart/model contract so chart preimage sets can be finite/nontrivial
   without collapsing to `univ`/`∅` on the main theorem path.
 - [ ] Rebuild a constructive `h_exists` witness theorem in `Molecule/Conjecture.lean`.
