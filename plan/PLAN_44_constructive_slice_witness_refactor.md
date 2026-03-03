@@ -1,7 +1,7 @@
 # PLAN 44 - Constructive Slice Witness Refactor
 
 Status: ACTIVE
-Progress: [#######---] 70%
+Progress: [#########-] 90%
 Scope: Remove the current constant-chart/finiteness bottleneck by refactoring slice witness infrastructure so `h_exists`-style data can be built constructively (without `molecule_h_norm`/ex-falso).
 Acceptance: Introduce a constructive `HasInvariantSliceData` witness path that does not use `False.elim` and does not depend on `Molecule.molecule_h_norm`.
 Dependencies: `Molecule/BanachSlice.lean`, `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `plan/PLAN_42_post_axiom_contract_hardening.md`
@@ -33,6 +33,13 @@ Last Updated: 2026-03-03
 - [x] Add global-to-local normalization bridge lemmas in `Molecule/Conjecture.lean`:
   - `normalization_at_point_of_global`
   - `fixed_point_normalization_data_of_fixed_exists_and_global_norm`
+- [x] Add narrowed bounds interface that consumes fixed-point existence directly:
+  - `problem_4_3_bounds_established_conjecture_from_fixed_exists_and_global_norm`
+  - `molecule_residual_fixed_exists`
+  and rewire `molecule_residual_bounds_seed_free` through this interface.
+- [x] Add local fixed-point normalization bounds route:
+  - `problem_4_3_bounds_established_conjecture_from_local_fixed_norm`
+  (no global `h_norm` in theorem interface).
 - [ ] Redesign slice chart/model contract so chart preimage sets can be finite/nontrivial
   without collapsing to `univ`/`∅` on the main theorem path.
 - [ ] Rebuild a constructive `h_exists` witness theorem in `Molecule/Conjecture.lean`.

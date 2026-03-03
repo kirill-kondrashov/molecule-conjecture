@@ -502,6 +502,80 @@ theorem problem_4_3_bounds_established_conjecture_localized
   exact problem_4_3_bounds_established_of_fixed_point_data h_fixed_data h_ps h_orbit
 
 /--
+Problem 4.3 route from local fixed-point normalization data at a designated
+`f_star`, without requiring global normalization in the theorem interface.
+-/
+theorem problem_4_3_bounds_established_conjecture_from_local_fixed_norm
+    (f_star : BMol)
+    (h_fixed : Rfast f_star = f_star)
+    (h_renorm : IsFastRenormalizable f_star)
+    (h_crit : criticalValue f_star = 0)
+    (h_domain : f_star.V ⊆ Metric.ball 0 0.1)
+    (h_ps :
+      ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
+        ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
+    (h_orbit :
+      ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
+        Rfast f_star = f_star →
+        IsFastRenormalizable f_star →
+        IsOpen D → IsOpen U →
+        f_star ∈ U →
+        criticalValue f_star ∈ D →
+        (∀ (n t : ℕ) (f : BMol),
+          n ≥ 1 →
+          t ∈ ({a n, b n} : Set ℕ) →
+          f ∈ (Rfast^[n]) ⁻¹' U →
+          MapsTo (f.f^[t]) (Rfast^[n] f).U (Rfast^[n] f).V ∧
+          criticalValue f ∈ (Rfast^[n] f).U ∧
+          (f.f^[t] (criticalValue f)) ∈ D ∧
+          (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
+          (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2))) :
+    PseudoSiegelAPrioriBounds := by
+  exact problem_4_3_bounds_established_of_fixed_point_data
+    ⟨f_star, h_fixed, h_renorm, h_crit, h_domain⟩
+    h_ps
+    h_orbit
+
+/--
+Problem 4.3 route from:
+- renormalizable fixed-point existence, and
+- global normalization.
+
+This decouples bounds construction from the full legacy `h_exists`/`h_conj`/`h_unique`
+interface.
+-/
+theorem problem_4_3_bounds_established_conjecture_from_fixed_exists_and_global_norm
+    (h_fixed_exists : ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f)
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_ps :
+      ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
+        ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
+    (h_orbit :
+      ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
+        Rfast f_star = f_star →
+        IsFastRenormalizable f_star →
+        IsOpen D → IsOpen U →
+        f_star ∈ U →
+        criticalValue f_star ∈ D →
+        (∀ (n t : ℕ) (f : BMol),
+          n ≥ 1 →
+          t ∈ ({a n, b n} : Set ℕ) →
+          f ∈ (Rfast^[n]) ⁻¹' U →
+          MapsTo (f.f^[t]) (Rfast^[n] f).U (Rfast^[n] f).V ∧
+          criticalValue f ∈ (Rfast^[n] f).U ∧
+          (f.f^[t] (criticalValue f)) ∈ D ∧
+          (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
+          (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2))) :
+    PseudoSiegelAPrioriBounds := by
+  have h_fp :=
+    fixed_point_normalization_data_of_fixed_exists_and_global_norm h_fixed_exists h_norm
+  exact problem_4_3_bounds_established_of_fixed_point_data h_fp h_ps h_orbit
+
+/--
 **Problem 4.3**: Completion of bounds is required for the Molecule Conjecture.
 -/
 theorem problem_4_3_bounds_established_conjecture
@@ -1216,15 +1290,24 @@ theorem canonical_fast_fixed_point_data_of_bounds
   rcases h_bounds with ⟨f_star, _U, h_fixed, h_renorm, _hU_open, _h_mem, _h_cv, _h_eventual⟩
   exact ⟨f_star, h_renorm, h_fixed⟩
 
-/-- Seed-free bounds source: use the global Problem 4.3 route directly, without `molecule_h_data`. -/
-theorem molecule_residual_bounds_seed_free : PseudoSiegelAPrioriBounds :=
-  problem_4_3_bounds_established_conjecture
+/-- Legacy fixed-point existence packaged for narrowed bounds interfaces. -/
+theorem molecule_residual_fixed_exists :
+    ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f :=
+  renormalizable_fixed_point_exists
     molecule_h_exists
     molecule_h_conj
     molecule_h_norm
     molecule_h_ps
     molecule_h_orbit
     molecule_h_unique
+
+/-- Seed-free bounds source: use the global Problem 4.3 route directly, without `molecule_h_data`. -/
+theorem molecule_residual_bounds_seed_free : PseudoSiegelAPrioriBounds :=
+  problem_4_3_bounds_established_conjecture_from_fixed_exists_and_global_norm
+    molecule_residual_fixed_exists
+    molecule_h_norm
+    molecule_h_ps
+    molecule_h_orbit
 
 /-- Theorem-level projections from the residual assumption bundle. -/
 theorem molecule_residual_bounds : PseudoSiegelAPrioriBounds :=
