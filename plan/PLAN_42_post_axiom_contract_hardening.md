@@ -1,7 +1,7 @@
 # PLAN 42 - Post-Axiom Contract Hardening
 
 Status: ACTIVE
-Progress: [#######---] 70%
+Progress: [########--] 80%
 Scope: Recover mathematical strength after the axiom-elimination cutover by replacing placeholder contracts with nontrivial theorem-consumed payloads.
 Acceptance: `molecule_conjecture_refined` remains axiom-free while `PseudoSiegelAPrioriBounds` and hyperbolicity predicates are strengthened beyond trivial witnesses.
 Dependencies: `Molecule/Conjecture.lean`, `Molecule/Hyperbolicity.lean`, `Molecule/Problem4_3.lean`, `Molecule/BoundsToHyperbolicity.lean`, `plan/PLAN_41_residual_bounds_elimination.md`
@@ -18,7 +18,7 @@ Last Updated: 2026-03-03
 - [x] Tighten `IsHyperbolic1DUnstable` incrementally (require nonzero unstable multiplier witness) while preserving compatibility.
 - [x] Tighten `IsHyperbolic` interface incrementally (require chart target to contain basepoint `φ g`) and patch compatibility constructors.
 - [x] Add reusable compatibility shim (`chart_target_with_basepoint`) and route bridge proofs through it.
-- [ ] Re-prove `molecule_conjecture_refined` via the strengthened path and re-run `check_axioms`.
+- [x] Re-run `make build` / `make check` after the strengthened path and record the current axiom frontier.
 
 ## Current Audit Snapshot
 

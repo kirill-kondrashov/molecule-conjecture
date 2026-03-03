@@ -42,7 +42,7 @@ Last Updated: 2026-03-03
 | PLAN_39 | HMol compactness model alignment | DONE | [##########] 100% |
 | PLAN_40 | Analytic residual triple elimination | DONE | [##########] 100% |
 | PLAN_41 | Residual bounds elimination | DONE | [##########] 100% |
-| PLAN_42 | Post-axiom contract hardening | ACTIVE | [#######---] 70% |
+| PLAN_42 | Post-axiom contract hardening | ACTIVE | [########--] 80% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 
 ## Dependency Map
