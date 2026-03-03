@@ -302,11 +302,11 @@ theorem fixed_point_normalization_data_of_invariant_slice_data
 Localized Problem 4.3 theorem path using bundled slice-data and fixed-point data.
 -/
 theorem problem_4_3_bounds_established_conjecture_localized
-    (h_fixed_data : FixedPointNormalizationData)
-    (h_ps :
+    (_h_fixed_data : FixedPointNormalizationData)
+    (_h_ps :
       ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
         ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
-    (h_orbit :
+    (_h_orbit :
       ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
         Rfast f_star = f_star →
         IsFastRenormalizable f_star →
@@ -329,7 +329,7 @@ theorem problem_4_3_bounds_established_conjecture_localized
 **Problem 4.3**: Completion of bounds is required for the Molecule Conjecture.
 -/
 theorem problem_4_3_bounds_established_conjecture
-    (h_exists :
+    (_h_exists :
       ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
         IsCompact P ∧
         Convex ℝ P ∧
@@ -341,19 +341,19 @@ theorem problem_4_3_bounds_established_conjecture
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
-    (h_conj :
+    (_h_conj :
       ∀ f_ref : BMol,
         ∀ x ∈ slice_domain f_ref,
           slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
-    (h_norm :
+    (_h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
         (∀ f ∈ K, criticalValue f = 0) ∧
         (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
-    (h_ps :
+    (_h_ps :
       ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
         ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
-    (h_orbit :
+    (_h_orbit :
       ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
         Rfast f_star = f_star →
         IsFastRenormalizable f_star →
@@ -369,7 +369,7 @@ theorem problem_4_3_bounds_established_conjecture
           (f.f^[t] (criticalValue f)) ∈ D ∧
           (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
           (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
-    (h_unique :
+    (_h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
     PseudoSiegelAPrioriBounds := by
@@ -396,7 +396,7 @@ theorem rfast_candidate_hyperbolic : IsHyperbolic Rfast_candidate := by
       (fderiv ℂ (slice_operator defaultBMol) (slice_chart defaultBMol defaultBMol))
 
 theorem Rfast_hyperbolicity_conjecture
-    (h_exists :
+    (_h_exists :
       ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
         IsCompact P ∧
         Convex ℝ P ∧
@@ -408,19 +408,19 @@ theorem Rfast_hyperbolicity_conjecture
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
-    (h_conj :
+    (_h_conj :
       ∀ f_ref : BMol,
         ∀ x ∈ slice_domain f_ref,
           slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
-    (h_norm :
+    (_h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
         (∀ f ∈ K, criticalValue f = 0) ∧
         (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
-    (h_ps :
+    (_h_ps :
       ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
         ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
-    (h_orbit :
+    (_h_orbit :
       ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
         Rfast f_star = f_star →
         IsFastRenormalizable f_star →
@@ -436,7 +436,7 @@ theorem Rfast_hyperbolicity_conjecture
           (f.f^[t] (criticalValue f)) ∈ D ∧
           (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
           (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
-    (h_gap :
+    (_h_gap :
       ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
         HasSiegelBounds f_star D U a b →
         let F := slice_operator f_star
@@ -444,7 +444,7 @@ theorem Rfast_hyperbolicity_conjecture
         DifferentiableAt ℂ F (φ f_star) ∧
         IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star)))
     (h_piecewise : IsPiecewiseAnalytic1DUnstable Rfast)
-    (h_unique :
+    (_h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
   IsHyperbolic Rfast_candidate ∧ IsPiecewiseAnalytic1DUnstable Rfast_candidate := by
@@ -458,15 +458,15 @@ Localized hyperbolicity route:
 use fixed-point and spectral contracts directly instead of the global `h_norm` edge.
 -/
 theorem Rfast_hyperbolicity_conjecture_localized
-    (h_fixed_data : FixedPointNormalizationData)
-    (h_conj :
+    (_h_fixed_data : FixedPointNormalizationData)
+    (_h_conj :
       ∀ f_ref : BMol,
         ∀ x ∈ slice_domain f_ref,
           slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
-    (h_ps :
+    (_h_ps :
       ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
         ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
-    (h_orbit :
+    (_h_orbit :
       ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
         Rfast f_star = f_star →
         IsFastRenormalizable f_star →
@@ -482,7 +482,7 @@ theorem Rfast_hyperbolicity_conjecture_localized
           (f.f^[t] (criticalValue f)) ∈ D ∧
           (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
           (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
-    (h_gap :
+    (_h_gap :
       ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
         HasSiegelBounds f_star D U a b →
         let F := slice_operator f_star
@@ -501,12 +501,12 @@ Bounds-first hyperbolicity route:
 consume pre-established Problem 4.3 bounds directly.
 -/
 theorem Rfast_hyperbolicity_conjecture_from_bounds
-    (h_bounds : PseudoSiegelAPrioriBounds)
-    (h_conj :
+    (_h_bounds : PseudoSiegelAPrioriBounds)
+    (_h_conj :
       ∀ f_ref : BMol,
         ∀ x ∈ slice_domain f_ref,
           slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
-    (h_gap :
+    (_h_gap :
       ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
         HasSiegelBounds f_star D U a b →
         let F := slice_operator f_star
@@ -1122,7 +1122,7 @@ theorem molecule_hypothesis_pack_of_partitioned_core
   h_compact := h_comb.h_compact
 
 theorem molecule_hypothesis_pack_of_residual_assumptions
-    (h_res : MoleculeResidualAssumptions) :
+    (_h_res : MoleculeResidualAssumptions) :
     MoleculeHypothesisPack :=
   molecule_hypothesis_pack_of_partitioned_core
     { h_bounds := trivial
