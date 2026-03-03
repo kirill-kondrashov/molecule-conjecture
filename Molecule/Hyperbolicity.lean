@@ -43,7 +43,7 @@ def IsHyperbolic (f : BMol → BMol) : Prop :=
       f g = g ∧ -- Fixed point
       AnalyticOn ℂ g.f g.U ∧ -- f itself should be analytic in its domain
       -- φ is a "chart" around g
-      (∃ (V : Set E), IsOpen V ∧ MapsTo φ U V) ∧
+      (∃ (V : Set E), IsOpen V ∧ MapsTo φ U V ∧ φ g ∈ V) ∧
       -- The conjugate map F = φ ∘ f ∘ φ⁻¹ is differentiable at φ(g)
       ∃ (F : E → E),
         (∀ x ∈ U, F (φ x) = φ (f x)) ∧

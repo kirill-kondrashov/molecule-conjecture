@@ -381,8 +381,15 @@ Prove that `Rfast` is a hyperbolic operator with a **one-dimensional unstable ma
 And that the restriction to the horseshoe is a compact operator.
 -/
 theorem rfast_candidate_hyperbolic : IsHyperbolic Rfast_candidate := by
+  have h_chart' :
+      ∃ V,
+        IsOpen V ∧
+        MapsTo (slice_chart defaultBMol) (slice_domain defaultBMol) V ∧
+        slice_chart defaultBMol defaultBMol ∈ V := by
+    rcases slice_chart_open defaultBMol with ⟨V, hV_open, h_maps⟩
+    exact ⟨V, hV_open, h_maps, h_maps (by simp [slice_domain])⟩
   refine ⟨defaultBMol, SliceSpace, inferInstance, inferInstance, slice_chart defaultBMol,
-    slice_domain defaultBMol, by simp [slice_domain], ?_, ?_, slice_chart_open defaultBMol,
+    slice_domain defaultBMol, by simp [slice_domain], ?_, ?_, h_chart',
     slice_operator defaultBMol, ?_, ?_, ?_⟩
   · simpa [Rfast_candidate, Rfast_constructed] using defaultBMol_is_fixed_point
   · rw [analyticOn_iff_differentiableOn defaultBMol.isOpen_U]
