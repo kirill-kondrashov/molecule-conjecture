@@ -475,6 +475,26 @@ unbounded satellite quadratic-like cases.
 def PseudoSiegelAPrioriBounds : Prop := PseudoSiegelAPrioriBoundsStatement
 
 /--
+Orbit-transport obligation in the Problem 4.3 bounds pipeline.
+-/
+def MoleculeOrbitClause : Prop :=
+  ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
+    Rfast f_star = f_star →
+    IsFastRenormalizable f_star →
+    IsOpen D → IsOpen U →
+    f_star ∈ U →
+    criticalValue f_star ∈ D →
+    (∀ (n t : ℕ) (f : BMol),
+      n ≥ 1 →
+      t ∈ ({a n, b n} : Set ℕ) →
+      f ∈ (Rfast^[n]) ⁻¹' U →
+      MapsTo (f.f^[t]) (Rfast^[n] f).U (Rfast^[n] f).V ∧
+      criticalValue f ∈ (Rfast^[n] f).U ∧
+      (f.f^[t] (criticalValue f)) ∈ D ∧
+      (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
+      (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2))
+
+/--
 Transport data interface for the Problem 4.3 bounds pipeline.
 This isolates pseudo-Siegel disk construction and orbit-transport obligations.
 -/
@@ -482,22 +502,13 @@ structure MoleculeOrbitTransportData where
   h_ps :
     ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
       ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps
-  h_orbit :
-    ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
-      Rfast f_star = f_star →
-      IsFastRenormalizable f_star →
-      IsOpen D → IsOpen U →
-      f_star ∈ U →
-      criticalValue f_star ∈ D →
-      (∀ (n t : ℕ) (f : BMol),
-        n ≥ 1 →
-        t ∈ ({a n, b n} : Set ℕ) →
-        f ∈ (Rfast^[n]) ⁻¹' U →
-        MapsTo (f.f^[t]) (Rfast^[n] f).U (Rfast^[n] f).V ∧
-        criticalValue f ∈ (Rfast^[n] f).U ∧
-        (f.f^[t] (criticalValue f)) ∈ D ∧
-        (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
-        (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2))
+  h_orbit : MoleculeOrbitClause
+
+/--
+Orbit-only part of the transport-data interface.
+-/
+structure MoleculeOrbitOnlyData where
+  h_orbit : MoleculeOrbitClause
 
 /--
 Fixed-point normalization data packaged for localized Problem 4.3 cutover.
@@ -669,22 +680,7 @@ theorem problem_4_3_bounds_established_conjecture_from_global_norm_only
     (h_ps :
       ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
         ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
-    (h_orbit :
-      ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
-        Rfast f_star = f_star →
-        IsFastRenormalizable f_star →
-        IsOpen D → IsOpen U →
-        f_star ∈ U →
-        criticalValue f_star ∈ D →
-        (∀ (n t : ℕ) (f : BMol),
-          n ≥ 1 →
-          t ∈ ({a n, b n} : Set ℕ) →
-          f ∈ (Rfast^[n]) ⁻¹' U →
-          MapsTo (f.f^[t]) (Rfast^[n] f).U (Rfast^[n] f).V ∧
-          criticalValue f ∈ (Rfast^[n] f).U ∧
-          (f.f^[t] (criticalValue f)) ∈ D ∧
-          (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
-          (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2))) :
+    (h_orbit : MoleculeOrbitClause) :
     PseudoSiegelAPrioriBounds := by
   rcases fixed_point_exists with ⟨f_star, h_fixed, _h_cv⟩
   have h_renorm : IsFastRenormalizable f_star := by
@@ -1213,20 +1209,6 @@ theorem molecule_h_norm_inconsistent : False := by
     exact hK.1 defaultBMol (by simp [K])
   exact defaultBMol_not_renormalizable hrenorm
 
-theorem molecule_h_exists :
-  ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
-    IsCompact P ∧
-    Convex ℝ P ∧
-    MapsTo (slice_operator f_ref) P P ∧
-    K = {f | slice_chart f_ref f ∈ P} ∧
-    SurjOn (slice_chart f_ref) K P ∧
-    K.Finite ∧
-    InjOn (slice_chart f_ref) K ∧
-    ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
-    K.Nonempty ∧
-    f_ref ∈ K := by
-  exact False.elim molecule_h_norm_inconsistent
-
 theorem molecule_h_ps :
   ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
     ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps := by
@@ -1235,27 +1217,21 @@ theorem molecule_h_ps :
   simp [PseudoInvariant]
 
 theorem molecule_h_orbit :
-  ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
-    Rfast f_star = f_star →
-    IsFastRenormalizable f_star →
-    IsOpen D → IsOpen U →
-    f_star ∈ U →
-    criticalValue f_star ∈ D →
-    (∀ (n t : ℕ) (f : BMol),
-      n ≥ 1 →
-      t ∈ ({a n, b n} : Set ℕ) →
-      f ∈ (Rfast^[n]) ⁻¹' U →
-      MapsTo (f.f^[t]) (Rfast^[n] f).U (Rfast^[n] f).V ∧
-      criticalValue f ∈ (Rfast^[n] f).U ∧
-      (f.f^[t] (criticalValue f)) ∈ D ∧
-      (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
-      (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)) := by
+  MoleculeOrbitClause := by
   intro f_star D U a b h_fixed h_renorm h_openD h_openU h_inU h_cv n t f hn ht hf
   exact False.elim molecule_h_norm_inconsistent
 
-theorem molecule_orbit_transport_data : MoleculeOrbitTransportData where
-  h_ps := molecule_h_ps
+theorem molecule_orbit_only_data : MoleculeOrbitOnlyData where
   h_orbit := molecule_h_orbit
+
+theorem molecule_orbit_transport_data_of_orbit_only
+    (h_orbit_only : MoleculeOrbitOnlyData) :
+    MoleculeOrbitTransportData where
+  h_ps := molecule_h_ps
+  h_orbit := h_orbit_only.h_orbit
+
+theorem molecule_orbit_transport_data : MoleculeOrbitTransportData :=
+  molecule_orbit_transport_data_of_orbit_only molecule_orbit_only_data
 
 def constant_analytic_chart (f : BMol → BMol) :
     AnalyticChart f (Set.univ : Set BMol) where
@@ -1320,9 +1296,6 @@ theorem molecule_h_unique :
            (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2 := by
   intro f1 f2 h1 h2
   exact False.elim molecule_h_norm_inconsistent
-
-theorem molecule_h_data : InvariantSliceDataWithNormalization :=
-  invariant_slice_data_with_normalization_of_global molecule_h_exists molecule_h_norm
 
 theorem molecule_h_data_refined_seed_free :
     InvariantSliceDataWithNormalizationWith slice_chart_refined slice_operator :=

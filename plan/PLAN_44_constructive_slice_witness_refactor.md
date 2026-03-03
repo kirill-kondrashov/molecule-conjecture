@@ -47,6 +47,11 @@ Last Updated: 2026-03-03
   - `MoleculeOrbitTransportData`
   - `problem_4_3_bounds_established_conjecture_from_global_norm_and_transport`
   and route `molecule_residual_bounds_seed_free` through it.
+- [x] Split orbit seam further into orbit-only payload:
+  - `MoleculeOrbitClause`
+  - `MoleculeOrbitOnlyData`
+  - `molecule_orbit_transport_data_of_orbit_only`
+  so `h_ps` remains constructive and only orbit payload carries the residual dependency.
 - [x] Add refined normalized zero-arg seam from global normalization:
   - `invariant_slice_data_with_normalization_with_refined_of_global_norm`
   - `molecule_h_data_refined_seed_free`
