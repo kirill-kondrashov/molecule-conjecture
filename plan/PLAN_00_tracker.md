@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 90%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_44
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-03
 
@@ -42,13 +42,14 @@ Last Updated: 2026-03-03
 | PLAN_39 | HMol compactness model alignment | DONE | [##########] 100% |
 | PLAN_40 | Analytic residual triple elimination | DONE | [##########] 100% |
 | PLAN_41 | Residual bounds elimination | DONE | [##########] 100% |
-| PLAN_42 | Post-axiom contract hardening | ACTIVE | [########--] 80% |
+| PLAN_42 | Post-axiom contract hardening | ACTIVE | [#########-] 90% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
+| PLAN_44 | Constructive slice witness refactor | ACTIVE | [##--------] 20% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Next queue handoff is PLAN_42 then PLAN_43.
+- Next queue handoff is PLAN_44 then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -60,6 +61,11 @@ Last Updated: 2026-03-03
   this stronger contract.
 - `molecule_residual_bounds` has been rewired to a seed-free source path
   (`molecule_residual_bounds_seed_free`) that no longer uses `molecule_h_data`.
+- New obstruction theorem in `Molecule/Conjecture.lean`:
+  `has_invariant_slice_data_forces_univ_finite`, exposing the current
+  constant-chart/finiteness mismatch that blocks constructive `h_exists`.
+- `PLAN_44` has started with refined chart scaffolding in `Molecule/BanachSlice.lean`
+  (`slice_chart_refined`, `refined_singleton_slice_witness`).
 - No active STUCK plans in `plan/*.md` this pass.
 
 ## Current Critical Blockers

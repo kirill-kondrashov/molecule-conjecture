@@ -111,6 +111,31 @@ def InvariantSliceDataWithNormalization : Prop :=
     NormalizationOn K
 
 /--
+With the current scaffold (`slice_chart` is constant), any witness of
+`HasInvariantSliceData` forces the entire `BMol` space to be finite.
+This is a structural obstruction for constructive witness extraction.
+-/
+theorem has_invariant_slice_data_forces_univ_finite
+    (h_data : HasInvariantSliceData) :
+    (Set.univ : Set BMol).Finite := by
+  rcases h_data with
+    ⟨K, f_ref, P, hP_comp, hP_conv, h_maps, hK_def, h_surj, h_fin, h_inj, h_cont, h_nonempty, h_mem⟩
+  have h_zero_in_P : (0 : SliceSpace) ∈ P := by
+    have h_ref_in_chart_preimage : f_ref ∈ {f : BMol | slice_chart f_ref f ∈ P} := by
+      simpa [hK_def] using h_mem
+    simpa [slice_chart] using h_ref_in_chart_preimage
+  have hK_univ : K = Set.univ := by
+    ext f
+    constructor
+    · intro _hf
+      trivial
+    · intro _hf
+      have hf_in_chart_preimage : f ∈ {g : BMol | slice_chart f_ref g ∈ P} := by
+        simpa [slice_chart] using h_zero_in_P
+      simpa [hK_def] using hf_in_chart_preimage
+  simpa [hK_univ] using h_fin
+
+/--
 Migration lemma: the legacy global normalization contract implies
 the local invariant normalization package.
 -/

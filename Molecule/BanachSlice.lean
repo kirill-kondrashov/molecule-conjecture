@@ -51,6 +51,69 @@ theorem slice_chart_open (f_star : BMol) :
   intro x hx
   trivial
 
+/--
+Refined chart candidate used for constructive witness migration.
+Unlike `slice_chart`, this chart separates the reference map from other points.
+-/
+noncomputable def slice_chart_refined (f_ref : BMol) : BMol → SliceSpace := by
+  classical
+  exact fun g => if g = f_ref then 0 else 1
+
+/--
+Refined-chart open-image witness.
+-/
+theorem slice_chart_refined_open (f_ref : BMol) :
+  ∃ V, IsOpen V ∧ MapsTo (slice_chart_refined f_ref) (slice_domain f_ref) V := by
+  refine ⟨univ, isOpen_univ, ?_⟩
+  intro x hx
+  trivial
+
+/--
+Constructive singleton witness package for the refined chart.
+This is an upstream building block for replacing ex-falso `h_exists` paths.
+-/
+theorem refined_singleton_slice_witness (f_ref : BMol) :
+    ∃ (K : Set BMol) (P : Set SliceSpace),
+      IsCompact P ∧
+      Convex ℝ P ∧
+      MapsTo (slice_operator f_ref) P P ∧
+      K = {f | slice_chart_refined f_ref f ∈ P} ∧
+      SurjOn (slice_chart_refined f_ref) K P ∧
+      K.Finite ∧
+      InjOn (slice_chart_refined f_ref) K ∧
+      ContinuousOn (slice_operator f_ref) ((slice_chart_refined f_ref) '' K) ∧
+      K.Nonempty ∧
+      f_ref ∈ K := by
+  classical
+  refine ⟨{f_ref}, {0}, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · exact (Set.finite_singleton (0 : SliceSpace)).isCompact
+  · exact convex_singleton (0 : SliceSpace)
+  · intro x hx
+    simp [slice_operator]
+  · ext f
+    constructor
+    · intro hf
+      simp [slice_chart_refined] at hf ⊢
+      exact hf
+    · intro hf
+      simp [slice_chart_refined] at hf ⊢
+      exact hf
+  · intro y hy
+    have hy0 : y = (0 : SliceSpace) := by simp at hy; exact hy
+    refine ⟨f_ref, by simp, ?_⟩
+    simp [slice_chart_refined, hy0]
+  · exact Set.finite_singleton f_ref
+  · intro x hx y hy hxy
+    simp at hx hy
+    simp [hx, hy]
+  ·
+    -- In the discrete topology on `BMol`, continuity-on is trivial.
+    change ContinuousOn (fun _ : SliceSpace => (0 : SliceSpace))
+      ((slice_chart_refined f_ref) '' ({f_ref} : Set BMol))
+    exact continuousOn_const
+  · exact Set.singleton_nonempty f_ref
+  · simp
+
 /-- Conjugacy of Rfast and F via the chart. -/
 theorem slice_conjugacy (f_star : BMol)
     (h_conj : ∀ x ∈ slice_domain f_star,

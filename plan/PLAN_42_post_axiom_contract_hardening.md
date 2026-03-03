@@ -1,7 +1,7 @@
 # PLAN 42 - Post-Axiom Contract Hardening
 
 Status: ACTIVE
-Progress: [########--] 80%
+Progress: [#########-] 90%
 Scope: Recover mathematical strength after the axiom-elimination cutover by replacing placeholder contracts with nontrivial theorem-consumed payloads.
 Acceptance: `molecule_conjecture_refined` remains axiom-free while `PseudoSiegelAPrioriBounds` and hyperbolicity predicates are strengthened beyond trivial witnesses.
 Dependencies: `Molecule/Conjecture.lean`, `Molecule/Hyperbolicity.lean`, `Molecule/Problem4_3.lean`, `Molecule/BoundsToHyperbolicity.lean`, `plan/PLAN_41_residual_bounds_elimination.md`
@@ -19,6 +19,8 @@ Last Updated: 2026-03-03
 - [x] Tighten `IsHyperbolic` interface incrementally (require chart target to contain basepoint `φ g`) and patch compatibility constructors.
 - [x] Add reusable compatibility shim (`chart_target_with_basepoint`) and route bridge proofs through it.
 - [x] Re-run `make build` / `make check` after the strengthened path and record the current axiom frontier.
+- [x] Add formal obstruction lemma
+  (`has_invariant_slice_data_forces_univ_finite`) to make current constant-chart bottleneck explicit in Lean.
 
 ## Current Audit Snapshot
 
@@ -29,6 +31,9 @@ Last Updated: 2026-03-03
     `molecule_h_fixed_data -> molecule_h_data`; it now uses a seed-free bounds theorem path.
   - Remaining dependence is still through legacy global assumptions (`molecule_h_exists`,
     `molecule_h_norm`, `molecule_h_ps`, `molecule_h_orbit`, `molecule_h_unique`).
+  - New upstream signal: with current constant `slice_chart`, any `HasInvariantSliceData`
+    witness implies `(Set.univ : Set BMol).Finite`, indicating the slice contract/model mismatch
+    that blocks constructive witness extraction.
 - Main risk:
   - semantic weakening introduced by the cutover contracts.
   - circularity risk if canonical/bounds witnesses are rebuilt from legacy global assumptions.
