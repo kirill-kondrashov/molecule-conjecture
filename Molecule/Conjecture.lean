@@ -130,6 +130,13 @@ theorem has_invariant_slice_data_with_refined (f_ref : BMol) :
   exact ⟨K, f_ref, P, hP_comp, hP_conv, h_maps, hK_def, h_surj, h_fin, h_inj, h_cont, h_nonempty, h_mem⟩
 
 /--
+Zero-argument refined-chart witness for incremental migration work.
+-/
+theorem has_invariant_slice_data_with_refined_default :
+    HasInvariantSliceDataWith slice_chart_refined slice_operator :=
+  has_invariant_slice_data_with_refined defaultBMol
+
+/--
 Localized contract: invariant slice-data paired with normalization on the same set `K`.
 -/
 def InvariantSliceDataWithNormalization : Prop :=
