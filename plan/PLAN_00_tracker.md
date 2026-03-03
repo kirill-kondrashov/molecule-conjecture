@@ -1,7 +1,7 @@
 # PLAN 00 - Molecule Hypothesis Elimination Tracker
 
 Status: ACTIVE
-Progress: [##########] 100%
+Progress: [#########-] 90%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
 Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43
@@ -42,7 +42,7 @@ Last Updated: 2026-03-03
 | PLAN_39 | HMol compactness model alignment | DONE | [##########] 100% |
 | PLAN_40 | Analytic residual triple elimination | DONE | [##########] 100% |
 | PLAN_41 | Residual bounds elimination | DONE | [##########] 100% |
-| PLAN_42 | Post-axiom contract hardening | PROPOSED | [----------] 0% |
+| PLAN_42 | Post-axiom contract hardening | ACTIVE | [#####-----] 50% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 
 ## Dependency Map
@@ -53,13 +53,14 @@ Last Updated: 2026-03-03
 
 ## Current Notes
 
-- `check_axioms` for `Molecule.molecule_conjecture_refined` no longer reports
-  `Molecule.molecule_h_norm` and no longer reports any `Molecule.molecule_h_*`.
-- Current remaining project axioms:
-  - none (`check_axioms` reports only foundational Lean axioms).
-- No active STUCK plans (and no `Status: STUCK` plan files to remove this pass).
+- `check_axioms` for `Molecule.molecule_conjecture_refined` currently reports:
+  - `Molecule.molecule_h_norm`
+- The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
+  `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
+  this stronger contract.
+- No active STUCK plans in `plan/*.md` this pass.
 
 ## Current Critical Blockers
 
-1. No remaining project-axiom blocker.
-2. Follow-up risk is mathematical-strength drift from interface realignment; handled by PLAN_42.
+1. Root blocker: `Molecule.molecule_h_norm` remains in the zero-arg theorem path.
+2. Active mitigation: PLAN_42 contract hardening and constructive witness rebuild.

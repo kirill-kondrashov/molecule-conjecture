@@ -240,7 +240,7 @@ lemma Rprm_model_consistent :
 A key intermediate step is to establish "pseudo-Siegel a priori bounds" for the remaining
 unbounded satellite quadratic-like cases.
 -/
-def PseudoSiegelAPrioriBounds : Prop := True
+def PseudoSiegelAPrioriBounds : Prop := PseudoSiegelAPrioriBoundsStatement
 
 /--
 Fixed-point normalization data packaged for localized Problem 4.3 cutover.
@@ -302,11 +302,11 @@ theorem fixed_point_normalization_data_of_invariant_slice_data
 Localized Problem 4.3 theorem path using bundled slice-data and fixed-point data.
 -/
 theorem problem_4_3_bounds_established_conjecture_localized
-    (_h_fixed_data : FixedPointNormalizationData)
-    (_h_ps :
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_ps :
       ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
         ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
-    (_h_orbit :
+    (h_orbit :
       ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
         Rfast f_star = f_star →
         IsFastRenormalizable f_star →
@@ -323,13 +323,13 @@ theorem problem_4_3_bounds_established_conjecture_localized
           (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
           (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2))) :
     PseudoSiegelAPrioriBounds := by
-  trivial
+  exact problem_4_3_bounds_established_of_fixed_point_data h_fixed_data h_ps h_orbit
 
 /--
 **Problem 4.3**: Completion of bounds is required for the Molecule Conjecture.
 -/
 theorem problem_4_3_bounds_established_conjecture
-    (_h_exists :
+    (h_exists :
       ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
         IsCompact P ∧
         Convex ℝ P ∧
@@ -341,19 +341,19 @@ theorem problem_4_3_bounds_established_conjecture
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
-    (_h_conj :
+    (h_conj :
       ∀ f_ref : BMol,
         ∀ x ∈ slice_domain f_ref,
           slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
-    (_h_norm :
+    (h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
         (∀ f ∈ K, criticalValue f = 0) ∧
         (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
-    (_h_ps :
+    (h_ps :
       ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
         ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
-    (_h_orbit :
+    (h_orbit :
       ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
         Rfast f_star = f_star →
         IsFastRenormalizable f_star →
@@ -369,11 +369,11 @@ theorem problem_4_3_bounds_established_conjecture
           (f.f^[t] (criticalValue f)) ∈ D ∧
           (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
           (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
-    (_h_unique :
+    (h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
     PseudoSiegelAPrioriBounds := by
-  trivial
+  exact problem_4_3_bounds_established h_exists h_conj h_norm h_ps h_orbit h_unique
 
 /--
 ### 3. Prove Hyperbolicity and Unstable Manifold Dimensions
@@ -1025,21 +1025,24 @@ theorem molecule_conjecture_refined_implies_canonical_fast_fixed_point :
   exact h_refined.2
 
 /--
-Canonical fixed-point witness grounded in the existing global renormalization
-assumption stack (no residual wrapper axiom).
+Extract canonical fixed-point data directly from a priori bounds.
 -/
-theorem canonical_fast_fixed_point_data_from_legacy : CanonicalFastFixedPointData := by
-  exact renormalizable_fixed_point_exists
-    molecule_h_exists
-    molecule_h_conj
-    molecule_h_norm
-    molecule_h_ps
-    molecule_h_orbit
-    molecule_h_unique
+theorem canonical_fast_fixed_point_data_of_bounds
+    (h_bounds : PseudoSiegelAPrioriBounds) :
+    CanonicalFastFixedPointData := by
+  rcases h_bounds with ⟨f_star, _U, h_fixed, h_renorm, _hU_open, _h_mem, _h_cv, _h_eventual⟩
+  exact ⟨f_star, h_renorm, h_fixed⟩
 
 /-- Theorem-level projections from the residual assumption bundle. -/
 theorem molecule_residual_bounds : PseudoSiegelAPrioriBounds :=
-  trivial
+  problem_4_3_bounds_established_conjecture_localized
+    molecule_h_fixed_data
+    molecule_h_ps
+    molecule_h_orbit
+
+theorem canonical_fast_fixed_point_data_from_bounds :
+    CanonicalFastFixedPointData :=
+  canonical_fast_fixed_point_data_of_bounds molecule_residual_bounds
 
 theorem molecule_residual_gap :
   ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
@@ -1130,7 +1133,7 @@ theorem molecule_hypothesis_pack_of_final_assumptions : MoleculeHypothesisPack :
   molecule_hypothesis_pack_of_partitioned_core
     molecule_core_analytic
     molecule_core_combinatorial_topological
-    canonical_fast_fixed_point_data_from_legacy
+    canonical_fast_fixed_point_data_from_bounds
 
 theorem molecule_hypothesis_pack : MoleculeHypothesisPack :=
   molecule_hypothesis_pack_of_final_assumptions
