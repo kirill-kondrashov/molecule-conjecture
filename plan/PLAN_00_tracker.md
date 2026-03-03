@@ -76,7 +76,9 @@ Last Updated: 2026-03-03
   `fixed_point_normalization_data_of_fixed_exists_and_global_norm`) and a
   narrowed bounds interface
   (`problem_4_3_bounds_established_conjecture_from_fixed_exists_and_global_norm`,
-  `molecule_residual_fixed_exists`, `problem_4_3_bounds_established_conjecture_from_local_fixed_norm`).
+  `molecule_residual_fixed_exists`, `problem_4_3_bounds_established_conjecture_from_local_fixed_norm`,
+  `MoleculeOrbitTransportData`,
+  `problem_4_3_bounds_established_conjecture_from_global_norm_and_transport`).
   `molecule_residual_fixed_exists` is now routed through
   `renormalizable_fixed_exists_of_global_norm` (no dependency on
   `molecule_h_exists` / `molecule_h_conj` / `molecule_h_unique`).

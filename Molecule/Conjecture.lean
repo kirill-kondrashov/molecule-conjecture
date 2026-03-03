@@ -137,6 +137,23 @@ theorem has_invariant_slice_data_with_refined_default :
   has_invariant_slice_data_with_refined defaultBMol
 
 /--
+Constructive refined `h_exists`-style witness (legacy shape with `slice_chart_refined`).
+-/
+theorem molecule_h_exists_refined :
+  ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
+    IsCompact P ∧
+    Convex ℝ P ∧
+    MapsTo (slice_operator f_ref) P P ∧
+    K = {f | slice_chart_refined f_ref f ∈ P} ∧
+    SurjOn (slice_chart_refined f_ref) K P ∧
+    K.Finite ∧
+    InjOn (slice_chart_refined f_ref) K ∧
+    ContinuousOn (slice_operator f_ref) ((slice_chart_refined f_ref) '' K) ∧
+    K.Nonempty ∧
+    f_ref ∈ K := by
+  simpa [HasInvariantSliceDataWith] using has_invariant_slice_data_with_refined_default
+
+/--
 Localized contract: invariant slice-data paired with normalization on the same set `K`.
 -/
 def InvariantSliceDataWithNormalization : Prop :=
@@ -436,6 +453,31 @@ unbounded satellite quadratic-like cases.
 def PseudoSiegelAPrioriBounds : Prop := PseudoSiegelAPrioriBoundsStatement
 
 /--
+Transport data interface for the Problem 4.3 bounds pipeline.
+This isolates pseudo-Siegel disk construction and orbit-transport obligations.
+-/
+structure MoleculeOrbitTransportData where
+  h_ps :
+    ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
+      ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps
+  h_orbit :
+    ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
+      Rfast f_star = f_star →
+      IsFastRenormalizable f_star →
+      IsOpen D → IsOpen U →
+      f_star ∈ U →
+      criticalValue f_star ∈ D →
+      (∀ (n t : ℕ) (f : BMol),
+        n ≥ 1 →
+        t ∈ ({a n, b n} : Set ℕ) →
+        f ∈ (Rfast^[n]) ⁻¹' U →
+        MapsTo (f.f^[t]) (Rfast^[n] f).U (Rfast^[n] f).V ∧
+        criticalValue f ∈ (Rfast^[n] f).U ∧
+        (f.f^[t] (criticalValue f)) ∈ D ∧
+        (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
+        (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2))
+
+/--
 Fixed-point normalization data packaged for localized Problem 4.3 cutover.
 -/
 theorem problem_4_3_fixed_point_data_of_global
@@ -591,6 +633,60 @@ theorem problem_4_3_bounds_established_conjecture_from_fixed_exists_and_global_n
   have h_fp :=
     fixed_point_normalization_data_of_fixed_exists_and_global_norm h_fixed_exists h_norm
   exact problem_4_3_bounds_established_of_fixed_point_data h_fp h_ps h_orbit
+
+/--
+Problem 4.3 route from global normalization, pseudo-Siegel disk data,
+and orbit transport data only.
+-/
+theorem problem_4_3_bounds_established_conjecture_from_global_norm_only
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_ps :
+      ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
+        ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
+    (h_orbit :
+      ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
+        Rfast f_star = f_star →
+        IsFastRenormalizable f_star →
+        IsOpen D → IsOpen U →
+        f_star ∈ U →
+        criticalValue f_star ∈ D →
+        (∀ (n t : ℕ) (f : BMol),
+          n ≥ 1 →
+          t ∈ ({a n, b n} : Set ℕ) →
+          f ∈ (Rfast^[n]) ⁻¹' U →
+          MapsTo (f.f^[t]) (Rfast^[n] f).U (Rfast^[n] f).V ∧
+          criticalValue f ∈ (Rfast^[n] f).U ∧
+          (f.f^[t] (criticalValue f)) ∈ D ∧
+          (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
+          (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2))) :
+    PseudoSiegelAPrioriBounds := by
+  rcases fixed_point_exists with ⟨f_star, h_fixed, _h_cv⟩
+  have h_renorm : IsFastRenormalizable f_star := by
+    exact (h_norm ({f_star} : Set BMol)).1 f_star (by simp)
+  have h_local : criticalValue f_star = 0 ∧ f_star.V ⊆ Metric.ball 0 0.1 :=
+    normalization_at_point_of_global h_norm
+  exact problem_4_3_bounds_established_conjecture_from_local_fixed_norm
+    f_star h_fixed h_renorm h_local.1 h_local.2 h_ps h_orbit
+
+/--
+Problem 4.3 route from global normalization plus packaged orbit-transport data.
+-/
+theorem problem_4_3_bounds_established_conjecture_from_global_norm_and_transport
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    (h_transport : MoleculeOrbitTransportData) :
+    PseudoSiegelAPrioriBounds :=
+  problem_4_3_bounds_established_conjecture_from_global_norm_only
+    h_norm
+    h_transport.h_ps
+    h_transport.h_orbit
 
 /--
 **Problem 4.3**: Completion of bounds is required for the Molecule Conjecture.
@@ -1135,6 +1231,10 @@ theorem molecule_h_orbit :
   intro f_star D U a b h_fixed h_renorm h_openD h_openU h_inU h_cv n t f hn ht hf
   exact False.elim molecule_h_norm_inconsistent
 
+theorem molecule_orbit_transport_data : MoleculeOrbitTransportData where
+  h_ps := molecule_h_ps
+  h_orbit := molecule_h_orbit
+
 def constant_analytic_chart (f : BMol → BMol) :
     AnalyticChart f (Set.univ : Set BMol) where
   E := SliceSpace
@@ -1314,11 +1414,9 @@ theorem molecule_residual_fixed_exists :
 
 /-- Seed-free bounds source: use the global Problem 4.3 route directly, without `molecule_h_data`. -/
 theorem molecule_residual_bounds_seed_free : PseudoSiegelAPrioriBounds :=
-  problem_4_3_bounds_established_conjecture_from_fixed_exists_and_global_norm
-    molecule_residual_fixed_exists
+  problem_4_3_bounds_established_conjecture_from_global_norm_and_transport
     molecule_h_norm
-    molecule_h_ps
-    molecule_h_orbit
+    molecule_orbit_transport_data
 
 /-- Theorem-level projections from the residual assumption bundle. -/
 theorem molecule_residual_bounds : PseudoSiegelAPrioriBounds :=

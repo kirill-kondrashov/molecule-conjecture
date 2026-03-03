@@ -43,6 +43,10 @@ Last Updated: 2026-03-03
 - [x] Decouple residual fixed-point existence from legacy `h_exists` pipeline:
   - `renormalizable_fixed_exists_of_global_norm`
   - `molecule_residual_fixed_exists` rewired to this route.
+- [x] Isolate Problem 4.3 transport obligations behind an explicit interface:
+  - `MoleculeOrbitTransportData`
+  - `problem_4_3_bounds_established_conjecture_from_global_norm_and_transport`
+  and route `molecule_residual_bounds_seed_free` through it.
 - [ ] Redesign slice chart/model contract so chart preimage sets can be finite/nontrivial
   without collapsing to `univ`/`∅` on the main theorem path.
 - [ ] Rebuild a constructive `h_exists` witness theorem in `Molecule/Conjecture.lean`.
