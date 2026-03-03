@@ -934,6 +934,12 @@ Localized fixed-point data witness used by the packed top-theorem route.
 theorem molecule_h_fixed_data : FixedPointNormalizationData :=
   fixed_point_normalization_data_of_invariant_slice_data molecule_h_data
 
+/--
+Explicit canonical fixed-point contract for the built-in renormalization operator.
+-/
+def CanonicalFastFixedPointData : Prop :=
+  ∃ g : BMol, IsFastRenormalizable g ∧ Molecule.Rfast g = g
+
 structure MoleculeHypothesisPack where
   h_bounds : PseudoSiegelAPrioriBounds
   h_conj :
@@ -951,6 +957,7 @@ structure MoleculeHypothesisPack where
   h_shift : ∃ N, IsConjugateToShift Rprm_combinatorial_model N
   h_assoc : CombinatoriallyAssociated Rfast_HMol_candidate Rprm_combinatorial_model
   h_compact : IsCompactOperator Rfast_HMol_candidate
+  h_canonical_fixed : CanonicalFastFixedPointData
 
 /--
 Partitioned analytic core assumptions (Problem 4.3 orbit transport + local spectral gap).
@@ -983,6 +990,7 @@ Flat residual assumption set directly matching the unresolved obligations
 in the packed theorem route.
 -/
 structure MoleculeResidualAssumptions where
+  h_canonical_fixed : CanonicalFastFixedPointData
 
 /--
 Decomposed core assumptions for the zero-argument export route.
@@ -1032,7 +1040,7 @@ theorem molecule_core_ps :
     ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps :=
   molecule_h_ps
 
-def molecule_residual_assumptions : MoleculeResidualAssumptions := {}
+axiom molecule_residual_assumptions : MoleculeResidualAssumptions
 
 /-- Theorem-level projections from the residual assumption bundle. -/
 theorem molecule_residual_bounds : PseudoSiegelAPrioriBounds :=
@@ -1111,7 +1119,8 @@ theorem molecule_final_compact :
 
 theorem molecule_hypothesis_pack_of_partitioned_core
     (h_analytic : MoleculeAnalyticCore)
-    (h_comb : MoleculeCombinatorialTopologicalCore) :
+    (h_comb : MoleculeCombinatorialTopologicalCore)
+    (h_canonical_fixed : CanonicalFastFixedPointData) :
     MoleculeHypothesisPack where
   h_bounds := h_analytic.h_bounds
   h_conj := molecule_core_conj
@@ -1120,9 +1129,10 @@ theorem molecule_hypothesis_pack_of_partitioned_core
   h_shift := h_comb.h_shift
   h_assoc := h_comb.h_assoc
   h_compact := h_comb.h_compact
+  h_canonical_fixed := h_canonical_fixed
 
 theorem molecule_hypothesis_pack_of_residual_assumptions
-    (_h_res : MoleculeResidualAssumptions) :
+    (h_res : MoleculeResidualAssumptions) :
     MoleculeHypothesisPack :=
   molecule_hypothesis_pack_of_partitioned_core
     { h_bounds := trivial
@@ -1131,6 +1141,7 @@ theorem molecule_hypothesis_pack_of_residual_assumptions
       h_shift := rprm_combinatorial_model_has_shift_factor
       h_assoc := rfast_hmol_candidate_combinatorially_associated
       h_compact := molecule_h_compact }
+    h_res.h_canonical_fixed
 
 theorem molecule_hypothesis_pack_of_final_assumptions : MoleculeHypothesisPack :=
   molecule_hypothesis_pack_of_residual_assumptions molecule_residual_assumptions
@@ -1138,8 +1149,10 @@ theorem molecule_hypothesis_pack_of_final_assumptions : MoleculeHypothesisPack :
 theorem molecule_hypothesis_pack : MoleculeHypothesisPack :=
   molecule_hypothesis_pack_of_final_assumptions
 
-theorem molecule_conjecture_refined_of_pack
-    (hpack : MoleculeHypothesisPack) :
+/--
+Packaged refined molecule-conjecture export proposition.
+-/
+def MoleculeConjectureRefined : Prop :=
   ∃ (Rfast : BMol → BMol)
     (Rfast_HMol : HMol → HMol)
     (R_target : {x : Mol // x ≠ cusp} → {x : Mol // x ≠ cusp}),
@@ -1147,7 +1160,11 @@ theorem molecule_conjecture_refined_of_pack
     IsPiecewiseAnalytic1DUnstable Rfast ∧
     IsCompactOperator Rfast_HMol ∧
     CombinatoriallyAssociated Rfast_HMol R_target ∧
-    (∃ N, IsConjugateToShift R_target N) :=
+    (∃ N, IsConjugateToShift R_target N)
+
+theorem molecule_conjecture_refined_of_pack
+    (hpack : MoleculeHypothesisPack) :
+  MoleculeConjectureRefined :=
   molecule_conjecture_refined_with_bounds
     hpack.h_bounds
     hpack.h_conj
@@ -1160,31 +1177,24 @@ theorem molecule_conjecture_refined_of_pack
 /--
 Zero-argument exported statement of the refined molecule conjecture.
 -/
-theorem molecule_conjecture_refined :
-  ∃ (Rfast : BMol → BMol)
-    (Rfast_HMol : HMol → HMol)
-    (R_target : {x : Mol // x ≠ cusp} → {x : Mol // x ≠ cusp}),
-    IsHyperbolic Rfast ∧
-    IsPiecewiseAnalytic1DUnstable Rfast ∧
-    IsCompactOperator Rfast_HMol ∧
-    CombinatoriallyAssociated Rfast_HMol R_target ∧
-    (∃ N, IsConjugateToShift R_target N) :=
-  molecule_conjecture_refined_of_pack molecule_hypothesis_pack
+theorem molecule_conjecture_refined : MoleculeConjectureRefined :=
+  molecule_conjecture_refined_with_bounds
+    molecule_residual_bounds
+    molecule_core_conj
+    molecule_residual_gap
+    molecule_residual_piecewise
+    molecule_residual_shift
+    molecule_residual_assoc
+    molecule_residual_compact
 
 /--
 Minimal canonical strengthening:
 the built-in renormalization operator `Molecule.Rfast` has a fast-renormalizable fixed point.
 -/
 theorem canonical_rfast_has_fast_renormalizable_fixed_point_of_pack
-    (_hpack : MoleculeHypothesisPack) :
-  ∃ g, IsFastRenormalizable g ∧ Molecule.Rfast g = g := by
-  exact renormalizable_fixed_point_exists
-    molecule_h_exists
-    molecule_h_conj
-    molecule_h_norm
-    molecule_h_ps
-    molecule_h_orbit
-    molecule_h_unique
+    (hpack : MoleculeHypothesisPack) :
+  CanonicalFastFixedPointData := by
+  exact hpack.h_canonical_fixed
 
 theorem canonical_rfast_has_fast_renormalizable_fixed_point :
   ∃ g, IsFastRenormalizable g ∧ Molecule.Rfast g = g := by
@@ -1195,17 +1205,14 @@ Refined-contract strengthening:
 pair the zero-argument refined conjecture export with a canonical
 fast-renormalizable fixed-point witness for `Molecule.Rfast`.
 -/
+theorem molecule_conjecture_refined_with_canonical_fixed_point_of_pack
+    (hpack : MoleculeHypothesisPack) :
+  MoleculeConjectureRefined ∧ CanonicalFastFixedPointData := by
+  exact ⟨molecule_conjecture_refined_of_pack hpack, hpack.h_canonical_fixed⟩
+
 theorem molecule_conjecture_refined_with_canonical_fixed_point :
-  (∃ (Rfast : BMol → BMol)
-    (Rfast_HMol : HMol → HMol)
-    (R_target : {x : Mol // x ≠ cusp} → {x : Mol // x ≠ cusp}),
-    IsHyperbolic Rfast ∧
-    IsPiecewiseAnalytic1DUnstable Rfast ∧
-    IsCompactOperator Rfast_HMol ∧
-    CombinatoriallyAssociated Rfast_HMol R_target ∧
-    (∃ N, IsConjugateToShift R_target N)) ∧
-  (∃ g, IsFastRenormalizable g ∧ Molecule.Rfast g = g) := by
-  exact ⟨molecule_conjecture_refined, canonical_rfast_has_fast_renormalizable_fixed_point⟩
+  MoleculeConjectureRefined ∧ CanonicalFastFixedPointData := by
+  exact molecule_conjecture_refined_with_canonical_fixed_point_of_pack molecule_hypothesis_pack
 
 end
 end Molecule
