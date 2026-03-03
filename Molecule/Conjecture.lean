@@ -1332,7 +1332,9 @@ theorem molecule_h_data_refined_seed_free :
 Localized fixed-point data witness used by the packed top-theorem route.
 -/
 theorem molecule_h_fixed_data : FixedPointNormalizationData :=
-  fixed_point_normalization_data_of_invariant_slice_data molecule_h_data
+  fixed_point_normalization_data_of_fixed_exists_and_global_norm
+    (renormalizable_fixed_exists_of_global_norm molecule_h_norm)
+    molecule_h_norm
 
 /--
 Explicit canonical fixed-point contract for the built-in renormalization operator.

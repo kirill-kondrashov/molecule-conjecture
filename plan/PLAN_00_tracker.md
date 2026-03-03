@@ -84,6 +84,9 @@ Last Updated: 2026-03-03
   `molecule_residual_fixed_exists` is now routed through
   `renormalizable_fixed_exists_of_global_norm` (no dependency on
   `molecule_h_exists` / `molecule_h_conj` / `molecule_h_unique`).
+  `molecule_h_fixed_data` is now routed through
+  `fixed_point_normalization_data_of_fixed_exists_and_global_norm`
+  (no direct dependency on `molecule_h_data`).
 - No active STUCK plans in `plan/*.md` this pass.
 
 ## Current Critical Blockers
