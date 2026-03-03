@@ -1175,10 +1175,37 @@ theorem molecule_conjecture_refined :
 Minimal canonical strengthening:
 the built-in renormalization operator `Molecule.Rfast` has a fast-renormalizable fixed point.
 -/
+theorem canonical_rfast_has_fast_renormalizable_fixed_point_of_pack
+    (_hpack : MoleculeHypothesisPack) :
+  ∃ g, IsFastRenormalizable g ∧ Molecule.Rfast g = g := by
+  exact renormalizable_fixed_point_exists
+    molecule_h_exists
+    molecule_h_conj
+    molecule_h_norm
+    molecule_h_ps
+    molecule_h_orbit
+    molecule_h_unique
+
 theorem canonical_rfast_has_fast_renormalizable_fixed_point :
   ∃ g, IsFastRenormalizable g ∧ Molecule.Rfast g = g := by
-  refine ⟨molecule_local_fixed_point, molecule_local_fixed_point_is_renorm, ?_⟩
-  simpa using molecule_local_fixed_point_is_fixed
+  exact canonical_rfast_has_fast_renormalizable_fixed_point_of_pack molecule_hypothesis_pack
+
+/--
+Refined-contract strengthening:
+pair the zero-argument refined conjecture export with a canonical
+fast-renormalizable fixed-point witness for `Molecule.Rfast`.
+-/
+theorem molecule_conjecture_refined_with_canonical_fixed_point :
+  (∃ (Rfast : BMol → BMol)
+    (Rfast_HMol : HMol → HMol)
+    (R_target : {x : Mol // x ≠ cusp} → {x : Mol // x ≠ cusp}),
+    IsHyperbolic Rfast ∧
+    IsPiecewiseAnalytic1DUnstable Rfast ∧
+    IsCompactOperator Rfast_HMol ∧
+    CombinatoriallyAssociated Rfast_HMol R_target ∧
+    (∃ N, IsConjugateToShift R_target N)) ∧
+  (∃ g, IsFastRenormalizable g ∧ Molecule.Rfast g = g) := by
+  exact ⟨molecule_conjecture_refined, canonical_rfast_has_fast_renormalizable_fixed_point⟩
 
 end
 end Molecule
