@@ -94,6 +94,42 @@ def HasInvariantSliceData : Prop :=
     f_ref ∈ K
 
 /--
+Chart-parameterized invariant slice-data package.
+This supports migration from the current legacy chart to refined chart models.
+-/
+def HasInvariantSliceDataWith
+    (chart : BMol → BMol → SliceSpace)
+    (op : BMol → SliceSpace → SliceSpace) : Prop :=
+  ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
+    IsCompact P ∧
+    Convex ℝ P ∧
+    MapsTo (op f_ref) P P ∧
+    K = {f | chart f_ref f ∈ P} ∧
+    SurjOn (chart f_ref) K P ∧
+    K.Finite ∧
+    InjOn (chart f_ref) K ∧
+    ContinuousOn (op f_ref) ((chart f_ref) '' K) ∧
+    K.Nonempty ∧
+    f_ref ∈ K
+
+/--
+The legacy package is exactly the chart-parameterized package instantiated at
+`slice_chart` and `slice_operator`.
+-/
+theorem has_invariant_slice_data_iff_with_legacy :
+    HasInvariantSliceData ↔ HasInvariantSliceDataWith slice_chart slice_operator := by
+  rfl
+
+/--
+Constructive refined-chart witness for the parameterized invariant slice-data package.
+-/
+theorem has_invariant_slice_data_with_refined (f_ref : BMol) :
+    HasInvariantSliceDataWith slice_chart_refined slice_operator := by
+  rcases refined_singleton_slice_witness f_ref with
+    ⟨K, P, hP_comp, hP_conv, h_maps, hK_def, h_surj, h_fin, h_inj, h_cont, h_nonempty, h_mem⟩
+  exact ⟨K, f_ref, P, hP_comp, hP_conv, h_maps, hK_def, h_surj, h_fin, h_inj, h_cont, h_nonempty, h_mem⟩
+
+/--
 Localized contract: invariant slice-data paired with normalization on the same set `K`.
 -/
 def InvariantSliceDataWithNormalization : Prop :=
