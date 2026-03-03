@@ -370,6 +370,41 @@ theorem fixed_point_normalization_data_of_fixed_exists_and_global_norm
   exact ⟨f_star, h_fixed, h_renorm, h_local.1, h_local.2⟩
 
 /--
+Transfer contract: any fast-renormalizable fixed point satisfies the local
+normalization conditions needed for Problem 4.3.
+-/
+def FixedPointLocalNormalizationTransfer : Prop :=
+  ∀ f : BMol, Rfast f = f → IsFastRenormalizable f →
+    criticalValue f = 0 ∧ f.V ⊆ Metric.ball 0 0.1
+
+/--
+Global normalization implies fixed-point local normalization transfer.
+-/
+theorem fixed_point_local_normalization_transfer_of_global_norm
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1)) :
+    FixedPointLocalNormalizationTransfer := by
+  intro f _h_fixed _h_renorm
+  exact normalization_at_point_of_global h_norm
+
+/--
+Build fixed-point normalization data from:
+- renormalizable fixed-point existence, and
+- fixed-point local normalization transfer.
+-/
+theorem fixed_point_normalization_data_of_fixed_exists_and_transfer
+    (h_fixed_exists : ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f)
+    (h_transfer : FixedPointLocalNormalizationTransfer) :
+    FixedPointNormalizationData := by
+  rcases h_fixed_exists with ⟨f_star, h_renorm, h_fixed⟩
+  have h_local : criticalValue f_star = 0 ∧ f_star.V ⊆ Metric.ball 0 0.1 :=
+    h_transfer f_star h_fixed h_renorm
+  exact ⟨f_star, h_fixed, h_renorm, h_local.1, h_local.2⟩
+
+/--
 Project renormalizable fixed-point existence from local fixed-point
 normalization data.
 -/
@@ -1358,9 +1393,9 @@ Current residual fixed-point normalization source (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_normalization_source :
     MoleculeResidualFixedPointNormalizationSource :=
-  fixed_point_normalization_data_of_fixed_exists_and_global_norm
+  fixed_point_normalization_data_of_fixed_exists_and_transfer
     (renormalizable_fixed_exists_of_global_norm molecule_h_norm)
-    molecule_h_norm
+    (fixed_point_local_normalization_transfer_of_global_norm molecule_h_norm)
 
 /--
 Localized fixed-point data witness used by the packed top-theorem route.

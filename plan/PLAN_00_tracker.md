@@ -107,6 +107,9 @@ Last Updated: 2026-03-03
     `molecule_residual_fixed_point_normalization_source`.
   - Removed unused wrapper `molecule_h_data_refined_seed_free`; residual
     blocker surface is now concentrated at the fixed-data source seam.
+  - Factored the fixed-data source into explicit sub-contracts:
+    `FixedPointLocalNormalizationTransfer` and
+    `fixed_point_normalization_data_of_fixed_exists_and_transfer`.
   - Verification rerun completed (`make build`, `make check`, `#print axioms`);
     frontier unchanged: `molecule_h_norm` is still the residual blocker.
 
