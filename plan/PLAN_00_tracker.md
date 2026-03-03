@@ -45,7 +45,7 @@ Last Updated: 2026-03-03
 | PLAN_42 | Post-axiom contract hardening | ACTIVE | [#########-] 90% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_44 | Constructive slice witness refactor | STUCK | [#########-] 90% |
-| PLAN_45 | Local fixed-point normalization source | ACTIVE | [########--] 80% |
+| PLAN_45 | Local fixed-point normalization source | ACTIVE | [#########-] 90% |
 
 ## Dependency Map
 
@@ -76,8 +76,7 @@ Last Updated: 2026-03-03
   `has_invariant_slice_data_with_refined_default`,
   `InvariantSliceDataWithNormalizationWith`,
   `invariant_slice_data_with_normalization_with_refined_of_local`,
-  `invariant_slice_data_with_normalization_with_refined_of_global_norm`,
-  `molecule_h_data_refined_seed_free`), plus
+  `invariant_slice_data_with_normalization_with_refined_of_global_norm`), plus
   global-to-local normalization bridges
   (`normalization_at_point_of_global`,
   `fixed_point_normalization_data_of_fixed_exists_and_global_norm`) and a
@@ -106,6 +105,8 @@ Last Updated: 2026-03-03
     `renormalizable_fixed_exists_of_fixed_point_normalization_data`.
   - Isolated the last blocker behind one explicit replacement seam:
     `molecule_residual_fixed_point_normalization_source`.
+  - Removed unused wrapper `molecule_h_data_refined_seed_free`; residual
+    blocker surface is now concentrated at the fixed-data source seam.
   - Verification rerun completed (`make build`, `make check`, `#print axioms`);
     frontier unchanged: `molecule_h_norm` is still the residual blocker.
 

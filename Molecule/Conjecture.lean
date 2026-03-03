@@ -1345,10 +1345,6 @@ theorem molecule_h_unique :
   intro f1 f2 h1 h2
   exact False.elim molecule_h_norm_inconsistent
 
-theorem molecule_h_data_refined_seed_free :
-    InvariantSliceDataWithNormalizationWith slice_chart_refined slice_operator :=
-  invariant_slice_data_with_normalization_with_refined_of_global_norm molecule_h_norm
-
 /--
 Explicit replacement seam for residual fixed-point normalization data.
 The PLAN_45 cutover target is to replace this source theorem with a seed-free
