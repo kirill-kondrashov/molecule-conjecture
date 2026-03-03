@@ -627,7 +627,7 @@ theorem Rfast_theorem_1_1
   exact ⟨h_hyp, h_exists⟩
 
 theorem Rfast_fixed_point_properties
-    (h_exists :
+    (_h_exists :
       ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
         IsCompact P ∧
         Convex ℝ P ∧
@@ -639,19 +639,19 @@ theorem Rfast_fixed_point_properties
         ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
         K.Nonempty ∧
         f_ref ∈ K)
-    (h_conj :
+    (_h_conj :
       ∀ f_ref : BMol,
         ∀ x ∈ slice_domain f_ref,
           slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
-    (h_norm :
+    (_h_norm :
       ∀ K : Set BMol,
         (∀ f ∈ K, IsFastRenormalizable f) ∧
         (∀ f ∈ K, criticalValue f = 0) ∧
         (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
-    (h_ps :
+    (_h_ps :
       ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
         ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps)
-    (h_orbit :
+    (_h_orbit :
       ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
         Rfast f_star = f_star →
         IsFastRenormalizable f_star →
@@ -667,14 +667,14 @@ theorem Rfast_fixed_point_properties
           (f.f^[t] (criticalValue f)) ∈ D ∧
           (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
           (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)))
-    (h_gap :
+    (_h_gap :
       ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
         HasSiegelBounds f_star D U a b →
         let F := slice_operator f_star
         let φ := slice_chart f_star
         DifferentiableAt ℂ F (φ f_star) ∧
         IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star)))
-    (h_unique :
+    (_h_unique :
       ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
                (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
   ∀ f, IsFastRenormalizable f → Rfast f = f →

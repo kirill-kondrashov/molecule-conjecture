@@ -1,14 +1,27 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 # File paths
 README="README.md"
 EXPECTED="expected.txt"
 ACTUAL="output.txt"
 
-# Extract the expected output from README.md
-# We assume the output block starts after "Output:" and is a code block
-sed -n '/Expected Output:/,$p' "$README" | sed -n '/^```$/,/^```$/p' | sed '1d;$d' > "$EXPECTED"
+# Extract the expected output block from README.md.
+# Accept both legacy "Expected Output:" and newer "Current expected output".
+awk '
+  BEGIN { found = 0; inblock = 0 }
+  tolower($0) ~ /expected output/ { found = 1; next }
+  found && /^```$/ {
+    if (inblock == 0) { inblock = 1; next }
+    else { exit }
+  }
+  inblock { print }
+' "$README" > "$EXPECTED"
+
+if [ ! -s "$EXPECTED" ]; then
+    echo "Failed to extract expected output block from $README"
+    exit 1
+fi
 
 # Run make check and capture output
 # We filter out lines starting with "lake" or containing progress bars if necessary
