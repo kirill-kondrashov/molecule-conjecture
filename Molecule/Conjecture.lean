@@ -270,6 +270,38 @@ theorem has_invariant_normalization_of_global
   · exact h_norm {defaultBMol}
 
 /--
+Pointwise localization of the global normalization contract.
+-/
+theorem normalization_at_point_of_global
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1))
+    {f : BMol} :
+    criticalValue f = 0 ∧ f.V ⊆ Metric.ball 0 0.1 := by
+  have h_singleton := h_norm ({f} : Set BMol)
+  exact ⟨h_singleton.2.1 f (by simp), h_singleton.2.2 f (by simp)⟩
+
+/--
+Build fixed-point normalization data from:
+- existence of a renormalizable fixed point, and
+- global normalization.
+-/
+theorem fixed_point_normalization_data_of_fixed_exists_and_global_norm
+    (h_fixed_exists : ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f)
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1)) :
+    FixedPointNormalizationData := by
+  rcases h_fixed_exists with ⟨f_star, h_renorm, h_fixed⟩
+  have h_local : criticalValue f_star = 0 ∧ f_star.V ⊆ Metric.ball 0 0.1 :=
+    normalization_at_point_of_global h_norm
+  exact ⟨f_star, h_fixed, h_renorm, h_local.1, h_local.2⟩
+
+/--
 Migration lemma: legacy `h_exists` is exactly the invariant slice-data package.
 -/
 theorem has_invariant_slice_data_of_exists

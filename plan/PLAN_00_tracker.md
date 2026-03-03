@@ -44,7 +44,7 @@ Last Updated: 2026-03-03
 | PLAN_41 | Residual bounds elimination | DONE | [##########] 100% |
 | PLAN_42 | Post-axiom contract hardening | ACTIVE | [#########-] 90% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
-| PLAN_44 | Constructive slice witness refactor | ACTIVE | [######----] 60% |
+| PLAN_44 | Constructive slice witness refactor | ACTIVE | [#######---] 70% |
 
 ## Dependency Map
 
@@ -70,7 +70,10 @@ Last Updated: 2026-03-03
   (`HasInvariantSliceDataWith`, `has_invariant_slice_data_with_refined`,
   `has_invariant_slice_data_with_refined_default`,
   `InvariantSliceDataWithNormalizationWith`,
-  `invariant_slice_data_with_normalization_with_refined_of_local`).
+  `invariant_slice_data_with_normalization_with_refined_of_local`), plus
+  global-to-local normalization bridges
+  (`normalization_at_point_of_global`,
+  `fixed_point_normalization_data_of_fixed_exists_and_global_norm`).
 - No active STUCK plans in `plan/*.md` this pass.
 
 ## Current Critical Blockers
