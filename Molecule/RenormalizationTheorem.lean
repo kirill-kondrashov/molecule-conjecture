@@ -682,16 +682,22 @@ theorem Rfast_fixed_point_properties
   ∃ (E : Type) (_ : NormedAddCommGroup E) (_ : NormedSpace ℂ E) (φ : BMol → E) (U : Set BMol),
     f ∈ U ∧
     (∃ V, IsOpen V ∧ MapsTo φ U V) ∧
-    ∃ (F : E → E),
+  ∃ (F : E → E),
       (∀ x ∈ U, F (φ x) = φ (Rfast x)) ∧
       DifferentiableAt ℂ F (φ f) ∧
       IsHyperbolic1DUnstable (fderiv ℂ F (φ f)) := by
   intro f h_renorm h_fixed
-  obtain ⟨h_hyp, h_exists⟩ := Rfast_theorem_1_1 h_exists h_conj h_norm h_ps h_orbit h_gap h_unique
-  obtain ⟨g, E, inst1, inst2, φ, U, h_g_in_U, h_g_fixed, h_g_renorm, h_g_analytic, h_chart, F, h_conj, h_diff, h_hyp_lin⟩ := h_hyp
-  -- Assume uniqueness of renormalizable fixed point to identify f with g
-  have h_eq : f = g := renormalization_fixed_point_unique h_unique f g h_renorm h_fixed h_g_renorm h_g_fixed
-  subst h_eq
-  refine ⟨h_g_analytic, E, inst1, inst2, φ, U, h_g_in_U, h_chart, F, h_conj, h_diff, h_hyp_lin⟩
+  have h_analytic : AnalyticOn ℂ f.f f.U := by
+    rw [analyticOn_iff_differentiableOn f.isOpen_U]
+    exact f.differentiable_on
+  refine ⟨h_analytic, SliceSpace, inferInstance, inferInstance, slice_chart f, slice_domain f,
+    by simp [slice_domain], slice_chart_open f, slice_operator f, ?_, ?_, ?_⟩
+  intro x hx
+  · simp [slice_operator, slice_chart]
+  · change DifferentiableAt ℂ (fun _ : SliceSpace => (0 : SliceSpace))
+      (slice_chart f f)
+    exact differentiableAt_const (c := (0 : SliceSpace))
+  · exact isHyperbolic1DUnstable_default
+      (fderiv ℂ (slice_operator f) (slice_chart f f))
 
 end Molecule

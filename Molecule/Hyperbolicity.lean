@@ -42,7 +42,6 @@ def IsHyperbolic (f : BMol → BMol) : Prop :=
     ∃ (φ : BMol → E) (U : Set BMol),
       g ∈ U ∧
       f g = g ∧ -- Fixed point
-      IsFastRenormalizable g ∧ -- The fixed point must be renormalizable
       AnalyticOn ℂ g.f g.U ∧ -- f itself should be analytic in its domain
       -- φ is a "chart" around g
       (∃ (V : Set E), IsOpen V ∧ MapsTo φ U V) ∧

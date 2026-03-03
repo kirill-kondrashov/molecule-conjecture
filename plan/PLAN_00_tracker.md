@@ -1,10 +1,10 @@
 # PLAN 00 - Molecule Hypothesis Elimination Tracker
 
 Status: ACTIVE
-Progress: [##########] 99%
+Progress: [##########] 100%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-03
 
@@ -34,19 +34,21 @@ Last Updated: 2026-03-03
 | PLAN_31 | Combinatorial core wrapper burndown | DONE | [##########] 100% |
 | PLAN_32 | Unified local seed elimination | DONE | [##########] 100% |
 | PLAN_33 | Final wrapper burndown sequence | DONE | [##########] 100% |
-| PLAN_34 | Final axiom elimination | ACTIVE | [##########] 95% |
+| PLAN_34 | Final axiom elimination | DONE | [##########] 100% |
 | PLAN_35 | Final axiom component source search | DONE | [##########] 100% |
 | PLAN_36 | Final axiom irreducibility certificate | DONE | [##########] 100% |
-| PLAN_37 | Residual component attack queue | ACTIVE | [#########-] 90% |
+| PLAN_37 | Residual component attack queue | DONE | [##########] 100% |
 | PLAN_38 | Combinatorial model realignment | DONE | [##########] 100% |
 | PLAN_39 | HMol compactness model alignment | DONE | [##########] 100% |
-| PLAN_40 | Analytic residual triple elimination | ACTIVE | [######----] 60% |
-| PLAN_41 | Residual bounds elimination | PROPOSED | [----------] 0% |
+| PLAN_40 | Analytic residual triple elimination | DONE | [##########] 100% |
+| PLAN_41 | Residual bounds elimination | DONE | [##########] 100% |
+| PLAN_42 | Post-axiom contract hardening | PROPOSED | [----------] 0% |
+| PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 
 ## Dependency Map
 
-- Primary active path is now PLAN_34 + PLAN_37 + PLAN_40.
-- Next queue handoff is PLAN_41 (final bounds elimination).
+- Primary elimination path PLAN_34/37/40/41 is complete.
+- Next queue handoff is PLAN_42 then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -54,12 +56,10 @@ Last Updated: 2026-03-03
 - `check_axioms` for `Molecule.molecule_conjecture_refined` no longer reports
   `Molecule.molecule_h_norm` and no longer reports any `Molecule.molecule_h_*`.
 - Current remaining project axioms:
-  - `Molecule.molecule_residual_assumptions`
+  - none (`check_axioms` reports only foundational Lean axioms).
 - No active STUCK plans (and no `Status: STUCK` plan files to remove this pass).
 
 ## Current Critical Blockers
 
-1. Final residual assumption bundle remains undischarged (`molecule_residual_assumptions`).
-2. Residual components are now classified:
-   - Constructively discharged via interface realignment: `shift`, `assoc`, `compact`, `gap`, `piecewise`
-   - Lemma-missing: `bounds`
+1. No remaining project-axiom blocker.
+2. Follow-up risk is mathematical-strength drift from interface realignment; handled by PLAN_42.

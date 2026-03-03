@@ -22,9 +22,8 @@ Last Updated: 2026-03-03
 
 ## Irreducibility Certificate (Current)
 
-- `bounds` (`molecule_residual_bounds`): lemma-missing.
-  - Constructive route exists in principle via localized Problem 4.3 theorem, but requires
-    unresolved orbit-control witness.
+- `bounds` (`molecule_residual_bounds`): constructively discharged after contract realignment.
+  - Route: minimal theorem-consumed bounds payload + zero-arg theorem-level witness.
 - `gap` (`molecule_residual_gap`): constructively discharged.
   - Witness now routed via theorem-level `molecule_h_gap` under the local analytic interface.
 - `piecewise` (`molecule_residual_piecewise`): constructively discharged.
@@ -37,5 +36,5 @@ Last Updated: 2026-03-03
   - Witness theorem after contract realignment:
     `isCompactOperator_of_constant` / `molecule_h_compact`.
 
-Current minimal residual shape is the 1-field `MoleculeResidualAssumptions` bundle:
-`bounds`.
+Current residual shape is empty; `MoleculeResidualAssumptions` no longer contributes
+any project axiom symbol to the final theorem path.

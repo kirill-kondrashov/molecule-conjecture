@@ -107,7 +107,7 @@ theorem bounds_imply_hyperbolicity_proof
         IsHyperbolic1DUnstable (fderiv ℂ F (φ f_star)))
     (h : PseudoSiegelAPrioriBoundsStatement) : IsHyperbolic Rfast := by
   -- 1. Use the Banach Slice lemma (which encapsulates the spectral theory)
-  obtain ⟨E, inst1, inst2, φ, U, f_star, h_fixed, h_renorm, h_f_in_U, h_chart, F, h_conj, h_diff, h_hyp⟩ :=
+  obtain ⟨E, inst1, inst2, φ, U, f_star, h_fixed, _, h_f_in_U, h_chart, F, h_conj, h_diff, h_hyp⟩ :=
     bounds_imply_banach_slice h_conj h_gap h
 
   -- 2. Prove f_star is analytic (from BMol definition)
@@ -119,6 +119,6 @@ theorem bounds_imply_hyperbolicity_proof
   use f_star
   use E, inst1, inst2
   use φ, U
-  refine ⟨h_f_in_U, h_fixed, h_renorm, h_analytic, h_chart, F, h_conj, h_diff, h_hyp⟩
+  refine ⟨h_f_in_U, h_fixed, h_analytic, h_chart, F, h_conj, h_diff, h_hyp⟩
 
 end Molecule

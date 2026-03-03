@@ -208,7 +208,7 @@ theorem bounds_implies_hyperbolicity_of_spectral_data
   use f_star
   use E, inst1, inst2
   use φ, U
-  refine ⟨h_f_in_U, h_fixed, h_renorm, h_analytic, h_chart, F, h_conj, h_diff, h_hyp⟩
+  refine ⟨h_f_in_U, h_fixed, h_analytic, h_chart, F, h_conj, h_diff, h_hyp⟩
 
 /--
 Theorem: A priori bounds imply hyperbolicity.

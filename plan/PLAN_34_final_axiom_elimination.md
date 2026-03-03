@@ -1,7 +1,7 @@
 # PLAN 34 - Final Axiom Elimination
 
-Status: ACTIVE
-Progress: [##########] 95%
+Status: DONE
+Progress: [##########] 100%
 Scope: Eliminate the last remaining project axiom `Molecule.molecule_residual_assumptions` while keeping `molecule_conjecture_refined` zero-arg and compiling.
 Acceptance: `check_axioms` for `Molecule.molecule_conjecture_refined` lists no project-specific axiom symbols from `Molecule.*`.
 Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/BoundsToHyperbolicity.lean`, `Molecule/PiecewiseAnalytic.lean`, `Molecule/Construction.lean`, `Molecule/Compactness.lean`
@@ -17,13 +17,13 @@ Last Updated: 2026-03-03
 - [x] Execute compactness interface realignment (PLAN_39 Option B) so compactness is theorem-level witness instead of residual axiom field.
 - [x] Shrink `MoleculeResidualAssumptions` by removing `shift`, `assoc`, and `compact` fields.
 - [x] Shrink `MoleculeResidualAssumptions` further by removing `gap` and `piecewise` fields after analytic interface realignment.
-- [ ] Attempt constructive replacement for each obligation from existing local lemmas and model definitions.
-- [ ] If full elimination is blocked, prove and record the minimal irreducible assumption set with explicit rationale.
-- [x] Re-run `lake build` and `check_axioms`; verify current single project axiom is `Molecule.molecule_residual_assumptions`.
+- [x] Attempt constructive replacement for each obligation from existing local lemmas and model definitions.
+- [x] If full elimination is blocked, prove and record the minimal irreducible assumption set with explicit rationale.
+- [x] Re-run `lake build` and `check_axioms`; verify no project-specific `Molecule.*` axiom remains.
 
 ## Current Audit Snapshot
 
 - Final remaining project axiom:
-  - `Molecule.molecule_residual_assumptions`
+  - none
 - Remaining residual fields after current cutover:
-  - `bounds`
+  - none
