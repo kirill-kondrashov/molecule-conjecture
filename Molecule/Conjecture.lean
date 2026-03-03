@@ -309,6 +309,35 @@ theorem has_invariant_normalization_of_global
   · exact h_norm {defaultBMol}
 
 /--
+Feasibility gate: the global normalization contract is inconsistent in the
+current model because it would force `defaultBMol` to be fast renormalizable.
+-/
+theorem global_normalization_contract_inconsistent
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1)) :
+    False := by
+  let K : Set BMol := {defaultBMol}
+  have hK := h_norm K
+  have hrenorm : IsFastRenormalizable defaultBMol := by
+    exact hK.1 defaultBMol (by simp [K])
+  exact defaultBMol_not_renormalizable hrenorm
+
+/--
+Equivalent zero-argument dead-end certificate for the global normalization
+contract shape used in the legacy pipeline.
+-/
+theorem no_global_normalization_contract :
+    ¬ (∀ K : Set BMol,
+      (∀ f ∈ K, IsFastRenormalizable f) ∧
+      (∀ f ∈ K, criticalValue f = 0) ∧
+      (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1)) := by
+  intro h_norm
+  exact global_normalization_contract_inconsistent h_norm
+
+/--
 Pointwise localization of the global normalization contract.
 -/
 theorem normalization_at_point_of_global
@@ -1203,11 +1232,7 @@ axiom molecule_h_norm :
     (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1)
 
 theorem molecule_h_norm_inconsistent : False := by
-  let K : Set BMol := {defaultBMol}
-  have hK := molecule_h_norm K
-  have hrenorm : IsFastRenormalizable defaultBMol := by
-    exact hK.1 defaultBMol (by simp [K])
-  exact defaultBMol_not_renormalizable hrenorm
+  exact global_normalization_contract_inconsistent molecule_h_norm
 
 theorem molecule_h_ps :
   ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →

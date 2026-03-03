@@ -1,6 +1,6 @@
 # PLAN 44 - Constructive Slice Witness Refactor
 
-Status: ACTIVE
+Status: STUCK
 Progress: [#########-] 90%
 Scope: Remove the current constant-chart/finiteness bottleneck by refactoring slice witness infrastructure so `h_exists`-style data can be built constructively (without `molecule_h_norm`/ex-falso).
 Acceptance: Introduce a constructive `HasInvariantSliceData` witness path that does not use `False.elim` and does not depend on `Molecule.molecule_h_norm`.
@@ -15,6 +15,11 @@ Last Updated: 2026-03-03
 - With current scaffold (`slice_chart` constant), `HasInvariantSliceData` implies
   `(Set.univ : Set BMol).Finite`, which blocks constructive upstream witness extraction
   in the intended model.
+- New feasibility gate result:
+  - `Molecule.global_normalization_contract_inconsistent`
+  - `Molecule.no_global_normalization_contract`
+  This makes the current global-normalization seam mathematically inconsistent in the
+  present model, so continued work on this exact seam is a dead end.
 
 ## Work Log
 
@@ -63,6 +68,12 @@ Last Updated: 2026-03-03
 - [ ] Rewire `molecule_residual_bounds_seed_free` inputs to use constructive upstream
   witness theorems (no `molecule_h_norm`-derived ex-falso).
 - [ ] Re-run `make build`, `make check`, and targeted `#print axioms` probes.
+
+## Stuck Reason
+
+- Blocked on contract shape: the residual path still depends on a global-normalization
+  contract now formally shown inconsistent in this model.
+- Replacement path is tracked in `PLAN_45_local_fixed_point_normalization_source.md`.
 
 ## Candidate Implementation Notes
 

@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 90%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_44
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_44, PLAN_45
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-03
 
@@ -44,12 +44,13 @@ Last Updated: 2026-03-03
 | PLAN_41 | Residual bounds elimination | DONE | [##########] 100% |
 | PLAN_42 | Post-axiom contract hardening | ACTIVE | [#########-] 90% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
-| PLAN_44 | Constructive slice witness refactor | ACTIVE | [#########-] 90% |
+| PLAN_44 | Constructive slice witness refactor | STUCK | [#########-] 90% |
+| PLAN_45 | Local fixed-point normalization source | ACTIVE | [#---------] 10% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Next queue handoff is PLAN_44 then PLAN_43.
+- Current queue is PLAN_45 (active replacement path), then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -64,6 +65,10 @@ Last Updated: 2026-03-03
 - New obstruction theorem in `Molecule/Conjecture.lean`:
   `has_invariant_slice_data_forces_univ_finite`, exposing the current
   constant-chart/finiteness mismatch that blocks constructive `h_exists`.
+- New feasibility gate theorems in `Molecule/Conjecture.lean`:
+  - `global_normalization_contract_inconsistent`
+  - `no_global_normalization_contract`
+  These certify the current global-normalization seam is inconsistent in this model.
 - `PLAN_44` has started with refined chart scaffolding in `Molecule/BanachSlice.lean`
   (`slice_chart_refined`, `refined_singleton_slice_witness`), and a new
   chart-parameterized package in `Molecule/Conjecture.lean`
@@ -90,9 +95,10 @@ Last Updated: 2026-03-03
   `molecule_h_fixed_data` is now routed through
   `fixed_point_normalization_data_of_fixed_exists_and_global_norm`
   (no direct dependency on `molecule_h_data`).
-- No active STUCK plans in `plan/*.md` this pass.
+- Active STUCK plan:
+  - `PLAN_44_constructive_slice_witness_refactor.md` (replaced by PLAN_45).
 
 ## Current Critical Blockers
 
 1. Root blocker: `Molecule.molecule_h_norm` remains in the zero-arg theorem path.
-2. Active mitigation: PLAN_42 contract hardening and constructive witness rebuild.
+2. Active mitigation: PLAN_42 contract hardening and PLAN_45 local fixed-point normalization source.
