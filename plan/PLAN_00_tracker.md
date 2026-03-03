@@ -45,7 +45,7 @@ Last Updated: 2026-03-03
 | PLAN_42 | Post-axiom contract hardening | ACTIVE | [#########-] 90% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_44 | Constructive slice witness refactor | STUCK | [#########-] 90% |
-| PLAN_45 | Local fixed-point normalization source | ACTIVE | [#########-] 90% |
+| PLAN_45 | Local fixed-point normalization source | ACTIVE | [#########-] 97% |
 
 ## Dependency Map
 
@@ -89,11 +89,9 @@ Last Updated: 2026-03-03
   `MoleculeOrbitOnlyData`,
   `molecule_orbit_transport_data_of_orbit_only`).
   `molecule_residual_fixed_exists` is now routed through
-  `renormalizable_fixed_exists_of_global_norm` (no dependency on
-  `molecule_h_exists` / `molecule_h_conj` / `molecule_h_unique`).
-  `molecule_h_fixed_data` is now routed through
-  `fixed_point_normalization_data_of_fixed_exists_and_global_norm`
-  (no direct dependency on `molecule_h_data`).
+  `renormalizable_fixed_exists_of_fixed_point_normalization_data`.
+  `molecule_h_fixed_data` is now routed through the explicit source seam
+  `molecule_residual_fixed_point_normalization_source`.
 - Active STUCK plan:
   - `PLAN_44_constructive_slice_witness_refactor.md` (replaced by PLAN_45).
 - `PLAN_45` progress:
@@ -110,6 +108,9 @@ Last Updated: 2026-03-03
   - Factored the fixed-data source into explicit sub-contracts:
     `FixedPointLocalNormalizationTransfer` and
     `fixed_point_normalization_data_of_fixed_exists_and_transfer`.
+  - Added an explicit ingredient bundle seam:
+    `MoleculeResidualFixedPointNormalizationIngredients` and
+    `molecule_residual_fixed_point_normalization_ingredients`.
   - Verification rerun completed (`make build`, `make check`, `#print axioms`);
     frontier unchanged: `molecule_h_norm` is still the residual blocker.
 

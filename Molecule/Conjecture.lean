@@ -378,6 +378,15 @@ def FixedPointLocalNormalizationTransfer : Prop :=
     criticalValue f = 0 ∧ f.V ⊆ Metric.ball 0 0.1
 
 /--
+Ingredient bundle for constructing fixed-point normalization data:
+- existence of a fast-renormalizable fixed point of `Rfast`, and
+- local normalization transfer on fast-renormalizable fixed points.
+-/
+def MoleculeResidualFixedPointNormalizationIngredients : Prop :=
+  (∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f) ∧
+  FixedPointLocalNormalizationTransfer
+
+/--
 Global normalization implies fixed-point local normalization transfer.
 -/
 theorem fixed_point_local_normalization_transfer_of_global_norm
@@ -403,6 +412,34 @@ theorem fixed_point_normalization_data_of_fixed_exists_and_transfer
   have h_local : criticalValue f_star = 0 ∧ f_star.V ⊆ Metric.ball 0 0.1 :=
     h_transfer f_star h_fixed h_renorm
   exact ⟨f_star, h_fixed, h_renorm, h_local.1, h_local.2⟩
+
+/--
+Build fixed-point normalization data from the bundled ingredient contract.
+-/
+theorem fixed_point_normalization_data_of_ingredients
+    (h_ingredients : MoleculeResidualFixedPointNormalizationIngredients) :
+    FixedPointNormalizationData :=
+  fixed_point_normalization_data_of_fixed_exists_and_transfer
+    h_ingredients.1
+    h_ingredients.2
+
+/--
+Global normalization provides the bundled ingredient contract.
+-/
+theorem residual_fixed_point_normalization_ingredients_of_global_norm
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1)) :
+    MoleculeResidualFixedPointNormalizationIngredients := by
+  rcases fixed_point_exists with ⟨f_star, h_fixed, _h_cv⟩
+  have h_renorm : IsFastRenormalizable f_star := by
+    exact (h_norm ({f_star} : Set BMol)).1 f_star (by simp)
+  exact ⟨
+    ⟨f_star, h_renorm, h_fixed⟩,
+    fixed_point_local_normalization_transfer_of_global_norm h_norm
+  ⟩
 
 /--
 Project renormalizable fixed-point existence from local fixed-point
@@ -1389,13 +1426,27 @@ def MoleculeResidualFixedPointNormalizationSource : Prop :=
   FixedPointNormalizationData
 
 /--
+Build residual fixed-point normalization source from bundled ingredients.
+-/
+theorem molecule_residual_fixed_point_normalization_source_of_ingredients
+    (h_ingredients : MoleculeResidualFixedPointNormalizationIngredients) :
+    MoleculeResidualFixedPointNormalizationSource :=
+  fixed_point_normalization_data_of_ingredients h_ingredients
+
+/--
+Current bundled ingredient source (legacy global-norm route).
+-/
+theorem molecule_residual_fixed_point_normalization_ingredients :
+    MoleculeResidualFixedPointNormalizationIngredients :=
+  residual_fixed_point_normalization_ingredients_of_global_norm molecule_h_norm
+
+/--
 Current residual fixed-point normalization source (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_normalization_source :
     MoleculeResidualFixedPointNormalizationSource :=
-  fixed_point_normalization_data_of_fixed_exists_and_transfer
-    (renormalizable_fixed_exists_of_global_norm molecule_h_norm)
-    (fixed_point_local_normalization_transfer_of_global_norm molecule_h_norm)
+  molecule_residual_fixed_point_normalization_source_of_ingredients
+    molecule_residual_fixed_point_normalization_ingredients
 
 /--
 Localized fixed-point data witness used by the packed top-theorem route.

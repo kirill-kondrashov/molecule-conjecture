@@ -1,7 +1,7 @@
 # PLAN 45 - Local Fixed-Point Normalization Source
 
 Status: ACTIVE
-Progress: [#########-] 95%
+Progress: [#########-] 97%
 Scope: Replace the inconsistent global-normalization seam with a local fixed-point normalization source that can feed Problem 4.3 bounds without `molecule_h_norm`.
 Acceptance: `molecule_residual_bounds_seed_free` no longer depends on `molecule_h_norm`; `check_axioms` for `Molecule.molecule_conjecture_refined` does not report `Molecule.molecule_h_norm`.
 Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/FixedPointExistence.lean`, `plan/PLAN_44_constructive_slice_witness_refactor.md`
@@ -41,6 +41,11 @@ Last Updated: 2026-03-03
   - `fixed_point_normalization_data_of_fixed_exists_and_transfer`
   so the final replacement can target either fixed-point existence or
   normalization transfer independently.
+- [x] Bundle residual fixed-point-normalization ingredients behind one seam:
+  - `MoleculeResidualFixedPointNormalizationIngredients`
+  - `molecule_residual_fixed_point_normalization_ingredients`
+  - `molecule_residual_fixed_point_normalization_source_of_ingredients`
+  so final replacement is a one-theorem swap at the ingredient source.
 - [ ] Remove `molecule_h_norm` from zero-arg residual exports and dependent wrappers.
 - [x] Re-run `make build`, `make check`, and targeted `#print axioms` probes.
   - Result: `molecule_h_norm` remains at `molecule_h_fixed_data`/`molecule_residual_bounds_seed_free`.
@@ -51,6 +56,8 @@ Last Updated: 2026-03-03
 
 ## Candidate Next Proof Targets
 
+- Replace theorem body of `molecule_residual_fixed_point_normalization_ingredients`
+  with a seed-free construction.
 - A seed-free theorem producing:
   - `∃ f_star, Rfast f_star = f_star ∧ IsFastRenormalizable f_star ∧
     criticalValue f_star = 0 ∧ f_star.V ⊆ Metric.ball 0 0.1`
