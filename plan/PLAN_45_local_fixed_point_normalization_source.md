@@ -1,7 +1,7 @@
 # PLAN 45 - Local Fixed-Point Normalization Source
 
 Status: ACTIVE
-Progress: [#######---] 70%
+Progress: [########--] 80%
 Scope: Replace the inconsistent global-normalization seam with a local fixed-point normalization source that can feed Problem 4.3 bounds without `molecule_h_norm`.
 Acceptance: `molecule_residual_bounds_seed_free` no longer depends on `molecule_h_norm`; `check_axioms` for `Molecule.molecule_conjecture_refined` does not report `Molecule.molecule_h_norm`.
 Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/FixedPointExistence.lean`, `plan/PLAN_44_constructive_slice_witness_refactor.md`
@@ -29,6 +29,10 @@ Last Updated: 2026-03-03
   normalization data:
   - `renormalizable_fixed_exists_of_fixed_point_normalization_data`
   - `molecule_residual_fixed_exists := ... molecule_h_fixed_data`
+- [x] Isolate the remaining blocker behind a single explicit source seam:
+  - `MoleculeResidualFixedPointNormalizationSource`
+  - `molecule_residual_fixed_point_normalization_source`
+  so the final cutover can replace one theorem body.
 - [ ] Remove `molecule_h_norm` from zero-arg residual exports and dependent wrappers.
 - [x] Re-run `make build`, `make check`, and targeted `#print axioms` probes.
   - Result: `molecule_h_norm` remains at `molecule_h_fixed_data`/`molecule_residual_bounds_seed_free`.

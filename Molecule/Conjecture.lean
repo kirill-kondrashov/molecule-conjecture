@@ -1350,12 +1350,27 @@ theorem molecule_h_data_refined_seed_free :
   invariant_slice_data_with_normalization_with_refined_of_global_norm molecule_h_norm
 
 /--
-Localized fixed-point data witness used by the packed top-theorem route.
+Explicit replacement seam for residual fixed-point normalization data.
+The PLAN_45 cutover target is to replace this source theorem with a seed-free
+construction.
 -/
-theorem molecule_h_fixed_data : FixedPointNormalizationData :=
+def MoleculeResidualFixedPointNormalizationSource : Prop :=
+  FixedPointNormalizationData
+
+/--
+Current residual fixed-point normalization source (legacy global-norm route).
+-/
+theorem molecule_residual_fixed_point_normalization_source :
+    MoleculeResidualFixedPointNormalizationSource :=
   fixed_point_normalization_data_of_fixed_exists_and_global_norm
     (renormalizable_fixed_exists_of_global_norm molecule_h_norm)
     molecule_h_norm
+
+/--
+Localized fixed-point data witness used by the packed top-theorem route.
+-/
+theorem molecule_h_fixed_data : FixedPointNormalizationData :=
+  molecule_residual_fixed_point_normalization_source
 
 /--
 Explicit canonical fixed-point contract for the built-in renormalization operator.
