@@ -45,7 +45,7 @@ Last Updated: 2026-03-03
 | PLAN_42 | Post-axiom contract hardening | ACTIVE | [#########-] 90% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_44 | Constructive slice witness refactor | STUCK | [#########-] 90% |
-| PLAN_45 | Local fixed-point normalization source | ACTIVE | [######----] 60% |
+| PLAN_45 | Local fixed-point normalization source | ACTIVE | [#######---] 70% |
 
 ## Dependency Map
 
@@ -102,6 +102,8 @@ Last Updated: 2026-03-03
     `problem_4_3_bounds_established_conjecture_from_fixed_data_and_transport`.
   - Rewired `molecule_residual_bounds_seed_free` through
     `molecule_residual_bounds_from_fixed_data` using `molecule_h_fixed_data`.
+  - Rewired `molecule_residual_fixed_exists` through
+    `renormalizable_fixed_exists_of_fixed_point_normalization_data`.
   - Verification rerun completed (`make build`, `make check`, `#print axioms`);
     frontier unchanged: `molecule_h_norm` is still the residual blocker.
 

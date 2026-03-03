@@ -370,6 +370,16 @@ theorem fixed_point_normalization_data_of_fixed_exists_and_global_norm
   exact ⟨f_star, h_fixed, h_renorm, h_local.1, h_local.2⟩
 
 /--
+Project renormalizable fixed-point existence from local fixed-point
+normalization data.
+-/
+theorem renormalizable_fixed_exists_of_fixed_point_normalization_data
+    (h_fixed_data : FixedPointNormalizationData) :
+    ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f := by
+  rcases h_fixed_data with ⟨f_star, h_fixed, h_renorm, _h_crit, _h_domain⟩
+  exact ⟨f_star, h_renorm, h_fixed⟩
+
+/--
 Derive renormalizable fixed-point existence from:
 - constructive fixed-point existence of `Rfast`, and
 - global normalization.
@@ -1449,7 +1459,7 @@ theorem canonical_fast_fixed_point_data_of_bounds
 /-- Legacy fixed-point existence packaged for narrowed bounds interfaces. -/
 theorem molecule_residual_fixed_exists :
     ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f :=
-  renormalizable_fixed_exists_of_global_norm molecule_h_norm
+  renormalizable_fixed_exists_of_fixed_point_normalization_data molecule_h_fixed_data
 
 /-- Residual bounds source routed through local fixed-point normalization data. -/
 theorem molecule_residual_bounds_from_fixed_data
