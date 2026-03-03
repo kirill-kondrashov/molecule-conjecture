@@ -40,6 +40,9 @@ Last Updated: 2026-03-03
 - [x] Add local fixed-point normalization bounds route:
   - `problem_4_3_bounds_established_conjecture_from_local_fixed_norm`
   (no global `h_norm` in theorem interface).
+- [x] Decouple residual fixed-point existence from legacy `h_exists` pipeline:
+  - `renormalizable_fixed_exists_of_global_norm`
+  - `molecule_residual_fixed_exists` rewired to this route.
 - [ ] Redesign slice chart/model contract so chart preimage sets can be finite/nontrivial
   without collapsing to `univ`/`∅` on the main theorem path.
 - [ ] Rebuild a constructive `h_exists` witness theorem in `Molecule/Conjecture.lean`.

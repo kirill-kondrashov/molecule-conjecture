@@ -302,6 +302,23 @@ theorem fixed_point_normalization_data_of_fixed_exists_and_global_norm
   exact ⟨f_star, h_fixed, h_renorm, h_local.1, h_local.2⟩
 
 /--
+Derive renormalizable fixed-point existence from:
+- constructive fixed-point existence of `Rfast`, and
+- global normalization.
+-/
+theorem renormalizable_fixed_exists_of_global_norm
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1)) :
+    ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f := by
+  rcases fixed_point_exists with ⟨f_star, h_fixed, _h_cv⟩
+  have h_renorm : IsFastRenormalizable f_star := by
+    exact (h_norm ({f_star} : Set BMol)).1 f_star (by simp)
+  exact ⟨f_star, h_renorm, h_fixed⟩
+
+/--
 Migration lemma: legacy `h_exists` is exactly the invariant slice-data package.
 -/
 theorem has_invariant_slice_data_of_exists
@@ -1293,13 +1310,7 @@ theorem canonical_fast_fixed_point_data_of_bounds
 /-- Legacy fixed-point existence packaged for narrowed bounds interfaces. -/
 theorem molecule_residual_fixed_exists :
     ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f :=
-  renormalizable_fixed_point_exists
-    molecule_h_exists
-    molecule_h_conj
-    molecule_h_norm
-    molecule_h_ps
-    molecule_h_orbit
-    molecule_h_unique
+  renormalizable_fixed_exists_of_global_norm molecule_h_norm
 
 /-- Seed-free bounds source: use the global Problem 4.3 route directly, without `molecule_h_data`. -/
 theorem molecule_residual_bounds_seed_free : PseudoSiegelAPrioriBounds :=
