@@ -1511,6 +1511,23 @@ Refined export proposition augmented with canonical fixed-point data.
 def MoleculeConjectureRefined : Prop :=
   MoleculeConjectureRefinedCore ∧ CanonicalFastFixedPointData
 
+/--
+Subtarget A bridge: canonical fixed-point data directly provides the residual
+fixed-point existence ingredient.
+-/
+theorem residual_fixed_point_existence_of_canonical_fast_fixed_point_data
+    (h_canonical : CanonicalFastFixedPointData) :
+    MoleculeResidualFixedPointExistenceSource :=
+  h_canonical
+
+/--
+Subtarget A bridge from refined contract assumptions.
+-/
+theorem residual_fixed_point_existence_of_refined_contract
+    (h_refined : MoleculeConjectureRefined) :
+    MoleculeResidualFixedPointExistenceSource :=
+  residual_fixed_point_existence_of_canonical_fast_fixed_point_data h_refined.2
+
 structure MoleculeHypothesisPack where
   h_bounds : PseudoSiegelAPrioriBounds
   h_conj :
