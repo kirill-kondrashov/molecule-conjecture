@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 90%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_44, PLAN_45
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_44, PLAN_45, PLAN_46
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-03
 
@@ -46,11 +46,12 @@ Last Updated: 2026-03-03
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_44 | Constructive slice witness refactor | STUCK | [#########-] 90% |
 | PLAN_45 | Local fixed-point normalization source | ACTIVE | [#########-] 97% |
+| PLAN_46 | Seed-free ingredient constructor | ACTIVE | [###-------] 30% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_45 (active replacement path), then PLAN_43.
+- Current queue is PLAN_46 (ingredient cutover), then PLAN_45 wrap-up, then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -113,6 +114,13 @@ Last Updated: 2026-03-03
     `molecule_residual_fixed_point_normalization_ingredients`.
   - Verification rerun completed (`make build`, `make check`, `#print axioms`);
     frontier unchanged: `molecule_h_norm` is still the residual blocker.
+- `PLAN_46` opened to replace the body of
+  `molecule_residual_fixed_point_normalization_ingredients` with a seed-free
+  construction using existing theorem infrastructure.
+- `PLAN_46` progress:
+  - Split ingredient seam into two explicit theorem targets:
+    `molecule_residual_fixed_point_existence_source` and
+    `molecule_residual_fixed_point_transfer_source`.
 
 ## Current Critical Blockers
 

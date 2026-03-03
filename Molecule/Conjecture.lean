@@ -1436,9 +1436,41 @@ theorem molecule_residual_fixed_point_normalization_source_of_ingredients
 /--
 Current bundled ingredient source (legacy global-norm route).
 -/
+def MoleculeResidualFixedPointExistenceSource : Prop :=
+  ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f
+
+/--
+Current fixed-point existence source (legacy global-norm route).
+-/
+theorem molecule_residual_fixed_point_existence_source :
+    MoleculeResidualFixedPointExistenceSource := by
+  rcases fixed_point_exists with ⟨f_star, h_fixed, _h_cv⟩
+  have h_renorm : IsFastRenormalizable f_star := by
+    exact (molecule_h_norm ({f_star} : Set BMol)).1 f_star (by simp)
+  exact ⟨f_star, h_renorm, h_fixed⟩
+
+/--
+Current fixed-point local-normalization transfer source (legacy global-norm route).
+-/
+def MoleculeResidualFixedPointTransferSource : Prop :=
+  FixedPointLocalNormalizationTransfer
+
+/--
+Current fixed-point local-normalization transfer source theorem.
+-/
+theorem molecule_residual_fixed_point_transfer_source :
+    MoleculeResidualFixedPointTransferSource :=
+  fixed_point_local_normalization_transfer_of_global_norm molecule_h_norm
+
+/--
+Current bundled ingredient source theorem (legacy global-norm route).
+-/
 theorem molecule_residual_fixed_point_normalization_ingredients :
     MoleculeResidualFixedPointNormalizationIngredients :=
-  residual_fixed_point_normalization_ingredients_of_global_norm molecule_h_norm
+  ⟨
+    molecule_residual_fixed_point_existence_source,
+    molecule_residual_fixed_point_transfer_source
+  ⟩
 
 /--
 Current residual fixed-point normalization source (legacy global-norm route).
