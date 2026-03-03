@@ -1171,5 +1171,14 @@ theorem molecule_conjecture_refined :
     (∃ N, IsConjugateToShift R_target N) :=
   molecule_conjecture_refined_of_pack molecule_hypothesis_pack
 
+/--
+Minimal canonical strengthening:
+the built-in renormalization operator `Molecule.Rfast` has a fast-renormalizable fixed point.
+-/
+theorem canonical_rfast_has_fast_renormalizable_fixed_point :
+  ∃ g, IsFastRenormalizable g ∧ Molecule.Rfast g = g := by
+  refine ⟨molecule_local_fixed_point, molecule_local_fixed_point_is_renorm, ?_⟩
+  simpa using molecule_local_fixed_point_is_fixed
+
 end
 end Molecule
