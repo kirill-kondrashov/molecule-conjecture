@@ -51,4 +51,18 @@ def IsHyperbolic (f : BMol → BMol) : Prop :=
         -- The derivative is hyperbolic with 1D unstable manifold
         IsHyperbolic1DUnstable (fderiv ℂ F (φ g))
 
+/--
+Compatibility shim for strengthened hyperbolicity charts:
+from a chart target witness and basepoint membership in `U`, recover
+an explicit witness that the basepoint image belongs to the target.
+-/
+theorem chart_target_with_basepoint
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
+    {φ : BMol → E} {U : Set BMol} {g : BMol}
+    (hgU : g ∈ U)
+    (hChart : ∃ (V : Set E), IsOpen V ∧ MapsTo φ U V) :
+    ∃ (V : Set E), IsOpen V ∧ MapsTo φ U V ∧ φ g ∈ V := by
+  rcases hChart with ⟨V, hV_open, h_maps⟩
+  exact ⟨V, hV_open, h_maps, h_maps hgU⟩
+
 end Molecule

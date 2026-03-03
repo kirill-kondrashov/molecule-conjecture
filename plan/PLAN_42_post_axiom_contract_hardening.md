@@ -17,6 +17,7 @@ Last Updated: 2026-03-03
   (`molecule_residual_bounds_seed_free` via `problem_4_3_bounds_established_conjecture`).
 - [x] Tighten `IsHyperbolic1DUnstable` incrementally (require nonzero unstable multiplier witness) while preserving compatibility.
 - [x] Tighten `IsHyperbolic` interface incrementally (require chart target to contain basepoint `φ g`) and patch compatibility constructors.
+- [x] Add reusable compatibility shim (`chart_target_with_basepoint`) and route bridge proofs through it.
 - [ ] Re-prove `molecule_conjecture_refined` via the strengthened path and re-run `check_axioms`.
 
 ## Current Audit Snapshot

@@ -205,9 +205,8 @@ theorem bounds_implies_hyperbolicity_of_spectral_data
   obtain ⟨f_star, _, h_fixed, h_renorm, _, _, _, _⟩ := h
   have h_spectral' := h_spectral f_star h_renorm h_fixed
   obtain ⟨h_analytic, E, inst1, inst2, φ, U, h_f_in_U, h_chart, F, h_conj, h_diff, h_hyp⟩ := h_spectral'
-  have h_chart' : ∃ (V : Set E), IsOpen V ∧ MapsTo φ U V ∧ φ f_star ∈ V := by
-    rcases h_chart with ⟨V, hV_open, h_maps⟩
-    exact ⟨V, hV_open, h_maps, h_maps h_f_in_U⟩
+  have h_chart' : ∃ (V : Set E), IsOpen V ∧ MapsTo φ U V ∧ φ f_star ∈ V :=
+    chart_target_with_basepoint h_f_in_U h_chart
   use f_star
   use E, inst1, inst2
   use φ, U
