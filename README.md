@@ -4,11 +4,18 @@
 
 ## 🚧 WORK IN PROGRESS 🚧
 
-**Current Status:** This repository is in active development. The exported theorem
-`Molecule.molecule_conjecture_refined` is now zero-argument and uses no
-project-specific axioms in its proof path, but several core contracts are currently
-placeholder/relaxed, so this is not yet a faithful formalization of the full
-mathematical conjecture from the literature.
+**Current Status:** This repository is in active development.
+
+- `Molecule.molecule_conjecture_refined` is zero-argument and currently has no
+  project-specific axiom symbols in its proof path.
+- A stronger paired export now exists:
+  `Molecule.molecule_conjecture_refined_with_canonical_fixed_point`.
+  Its zero-argument form is explicit about a remaining project contract axiom
+  (`Molecule.molecule_residual_assumptions`) that supplies canonical fixed-point
+  data.
+
+Several core contracts are still placeholder/relaxed, so this is not yet a faithful
+formalization of the full mathematical conjecture from the literature.
 
 This repository contains a **machine-generated attempt of formal proof** of Dudko's Molecule Conjecture for quadratic polynomials in Lean 4. This theorem is a key component of the Mandelbrot Local Connectivity (MLC) Conjecture, establishing it for non-renormalizable parameters.
 
@@ -31,7 +38,10 @@ are included.
 
 ## Formalization Status
 
-The main formal statement is `Molecule.molecule_conjecture_refined` in `Molecule/Conjecture.lean`. It is a zero-argument theorem that constructs a renormalization operator `Rfast`, a compact operator on the horseshoe `Rfast_HMol`, and a combinatorial model `R_target`, and then establishes:
+The main formal statement is `Molecule.molecule_conjecture_refined` in
+`Molecule/Conjecture.lean`. It is a zero-argument theorem that constructs a
+renormalization operator `Rfast`, a compact operator on the horseshoe
+`Rfast_HMol`, and a combinatorial model `R_target`, and then establishes:
 
 - `IsHyperbolic Rfast`
 - `IsPiecewiseAnalytic1DUnstable Rfast`
@@ -39,9 +49,22 @@ The main formal statement is `Molecule.molecule_conjecture_refined` in `Molecule
 - `CombinatoriallyAssociated Rfast_HMol R_target`
 - `∃ N, IsConjugateToShift R_target N`
 
-The current exported theorem path no longer depends on project-local axiom symbols.
+The refined theorem path above no longer depends on project-local axiom symbols.
 However, this was achieved by contract realignments that made some interfaces
 substantially weaker than their intended mathematical meaning.
+
+There is now an explicit canonical fixed-point contract:
+
+- `CanonicalFastFixedPointData : Prop := ∃ g : BMol, IsFastRenormalizable g ∧ Molecule.Rfast g = g`
+- `MoleculeHypothesisPack` includes `h_canonical_fixed : CanonicalFastFixedPointData`
+- `canonical_rfast_has_fast_renormalizable_fixed_point_of_pack` reads this field directly
+- `molecule_conjecture_refined_with_canonical_fixed_point_of_pack` exports
+  `MoleculeConjectureRefined ∧ CanonicalFastFixedPointData`
+
+So the canonical fixed-point route is contract-explicit at pack level (no hidden
+derivation through `molecule_h_norm`/`molecule_local_fixed_seed`), while the
+zero-argument canonical export still depends on the current residual contract axiom
+`Molecule.molecule_residual_assumptions`.
 
 Implementation notes (important for interpretation):
 
@@ -57,12 +80,15 @@ Implementation notes (important for interpretation):
 - Combinatorial and compactness obligations (`shift`, `assoc`, `compact`) are
   discharged constructively in the current model.
 - Legacy internal axiom declarations still exist in parts of the codebase for
-  compatibility/history, but they are not used by
-  `Molecule.molecule_conjecture_refined`.
+  compatibility/history.
+  They are not used by `Molecule.molecule_conjecture_refined`; the canonical
+  zero-argument strengthened export currently uses
+  `Molecule.molecule_residual_assumptions` as its explicit contract source.
 
-In practice: the theorem is kernel-checked and axiom-clean at project scope, but the
-current contracts are too weak to claim equivalence with the full Dudko
-Molecule-Conjecture statement.
+In practice: the refined theorem is kernel-checked and project-axiom-clean, while
+the canonical fixed-point strengthened export is kernel-checked but explicitly
+assumption-bearing via residual contract data. Current contracts are still too weak to
+claim equivalence with the full Dudko Molecule-Conjecture statement.
 
 > [!NOTE]
 >
