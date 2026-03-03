@@ -42,7 +42,7 @@ Last Updated: 2026-03-03
 | PLAN_39 | HMol compactness model alignment | DONE | [##########] 100% |
 | PLAN_40 | Analytic residual triple elimination | DONE | [##########] 100% |
 | PLAN_41 | Residual bounds elimination | DONE | [##########] 100% |
-| PLAN_42 | Post-axiom contract hardening | ACTIVE | [#####-----] 50% |
+| PLAN_42 | Post-axiom contract hardening | ACTIVE | [######----] 60% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 
 ## Dependency Map
@@ -58,6 +58,8 @@ Last Updated: 2026-03-03
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
+- `molecule_residual_bounds` has been rewired to a seed-free source path
+  (`molecule_residual_bounds_seed_free`) that no longer uses `molecule_h_data`.
 - No active STUCK plans in `plan/*.md` this pass.
 
 ## Current Critical Blockers

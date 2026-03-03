@@ -1033,12 +1033,19 @@ theorem canonical_fast_fixed_point_data_of_bounds
   rcases h_bounds with ⟨f_star, _U, h_fixed, h_renorm, _hU_open, _h_mem, _h_cv, _h_eventual⟩
   exact ⟨f_star, h_renorm, h_fixed⟩
 
-/-- Theorem-level projections from the residual assumption bundle. -/
-theorem molecule_residual_bounds : PseudoSiegelAPrioriBounds :=
-  problem_4_3_bounds_established_conjecture_localized
-    molecule_h_fixed_data
+/-- Seed-free bounds source: use the global Problem 4.3 route directly, without `molecule_h_data`. -/
+theorem molecule_residual_bounds_seed_free : PseudoSiegelAPrioriBounds :=
+  problem_4_3_bounds_established_conjecture
+    molecule_h_exists
+    molecule_h_conj
+    molecule_h_norm
     molecule_h_ps
     molecule_h_orbit
+    molecule_h_unique
+
+/-- Theorem-level projections from the residual assumption bundle. -/
+theorem molecule_residual_bounds : PseudoSiegelAPrioriBounds :=
+  molecule_residual_bounds_seed_free
 
 theorem canonical_fast_fixed_point_data_from_bounds :
     CanonicalFastFixedPointData :=
