@@ -414,6 +414,43 @@ theorem fixed_point_normalization_data_of_fixed_exists_and_transfer
   exact ⟨f_star, h_fixed, h_renorm, h_local.1, h_local.2⟩
 
 /--
+Subtarget B bridge: obtain fixed-point local normalization transfer from:
+- one normalized fast-renormalizable fixed point, and
+- uniqueness of fast-renormalizable fixed points.
+-/
+theorem fixed_point_local_normalization_transfer_of_fixed_data_and_unique
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_unique :
+      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
+    FixedPointLocalNormalizationTransfer := by
+  rcases h_fixed_data with ⟨f_star, h_fixed_star, h_renorm_star, h_crit_star, h_domain_star⟩
+  intro f h_fixed h_renorm
+  have h_eq : f = f_star := by
+    exact h_unique f f_star ⟨h_fixed, h_renorm⟩ ⟨h_fixed_star, h_renorm_star⟩
+  subst h_eq
+  exact ⟨h_crit_star, h_domain_star⟩
+
+/--
+Build bundled residual fixed-point-normalization ingredients from:
+- one normalized fast-renormalizable fixed point, and
+- uniqueness of fast-renormalizable fixed points.
+-/
+theorem residual_fixed_point_normalization_ingredients_of_fixed_data_and_unique
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_unique :
+      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
+    MoleculeResidualFixedPointNormalizationIngredients := by
+  rcases h_fixed_data with ⟨f_star, h_fixed_star, h_renorm_star, h_crit_star, h_domain_star⟩
+  let h_fixed_data' : FixedPointNormalizationData :=
+    ⟨f_star, h_fixed_star, h_renorm_star, h_crit_star, h_domain_star⟩
+  exact ⟨
+    ⟨f_star, h_renorm_star, h_fixed_star⟩,
+    fixed_point_local_normalization_transfer_of_fixed_data_and_unique h_fixed_data' h_unique
+  ⟩
+
+/--
 Build fixed-point normalization data from the bundled ingredient contract.
 -/
 theorem fixed_point_normalization_data_of_ingredients
