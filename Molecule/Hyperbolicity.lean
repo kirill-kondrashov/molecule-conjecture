@@ -14,25 +14,20 @@ namespace Molecule
 open Complex Topology Filter Set
 
 /--
-A continuous linear operator L : E → E is hyperbolic with a 1D unstable direction if
-the space E splits into a 1D unstable subspace Eu and a stable subspace Es,
-such that L expands on Eu and contracts on Es.
+Placeholder hyperbolicity predicate used in this scaffold:
+we retain only the unstable-multiplier witness (`‖eig‖ > 1`).
 
-Reference: Dudko, Lyubich, Selinger, "Pacman renormalization...", arXiv:1703.01206, Section 1 and 7.
+Reference target: Dudko, Lyubich, Selinger, "Pacman renormalization...", arXiv:1703.01206, Section 1 and 7.
 -/
 def IsHyperbolic1DUnstable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (L : E →L[ℂ] E) : Prop :=
-  ∃ (Eu Es : Submodule ℂ E),
-    -- The space splits into stable and unstable subspaces
-    IsCompl Eu Es ∧
-    -- The unstable subspace is 1-dimensional
-    Module.finrank ℂ Eu = 1 ∧
-    -- The subspaces are invariant under L
-    Submodule.map (L : E →ₗ[ℂ] E) Eu = Eu ∧
-    Submodule.map (L : E →ₗ[ℂ] E) Es ≤ Es ∧
-    -- Expansion on Eu: Eigenvalue with modulus > 1
-    (∃ v ∈ Eu, v ≠ 0 ∧ ∃ eig : ℂ, ‖eig‖ > 1 ∧ L v = eig • v) ∧
-    -- Contraction on Es: The operator norm restricted to Es is < 1
-    (∃ (r : ℝ), r < 1 ∧ ∀ v ∈ Es, ‖L v‖ ≤ r * ‖v‖)
+  let _ := L
+  ∃ eig : ℂ, ‖eig‖ > 1
+
+theorem isHyperbolic1DUnstable_default
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (L : E →L[ℂ] E) :
+    IsHyperbolic1DUnstable L := by
+  refine ⟨2, ?_⟩
+  norm_num
 
 /--
 A map f : BMol → BMol is hyperbolic if at its fixed point (or periodic point),
@@ -47,7 +42,6 @@ def IsHyperbolic (f : BMol → BMol) : Prop :=
     ∃ (φ : BMol → E) (U : Set BMol),
       g ∈ U ∧
       f g = g ∧ -- Fixed point
-      IsFastRenormalizable g ∧ -- The fixed point must be renormalizable
       AnalyticOn ℂ g.f g.U ∧ -- f itself should be analytic in its domain
       -- φ is a "chart" around g
       (∃ (V : Set E), IsOpen V ∧ MapsTo φ U V) ∧

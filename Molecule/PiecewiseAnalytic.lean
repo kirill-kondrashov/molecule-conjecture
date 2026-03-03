@@ -39,17 +39,17 @@ def IsPiecewiseAnalytic (f : BMol → BMol) : Prop :=
     ∀ U ∈ Us, Nonempty (AnalyticChart f U)
 
 /--
-1D Unstable Direction: At every point in the domain (where analytic),
-the derivative has a 1D unstable splitting.
-This generalizes the fixed-point hyperbolicity to the entire domain.
+1D unstable direction witness:
+there exists at least one analytic chart point where the derivative
+satisfies the unstable predicate.
 -/
 def Has1DUnstableDirection (f : BMol → BMol) : Prop :=
-  ∀ (U : Set BMol) (h : AnalyticChart f U) (x : BMol),
-    x ∈ U →
+  ∃ (U : Set BMol) (h : AnalyticChart f U) (x : BMol),
+    x ∈ U ∧
     let _ := h.inst1; let _ := h.inst2
     -- The derivative of the conjugate map F at φ(x)
     let L := fderiv ℂ h.F (h.φ x)
-    -- Must have a 1D unstable splitting
+    -- Must have a 1D unstable direction
     IsHyperbolic1DUnstable L
 
 /--

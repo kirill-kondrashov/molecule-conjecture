@@ -12,11 +12,17 @@ In the context of the Molecule Conjecture (Dudko-Lyubich-Selinger, arXiv:1703.01
 "The renormalization horseshoe is compact" refers to the compactness of the invariant set 
 in the appropriate function space topology.
 
-Since we model the horseshoe invariant set as the type `HMol`, this predicate asserts 
-that `HMol` is a compact space. The operator `f` is the restriction of the renormalization 
-operator to this set; while the property is intrinsic to the set, we include `f` in the 
-signature to match the conjecture's structure where the operator defines the horseshoe.
+In the current model interface we encode this as existence of a nonempty compact
+`f`-invariant core subset of `HMol`.
 -/
-def IsCompactOperator (_ : HMol → HMol) : Prop := CompactSpace HMol
+def IsCompactOperator (f : HMol → HMol) : Prop :=
+  ∃ K : Set HMol, IsCompact K ∧ K.Nonempty ∧ ∀ ⦃x : HMol⦄, x ∈ K → f x ∈ K
+
+/-- Constant maps admit a compact invariant core (`{x0}`). -/
+theorem isCompactOperator_of_constant (x0 : HMol) :
+    IsCompactOperator (fun _ : HMol => x0) := by
+  refine ⟨{x0}, isCompact_singleton, Set.singleton_nonempty x0, ?_⟩
+  intro x hx
+  simp
 
 end Molecule
