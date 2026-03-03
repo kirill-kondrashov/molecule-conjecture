@@ -736,6 +736,19 @@ theorem problem_4_3_bounds_established_conjecture_from_global_norm_and_transport
     h_transport.h_orbit
 
 /--
+Problem 4.3 route from local fixed-point normalization data plus packaged
+orbit-transport data.
+-/
+theorem problem_4_3_bounds_established_conjecture_from_fixed_data_and_transport
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_transport : MoleculeOrbitTransportData) :
+    PseudoSiegelAPrioriBounds :=
+  problem_4_3_bounds_established_conjecture_localized
+    h_fixed_data
+    h_transport.h_ps
+    h_transport.h_orbit
+
+/--
 **Problem 4.3**: Completion of bounds is required for the Molecule Conjecture.
 -/
 theorem problem_4_3_bounds_established_conjecture
@@ -1438,11 +1451,17 @@ theorem molecule_residual_fixed_exists :
     ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f :=
   renormalizable_fixed_exists_of_global_norm molecule_h_norm
 
-/-- Seed-free bounds source: use the global Problem 4.3 route directly, without `molecule_h_data`. -/
-theorem molecule_residual_bounds_seed_free : PseudoSiegelAPrioriBounds :=
-  problem_4_3_bounds_established_conjecture_from_global_norm_and_transport
-    molecule_h_norm
+/-- Residual bounds source routed through local fixed-point normalization data. -/
+theorem molecule_residual_bounds_from_fixed_data
+    (h_fixed_data : FixedPointNormalizationData) :
+    PseudoSiegelAPrioriBounds :=
+  problem_4_3_bounds_established_conjecture_from_fixed_data_and_transport
+    h_fixed_data
     molecule_orbit_transport_data
+
+/-- Seed-free bounds source: avoid the legacy `molecule_h_data` bundle. -/
+theorem molecule_residual_bounds_seed_free : PseudoSiegelAPrioriBounds :=
+  molecule_residual_bounds_from_fixed_data molecule_h_fixed_data
 
 /-- Theorem-level projections from the residual assumption bundle. -/
 theorem molecule_residual_bounds : PseudoSiegelAPrioriBounds :=

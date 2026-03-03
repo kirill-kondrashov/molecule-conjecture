@@ -45,7 +45,7 @@ Last Updated: 2026-03-03
 | PLAN_42 | Post-axiom contract hardening | ACTIVE | [#########-] 90% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_44 | Constructive slice witness refactor | STUCK | [#########-] 90% |
-| PLAN_45 | Local fixed-point normalization source | ACTIVE | [#---------] 10% |
+| PLAN_45 | Local fixed-point normalization source | ACTIVE | [######----] 60% |
 
 ## Dependency Map
 
@@ -97,6 +97,13 @@ Last Updated: 2026-03-03
   (no direct dependency on `molecule_h_data`).
 - Active STUCK plan:
   - `PLAN_44_constructive_slice_witness_refactor.md` (replaced by PLAN_45).
+- `PLAN_45` progress:
+  - Added local bounds seam
+    `problem_4_3_bounds_established_conjecture_from_fixed_data_and_transport`.
+  - Rewired `molecule_residual_bounds_seed_free` through
+    `molecule_residual_bounds_from_fixed_data` using `molecule_h_fixed_data`.
+  - Verification rerun completed (`make build`, `make check`, `#print axioms`);
+    frontier unchanged: `molecule_h_norm` is still the residual blocker.
 
 ## Current Critical Blockers
 
