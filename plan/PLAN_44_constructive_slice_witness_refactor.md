@@ -47,6 +47,9 @@ Last Updated: 2026-03-03
   - `MoleculeOrbitTransportData`
   - `problem_4_3_bounds_established_conjecture_from_global_norm_and_transport`
   and route `molecule_residual_bounds_seed_free` through it.
+- [x] Add refined normalized zero-arg seam from global normalization:
+  - `invariant_slice_data_with_normalization_with_refined_of_global_norm`
+  - `molecule_h_data_refined_seed_free`
 - [ ] Redesign slice chart/model contract so chart preimage sets can be finite/nontrivial
   without collapsing to `univ`/`∅` on the main theorem path.
 - [ ] Rebuild a constructive `h_exists` witness theorem in `Molecule/Conjecture.lean`.

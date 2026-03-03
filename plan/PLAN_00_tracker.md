@@ -70,7 +70,9 @@ Last Updated: 2026-03-03
   (`HasInvariantSliceDataWith`, `has_invariant_slice_data_with_refined`,
   `has_invariant_slice_data_with_refined_default`,
   `InvariantSliceDataWithNormalizationWith`,
-  `invariant_slice_data_with_normalization_with_refined_of_local`), plus
+  `invariant_slice_data_with_normalization_with_refined_of_local`,
+  `invariant_slice_data_with_normalization_with_refined_of_global_norm`,
+  `molecule_h_data_refined_seed_free`), plus
   global-to-local normalization bridges
   (`normalization_at_point_of_global`,
   `fixed_point_normalization_data_of_fixed_exists_and_global_norm`) and a

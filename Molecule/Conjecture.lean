@@ -247,6 +247,28 @@ theorem invariant_slice_data_with_normalization_with_refined_of_local
   · simp [K]
 
 /--
+Constructive refined-chart normalized witness from global normalization alone.
+-/
+theorem invariant_slice_data_with_normalization_with_refined_of_global_norm
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1)) :
+    InvariantSliceDataWithNormalizationWith slice_chart_refined slice_operator := by
+  let f_ref : BMol := defaultBMol
+  have h_singleton := h_norm ({f_ref} : Set BMol)
+  have h_renorm_ref : IsFastRenormalizable f_ref := by
+    exact h_singleton.1 f_ref (by simp)
+  have h_local : criticalValue f_ref = 0 ∧ f_ref.V ⊆ Metric.ball 0 0.1 := by
+    exact ⟨h_singleton.2.1 f_ref (by simp), h_singleton.2.2 f_ref (by simp)⟩
+  exact invariant_slice_data_with_normalization_with_refined_of_local
+    f_ref
+    h_renorm_ref
+    h_local.1
+    h_local.2
+
+/--
 With the current scaffold (`slice_chart` is constant), any witness of
 `HasInvariantSliceData` forces the entire `BMol` space to be finite.
 This is a structural obstruction for constructive witness extraction.
@@ -1301,6 +1323,10 @@ theorem molecule_h_unique :
 
 theorem molecule_h_data : InvariantSliceDataWithNormalization :=
   invariant_slice_data_with_normalization_of_global molecule_h_exists molecule_h_norm
+
+theorem molecule_h_data_refined_seed_free :
+    InvariantSliceDataWithNormalizationWith slice_chart_refined slice_operator :=
+  invariant_slice_data_with_normalization_with_refined_of_global_norm molecule_h_norm
 
 /--
 Localized fixed-point data witness used by the packed top-theorem route.
