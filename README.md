@@ -32,13 +32,14 @@ The main formal statement is `Molecule.molecule_conjecture_refined` in `Molecule
 - `CombinatoriallyAssociated Rfast_HMol R_target`
 - `∃ N, IsConjugateToShift R_target N`
 
-The analytic/dynamical assumptions (existence of the slice data, a priori bounds, renormalization orbit control, spectral gap, piecewise analyticity, combinatorial conjugacy, compactness, and uniqueness of renormalizable fixed points) are represented as internal declarations in `Molecule/Conjecture.lean` (`molecule_h_*`), with ongoing conversion from axioms to theorems.
+The remaining analytic/dynamical assumptions are currently concentrated in a single internal bundle `MoleculeResidualAssumptions` in `Molecule/Conjecture.lean`, exposed by theorem-level projections (`molecule_residual_*`) and routed into the zero-argument export theorem.
 
 Implementation notes:
 
 - `SliceSpace` is currently instantiated as `ℂ`.
 - `slice_chart` and `slice_operator` are currently placeholder constant maps, so the Banach slice is a stubbed model.
 - The top-level theorem remains a formal statement whose analytic and dynamical inputs are carried by internal hypothesis constants.
+- Combinatorial and compactness interfaces were realigned to constructive factor-style contracts in the current placeholder model; theorem-level witnesses now discharge `shift`, `assoc`, and `compact` obligations without residual axioms.
 
 In practice, this means `Molecule.molecule_conjecture_refined` remains conditional at the foundational level: it does not derive the analytic/dynamical ingredients internally, but depends on explicit internal hypothesis constants. Intuitively, the file assembles a rigorous dependency graph: if the analytic estimates and dynamical controls from the literature are supplied, the rest of the logical pipeline is fully formal and checked by Lean.
 
@@ -63,5 +64,5 @@ All axioms used:
 - propext
 - Quot.sound
 - Classical.choice
-- Molecule.molecule_h_norm
+- Molecule.molecule_residual_assumptions
 ```

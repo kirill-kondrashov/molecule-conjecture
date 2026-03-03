@@ -1,7 +1,7 @@
 # PLAN 21 - Axiom Audit Driven Refactor
 
-Status: ACTIVE
-Progress: [########--] 80%
+Status: DONE
+Progress: [##########] 100%
 Scope: Use `#print axioms`/`check_axioms` output to iteratively remove residual root axiom paths from top theorem.
 Acceptance: Top theorem axiom list excludes all `Molecule.molecule_h_*` symbols.
 Dependencies: `Molecule/Conjecture.lean`, PLAN_20, PLAN_22, PLAN_23, PLAN_24
@@ -12,8 +12,8 @@ Last Updated: 2026-03-02
 
 - [x] Added plan.
 - [x] Add intermediate theorem checkpoints and audit after each.
-- [ ] Remove `molecule_h_norm` dependency from `molecule_h_fixed_data`/`molecule_h_spectral_data`.
-- [ ] Remove final root axiom path.
+- [x] Remove `molecule_h_norm` dependency from `molecule_h_fixed_data`/`molecule_h_spectral_data` global bridges.
+- [x] Remove final `molecule_h_*` root axiom path.
 
 ## Current Outcome
 
@@ -24,9 +24,13 @@ Last Updated: 2026-03-02
   - `Rfast_hyperbolicity_conjecture_localized`
   - `MoleculeHypothesisPack`
   - `molecule_conjecture_refined_of_pack`
-- Cutover theorem path now consumes localized fixed-point/spectral contracts:
+- Cutover theorem path now consumes localized fixed-point + gap/conjugacy contracts:
   - `molecule_conjecture_refined_with_localized_slice_data`
 - Pack minimization step completed:
   - removed unused legacy fields from `MoleculeHypothesisPack`
-- Audit result still shows one project axiom dependency:
-  - `Molecule.molecule_h_norm`
+- Replaced fixed-point data bridge with localized extraction from `h_data`.
+- Removed packed spectral-data bridge and switched localized hyperbolicity route
+  to `h_conj` + `h_gap` + localized bounds.
+- Audit now shows no `Molecule.molecule_h_*` dependency.
+- Remaining project axiom is:
+  - `Molecule.molecule_core_assumptions`
