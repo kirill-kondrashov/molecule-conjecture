@@ -1,7 +1,7 @@
 # PLAN 61 - Upstream Hybrid-Class Uniqueness Source Replacement
 
-Status: ACTIVE
-Progress: [######----] 60%
+Status: STUCK (ARCHIVED)
+Progress: [##########] 100%
 Scope: Replace `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct` with a non-`molecule_h_norm` theorem-level source produced upstream, then cut that source through the model-collapse/model-source path.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct` does not include `Molecule.molecule_h_norm`.
@@ -72,3 +72,10 @@ Last Updated: 2026-03-04
 - New direct-source/model-collapse seam-conversion theorems above are axiom-clean
   modulo ground axioms; this confirms that replacing either seam input is
   equivalent at the theorem level.
+- Final stuck check (2026-03-04):
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_iff_uniqueness_source_of_bounds`
+    is axiom-clean and shows the direct source seam is equivalent (under active
+    bounds) to map-level uniqueness.
+  - Current zero-arg direct/model-collapse/hybrid-unique wrappers remain
+    `Molecule.molecule_h_norm`-backed.
+  These satisfy the PLAN_61 stuck rule and hand off to PLAN_62.

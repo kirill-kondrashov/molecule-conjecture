@@ -1,0 +1,35 @@
+# PLAN 62 - Upstream Map-Uniqueness Source Replacement
+
+Status: ACTIVE
+Progress: [#---------] 10%
+Scope: Replace `molecule_residual_fixed_point_uniqueness_source_direct` with a non-`molecule_h_norm` theorem-level constructor from upstream fixed-point tracks, then feed that constructor into PLAN_61 replacement seams.
+Acceptance:
+1. `#print axioms Molecule.molecule_residual_fixed_point_uniqueness_source_direct` does not include `Molecule.molecule_h_norm`.
+2. `#print axioms Molecule.molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct` does not include `Molecule.molecule_h_norm`.
+3. `#print axioms Molecule.molecule_residual_hybrid_unique_fixed_point_source` does not include `Molecule.molecule_h_norm` through uniqueness.
+4. `make build`, `make check`, and targeted probe matrix pass.
+Dependencies: `Molecule/Conjecture.lean`, `Molecule/FixedPointExistence.lean`, `Molecule/RenormalizationFixedPointUniqueness.lean`, `plan/PLAN_47_h_norm_elimination_constructive_source_rebuild.md`, `plan/PLAN_49_fixed_point_source_constructive_route.md`, `plan/PLAN_53_fixed_point_model_bottleneck_refactor.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_61_upstream_hybrid_class_uniqueness_source_replacement.md`
+Stuck Rule: STUCK if every candidate constructor for `molecule_residual_fixed_point_uniqueness_source_direct` is equivalent (under active bounds/current contracts) to existing `molecule_h_norm`-backed routes with no contract-preserving refactor path.
+Last Updated: 2026-03-04
+
+## Work Plan
+
+- [x] Record PLAN_61 handoff obstruction:
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_iff_uniqueness_source_of_bounds`.
+- [x] Confirm direct/model-collapse seam layer is ready to consume a replacement map-level uniqueness theorem.
+- [ ] Identify the first concrete upstream constructor candidate for
+  `MoleculeResidualFixedPointUniquenessSource` from PLAN_49/53 assets.
+- [ ] Introduce a dedicated replacement seam for
+  `molecule_residual_fixed_point_uniqueness_source_direct`.
+- [ ] Prove/export one non-`molecule_h_norm` theorem into that seam.
+- [ ] Rewire through PLAN_61 seams:
+  - `molecule_residual_fixed_point_uniqueness_source_direct`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source`
+  - `molecule_residual_hybrid_unique_fixed_point_source`.
+- [ ] Re-run probes and sync PLAN_47/49/53 integration notes.
+
+## Notes
+
+- PLAN_61 is archived as STUCK: direct-source seam is now fully isolated but remains equivalent to map-level uniqueness under active bounds.
+- This successor moves replacement upstream to the map-level uniqueness direct source, which is now the minimal non-ground replacement point for the active zero-arg route.
