@@ -1,7 +1,7 @@
 # PLAN 60 - Hybrid-Class Model Refactor Route
 
 Status: ACTIVE
-Progress: [#########-] 95%
+Progress: [#########-] 96%
 Scope: Break the current identity-model bottleneck (`HybridClass := BMol`) so the hybrid-level unique-fixed-point source can be constructed from a genuinely hybrid-level source, not by recycling map-level uniqueness.
 Acceptance:
 1. Export a nontrivial hybrid-class abstraction seam (or quotient interface) that does not force `toHybridClass f = toHybridClass g ↔ f = g` in the active route.
@@ -64,6 +64,9 @@ Last Updated: 2026-03-04
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_hybrid_unique_fixed_point_source`
   - `molecule_residual_lifted_hybrid_fixed_point_collapse_source_of_uniqueness_source`
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_uniqueness_source`.
+- [x] Add lifted-seam model-source constructors from hybrid-class uniqueness:
+  - `molecule_residual_lifted_hybrid_fixed_point_collapse_source_of_hybrid_class_uniqueness_source`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_hybrid_class_uniqueness_source`.
 - [x] Introduce and route through explicit assembly-source pack:
   - `MoleculeResidualHybridClassFixedPointUniquenessAssemblySources`
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_assembly_sources`
@@ -133,3 +136,5 @@ Last Updated: 2026-03-04
 - Targeted probes confirm the new alternative lifted-seam constructors from
   hybrid-unique and uniqueness-source assumptions are also axiom-clean modulo
   ground axioms.
+- Targeted probes confirm the new lifted-seam constructors from hybrid-class
+  uniqueness are axiom-clean modulo ground axioms.

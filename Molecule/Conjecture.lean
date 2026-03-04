@@ -2584,6 +2584,19 @@ theorem molecule_residual_lifted_hybrid_fixed_point_collapse_source_of_hybrid_un
       h_hybrid_unique)
 
 /--
+Project lifted-seam collapse source from hybrid-class fixed-point uniqueness.
+-/
+theorem molecule_residual_lifted_hybrid_fixed_point_collapse_source_of_hybrid_class_uniqueness_source
+    (h_class_unique : MoleculeResidualHybridClassFixedPointUniquenessSource) :
+    MoleculeResidualLiftedHybridFixedPointCollapseSource := by
+  intro f1 f2 h_fix1 h_renorm1 h_fix2 h_renorm2
+  apply Subtype.ext
+  exact
+    h_class_unique (toHybridClass f1) (toHybridClass f2)
+      ⟨h_renorm1, by simpa [R_hybrid, toHybridClass] using h_fix1⟩
+      ⟨h_renorm2, by simpa [R_hybrid, toHybridClass] using h_fix2⟩
+
+/--
 Build hybrid-class-uniqueness model sources from a hybrid unique-fixed-point
 source via the lifted seam.
 -/
@@ -2593,6 +2606,18 @@ def molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_hybri
   molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_lifted_sources
     (molecule_residual_lifted_hybrid_fixed_point_collapse_source_of_hybrid_unique_fixed_point_source
       h_hybrid_unique)
+    molecule_residual_lifted_hybrid_class_fixed_point_lift_source
+
+/--
+Build hybrid-class-uniqueness model sources from a hybrid-class-uniqueness
+source via the lifted seam.
+-/
+def molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_hybrid_class_uniqueness_source
+    (h_class_unique : MoleculeResidualHybridClassFixedPointUniquenessSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessModelSources :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_lifted_sources
+    (molecule_residual_lifted_hybrid_fixed_point_collapse_source_of_hybrid_class_uniqueness_source
+      h_class_unique)
     molecule_residual_lifted_hybrid_class_fixed_point_lift_source
 
 /--
