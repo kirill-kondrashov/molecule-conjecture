@@ -1,12 +1,12 @@
 # PLAN 46 - Seed-Free Ingredient Constructor
 
-Status: ACTIVE
+Status: STUCK (ARCHIVED 2026-03-04)
 Progress: [#########-] 98%
 Scope: Replace the body of `molecule_residual_non_ground_sources` (currently the bundled non-ground source pack) with a seed-free theorem-level construction, so the zero-arg bounds route no longer depends on `molecule_h_norm`.
 Acceptance: `#print axioms Molecule.molecule_residual_non_ground_sources` does not include `Molecule.molecule_h_norm`, and this removal propagates to `molecule_residual_bounds_seed_free` and `molecule_conjecture_refined`.
 Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/HyperbolicityTheorems.lean`, `plan/PLAN_45_local_fixed_point_normalization_source.md`
 Stuck Rule: STUCK if both ingredient subtargets below require reintroducing a project axiom or force weakening exported theorem signatures.
-Last Updated: 2026-03-03
+Last Updated: 2026-03-04
 
 ## Goal Decomposition
 

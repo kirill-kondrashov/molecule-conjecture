@@ -1812,6 +1812,40 @@ theorem molecule_residual_non_ground_sources :
   fixedUniqueness := molecule_residual_fixed_point_uniqueness_source
   orbitClause := molecule_residual_orbit_clause_source
 
+/--
+Narrowed source package needed for the residual bounds assembly:
+- fixed-point normalization ingredients, and
+- orbit clause transport source.
+-/
+structure MoleculeResidualBoundsAssemblySources where
+  ingredients : MoleculeResidualFixedPointNormalizationIngredients
+  orbitClause : MoleculeResidualOrbitClauseSource
+
+/--
+Build narrowed residual bounds-assembly sources from the broader non-ground
+source pack.
+-/
+theorem molecule_residual_bounds_assembly_sources_of_non_ground_sources
+    (h_sources : MoleculeResidualNonGroundSources) :
+    MoleculeResidualBoundsAssemblySources := by
+  have h_transfer : MoleculeResidualFixedPointTransferSource :=
+    molecule_residual_fixed_point_transfer_source_of_fixed_data_and_unique
+      h_sources.fixedData
+      h_sources.fixedUniqueness
+  have h_ingredients : MoleculeResidualFixedPointNormalizationIngredients :=
+    molecule_residual_fixed_point_normalization_ingredients_of_sources
+      (renormalizable_fixed_exists_of_fixed_point_normalization_data h_sources.fixedData)
+      h_transfer
+  exact ⟨h_ingredients, h_sources.orbitClause⟩
+
+/--
+Current narrowed residual bounds-assembly source pack.
+-/
+theorem molecule_residual_bounds_assembly_sources :
+    MoleculeResidualBoundsAssemblySources :=
+  molecule_residual_bounds_assembly_sources_of_non_ground_sources
+    molecule_residual_non_ground_sources
+
 /-- Legacy fixed-point existence packaged for narrowed bounds interfaces. -/
 theorem molecule_residual_fixed_exists :
     ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f :=
@@ -1826,21 +1860,13 @@ theorem molecule_residual_bounds_from_fixed_data
     molecule_residual_orbit_transport_source
 
 /--
-Residual bounds constructor from bundled non-ground source inputs.
+Residual bounds constructor from narrowed bounds-assembly source inputs.
 -/
-theorem molecule_residual_bounds_seed_free_of_non_ground_sources
-    (h_sources : MoleculeResidualNonGroundSources) :
+theorem molecule_residual_bounds_seed_free_of_bounds_assembly_sources
+    (h_sources : MoleculeResidualBoundsAssemblySources) :
     PseudoSiegelAPrioriBounds := by
-  have h_transfer : MoleculeResidualFixedPointTransferSource :=
-    molecule_residual_fixed_point_transfer_source_of_fixed_data_and_unique
-      h_sources.fixedData
-      h_sources.fixedUniqueness
-  have h_ingredients : MoleculeResidualFixedPointNormalizationIngredients :=
-    molecule_residual_fixed_point_normalization_ingredients_of_sources
-      (renormalizable_fixed_exists_of_fixed_point_normalization_data h_sources.fixedData)
-      h_transfer
   have h_fixed_data : MoleculeResidualFixedPointNormalizationSource :=
-    molecule_residual_fixed_point_normalization_source_of_ingredients h_ingredients
+    molecule_residual_fixed_point_normalization_source_of_ingredients h_sources.ingredients
   have h_transport : MoleculeResidualOrbitTransportSource :=
     molecule_residual_orbit_transport_source_of_sources
       molecule_residual_pseudo_siegel_source
@@ -1849,10 +1875,19 @@ theorem molecule_residual_bounds_seed_free_of_non_ground_sources
     h_fixed_data
     h_transport
 
+/--
+Residual bounds constructor from bundled non-ground source inputs.
+-/
+theorem molecule_residual_bounds_seed_free_of_non_ground_sources
+    (h_sources : MoleculeResidualNonGroundSources) :
+    PseudoSiegelAPrioriBounds :=
+  molecule_residual_bounds_seed_free_of_bounds_assembly_sources
+    (molecule_residual_bounds_assembly_sources_of_non_ground_sources h_sources)
+
 /-- Seed-free bounds source: avoid the legacy `molecule_h_data` bundle. -/
 theorem molecule_residual_bounds_seed_free : PseudoSiegelAPrioriBounds :=
-  molecule_residual_bounds_seed_free_of_non_ground_sources
-    molecule_residual_non_ground_sources
+  molecule_residual_bounds_seed_free_of_bounds_assembly_sources
+    molecule_residual_bounds_assembly_sources
 
 /-- Theorem-level projections from the residual assumption bundle. -/
 theorem molecule_residual_bounds : PseudoSiegelAPrioriBounds :=

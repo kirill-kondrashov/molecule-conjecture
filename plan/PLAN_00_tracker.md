@@ -1,10 +1,10 @@
 # PLAN 00 - Molecule Hypothesis Elimination Tracker
 
 Status: ACTIVE
-Progress: [#########-] 90%
+Progress: [#########-] 92%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_45, PLAN_46
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_45, PLAN_47, PLAN_48
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-03
 
@@ -45,12 +45,13 @@ Last Updated: 2026-03-03
 | PLAN_42 | Post-axiom contract hardening | ACTIVE | [#########-] 90% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_45 | Local fixed-point normalization source | ACTIVE | [#########-] 97% |
-| PLAN_46 | Seed-free ingredient constructor | ACTIVE | [#########-] 98% |
+| PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [###-------] 30% |
+| PLAN_48 | Constructive orbit-clause route | ACTIVE | [#---------] 10% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_46 (ingredient cutover), then PLAN_45 wrap-up, then PLAN_43.
+- Current queue is PLAN_47 (constructive source rebuild) + PLAN_48 (orbit clause track), then PLAN_45 wrap-up, then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -114,44 +115,27 @@ Last Updated: 2026-03-03
     `molecule_residual_fixed_point_normalization_ingredients`.
   - Verification rerun completed (`make build`, `make check`, `#print axioms`);
     frontier unchanged: `molecule_h_norm` is still the residual blocker.
-- `PLAN_46` opened to replace the body of
-  `molecule_residual_fixed_point_normalization_ingredients` with a seed-free
-  construction using existing theorem infrastructure.
-- `PLAN_46` progress:
-  - Split ingredient seam into two explicit theorem targets:
-    `molecule_residual_fixed_point_existence_source` and
-    `molecule_residual_fixed_point_transfer_source`.
-  - Added assumption-level Subtarget A bridges:
-    `residual_fixed_point_existence_of_canonical_fast_fixed_point_data` and
-    `residual_fixed_point_existence_of_refined_contract`.
-  - Added generic Subtarget B bridge skeleton:
-    `fixed_point_local_normalization_transfer_of_fixed_data_and_unique` and
-    `residual_fixed_point_normalization_ingredients_of_fixed_data_and_unique`.
-  - Added assumption-level ingredient constructors:
-    `residual_fixed_point_normalization_ingredients_of_canonical_and_transfer`
-    and `..._of_refined_and_transfer`.
-  - Added assumption-level combined A+B constructor:
-    `residual_fixed_point_normalization_ingredients_of_refined_fixed_data_and_unique`.
-  - Rewired zero-arg ingredient assembly through fixed-data/uniqueness bridges
-    (with `molecule_h_fixed_data_direct` as current seed).
-  - Isolated residual orbit-transport dependency behind
-    `molecule_residual_orbit_transport_source`, now used by
-    `molecule_residual_bounds_from_fixed_data`.
-  - Split orbit-transport source into explicit pseudo-Siegel and orbit-clause
-    sub-sources via `molecule_residual_orbit_transport_source_of_sources`.
-  - Split fixed-point ingredient seam with explicit uniqueness source
-    (`MoleculeResidualFixedPointUniquenessSource`) and source-level composition
-    wrappers.
-  - Added explicit fixed-point-data source seam
-    (`MoleculeResidualFixedPointDataSource`) and routed residual existence/
-    transfer sources through it.
-  - Routed final zero-arg bounds assembly through bundled non-ground source
-    pack `MoleculeResidualNonGroundSources`; `molecule_h_norm` now enters this
-    route through that single pack theorem.
-  - Bundled remaining non-ground residual inputs as
-    `MoleculeResidualNonGroundSources` and routed
-    `molecule_residual_bounds_seed_free` through
-    `molecule_residual_bounds_seed_free_of_non_ground_sources`.
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_46_seed_free_ingredient_constructor.md`
+    (superseded by PLAN_47).
+- `PLAN_47` progress:
+  - Introduced narrowed residual bounds-assembly source pack in
+    `Molecule/Conjecture.lean`:
+    `MoleculeResidualBoundsAssemblySources`.
+  - Added bridge theorem:
+    `molecule_residual_bounds_assembly_sources_of_non_ground_sources`.
+  - Added current narrowed source constructor:
+    `molecule_residual_bounds_assembly_sources`.
+  - Rewired `molecule_residual_bounds_seed_free` through
+    `molecule_residual_bounds_seed_free_of_bounds_assembly_sources`.
+  - Targeted axiom probe confirms:
+    `molecule_residual_bounds_seed_free_of_bounds_assembly_sources` and
+    `molecule_residual_bounds_seed_free_of_non_ground_sources` are axiom-clean
+    modulo ground axioms; only
+    `molecule_residual_non_ground_sources` still carries `molecule_h_norm`.
+  - Residual blocker remains concentrated in constructive replacement of:
+    - ingredient source route, and
+    - orbit-clause source route.
 
 ## Current Critical Blockers
 
