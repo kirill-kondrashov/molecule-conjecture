@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 99%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_70
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_71
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-04
 
@@ -49,12 +49,12 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_70 | Non-h_norm model-collapse-direct source witness | ACTIVE | [#######---] 75% |
+| PLAN_71 | Non-h_norm hybrid-class-collapse source witness | ACTIVE | [#######---] 75% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_70 (model-collapse-direct source witness), then PLAN_43.
+- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_71 (hybrid-class-collapse source witness), then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -178,6 +178,9 @@ Last Updated: 2026-03-04
 - Archived STUCK plan:
   - `ARCHIVE_stuck_2026-03-04_PLAN_69_non_h_norm_direct_source_witness_breakout.md`
     (superseded by PLAN_70 non-h_norm model-collapse-direct source witness).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_70_non_h_norm_model_collapse_direct_source_witness.md`
+    (superseded by PLAN_71 non-h_norm hybrid-class-collapse source witness).
 - `PLAN_47` progress:
   - Introduced narrowed residual bounds-assembly source pack in
     `Molecule/Conjecture.lean`:
@@ -807,25 +810,32 @@ Last Updated: 2026-03-04
   - Final stuck check:
     breakout cutover stayed `Molecule.molecule_h_norm`-backed through
     `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source`.
-- `PLAN_70` progress:
-  - Opened successor model-collapse-direct source witness track after archiving
-    PLAN_69 as STUCK.
-  - Active target is now upstream replacement of
-    `MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource`
-    without `molecule_h_norm`, then breakout cutover.
+- `PLAN_70` final archived progress:
   - Introduced minimal upstream interface:
     `MoleculeResidualModelCollapseDirectSourceWitnessSources`.
-  - Added witness/interface equivalence layer:
-    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_of_model_collapse_direct_witness_sources`,
-    `molecule_residual_model_collapse_direct_witness_sources_of_model_collapse_direct_source`,
-    `molecule_residual_model_collapse_direct_witness_sources_iff_model_collapse_direct_source`.
-  - Routed breakout-source construction through the new interface:
-    `molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct_witness_sources`,
-    `molecule_residual_direct_source_breakout_sources_via_model_collapse_direct_witness_sources`,
-    `molecule_residual_direct_source_breakout_sources`.
+  - Added witness/interface decomposition and equivalence layer, plus breakout
+    routing through that interface.
+  - Expanded candidate inventory with current-route aliases via uniqueness,
+    hybrid-unique, hybrid-class-uniqueness, and fixed-point-hybrid-class-collapse
+    sources.
+  - Final stuck check:
+    interface-level decomposition is ground-axiom-only, but every current
+    zero-arg candidate witness route remains `Molecule.molecule_h_norm`-backed.
+- `PLAN_71` progress:
+  - Opened successor hybrid-class-collapse source witness track after archiving
+    PLAN_70 as STUCK.
+  - Active target is now upstream replacement of
+    `MoleculeResidualFixedPointHybridClassCollapseSource` without
+    `molecule_h_norm`.
+  - Introduced minimal upstream interface:
+    `MoleculeResidualHybridClassCollapseSourceWitnessSources`.
+  - Added interface decomposition/equivalence layer and bridges into PLAN_70/69
+    witness routes.
+  - Added current-route PLAN_71 witness aliases and routed breakout sources
+    through them.
   - Probe checkpoint:
-    interface-level theorems are ground-axiom-only; current zero-arg interface
-    witness remains `Molecule.molecule_h_norm`-backed.
+    interface-level declarations are ground-axiom-only, while current zero-arg
+    PLAN_71 witness route remains `Molecule.molecule_h_norm`-backed.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

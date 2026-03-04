@@ -4821,6 +4821,184 @@ theorem molecule_residual_model_collapse_direct_witness_sources_iff_model_collap
         h_model_collapse_direct
 
 /--
+Assemble PLAN_70 witness sources from model-collapse source data.
+-/
+theorem molecule_residual_model_collapse_direct_witness_sources_of_model_collapse_source
+    (h_model_collapse :
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource) :
+    MoleculeResidualModelCollapseDirectSourceWitnessSources :=
+  ⟨h_model_collapse⟩
+
+/--
+PLAN_70 witness-source interface is equivalent to model-collapse source data.
+-/
+theorem molecule_residual_model_collapse_direct_witness_sources_iff_model_collapse_source :
+    MoleculeResidualModelCollapseDirectSourceWitnessSources ↔
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource := by
+  constructor
+  · intro h_sources
+    exact h_sources.liftedHybridCollapse
+  · intro h_model_collapse
+    exact
+      molecule_residual_model_collapse_direct_witness_sources_of_model_collapse_source
+        h_model_collapse
+
+/--
+Assemble PLAN_70 witness sources from map-level uniqueness source data.
+-/
+theorem molecule_residual_model_collapse_direct_witness_sources_of_uniqueness_source
+    (h_unique : MoleculeResidualFixedPointUniquenessSource) :
+    MoleculeResidualModelCollapseDirectSourceWitnessSources :=
+  ⟨molecule_residual_lifted_hybrid_fixed_point_collapse_source_of_uniqueness_source h_unique⟩
+
+/--
+Assemble PLAN_70 witness sources from hybrid-unique fixed-point source data.
+-/
+theorem molecule_residual_model_collapse_direct_witness_sources_of_hybrid_unique_fixed_point_source
+    (h_hybrid_unique : MoleculeResidualHybridUniqueFixedPointSource) :
+    MoleculeResidualModelCollapseDirectSourceWitnessSources :=
+  ⟨molecule_residual_lifted_hybrid_fixed_point_collapse_source_of_hybrid_unique_fixed_point_source
+      h_hybrid_unique⟩
+
+/--
+Assemble PLAN_70 witness sources from hybrid-class-uniqueness source data.
+-/
+theorem molecule_residual_model_collapse_direct_witness_sources_of_hybrid_class_uniqueness_source
+    (h_class_unique : MoleculeResidualHybridClassFixedPointUniquenessSource) :
+    MoleculeResidualModelCollapseDirectSourceWitnessSources :=
+  ⟨molecule_residual_lifted_hybrid_fixed_point_collapse_source_of_hybrid_class_uniqueness_source
+      h_class_unique⟩
+
+/--
+Assemble PLAN_70 witness sources from fixed-point hybrid-class collapse source
+data.
+-/
+theorem molecule_residual_model_collapse_direct_witness_sources_of_fixed_point_hybrid_class_collapse_source
+    (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
+    MoleculeResidualModelCollapseDirectSourceWitnessSources :=
+  ⟨molecule_residual_lifted_hybrid_fixed_point_collapse_source_of_hybrid_class_collapse_source
+      h_collapse⟩
+
+/--
+Minimal upstream source interface for PLAN_71:
+explicit witness of the map-level hybrid-class-collapse seam.
+-/
+structure MoleculeResidualHybridClassCollapseSourceWitnessSources : Prop where
+  collapse : MoleculeResidualFixedPointHybridClassCollapseSource
+
+/--
+Project map-level hybrid-class-collapse source from PLAN_71 witness sources.
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_source_of_hybrid_class_collapse_witness_sources
+    (h_sources : MoleculeResidualHybridClassCollapseSourceWitnessSources) :
+    MoleculeResidualFixedPointHybridClassCollapseSource :=
+  h_sources.collapse
+
+/--
+Assemble PLAN_71 witness sources from map-level hybrid-class-collapse source
+data.
+-/
+theorem molecule_residual_hybrid_class_collapse_witness_sources_of_fixed_point_hybrid_class_collapse_source
+    (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
+    MoleculeResidualHybridClassCollapseSourceWitnessSources :=
+  ⟨h_collapse⟩
+
+/--
+PLAN_71 witness-source interface is equivalent to map-level hybrid-class-collapse
+source data.
+-/
+theorem molecule_residual_hybrid_class_collapse_witness_sources_iff_fixed_point_hybrid_class_collapse_source :
+    MoleculeResidualHybridClassCollapseSourceWitnessSources ↔
+      MoleculeResidualFixedPointHybridClassCollapseSource := by
+  constructor
+  · intro h_sources
+    exact h_sources.collapse
+  · intro h_collapse
+    exact
+      molecule_residual_hybrid_class_collapse_witness_sources_of_fixed_point_hybrid_class_collapse_source
+        h_collapse
+
+/--
+Build PLAN_70 model-collapse-direct witness sources from PLAN_71 witness
+sources.
+-/
+theorem molecule_residual_model_collapse_direct_witness_sources_of_hybrid_class_collapse_witness_sources
+    (h_sources : MoleculeResidualHybridClassCollapseSourceWitnessSources) :
+    MoleculeResidualModelCollapseDirectSourceWitnessSources :=
+  molecule_residual_model_collapse_direct_witness_sources_of_fixed_point_hybrid_class_collapse_source
+    h_sources.collapse
+
+/--
+Build PLAN_69 breakout sources from:
+- canonical fixed-point data, and
+- PLAN_71 hybrid-class-collapse witness sources.
+-/
+theorem molecule_residual_direct_source_breakout_sources_of_canonical_and_hybrid_class_collapse_witness_sources
+    (h_canonical : CanonicalFastFixedPointData)
+    (h_sources : MoleculeResidualHybridClassCollapseSourceWitnessSources) :
+    MoleculeResidualDirectSourceBreakoutSources :=
+  molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct
+    h_canonical
+    (molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_of_model_collapse_direct_witness_sources
+      (molecule_residual_model_collapse_direct_witness_sources_of_hybrid_class_collapse_witness_sources
+        h_sources))
+
+/--
+Build PLAN_69 breakout sources from:
+- refined data, and
+- PLAN_71 hybrid-class-collapse witness sources.
+-/
+theorem molecule_residual_direct_source_breakout_sources_of_refined_and_hybrid_class_collapse_witness_sources
+    (h_refined : MoleculeConjectureRefined)
+    (h_sources : MoleculeResidualHybridClassCollapseSourceWitnessSources) :
+    MoleculeResidualDirectSourceBreakoutSources :=
+  molecule_residual_direct_source_breakout_sources_of_refined_and_model_collapse_direct
+    h_refined
+    (molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_of_model_collapse_direct_witness_sources
+      (molecule_residual_model_collapse_direct_witness_sources_of_hybrid_class_collapse_witness_sources
+        h_sources))
+
+/--
+Under canonical fixed-point data, PLAN_69 breakout sources are equivalent to
+PLAN_70 witness sources.
+-/
+theorem molecule_residual_direct_source_breakout_sources_iff_model_collapse_direct_witness_sources_of_canonical
+    (h_canonical : CanonicalFastFixedPointData) :
+    MoleculeResidualDirectSourceBreakoutSources ↔
+      MoleculeResidualModelCollapseDirectSourceWitnessSources := by
+  constructor
+  · intro h_breakout
+    exact
+      molecule_residual_model_collapse_direct_witness_sources_of_model_collapse_direct_source
+        h_breakout.modelCollapseDirect
+  · intro h_sources
+    exact
+      molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct
+        h_canonical
+        (molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_of_model_collapse_direct_witness_sources
+          h_sources)
+
+/--
+Under refined data, PLAN_69 breakout sources are equivalent to PLAN_70 witness
+sources.
+-/
+theorem molecule_residual_direct_source_breakout_sources_iff_model_collapse_direct_witness_sources_of_refined
+    (h_refined : MoleculeConjectureRefined) :
+    MoleculeResidualDirectSourceBreakoutSources ↔
+      MoleculeResidualModelCollapseDirectSourceWitnessSources := by
+  constructor
+  · intro h_breakout
+    exact
+      molecule_residual_model_collapse_direct_witness_sources_of_model_collapse_direct_source
+        h_breakout.modelCollapseDirect
+  · intro h_sources
+    exact
+      molecule_residual_direct_source_breakout_sources_of_refined_and_model_collapse_direct
+        h_refined
+        (molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_of_model_collapse_direct_witness_sources
+          h_sources)
+
+/--
 Build PLAN_69 breakout sources from:
 - canonical fixed-point data, and
 - PLAN_70 model-collapse-direct witness sources.
@@ -5608,6 +5786,68 @@ theorem molecule_residual_fixed_point_uniqueness_source :
     MoleculeResidualFixedPointUniquenessSource :=
   molecule_residual_fixed_point_uniqueness_source_of_hybrid_unique_fixed_point_source
     molecule_residual_hybrid_unique_fixed_point_source
+
+/--
+Current PLAN_70 witness-source theorem routed from current map-level uniqueness
+source.
+-/
+theorem molecule_residual_model_collapse_direct_witness_sources_via_uniqueness_source :
+    MoleculeResidualModelCollapseDirectSourceWitnessSources :=
+  molecule_residual_model_collapse_direct_witness_sources_of_uniqueness_source
+    molecule_residual_fixed_point_uniqueness_source
+
+/--
+Current PLAN_70 witness-source theorem routed from current hybrid-unique
+fixed-point source.
+-/
+theorem molecule_residual_model_collapse_direct_witness_sources_via_hybrid_unique_fixed_point_source :
+    MoleculeResidualModelCollapseDirectSourceWitnessSources :=
+  molecule_residual_model_collapse_direct_witness_sources_of_hybrid_unique_fixed_point_source
+    molecule_residual_hybrid_unique_fixed_point_source
+
+/--
+Current PLAN_70 witness-source theorem routed from current hybrid-class
+uniqueness source.
+-/
+theorem molecule_residual_model_collapse_direct_witness_sources_via_hybrid_class_uniqueness_source :
+    MoleculeResidualModelCollapseDirectSourceWitnessSources :=
+  molecule_residual_model_collapse_direct_witness_sources_of_hybrid_class_uniqueness_source
+    molecule_residual_hybrid_class_fixed_point_uniqueness_source
+
+/--
+Current PLAN_70 witness-source theorem routed from current map-level
+hybrid-class-collapse source.
+-/
+theorem molecule_residual_model_collapse_direct_witness_sources_via_fixed_point_hybrid_class_collapse_source :
+    MoleculeResidualModelCollapseDirectSourceWitnessSources :=
+  molecule_residual_model_collapse_direct_witness_sources_of_fixed_point_hybrid_class_collapse_source
+    molecule_residual_fixed_point_hybrid_class_collapse_source
+
+/--
+Current PLAN_71 witness-source theorem routed from current map-level
+hybrid-class-collapse source.
+-/
+theorem molecule_residual_hybrid_class_collapse_witness_sources :
+    MoleculeResidualHybridClassCollapseSourceWitnessSources :=
+  molecule_residual_hybrid_class_collapse_witness_sources_of_fixed_point_hybrid_class_collapse_source
+    molecule_residual_fixed_point_hybrid_class_collapse_source
+
+/--
+Current PLAN_70 witness-source theorem routed through PLAN_71 witness sources.
+-/
+theorem molecule_residual_model_collapse_direct_witness_sources_via_hybrid_class_collapse_witness_sources :
+    MoleculeResidualModelCollapseDirectSourceWitnessSources :=
+  molecule_residual_model_collapse_direct_witness_sources_of_hybrid_class_collapse_witness_sources
+    molecule_residual_hybrid_class_collapse_witness_sources
+
+/--
+Current PLAN_69 breakout-source theorem routed through PLAN_71 witness sources.
+-/
+theorem molecule_residual_direct_source_breakout_sources_via_hybrid_class_collapse_witness_sources :
+    MoleculeResidualDirectSourceBreakoutSources :=
+  molecule_residual_direct_source_breakout_sources_of_canonical_and_hybrid_class_collapse_witness_sources
+    canonical_fast_fixed_point_data_from_bounds
+    molecule_residual_hybrid_class_collapse_witness_sources
 
 /--
 Current direct hybrid-class uniqueness source seam routed from the current

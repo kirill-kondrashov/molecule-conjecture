@@ -1,7 +1,7 @@
 # PLAN 70 - Non-h_norm Model-Collapse-Direct Source Witness
 
-Status: ACTIVE
-Progress: [#######---] 75%
+Status: STUCK (ARCHIVED)
+Progress: [#########-] 90%
 Scope: Eliminate `molecule_h_norm` from the PLAN_69 breakout cutover by replacing the upstream theorem `MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource` with a non-circular, non-`molecule_h_norm` witness source.
 Acceptance:
 1. `#print axioms` for at least one theorem implementing one of:
@@ -29,7 +29,7 @@ Last Updated: 2026-03-04
 - [x] Introduce a minimal source interface for the winning candidate route.
 - [x] Implement a non-`molecule_h_norm` witness theorem against that interface
   and run targeted `#print axioms` probes.
-- [ ] Cut over breakout zero-arg routes through the new witness theorem and
+- [x] Cut over breakout zero-arg routes through the new witness theorem and
   verify axiom frontier improvement.
 
 ## Notes
@@ -57,3 +57,14 @@ Last Updated: 2026-03-04
     `molecule_residual_model_collapse_direct_witness_sources` is still
     `Molecule.molecule_h_norm`-backed through
     `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source`.
+- Final candidate-route checkpoint (2026-03-04):
+  - added expanded witness constructors/equivalences:
+    `molecule_residual_model_collapse_direct_witness_sources_of_model_collapse_source`,
+    `molecule_residual_model_collapse_direct_witness_sources_iff_model_collapse_source`,
+    `molecule_residual_direct_source_breakout_sources_iff_model_collapse_direct_witness_sources_of_canonical`,
+    `molecule_residual_direct_source_breakout_sources_iff_model_collapse_direct_witness_sources_of_refined`,
+    and current-route aliases via uniqueness/hybrid-unique/hybrid-class-uniqueness/collapse sources.
+  - targeted probes confirm decomposition/equivalence layer is ground-axiom-only.
+  - every current zero-arg candidate witness route remains
+    `Molecule.molecule_h_norm`-backed.
+  - successor plan: `PLAN_71_non_h_norm_hybrid_class_collapse_source_witness.md`.
