@@ -1,7 +1,7 @@
 # PLAN 64 - Upstream Direct-Seam Constructive Witness
 
 Status: ACTIVE
-Progress: [######----] 65%
+Progress: [#######---] 75%
 Scope: Prove one non-`molecule_h_norm` zero-arg constructor for the direct-seam equivalence class identified in PLAN_63, then propagate that cutover through collapse/uniqueness/model-collapse direct seams.
 Acceptance:
 1. At least one anchor theorem in the direct-seam class is non-`molecule_h_norm`:
@@ -77,4 +77,14 @@ Last Updated: 2026-03-04
     `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`.
   - probe result:
     current zero-arg anchor and routed aliases remain
+    `Molecule.molecule_h_norm`-backed.
+- Checkpoint (2026-03-04, cutover aliases):
+  - added canonical cutover aliases:
+    - `molecule_residual_fixed_point_hybrid_class_collapse_direct_source_cutover`
+    - `molecule_residual_fixed_point_uniqueness_direct_source_cutover`
+  - rewired
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`
+    through the uniqueness cutover alias.
+  - probe result:
+    cutover aliases and rewired downstream theorem remain
     `Molecule.molecule_h_norm`-backed.

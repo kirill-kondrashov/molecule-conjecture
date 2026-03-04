@@ -4148,13 +4148,29 @@ theorem molecule_residual_fixed_point_uniqueness_direct_source_via_anchor_source
     molecule_residual_direct_seam_anchor_source
 
 /--
+Canonical zero-arg cutover alias for direct map-level hybrid-class-collapse
+seam.
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_direct_source_cutover :
+    MoleculeResidualFixedPointHybridClassCollapseDirectSource :=
+  molecule_residual_fixed_point_hybrid_class_collapse_direct_source_via_anchor_source
+
+/--
+Canonical zero-arg cutover alias for direct map-level fixed-point uniqueness
+seam.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source_cutover :
+    MoleculeResidualFixedPointUniquenessDirectSource :=
+  molecule_residual_fixed_point_uniqueness_direct_source_via_anchor_source
+
+/--
 Direct hybrid-class fixed-point uniqueness source theorem routed through the
 dedicated direct-source seam.
 -/
 theorem molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct :
     MoleculeResidualHybridClassFixedPointUniquenessSource :=
   molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_fixed_point_uniqueness_direct_source
-    molecule_residual_fixed_point_uniqueness_direct_source_via_anchor_source
+    molecule_residual_fixed_point_uniqueness_direct_source_cutover
 
 /--
 Current direct hybrid-class-uniqueness model-collapse source seam.
