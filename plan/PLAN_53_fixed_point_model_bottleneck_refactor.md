@@ -145,3 +145,12 @@ Last Updated: 2026-03-04
 - PLAN_69 kickoff checkpoint (2026-03-04):
   - active bottleneck remains an upstream non-circular direct-source witness
     theorem for canonical/refined packages without `molecule_h_norm`.
+  - selected upstream candidate seam:
+    `MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource`
+    with canonical data.
+  - added breakout-source interface and constructors:
+    `MoleculeResidualDirectSourceBreakoutSources`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_direct_source_breakout_sources`,
+    `molecule_residual_direct_seam_anchor_source_of_direct_source_breakout_sources`.
+  - targeted probes confirm the new breakout-source declarations are
+    ground-axiom-only.

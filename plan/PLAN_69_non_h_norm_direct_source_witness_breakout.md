@@ -1,7 +1,7 @@
 # PLAN 69 - Non-h_norm Direct-Source Witness Breakout
 
 Status: ACTIVE
-Progress: [##--------] 20%
+Progress: [#####-----] 55%
 Scope: Break out of the direct-source circular path by constructing a non-`molecule_h_norm` theorem for `MoleculeResidualFixedPointUniquenessDirectSource` (or stronger upstream source) that does not route through the current direct-source theorem.
 Acceptance:
 1. `#print axioms` for at least one theorem implementing one of:
@@ -24,9 +24,9 @@ Last Updated: 2026-03-04
 - [x] Inherit PLAN_68 obstruction checkpoint:
   `molecule_residual_direct_contract_cutover_sources_iff_fixed_point_uniqueness_direct_source_of_canonical`
   and refined counterpart.
-- [ ] Enumerate upstream candidate source theorems that do not reduce through
+- [x] Enumerate upstream candidate source theorems that do not reduce through
   current direct-source contracts.
-- [ ] Introduce minimal non-circular source interface for the winning upstream
+- [x] Introduce minimal non-circular source interface for the winning upstream
   candidate.
 - [ ] Implement a non-`molecule_h_norm` witness theorem against that interface
   and run targeted `#print axioms` probes.
@@ -40,3 +40,18 @@ Last Updated: 2026-03-04
   theorem that remains `Molecule.molecule_h_norm`-backed.
 - Immediate focus shifts upstream: construct a witness theorem that is not
   routed through current direct-source declarations.
+- New checkpoint (2026-03-04):
+  - selected upstream candidate seam:
+    `MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource`
+    + canonical data.
+  - added breakout-source interface:
+    `MoleculeResidualDirectSourceBreakoutSources`.
+  - added breakout-source constructors and seam projections:
+    `molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct`,
+    `molecule_residual_direct_source_breakout_sources_of_refined_and_model_collapse_direct`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_direct_source_breakout_sources`,
+    `molecule_residual_direct_seam_anchor_source_of_direct_source_breakout_sources`.
+  - targeted probes confirm these new declarations are ground-axiom-only.
+  - residual blocker is unchanged: current
+    `molecule_residual_fixed_point_uniqueness_direct_source` remains
+    `Molecule.molecule_h_norm`-backed.

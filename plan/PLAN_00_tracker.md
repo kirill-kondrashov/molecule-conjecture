@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_69 | Non-h_norm direct-source witness breakout | ACTIVE | [##--------] 20% |
+| PLAN_69 | Non-h_norm direct-source witness breakout | ACTIVE | [#####-----] 55% |
 
 ## Dependency Map
 
@@ -794,6 +794,20 @@ Last Updated: 2026-03-04
   - Active target is now a non-circular, non-`molecule_h_norm` theorem for
     `MoleculeResidualFixedPointUniquenessDirectSource` (or stronger upstream
     source), then zero-arg direct/anchor cutover.
+  - Selected upstream candidate seam:
+    `MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource`
+    with canonical data.
+  - Added breakout-source interface and constructors in
+    `Molecule/Conjecture.lean`:
+    `MoleculeResidualDirectSourceBreakoutSources`,
+    `molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct`,
+    `molecule_residual_direct_source_breakout_sources_of_refined_and_model_collapse_direct`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_direct_source_breakout_sources`,
+    `molecule_residual_direct_seam_anchor_source_of_direct_source_breakout_sources`.
+  - Probe checkpoint:
+    these new breakout-source declarations are ground-axiom-only, while current
+    `molecule_residual_fixed_point_uniqueness_direct_source` remains
+    `Molecule.molecule_h_norm`-backed.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

@@ -4696,6 +4696,57 @@ theorem molecule_residual_direct_contract_cutover_sources_iff_fixed_point_unique
         (fun _ => h_unique_direct)
 
 /--
+Breakout source interface for PLAN_69:
+- canonical fixed-point witness, and
+- model-collapse-direct source theorem.
+-/
+structure MoleculeResidualDirectSourceBreakoutSources : Prop where
+  canonicalData : CanonicalFastFixedPointData
+  modelCollapseDirect : MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource
+
+/--
+Assemble PLAN_69 breakout sources from canonical data and a model-collapse-direct
+source theorem.
+-/
+theorem molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct
+    (h_canonical : CanonicalFastFixedPointData)
+    (h_model_collapse_direct :
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource) :
+    MoleculeResidualDirectSourceBreakoutSources :=
+  ⟨h_canonical, h_model_collapse_direct⟩
+
+/--
+Assemble PLAN_69 breakout sources from refined data and a model-collapse-direct
+source theorem.
+-/
+theorem molecule_residual_direct_source_breakout_sources_of_refined_and_model_collapse_direct
+    (h_refined : MoleculeConjectureRefined)
+    (h_model_collapse_direct :
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource) :
+    MoleculeResidualDirectSourceBreakoutSources :=
+  ⟨h_refined.2, h_model_collapse_direct⟩
+
+/--
+Build direct-uniqueness source seam from PLAN_69 breakout sources.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source_of_direct_source_breakout_sources
+    (h_sources : MoleculeResidualDirectSourceBreakoutSources) :
+    MoleculeResidualFixedPointUniquenessDirectSource :=
+  molecule_residual_fixed_point_uniqueness_direct_source_of_canonical_and_model_collapse_direct_of_canonical_source
+    h_sources.canonicalData
+    (fun _ => h_sources.modelCollapseDirect)
+
+/--
+Build anchor source seam from PLAN_69 breakout sources.
+-/
+theorem molecule_residual_direct_seam_anchor_source_of_direct_source_breakout_sources
+    (h_sources : MoleculeResidualDirectSourceBreakoutSources) :
+    MoleculeResidualDirectSeamAnchorSource :=
+  molecule_residual_direct_seam_anchor_source_of_canonical_and_model_collapse_direct_of_canonical_source
+    h_sources.canonicalData
+    (fun _ => h_sources.modelCollapseDirect)
+
+/--
 Under canonical fixed-point existence, hybrid-level unique-fixed-point source
 and map-level uniqueness source are equivalent.
 -/

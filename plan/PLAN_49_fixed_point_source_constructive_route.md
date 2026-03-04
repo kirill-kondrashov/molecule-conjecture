@@ -226,6 +226,15 @@ Last Updated: 2026-03-04
 - PLAN_69 kickoff checkpoint (2026-03-04):
   - successor target is now an upstream non-circular direct-source witness
     theorem that does not route through current direct-source declarations.
+  - selected upstream candidate seam:
+    `MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource`
+    with canonical data.
+  - added breakout-source interface and constructors:
+    `MoleculeResidualDirectSourceBreakoutSources`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_direct_source_breakout_sources`,
+    `molecule_residual_direct_seam_anchor_source_of_direct_source_breakout_sources`.
+  - targeted probes confirm the new breakout-source declarations are
+    ground-axiom-only.
 - Sub-plan linkage:
   - model-level witness bottleneck is tracked explicitly in
     `PLAN_53_fixed_point_model_bottleneck_refactor.md`.
