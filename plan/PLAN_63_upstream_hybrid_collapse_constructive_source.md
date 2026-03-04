@@ -1,7 +1,7 @@
 # PLAN 63 - Upstream Hybrid-Collapse Constructive Source
 
 Status: ACTIVE
-Progress: [#####-----] 45%
+Progress: [######----] 60%
 Scope: Replace `molecule_residual_fixed_point_hybrid_class_collapse_direct_source` with a non-`molecule_h_norm` theorem-level constructor, then propagate that replacement through the already cut-over PLAN_62 seam path.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_hybrid_class_collapse_direct_source` does not include `Molecule.molecule_h_norm`.
@@ -21,6 +21,12 @@ Last Updated: 2026-03-04
 - [x] Add a source-level constructor theorem into
   `MoleculeResidualFixedPointHybridClassCollapseDirectSource` from that minimal
   upstream statement.
+- [x] Add dedicated direct-source seam for the hybrid-class-uniqueness
+  model-collapse route and cut over the current model-collapse theorem through
+  it:
+  - `MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_source`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source`.
 - [ ] Rewire current direct collapse theorem through the new constructor and
   remove the `molecule_h_norm`-backed direct body from the active path.
 - [ ] Re-run targeted `#print axioms` probes for the full direct-seam chain and
@@ -59,3 +65,9 @@ Last Updated: 2026-03-04
     this equivalence theorem is ground-axiom-only; both current zero-arg
     collapse source and zero-arg hybrid-class uniqueness source remain
     `Molecule.molecule_h_norm`-backed.
+- Checkpoint (2026-03-04, model-collapse direct seam cutover):
+  - added dedicated direct seam for current hybrid-class-uniqueness
+    model-collapse theorem and routed zero-arg model-collapse source through it.
+  - probe result:
+    source-level constructors/projections are ground-axiom-only; current zero-arg
+    model-collapse source remains `Molecule.molecule_h_norm`-backed.
