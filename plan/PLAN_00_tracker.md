@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 99%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_68
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_69
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-04
 
@@ -49,12 +49,12 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_68 | Non-h_norm direct contract source constructor | ACTIVE | [######----] 65% |
+| PLAN_69 | Non-h_norm direct-source witness breakout | ACTIVE | [##--------] 20% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_68 (direct-contract source constructor), then PLAN_43.
+- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_69 (direct-source witness breakout), then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -172,6 +172,9 @@ Last Updated: 2026-03-04
 - Archived STUCK plan:
   - `ARCHIVE_stuck_2026-03-04_PLAN_67_non_h_norm_direct_contract_witness.md`
     (superseded by PLAN_68 non-h_norm direct contract source constructor).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_68_non_h_norm_direct_contract_source_constructor.md`
+    (superseded by PLAN_69 non-h_norm direct-source witness breakout).
 - `PLAN_47` progress:
   - Introduced narrowed residual bounds-assembly source pack in
     `Molecule/Conjecture.lean`:
@@ -767,12 +770,7 @@ Last Updated: 2026-03-04
   - Final stuck check:
     wrapper/equivalence layer is ground-axiom-only, but current canonical/refined
     direct-contract theorems remained `Molecule.molecule_h_norm`-backed.
-- `PLAN_68` progress:
-  - Opened successor direct-contract source-constructor track after archiving
-    PLAN_67 as STUCK.
-  - Active target is now explicit source-constructor replacement:
-    build a non-`molecule_h_norm` theorem-level source for direct-contract
-    goals, then route zero-arg direct/anchor seams through it.
+- `PLAN_68` final archived progress:
   - Added minimal cutover-source pack and constructors in
     `Molecule/Conjecture.lean`:
     `MoleculeResidualDirectContractCutoverSources`,
@@ -780,17 +778,22 @@ Last Updated: 2026-03-04
     `molecule_residual_direct_seam_anchor_source_of_direct_contract_cutover_sources`,
     `molecule_residual_direct_contract_cutover_sources_of_canonical_and_direct_of_canonical`,
     `molecule_residual_direct_contract_cutover_sources_of_refined_and_direct_of_refined`.
-  - Probe checkpoint:
-    these new cutover-source seam theorems are ground-axiom-only, while current
-    canonical/refined direct-contract theorems remain
-    `Molecule.molecule_h_norm`-backed.
   - Added source-pack-to-contract constructors:
     `molecule_residual_fixed_point_uniqueness_direct_of_canonical_source_of_direct_contract_cutover_sources`,
     `molecule_residual_fixed_point_uniqueness_direct_of_refined_source_of_direct_contract_cutover_sources`.
-  - Candidate probe checkpoint:
-    these constructors are ground-axiom-only, but
-    `molecule_residual_fixed_point_uniqueness_direct_of_canonical_source`
-    remains `Molecule.molecule_h_norm`-backed.
+  - Added explicit obstruction-equivalence theorems:
+    `molecule_residual_direct_contract_cutover_sources_iff_fixed_point_uniqueness_direct_source_of_canonical`,
+    `molecule_residual_direct_contract_cutover_sources_iff_fixed_point_uniqueness_direct_source_of_refined`.
+  - Final stuck check:
+    cutover-source path is equivalent to current direct-source frontier under
+    canonical/refined data; current direct-source/direct-contract theorems
+    remain `Molecule.molecule_h_norm`-backed.
+- `PLAN_69` progress:
+  - Opened successor direct-source witness breakout track after archiving
+    PLAN_68 as STUCK.
+  - Active target is now a non-circular, non-`molecule_h_norm` theorem for
+    `MoleculeResidualFixedPointUniquenessDirectSource` (or stronger upstream
+    source), then zero-arg direct/anchor cutover.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

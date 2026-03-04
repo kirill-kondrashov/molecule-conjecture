@@ -7,7 +7,7 @@ Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_normalization_ingredients` does not include `Molecule.molecule_h_norm`.
 2. `#print axioms Molecule.molecule_residual_non_ground_sources` no longer carries `Molecule.molecule_h_norm` from the fixed-point side.
 3. `#print axioms Molecule.molecule_conjecture_refined` does not include `Molecule.molecule_h_norm`.
-Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/RenormalizationFixedPointUniqueness.lean`, `plan/PLAN_47_h_norm_elimination_constructive_source_rebuild.md`, `plan/PLAN_53_fixed_point_model_bottleneck_refactor.md`, `plan/PLAN_68_non_h_norm_direct_contract_source_constructor.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_67_non_h_norm_direct_contract_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_66_canonical_uniqueness_constructive_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_65_canonical_to_anchor_constructive_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_64_upstream_direct_seam_constructive_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_63_upstream_hybrid_collapse_constructive_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_62_upstream_map_uniqueness_source_replacement.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_52_fixed_point_renorm_witness_extraction.md`
+Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/RenormalizationFixedPointUniqueness.lean`, `plan/PLAN_47_h_norm_elimination_constructive_source_rebuild.md`, `plan/PLAN_53_fixed_point_model_bottleneck_refactor.md`, `plan/PLAN_69_non_h_norm_direct_source_witness_breakout.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_68_non_h_norm_direct_contract_source_constructor.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_67_non_h_norm_direct_contract_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_66_canonical_uniqueness_constructive_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_65_canonical_to_anchor_constructive_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_64_upstream_direct_seam_constructive_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_63_upstream_hybrid_collapse_constructive_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_62_upstream_map_uniqueness_source_replacement.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_52_fixed_point_renorm_witness_extraction.md`
 Stuck Rule: STUCK if the only available fixed-point data/uniqueness constructors in current infrastructure require reintroducing a project axiom.
 Last Updated: 2026-03-04
 
@@ -148,8 +148,8 @@ Last Updated: 2026-03-04
   - transport-wrapped integration seam above is axiom-clean modulo ground
     axioms; current routed theorem still carries `Molecule.molecule_h_norm`
     through current fixed-data/uniqueness/transport sources.
-- This plan now runs in parallel with PLAN_68 (non-h_norm direct-contract
-  source constructor) after PLAN_67 was archived as stuck.
+- This plan now runs in parallel with PLAN_69 (non-h_norm direct-source
+  witness breakout) after PLAN_68 was archived as stuck.
 - PLAN_62 archived integration checkpoint (2026-03-04):
   - zero-arg map/hybrid uniqueness seams are now routed through
     `MoleculeResidualFixedPointUniquenessDirectSource`;
@@ -208,9 +208,7 @@ Last Updated: 2026-03-04
   - targeted probes confirmed wrapper layer is ground-axiom-only.
   - bottleneck unchanged: canonical/refined direct-contract theorems remained
     `Molecule.molecule_h_norm`-backed.
-- PLAN_68 kickoff checkpoint (2026-03-04):
-  - successor target is now source-constructor replacement for direct-contract
-    goals, then zero-arg cutover through that source.
+- PLAN_68 final archived checkpoint (2026-03-04):
   - added direct-contract cutover-source seam in `Molecule/Conjecture.lean`:
     `MoleculeResidualDirectContractCutoverSources` and its direct/anchor
     constructor routes from canonical/refined direct-contract assumptions.
@@ -221,6 +219,13 @@ Last Updated: 2026-03-04
     `molecule_residual_fixed_point_uniqueness_direct_of_canonical_source_of_direct_contract_cutover_sources`,
     `molecule_residual_fixed_point_uniqueness_direct_of_refined_source_of_direct_contract_cutover_sources`,
     both ground-axiom-only in targeted probes.
+  - added obstruction-equivalence theorems:
+    `molecule_residual_direct_contract_cutover_sources_iff_fixed_point_uniqueness_direct_source_of_canonical`,
+    `molecule_residual_direct_contract_cutover_sources_iff_fixed_point_uniqueness_direct_source_of_refined`,
+    showing this path still collapses to the current direct-source frontier.
+- PLAN_69 kickoff checkpoint (2026-03-04):
+  - successor target is now an upstream non-circular direct-source witness
+    theorem that does not route through current direct-source declarations.
 - Sub-plan linkage:
   - model-level witness bottleneck is tracked explicitly in
     `PLAN_53_fixed_point_model_bottleneck_refactor.md`.

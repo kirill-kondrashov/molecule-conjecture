@@ -4658,6 +4658,44 @@ theorem molecule_residual_direct_contract_cutover_sources_of_refined_and_direct_
   ⟩
 
 /--
+Under canonical fixed-point data, direct-contract cutover sources are
+equivalent to map-level direct-uniqueness source.
+-/
+theorem molecule_residual_direct_contract_cutover_sources_iff_fixed_point_uniqueness_direct_source_of_canonical
+    (h_canonical : CanonicalFastFixedPointData) :
+    MoleculeResidualDirectContractCutoverSources ↔
+      MoleculeResidualFixedPointUniquenessDirectSource := by
+  constructor
+  · intro h_sources
+    exact
+      molecule_residual_fixed_point_uniqueness_direct_source_of_direct_contract_cutover_sources
+        h_sources
+  · intro h_unique_direct
+    exact
+      molecule_residual_direct_contract_cutover_sources_of_canonical_and_direct_of_canonical
+        h_canonical
+        (fun _ => h_unique_direct)
+
+/--
+Under refined data, direct-contract cutover sources are equivalent to map-level
+direct-uniqueness source.
+-/
+theorem molecule_residual_direct_contract_cutover_sources_iff_fixed_point_uniqueness_direct_source_of_refined
+    (h_refined : MoleculeConjectureRefined) :
+    MoleculeResidualDirectContractCutoverSources ↔
+      MoleculeResidualFixedPointUniquenessDirectSource := by
+  constructor
+  · intro h_sources
+    exact
+      molecule_residual_fixed_point_uniqueness_direct_source_of_direct_contract_cutover_sources
+        h_sources
+  · intro h_unique_direct
+    exact
+      molecule_residual_direct_contract_cutover_sources_of_refined_and_direct_of_refined
+        h_refined
+        (fun _ => h_unique_direct)
+
+/--
 Under canonical fixed-point existence, hybrid-level unique-fixed-point source
 and map-level uniqueness source are equivalent.
 -/

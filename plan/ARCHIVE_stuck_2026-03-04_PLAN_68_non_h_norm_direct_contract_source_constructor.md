@@ -1,7 +1,7 @@
 # PLAN 68 - Non-h_norm Direct Contract Source Constructor
 
-Status: ACTIVE
-Progress: [######----] 65%
+Status: STUCK (ARCHIVED)
+Progress: [########--] 80%
 Scope: Build a non-`molecule_h_norm` source-constructor path for direct-uniqueness contracts, then cut over the zero-arg direct/anchor seams through that source.
 Acceptance:
 1. `#print axioms` for at least one theorem implementing one of:
@@ -34,7 +34,7 @@ Last Updated: 2026-03-04
   assumptions.
 - [x] Attempt non-circular witness candidates against the source pack and
   record targeted `#print axioms` outputs.
-- [ ] If witness candidates remain `molecule_h_norm`-backed, extract an
+- [x] If witness candidates remain `molecule_h_norm`-backed, extract an
   explicit obstruction theorem and spin the next successor plan.
 
 ## Notes
@@ -64,5 +64,15 @@ Last Updated: 2026-03-04
   - candidate result remains unchanged:
     `molecule_residual_fixed_point_uniqueness_direct_of_canonical_source` is
     still `Molecule.molecule_h_norm`-backed.
+- Obstruction checkpoint (2026-03-04):
+  - added explicit frontier equivalence theorems:
+    `molecule_residual_direct_contract_cutover_sources_iff_fixed_point_uniqueness_direct_source_of_canonical`,
+    `molecule_residual_direct_contract_cutover_sources_iff_fixed_point_uniqueness_direct_source_of_refined`.
+  - targeted probes confirm these equivalences are ground-axiom-only.
+  - result: the cutover-source path is equivalent to current
+    `MoleculeResidualFixedPointUniquenessDirectSource` under canonical/refined
+    data, so this plan cannot clear `molecule_h_norm` without a new upstream
+    theorem.
+  - successor plan: `PLAN_69_non_h_norm_direct_source_witness_breakout.md`.
 - Immediate objective is to replace theorem-level source construction, not add
   new axioms.
