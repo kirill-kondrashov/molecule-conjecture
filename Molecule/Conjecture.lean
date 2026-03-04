@@ -2223,14 +2223,6 @@ theorem molecule_residual_fixed_exists :
     ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f :=
   renormalizable_fixed_exists_of_fixed_point_normalization_data molecule_h_fixed_data
 
-/-- Residual bounds source routed through local fixed-point normalization data. -/
-theorem molecule_residual_bounds_from_fixed_data
-    (h_fixed_data : FixedPointNormalizationData) :
-    PseudoSiegelAPrioriBounds :=
-  problem_4_3_bounds_established_conjecture_from_fixed_data_and_transport
-    h_fixed_data
-    molecule_residual_orbit_transport_source
-
 /--
 Residual bounds source from fixed-point data and the narrowed local orbit-source
 contract.
@@ -2273,6 +2265,14 @@ theorem molecule_residual_bounds_from_fixed_data_localized
   molecule_residual_bounds_from_fixed_data_and_local_orbit_source
     h_fixed_data
     h_orbit_fixed_data
+
+/-- Residual bounds source routed through local fixed-point normalization data. -/
+theorem molecule_residual_bounds_from_fixed_data
+    (h_fixed_data : FixedPointNormalizationData) :
+    PseudoSiegelAPrioriBounds :=
+  molecule_residual_bounds_from_fixed_data_localized
+    h_fixed_data
+    molecule_residual_orbit_clause_for_fixed_data_source
 
 /--
 Residual bounds constructor from narrowed bounds-assembly source inputs.

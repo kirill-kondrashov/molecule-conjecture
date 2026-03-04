@@ -47,7 +47,7 @@ Last Updated: 2026-03-04
 | PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 99% |
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 99% |
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 80% |
-| PLAN_54 | Orbit source contract refactor | ACTIVE | [#########-] 90% |
+| PLAN_54 | Orbit source contract refactor | ACTIVE | [#########-] 95% |
 
 ## Dependency Map
 
@@ -255,6 +255,8 @@ Last Updated: 2026-03-04
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
     `molecule_residual_bounds_from_fixed_data_localized`.
+  - Rewired `molecule_residual_bounds_from_fixed_data` to consume the local
+    fixed-data orbit source route (no direct transport theorem dependency).
   - Added explicit orbit-source composition seam theorems:
     `molecule_residual_orbit_clause_for_fixed_data_source_of_orbit_clause_source`,
     `molecule_residual_orbit_clause_for_fixed_data_source_of_transport_source`.
@@ -274,6 +276,10 @@ Last Updated: 2026-03-04
   - Completed declaration-order cleanup:
     `molecule_residual_orbit_clause_for_fixed_data_source` now routes through
     `molecule_residual_orbit_clause_for_fixed_data_source_via_transport`.
+  - Probe checkpoint:
+    `molecule_residual_bounds_from_fixed_data_localized` is axiom-clean modulo
+    ground axioms, while `molecule_residual_bounds_from_fixed_data` now carries
+    `Molecule.molecule_h_norm` only via the current orbit source theorem.
   - Next target is deciding whether to keep both theorem names or collapse to
     one canonical exported orbit-source theorem name.
 

@@ -1,7 +1,7 @@
 # PLAN 54 - Orbit Source Contract Refactor
 
 Status: ACTIVE
-Progress: [#########-] 90%
+Progress: [#########-] 95%
 Scope: Replace the stuck direct constructive search (PLAN_51) with a refactor-first route that minimizes active dependence on legacy orbit transport wrappers and concentrates the orbit-side frontier at a single local source theorem.
 Acceptance:
 1. Legacy bounds/helper routes no longer depend on `MoleculeResidualOrbitTransportSource` when a local fixed-data orbit source is sufficient.
@@ -39,3 +39,8 @@ Last Updated: 2026-03-04
 
 - This plan supersedes PLAN_51.
 - This is a narrowing/refactor track, not a full constructive proof of the orbit clause itself.
+- Probe checkpoint:
+  - `molecule_residual_bounds_from_fixed_data_localized` is ground-axiom-only.
+  - `molecule_residual_bounds_from_fixed_data` now depends on
+    `molecule_residual_orbit_clause_for_fixed_data_source` (no direct transport
+    dependency), and therefore still carries `Molecule.molecule_h_norm`.
