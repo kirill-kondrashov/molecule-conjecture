@@ -194,6 +194,9 @@ Last Updated: 2026-03-04
     canonical/refined hybrid-class-uniqueness contracts.
   - canonical/refined uniqueness contracts are now explicitly equivalent to
     canonical/refined hybrid-class-uniqueness model-collapse contracts.
+  - canonical/refined uniqueness contracts are now explicitly equivalent to
+    canonical/refined model-collapse-direct contracts, and canonical/refined
+    anchor contracts are explicitly equivalent to those direct contracts.
 - Sub-plan linkage:
   - model-level witness bottleneck is tracked explicitly in
     `PLAN_53_fixed_point_model_bottleneck_refactor.md`.

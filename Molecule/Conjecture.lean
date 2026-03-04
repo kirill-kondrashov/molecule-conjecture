@@ -3497,6 +3497,22 @@ def MoleculeResidualHybridClassFixedPointUniquenessModelCollapseOfRefinedSource 
   MoleculeConjectureRefined → MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource
 
 /--
+Upstream constructive source contract: produce hybrid-class-uniqueness
+model-collapse direct seam input from canonical fixed-point data.
+-/
+def MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfCanonicalSource : Prop :=
+  CanonicalFastFixedPointData →
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource
+
+/--
+Upstream constructive source contract: produce hybrid-class-uniqueness
+model-collapse direct seam input from refined contract data.
+-/
+def MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfRefinedSource : Prop :=
+  MoleculeConjectureRefined →
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource
+
+/--
 Lift canonical uniqueness-source contract to refined-contract uniqueness-source
 contract.
 -/
@@ -3533,6 +3549,16 @@ theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_of_
       MoleculeResidualHybridClassFixedPointUniquenessModelCollapseOfCanonicalSource) :
     MoleculeResidualHybridClassFixedPointUniquenessModelCollapseOfRefinedSource :=
   fun h_refined => h_model_collapse_canonical h_refined.2
+
+/--
+Lift canonical hybrid-class-uniqueness model-collapse-direct contract to
+refined contract.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_of_refined_source_of_canonical_source
+    (h_model_collapse_direct_canonical :
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfCanonicalSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfRefinedSource :=
+  fun h_refined => h_model_collapse_direct_canonical h_refined.2
 
 /--
 Build canonical-contract anchor-source contract from a map-level fixed-point
@@ -4070,6 +4096,126 @@ theorem molecule_residual_fixed_point_uniqueness_of_refined_source_iff_model_col
       molecule_residual_fixed_point_uniqueness_of_refined_source_iff_hybrid_class_fixed_point_uniqueness_of_refined_source
     _ ↔ MoleculeResidualHybridClassFixedPointUniquenessModelCollapseOfRefinedSource :=
       molecule_residual_hybrid_class_fixed_point_uniqueness_of_refined_source_iff_model_collapse_of_refined_source
+
+/--
+Build a canonical-contract model-collapse-direct contract from a
+canonical-contract model-collapse contract.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_of_canonical_source_of_model_collapse_of_canonical_source
+    (h_model_collapse_canonical :
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseOfCanonicalSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfCanonicalSource :=
+  fun h_canonical => h_model_collapse_canonical h_canonical
+
+/--
+Build a canonical-contract model-collapse contract from a canonical-contract
+model-collapse-direct contract.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_of_canonical_source_of_model_collapse_direct_of_canonical_source
+    (h_model_collapse_direct_canonical :
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfCanonicalSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseOfCanonicalSource :=
+  fun h_canonical => h_model_collapse_direct_canonical h_canonical
+
+/--
+Canonical-contract model-collapse and model-collapse-direct contracts are
+equivalent.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_of_canonical_source_iff_model_collapse_direct_of_canonical_source :
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseOfCanonicalSource ↔
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfCanonicalSource := by
+  constructor
+  · exact
+      molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_of_canonical_source_of_model_collapse_of_canonical_source
+  · exact
+      molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_of_canonical_source_of_model_collapse_direct_of_canonical_source
+
+/--
+Build a refined-contract model-collapse-direct contract from a refined-contract
+model-collapse contract.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_of_refined_source_of_model_collapse_of_refined_source
+    (h_model_collapse_refined :
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseOfRefinedSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfRefinedSource :=
+  fun h_refined => h_model_collapse_refined h_refined
+
+/--
+Build a refined-contract model-collapse contract from a refined-contract
+model-collapse-direct contract.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_of_refined_source_of_model_collapse_direct_of_refined_source
+    (h_model_collapse_direct_refined :
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfRefinedSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseOfRefinedSource :=
+  fun h_refined => h_model_collapse_direct_refined h_refined
+
+/--
+Refined-contract model-collapse and model-collapse-direct contracts are
+equivalent.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_of_refined_source_iff_model_collapse_direct_of_refined_source :
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseOfRefinedSource ↔
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfRefinedSource := by
+  constructor
+  · exact
+      molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_of_refined_source_of_model_collapse_of_refined_source
+  · exact
+      molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_of_refined_source_of_model_collapse_direct_of_refined_source
+
+/--
+Canonical-contract map-level uniqueness and model-collapse-direct contracts are
+equivalent.
+-/
+theorem molecule_residual_fixed_point_uniqueness_of_canonical_source_iff_model_collapse_direct_of_canonical_source :
+    MoleculeResidualFixedPointUniquenessOfCanonicalSource ↔
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfCanonicalSource := by
+  calc
+    MoleculeResidualFixedPointUniquenessOfCanonicalSource
+        ↔ MoleculeResidualHybridClassFixedPointUniquenessModelCollapseOfCanonicalSource :=
+      molecule_residual_fixed_point_uniqueness_of_canonical_source_iff_model_collapse_of_canonical_source
+    _ ↔ MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfCanonicalSource :=
+      molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_of_canonical_source_iff_model_collapse_direct_of_canonical_source
+
+/--
+Refined-contract map-level uniqueness and model-collapse-direct contracts are
+equivalent.
+-/
+theorem molecule_residual_fixed_point_uniqueness_of_refined_source_iff_model_collapse_direct_of_refined_source :
+    MoleculeResidualFixedPointUniquenessOfRefinedSource ↔
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfRefinedSource := by
+  calc
+    MoleculeResidualFixedPointUniquenessOfRefinedSource
+        ↔ MoleculeResidualHybridClassFixedPointUniquenessModelCollapseOfRefinedSource :=
+      molecule_residual_fixed_point_uniqueness_of_refined_source_iff_model_collapse_of_refined_source
+    _ ↔ MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfRefinedSource :=
+      molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_of_refined_source_iff_model_collapse_direct_of_refined_source
+
+/--
+Canonical-contract anchor and model-collapse-direct contracts are equivalent.
+-/
+theorem molecule_residual_direct_seam_anchor_of_canonical_source_iff_model_collapse_direct_of_canonical_source :
+    MoleculeResidualDirectSeamAnchorOfCanonicalSource ↔
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfCanonicalSource := by
+  calc
+    MoleculeResidualDirectSeamAnchorOfCanonicalSource
+        ↔ MoleculeResidualFixedPointUniquenessOfCanonicalSource :=
+      molecule_residual_direct_seam_anchor_of_canonical_source_iff_fixed_point_uniqueness_of_canonical_source
+    _ ↔ MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfCanonicalSource :=
+      molecule_residual_fixed_point_uniqueness_of_canonical_source_iff_model_collapse_direct_of_canonical_source
+
+/--
+Refined-contract anchor and model-collapse-direct contracts are equivalent.
+-/
+theorem molecule_residual_direct_seam_anchor_of_refined_source_iff_model_collapse_direct_of_refined_source :
+    MoleculeResidualDirectSeamAnchorOfRefinedSource ↔
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfRefinedSource := by
+  calc
+    MoleculeResidualDirectSeamAnchorOfRefinedSource
+        ↔ MoleculeResidualFixedPointUniquenessOfRefinedSource :=
+      molecule_residual_direct_seam_anchor_of_refined_source_iff_fixed_point_uniqueness_of_refined_source
+    _ ↔ MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfRefinedSource :=
+      molecule_residual_fixed_point_uniqueness_of_refined_source_iff_model_collapse_direct_of_refined_source
 
 /--
 Under canonical fixed-point existence, hybrid-level unique-fixed-point source
