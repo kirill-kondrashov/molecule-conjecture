@@ -6032,12 +6032,76 @@ theorem molecule_residual_direct_seam_anchor_source_witness_sources :
   molecule_residual_plan74_winning_route_sources.anchorWitness
 
 /--
+PLAN_75 target interface: zero-arg source for direct-seam-anchor witness data.
+-/
+def MoleculeResidualAnchorWitnessZeroArgSource : Prop :=
+  MoleculeResidualDirectSeamAnchorSourceWitnessSources
+
+/--
+Recover direct-seam-anchor witness sources from the PLAN_75 zero-arg source
+interface.
+-/
+theorem molecule_residual_direct_seam_anchor_source_witness_sources_of_zero_arg_source
+    (h_source : MoleculeResidualAnchorWitnessZeroArgSource) :
+    MoleculeResidualDirectSeamAnchorSourceWitnessSources :=
+  h_source
+
+/--
+Assemble PLAN_75 zero-arg source interface from direct-seam-anchor witness
+sources.
+-/
+theorem molecule_residual_anchor_witness_zero_arg_source_of_direct_seam_anchor_source_witness_sources
+    (h_sources : MoleculeResidualDirectSeamAnchorSourceWitnessSources) :
+    MoleculeResidualAnchorWitnessZeroArgSource :=
+  h_sources
+
+/--
+PLAN_75 target interface is definitionally equivalent to direct-seam-anchor
+witness sources.
+-/
+theorem molecule_residual_anchor_witness_zero_arg_source_iff_direct_seam_anchor_source_witness_sources :
+    MoleculeResidualAnchorWitnessZeroArgSource ↔
+      MoleculeResidualDirectSeamAnchorSourceWitnessSources := by
+  constructor
+  · intro h_source
+    exact
+      molecule_residual_direct_seam_anchor_source_witness_sources_of_zero_arg_source
+        h_source
+  · intro h_sources
+    exact
+      molecule_residual_anchor_witness_zero_arg_source_of_direct_seam_anchor_source_witness_sources
+        h_sources
+
+/--
+Current PLAN_75 zero-arg anchor-witness source theorem.
+-/
+theorem molecule_residual_anchor_witness_zero_arg_source :
+    MoleculeResidualAnchorWitnessZeroArgSource :=
+  molecule_residual_anchor_witness_zero_arg_source_of_direct_seam_anchor_source_witness_sources
+    molecule_residual_direct_seam_anchor_source_witness_sources
+
+/--
+Build PLAN_74 winning-route bundle from canonical fixed-point data and PLAN_75
+zero-arg anchor-witness source data.
+-/
+theorem molecule_residual_plan74_winning_route_sources_of_canonical_and_zero_arg_anchor_witness_source
+    (h_canonical : CanonicalFastFixedPointData)
+    (h_source : MoleculeResidualAnchorWitnessZeroArgSource) :
+    MoleculeResidualPlan74WinningRouteSources :=
+  molecule_residual_plan74_winning_route_sources_of_canonical_and_anchor_witness
+    h_canonical
+    (molecule_residual_direct_seam_anchor_source_witness_sources_of_zero_arg_source
+      h_source)
+
+/--
 Current PLAN_69 breakout-source theorem routed through PLAN_72 witness sources.
 -/
 theorem molecule_residual_direct_source_breakout_sources_via_direct_seam_anchor_witness_sources :
     MoleculeResidualDirectSourceBreakoutSources :=
   molecule_residual_direct_source_breakout_sources_of_plan74_winning_route_sources
-    molecule_residual_plan74_winning_route_sources
+    (molecule_residual_plan74_winning_route_sources_of_canonical_and_zero_arg_anchor_witness_source
+      canonical_fast_fixed_point_data_from_bounds
+      molecule_residual_anchor_witness_zero_arg_source)
 
 /--
 Current PLAN_72 witness-source theorem routed from current map-level uniqueness

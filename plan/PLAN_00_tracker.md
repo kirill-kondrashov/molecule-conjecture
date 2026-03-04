@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_75 | Non-h_norm anchor-witness source cutover | ACTIVE | [##--------] 20% |
+| PLAN_75 | Non-h_norm anchor-witness source cutover | ACTIVE | [###-------] 30% |
 
 ## Dependency Map
 
@@ -76,7 +76,9 @@ Last Updated: 2026-03-04
     propagation seams (including
     `MoleculeResidualPlan74WinningRouteSources`) are ground-axiom-only;
     current zero-arg PLAN_72/69 alias path is now routed through that bundle;
-    residual blocker remains the non-`molecule_h_norm` witness theorem itself.
+    PLAN_75 now makes the zero-arg source interface explicit
+    (`MoleculeResidualAnchorWitnessZeroArgSource`);
+    residual blocker remains a non-`molecule_h_norm` theorem for that source.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -877,6 +879,9 @@ Last Updated: 2026-03-04
     PLAN_74 as STUCK.
   - Inherited the PLAN_74 winning-route bundle:
     `MoleculeResidualPlan74WinningRouteSources`.
+  - Added explicit zero-arg target interface:
+    `MoleculeResidualAnchorWitnessZeroArgSource`, and routed current breakout
+    alias assembly through this interface.
   - Current PLAN_72/69 zero-arg aliases are cut over through the bundle, but
     remain `Molecule.molecule_h_norm`-backed.
   - Active target is now a non-`molecule_h_norm` zero-arg theorem producing

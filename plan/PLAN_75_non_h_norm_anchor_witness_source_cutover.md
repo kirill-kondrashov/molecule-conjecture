@@ -1,7 +1,7 @@
 # PLAN 75 - Non-h_norm Anchor Witness Source Cutover
 
 Status: ACTIVE
-Progress: [##--------] 20%
+Progress: [###-------] 30%
 Scope: Replace the zero-arg anchor-witness source feeding `MoleculeResidualPlan74WinningRouteSources` with a non-circular theorem that does not depend on `Molecule.molecule_h_norm`, then propagate that cutover through the breakout and top-level paths.
 Acceptance:
 1. `#print axioms` for at least one new zero-arg theorem implementing
@@ -28,9 +28,12 @@ Last Updated: 2026-03-04
 - [x] Keep zero-arg PLAN_72/69 aliases routed through the winning-route bundle:
   - `molecule_residual_direct_seam_anchor_source_witness_sources`
   - `molecule_residual_direct_source_breakout_sources_via_direct_seam_anchor_witness_sources`.
-- [ ] Isolate a minimal non-`molecule_h_norm` source theorem target for:
+- [x] Isolate a minimal non-`molecule_h_norm` source theorem target for:
   - `MoleculeResidualDirectSeamAnchorSourceWitnessSources` (preferred), or
   - `MoleculeResidualDirectSeamAnchorSource`.
+  - `MoleculeResidualAnchorWitnessZeroArgSource`
+  - `molecule_residual_anchor_witness_zero_arg_source_iff_direct_seam_anchor_source_witness_sources`
+  - `molecule_residual_plan74_winning_route_sources_of_canonical_and_zero_arg_anchor_witness_source`.
 - [ ] Implement a new zero-arg theorem for that target and run targeted axiom probes.
 - [ ] Rewire current-route aliases to the new source theorem.
 - [ ] Re-run `make build`, `make check`, and targeted `#print axioms` probes.
@@ -40,8 +43,8 @@ Last Updated: 2026-03-04
 | Route | Current State | Progress |
 |---|---|---|
 | Winning-route bundle (`MoleculeResidualPlan74WinningRouteSources`) | In place and used by zero-arg alias routing; constructor/projection seams are ground-axiom-only in targeted probes. | [#######---] 70% |
-| Zero-arg anchor witness source | Still routed through `molecule_residual_direct_seam_anchor_source` and remains `Molecule.molecule_h_norm`-backed. | [#---------] 10% |
-| Zero-arg breakout alias cutover | Routed through winning-route bundle; still `Molecule.molecule_h_norm`-backed. | [###-------] 30% |
+| Zero-arg anchor witness source | Target interface is explicit (`MoleculeResidualAnchorWitnessZeroArgSource`); current theorem remains `Molecule.molecule_h_norm`-backed. | [##--------] 20% |
+| Zero-arg breakout alias cutover | Routed through winning-route bundle and zero-arg source interface; still `Molecule.molecule_h_norm`-backed. | [####------] 40% |
 
 ## Notes
 
@@ -51,6 +54,7 @@ Last Updated: 2026-03-04
 - Verification checkpoint (2026-03-04):
   - `make build` and `make check` pass.
   - `#print axioms` still include `Molecule.molecule_h_norm` in:
+    - `molecule_residual_anchor_witness_zero_arg_source`
     - `molecule_residual_direct_seam_anchor_source_witness_sources`
     - `molecule_residual_direct_source_breakout_sources_via_direct_seam_anchor_witness_sources`
     - `molecule_residual_fixed_point_uniqueness_source`
