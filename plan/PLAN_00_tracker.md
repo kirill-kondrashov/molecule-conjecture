@@ -45,7 +45,7 @@ Last Updated: 2026-03-03
 | PLAN_42 | Post-axiom contract hardening | ACTIVE | [#########-] 90% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_45 | Local fixed-point normalization source | ACTIVE | [#########-] 97% |
-| PLAN_46 | Seed-free ingredient constructor | ACTIVE | [#########-] 94% |
+| PLAN_46 | Seed-free ingredient constructor | ACTIVE | [#########-] 96% |
 
 ## Dependency Map
 
@@ -145,6 +145,10 @@ Last Updated: 2026-03-03
   - Added explicit fixed-point-data source seam
     (`MoleculeResidualFixedPointDataSource`) and routed residual existence/
     transfer sources through it.
+  - Bundled remaining non-ground residual inputs as
+    `MoleculeResidualNonGroundSources` and routed
+    `molecule_residual_bounds_seed_free` through
+    `molecule_residual_bounds_seed_free_of_non_ground_sources`.
 
 ## Current Critical Blockers
 

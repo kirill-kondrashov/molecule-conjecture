@@ -1794,6 +1794,24 @@ theorem canonical_fast_fixed_point_data_of_bounds
   rcases h_bounds with ⟨f_star, _U, h_fixed, h_renorm, _hU_open, _h_mem, _h_cv, _h_eventual⟩
   exact ⟨f_star, h_renorm, h_fixed⟩
 
+/--
+Bundled non-ground residual sources currently carrying the final project axiom
+dependency.
+-/
+structure MoleculeResidualNonGroundSources where
+  fixedData : FixedPointNormalizationData
+  fixedUniqueness : MoleculeResidualFixedPointUniquenessSource
+  orbitClause : MoleculeResidualOrbitClauseSource
+
+/--
+Current bundled non-ground residual sources.
+-/
+theorem molecule_residual_non_ground_sources :
+    MoleculeResidualNonGroundSources where
+  fixedData := molecule_residual_fixed_point_data_source
+  fixedUniqueness := molecule_residual_fixed_point_uniqueness_source
+  orbitClause := molecule_residual_orbit_clause_source
+
 /-- Legacy fixed-point existence packaged for narrowed bounds interfaces. -/
 theorem molecule_residual_fixed_exists :
     ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f :=
@@ -1807,9 +1825,34 @@ theorem molecule_residual_bounds_from_fixed_data
     h_fixed_data
     molecule_residual_orbit_transport_source
 
+/--
+Residual bounds constructor from bundled non-ground source inputs.
+-/
+theorem molecule_residual_bounds_seed_free_of_non_ground_sources
+    (h_sources : MoleculeResidualNonGroundSources) :
+    PseudoSiegelAPrioriBounds := by
+  have h_transfer : MoleculeResidualFixedPointTransferSource :=
+    molecule_residual_fixed_point_transfer_source_of_fixed_data_and_unique
+      h_sources.fixedData
+      h_sources.fixedUniqueness
+  have h_ingredients : MoleculeResidualFixedPointNormalizationIngredients :=
+    molecule_residual_fixed_point_normalization_ingredients_of_sources
+      (renormalizable_fixed_exists_of_fixed_point_normalization_data h_sources.fixedData)
+      h_transfer
+  have h_fixed_data : MoleculeResidualFixedPointNormalizationSource :=
+    molecule_residual_fixed_point_normalization_source_of_ingredients h_ingredients
+  have h_transport : MoleculeResidualOrbitTransportSource :=
+    molecule_residual_orbit_transport_source_of_sources
+      molecule_residual_pseudo_siegel_source
+      h_sources.orbitClause
+  exact problem_4_3_bounds_established_conjecture_from_fixed_data_and_transport
+    h_fixed_data
+    h_transport
+
 /-- Seed-free bounds source: avoid the legacy `molecule_h_data` bundle. -/
 theorem molecule_residual_bounds_seed_free : PseudoSiegelAPrioriBounds :=
-  molecule_residual_bounds_from_fixed_data molecule_h_fixed_data
+  molecule_residual_bounds_seed_free_of_non_ground_sources
+    molecule_residual_non_ground_sources
 
 /-- Theorem-level projections from the residual assumption bundle. -/
 theorem molecule_residual_bounds : PseudoSiegelAPrioriBounds :=
