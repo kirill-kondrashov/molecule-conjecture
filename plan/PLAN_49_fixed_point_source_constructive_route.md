@@ -7,7 +7,7 @@ Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_normalization_ingredients` does not include `Molecule.molecule_h_norm`.
 2. `#print axioms Molecule.molecule_residual_non_ground_sources` no longer carries `Molecule.molecule_h_norm` from the fixed-point side.
 3. `#print axioms Molecule.molecule_conjecture_refined` does not include `Molecule.molecule_h_norm`.
-Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/RenormalizationFixedPointUniqueness.lean`, `plan/PLAN_47_h_norm_elimination_constructive_source_rebuild.md`, `plan/PLAN_53_fixed_point_model_bottleneck_refactor.md`, `plan/PLAN_71_non_h_norm_hybrid_class_collapse_source_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_70_non_h_norm_model_collapse_direct_source_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_69_non_h_norm_direct_source_witness_breakout.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_68_non_h_norm_direct_contract_source_constructor.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_67_non_h_norm_direct_contract_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_66_canonical_uniqueness_constructive_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_65_canonical_to_anchor_constructive_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_64_upstream_direct_seam_constructive_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_63_upstream_hybrid_collapse_constructive_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_62_upstream_map_uniqueness_source_replacement.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_52_fixed_point_renorm_witness_extraction.md`
+Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/RenormalizationFixedPointUniqueness.lean`, `plan/PLAN_47_h_norm_elimination_constructive_source_rebuild.md`, `plan/PLAN_53_fixed_point_model_bottleneck_refactor.md`, `plan/PLAN_73_non_h_norm_anchor_early_witness_replacement.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_72_non_h_norm_direct_seam_anchor_source_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_71_non_h_norm_hybrid_class_collapse_source_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_70_non_h_norm_model_collapse_direct_source_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_69_non_h_norm_direct_source_witness_breakout.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_68_non_h_norm_direct_contract_source_constructor.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_67_non_h_norm_direct_contract_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_66_canonical_uniqueness_constructive_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_65_canonical_to_anchor_constructive_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_64_upstream_direct_seam_constructive_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_63_upstream_hybrid_collapse_constructive_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_62_upstream_map_uniqueness_source_replacement.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_52_fixed_point_renorm_witness_extraction.md`
 Stuck Rule: STUCK if the only available fixed-point data/uniqueness constructors in current infrastructure require reintroducing a project axiom.
 Last Updated: 2026-03-04
 
@@ -148,8 +148,8 @@ Last Updated: 2026-03-04
   - transport-wrapped integration seam above is axiom-clean modulo ground
     axioms; current routed theorem still carries `Molecule.molecule_h_norm`
     through current fixed-data/uniqueness/transport sources.
-- This plan now runs in parallel with PLAN_71 (non-h_norm hybrid-class-collapse
-  source witness) after PLAN_70 was archived as stuck.
+- This plan now runs in parallel with PLAN_73 (non-h_norm anchor-early witness
+  replacement) after PLAN_72 was archived as stuck.
 - PLAN_62 archived integration checkpoint (2026-03-04):
   - zero-arg map/hybrid uniqueness seams are now routed through
     `MoleculeResidualFixedPointUniquenessDirectSource`;
@@ -247,17 +247,27 @@ Last Updated: 2026-03-04
   - final stuck check:
     every current zero-arg candidate witness route remained
     `Molecule.molecule_h_norm`-backed.
-- PLAN_71 kickoff checkpoint (2026-03-04):
-  - successor target is now upstream replacement of
-    `MoleculeResidualFixedPointHybridClassCollapseSource` without
-    `molecule_h_norm`.
+- PLAN_71 final archived checkpoint (2026-03-04):
   - introduced minimal interface:
     `MoleculeResidualHybridClassCollapseSourceWitnessSources`.
-  - bridged PLAN_71 → PLAN_70 → PLAN_69 routes and added current-route aliases
-    through the new interface.
-  - targeted probes confirm interface-level declarations are ground-axiom-only,
-    while current zero-arg PLAN_71 witness route remains
+  - bridged PLAN_71 → PLAN_70 → PLAN_69 routes and added current-route aliases.
+  - targeted probes confirm interface-level declarations are ground-axiom-only.
+  - final stuck check:
+    every current zero-arg candidate witness route remained
     `Molecule.molecule_h_norm`-backed.
+- PLAN_72 final archived checkpoint (2026-03-04):
+  - introduced minimal interface:
+    `MoleculeResidualDirectSeamAnchorSourceWitnessSources`.
+  - added interface decomposition/equivalence and bridges into PLAN_71/70/69
+    routes, plus current-route aliases.
+  - targeted probes confirm interface-level declarations are ground-axiom-only.
+  - final stuck check:
+    current zero-arg PLAN_72 witness route remained
+    `Molecule.molecule_h_norm`-backed.
+- PLAN_73 kickoff checkpoint (2026-03-04):
+  - successor target is now upstream replacement of
+    `molecule_residual_direct_seam_anchor_source_early` without
+    `molecule_h_norm`.
 - Sub-plan linkage:
   - model-level witness bottleneck is tracked explicitly in
     `PLAN_53_fixed_point_model_bottleneck_refactor.md`.

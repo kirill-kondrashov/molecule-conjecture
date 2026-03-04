@@ -5850,6 +5850,97 @@ theorem molecule_residual_direct_source_breakout_sources_via_hybrid_class_collap
     molecule_residual_hybrid_class_collapse_witness_sources
 
 /--
+Minimal upstream source interface for PLAN_72:
+explicit witness of the direct-seam-anchor source.
+-/
+structure MoleculeResidualDirectSeamAnchorSourceWitnessSources : Prop where
+  anchor : MoleculeResidualDirectSeamAnchorSource
+
+/--
+Project direct-seam-anchor source from PLAN_72 witness sources.
+-/
+theorem molecule_residual_direct_seam_anchor_source_of_direct_seam_anchor_witness_sources
+    (h_sources : MoleculeResidualDirectSeamAnchorSourceWitnessSources) :
+    MoleculeResidualDirectSeamAnchorSource :=
+  h_sources.anchor
+
+/--
+Assemble PLAN_72 witness sources from direct-seam-anchor source data.
+-/
+theorem molecule_residual_direct_seam_anchor_witness_sources_of_direct_seam_anchor_source
+    (h_anchor : MoleculeResidualDirectSeamAnchorSource) :
+    MoleculeResidualDirectSeamAnchorSourceWitnessSources :=
+  ⟨h_anchor⟩
+
+/--
+PLAN_72 witness-source interface is equivalent to direct-seam-anchor source
+data.
+-/
+theorem molecule_residual_direct_seam_anchor_witness_sources_iff_direct_seam_anchor_source :
+    MoleculeResidualDirectSeamAnchorSourceWitnessSources ↔
+      MoleculeResidualDirectSeamAnchorSource := by
+  constructor
+  · intro h_sources
+    exact h_sources.anchor
+  · intro h_anchor
+    exact
+      molecule_residual_direct_seam_anchor_witness_sources_of_direct_seam_anchor_source
+        h_anchor
+
+/--
+Build PLAN_71 witness sources from PLAN_72 witness sources.
+-/
+theorem molecule_residual_hybrid_class_collapse_witness_sources_of_direct_seam_anchor_witness_sources
+    (h_sources : MoleculeResidualDirectSeamAnchorSourceWitnessSources) :
+    MoleculeResidualHybridClassCollapseSourceWitnessSources :=
+  molecule_residual_hybrid_class_collapse_witness_sources_of_fixed_point_hybrid_class_collapse_source
+    (molecule_residual_fixed_point_hybrid_class_collapse_source_direct_of_source
+      (molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_anchor_source
+        h_sources.anchor))
+
+/--
+Build PLAN_70 witness sources from PLAN_72 witness sources.
+-/
+theorem molecule_residual_model_collapse_direct_witness_sources_of_direct_seam_anchor_witness_sources
+    (h_sources : MoleculeResidualDirectSeamAnchorSourceWitnessSources) :
+    MoleculeResidualModelCollapseDirectSourceWitnessSources :=
+  molecule_residual_model_collapse_direct_witness_sources_of_hybrid_class_collapse_witness_sources
+    (molecule_residual_hybrid_class_collapse_witness_sources_of_direct_seam_anchor_witness_sources
+      h_sources)
+
+/--
+Build PLAN_69 breakout sources from:
+- canonical fixed-point data, and
+- PLAN_72 witness sources.
+-/
+theorem molecule_residual_direct_source_breakout_sources_of_canonical_and_direct_seam_anchor_witness_sources
+    (h_canonical : CanonicalFastFixedPointData)
+    (h_sources : MoleculeResidualDirectSeamAnchorSourceWitnessSources) :
+    MoleculeResidualDirectSourceBreakoutSources :=
+  molecule_residual_direct_source_breakout_sources_of_canonical_and_hybrid_class_collapse_witness_sources
+    h_canonical
+    (molecule_residual_hybrid_class_collapse_witness_sources_of_direct_seam_anchor_witness_sources
+      h_sources)
+
+/--
+Current PLAN_72 witness-source theorem routed from the current direct-seam-anchor
+source theorem.
+-/
+theorem molecule_residual_direct_seam_anchor_source_witness_sources :
+    MoleculeResidualDirectSeamAnchorSourceWitnessSources :=
+  molecule_residual_direct_seam_anchor_witness_sources_of_direct_seam_anchor_source
+    molecule_residual_direct_seam_anchor_source
+
+/--
+Current PLAN_69 breakout-source theorem routed through PLAN_72 witness sources.
+-/
+theorem molecule_residual_direct_source_breakout_sources_via_direct_seam_anchor_witness_sources :
+    MoleculeResidualDirectSourceBreakoutSources :=
+  molecule_residual_direct_source_breakout_sources_of_canonical_and_direct_seam_anchor_witness_sources
+    canonical_fast_fixed_point_data_from_bounds
+    molecule_residual_direct_seam_anchor_source_witness_sources
+
+/--
 Current direct hybrid-class uniqueness source seam routed from the current
 map-level uniqueness theorem.
 -/

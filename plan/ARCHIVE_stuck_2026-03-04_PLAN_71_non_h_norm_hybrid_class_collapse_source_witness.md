@@ -1,7 +1,7 @@
 # PLAN 71 - Non-h_norm Hybrid-Class-Collapse Source Witness
 
-Status: ACTIVE
-Progress: [#######---] 75%
+Status: STUCK (ARCHIVED)
+Progress: [#########-] 90%
 Scope: Replace the current zero-arg `MoleculeResidualFixedPointHybridClassCollapseSource` path with a non-circular, non-`molecule_h_norm` witness so PLAN_70/69 breakout cutovers can become non-`molecule_h_norm`.
 Acceptance:
 1. `#print axioms` for at least one theorem implementing one of:
@@ -57,3 +57,13 @@ Last Updated: 2026-03-04
   - residual blocker remains: current zero-arg PLAN_71 witness
     `molecule_residual_hybrid_class_collapse_witness_sources` is still
     `Molecule.molecule_h_norm`-backed.
+- Final candidate-route checkpoint (2026-03-04):
+  - targeted probes over current zero-arg routes confirmed:
+    `molecule_residual_fixed_point_hybrid_class_collapse_source`,
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_direct`,
+    `molecule_residual_fixed_point_hybrid_class_collapse_direct_source`,
+    `molecule_residual_direct_seam_anchor_source_early`,
+    `molecule_residual_fixed_point_uniqueness_source_direct`,
+    `molecule_residual_hybrid_unique_fixed_point_source`,
+    and PLAN_71/70/69 routed aliases all remain `Molecule.molecule_h_norm`-backed.
+  - successor plan: `PLAN_72_non_h_norm_direct_seam_anchor_source_witness.md`.
