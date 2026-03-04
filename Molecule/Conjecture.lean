@@ -2305,6 +2305,13 @@ def MoleculeResidualFixedPointUniquenessSource : Prop :=
            (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2
 
 /--
+Dedicated replacement seam for the current direct map-level fixed-point
+uniqueness theorem.
+-/
+def MoleculeResidualFixedPointUniquenessDirectSource : Prop :=
+  MoleculeResidualFixedPointUniquenessSource
+
+/--
 Source seam: all fast-renormalizable fixed points collapse to one hybrid class.
 -/
 def MoleculeResidualFixedPointHybridClassCollapseSource : Prop :=
@@ -2694,6 +2701,45 @@ theorem molecule_residual_fixed_point_uniqueness_source_of_hybrid_class_collapse
   exact fixed_points_in_same_class_eq f1 f2 h1.2 h1.1 h2.2 h2.1 h_class
 
 /--
+Build direct map-level fixed-point uniqueness seam from hybrid-class
+fixed-point uniqueness.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_uniqueness_source
+    (h_class_unique : MoleculeResidualHybridClassFixedPointUniquenessSource) :
+    MoleculeResidualFixedPointUniquenessDirectSource := by
+  intro f1 f2 h1 h2
+  have h_class :
+      toHybridClass f1 = toHybridClass f2 :=
+    h_class_unique (toHybridClass f1) (toHybridClass f2)
+      ⟨h1.2, by simpa [R_hybrid, toHybridClass] using h1.1⟩
+      ⟨h2.2, by simpa [R_hybrid, toHybridClass] using h2.1⟩
+  exact fixed_points_in_same_class_eq f1 f2 h1.2 h1.1 h2.2 h2.1 h_class
+
+/--
+Build direct map-level fixed-point uniqueness seam from hybrid-class
+uniqueness assembly sources.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_uniqueness_assembly_sources
+    (h_sources : MoleculeResidualHybridClassFixedPointUniquenessAssemblySources) :
+    MoleculeResidualFixedPointUniquenessDirectSource :=
+  molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_uniqueness_source
+    (molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_assembly_sources
+      h_sources)
+
+/--
+Build direct map-level fixed-point uniqueness seam from model-collapse input
+for hybrid-class uniqueness sources.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_uniqueness_model_collapse_source
+    (h_model_collapse : MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource) :
+    MoleculeResidualFixedPointUniquenessDirectSource :=
+  molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_uniqueness_source
+    (molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_model_sources
+      (molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_lifted_sources
+        h_model_collapse
+        molecule_residual_lifted_hybrid_class_fixed_point_lift_source))
+
+/--
 Build map-level fixed-point uniqueness directly from unique fixed point on
 hybrid classes.
 -/
@@ -2919,6 +2965,51 @@ theorem molecule_residual_fixed_point_uniqueness_source_direct :
     MoleculeResidualFixedPointUniquenessSource :=
   molecule_residual_fixed_point_uniqueness_source_of_hybrid_class_collapse_source
     molecule_residual_fixed_point_hybrid_class_collapse_source_direct
+
+/--
+Build direct map-level fixed-point uniqueness source seam from hybrid-class
+collapse source assumptions.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_collapse_source
+    (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
+    MoleculeResidualFixedPointUniquenessDirectSource :=
+  molecule_residual_fixed_point_uniqueness_source_of_hybrid_class_collapse_source
+    h_collapse
+
+/--
+Build direct map-level fixed-point uniqueness source seam from hybrid-unique
+source assumptions.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_unique_fixed_point_source
+    (h_hybrid_unique : MoleculeResidualHybridUniqueFixedPointSource) :
+    MoleculeResidualFixedPointUniquenessDirectSource :=
+  molecule_residual_fixed_point_uniqueness_source_of_hybrid_unique_fixed_point_source
+    h_hybrid_unique
+
+/--
+Recover map-level fixed-point uniqueness from the dedicated direct-source seam.
+-/
+theorem molecule_residual_fixed_point_uniqueness_source_direct_of_source
+    (h_source : MoleculeResidualFixedPointUniquenessDirectSource) :
+    MoleculeResidualFixedPointUniquenessSource :=
+  h_source
+
+/--
+Current direct map-level fixed-point uniqueness source seam.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source :
+    MoleculeResidualFixedPointUniquenessDirectSource :=
+  molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_collapse_source
+    molecule_residual_fixed_point_hybrid_class_collapse_source_direct
+
+/--
+Current fixed-point uniqueness source theorem (direct legacy route), routed
+through the dedicated direct-source seam.
+-/
+theorem molecule_residual_fixed_point_uniqueness_source_direct_routed :
+    MoleculeResidualFixedPointUniquenessSource :=
+  molecule_residual_fixed_point_uniqueness_source_direct_of_source
+    molecule_residual_fixed_point_uniqueness_direct_source
 
 /--
 Assemble fixed-point transfer source from fixed-point normalization data and

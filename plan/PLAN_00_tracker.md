@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_62 | Upstream map-uniqueness source replacement | ACTIVE | [#---------] 10% |
+| PLAN_62 | Upstream map-uniqueness source replacement | ACTIVE | [#####-----] 55% |
 
 ## Dependency Map
 
@@ -522,6 +522,22 @@ Last Updated: 2026-03-04
     upstream replacement point feeding PLAN_61 seams.
   - Inherited PLAN_61 direct/model-collapse seam infrastructure and set first
     execution target to upstream constructor discovery in PLAN_49/53.
+  - Introduced dedicated map-level direct-source seam alias and routed wrappers:
+    `MoleculeResidualFixedPointUniquenessDirectSource`,
+    `molecule_residual_fixed_point_uniqueness_direct_source`,
+    `molecule_residual_fixed_point_uniqueness_source_direct_routed`.
+  - Identified the first concrete upstream constructor candidate:
+    `MoleculeResidualFixedPointHybridClassCollapseSource ->
+    molecule_residual_fixed_point_uniqueness_source_of_hybrid_class_collapse_source`.
+  - Exported non-`molecule_h_norm` constructor hooks into the direct seam:
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_uniqueness_source`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_uniqueness_assembly_sources`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_uniqueness_model_collapse_source`.
+  - Probe checkpoint:
+    these constructor hooks are ground-axiom-only; current zero-arg direct
+    route (`molecule_residual_fixed_point_uniqueness_direct_source`,
+    `molecule_residual_fixed_point_uniqueness_source_direct_routed`) remains
+    `Molecule.molecule_h_norm`-backed.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
