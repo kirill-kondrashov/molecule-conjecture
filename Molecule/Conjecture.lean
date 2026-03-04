@@ -3217,6 +3217,18 @@ theorem molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_hybrid_
     h_collapse
 
 /--
+Assemble hybrid-class unique fixed-point source from bounds and a hybrid-class
+fixed-point uniqueness source.
+-/
+theorem molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_hybrid_class_uniqueness_source
+    (h_bounds : PseudoSiegelAPrioriBounds)
+    (h_class_unique : MoleculeResidualHybridClassFixedPointUniquenessSource) :
+    MoleculeResidualHybridUniqueFixedPointSource :=
+  molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_uniqueness_source
+    (canonical_fast_fixed_point_data_of_bounds h_bounds)
+    h_class_unique
+
+/--
 Assemble hybrid-class unique fixed-point source from bounds and map-level
 uniqueness source seams.
 -/
@@ -3230,13 +3242,22 @@ theorem molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_uniquen
       h_unique)
 
 /--
+Current hybrid-class fixed-point uniqueness source theorem.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_source :
+    MoleculeResidualHybridClassFixedPointUniquenessSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_projection_injective_source
+    molecule_residual_fixed_point_hybrid_class_collapse_source
+    molecule_residual_hybrid_projection_injective_source
+
+/--
 Current hybrid-class unique fixed-point source theorem.
 -/
 theorem molecule_residual_hybrid_unique_fixed_point_source :
     MoleculeResidualHybridUniqueFixedPointSource :=
-  molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_hybrid_class_collapse_source
+  molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_hybrid_class_uniqueness_source
     molecule_residual_bounds
-    molecule_residual_fixed_point_hybrid_class_collapse_source
+    molecule_residual_hybrid_class_fixed_point_uniqueness_source
 
 /--
 Current map-level fixed-point uniqueness theorem routed via the hybrid-unique

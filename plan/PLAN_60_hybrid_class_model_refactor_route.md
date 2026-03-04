@@ -1,7 +1,7 @@
 # PLAN 60 - Hybrid-Class Model Refactor Route
 
 Status: ACTIVE
-Progress: [########--] 80%
+Progress: [#########-] 90%
 Scope: Break the current identity-model bottleneck (`HybridClass := BMol`) so the hybrid-level unique-fixed-point source can be constructed from a genuinely hybrid-level source, not by recycling map-level uniqueness.
 Acceptance:
 1. Export a nontrivial hybrid-class abstraction seam (or quotient interface) that does not force `toHybridClass f = toHybridClass g ↔ f = g` in the active route.
@@ -40,7 +40,11 @@ Last Updated: 2026-03-04
   - and rewired
     `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_collapse_source`
     through this route.
-- [ ] Rewire the public current-route theorem names and rerun axiom probes.
+- [x] Rewire the public current-route theorem names and rerun axiom probes.
+- [ ] Replace the current theorem-level source
+  `molecule_residual_hybrid_class_fixed_point_uniqueness_source` with a
+  constructor from a nontrivial hybrid abstraction seam (not tied to the
+  current identity-model collapse path), then re-run probes.
 
 ## Notes
 
@@ -54,3 +58,6 @@ Last Updated: 2026-03-04
   theorems are axiom-clean modulo ground axioms; the remaining blocker is
   still the current theorem-level source
   `molecule_residual_hybrid_unique_fixed_point_source`.
+- Public current-route theorem names are now rewired through the hybrid-class
+  uniqueness wrapper; probes were rerun and show the wrapper is clean while the
+  current source theorem still carries `Molecule.molecule_h_norm`.
