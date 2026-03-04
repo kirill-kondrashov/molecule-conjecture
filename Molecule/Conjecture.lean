@@ -1591,6 +1591,24 @@ theorem residual_fixed_point_normalization_ingredients_of_refined_and_transfer
     h_refined.2
     h_transfer
 
+/--
+Assemble residual fixed-point-normalization ingredients from:
+- refined contract assumptions (for Subtarget A),
+- fixed-point normalization data, and
+- uniqueness of fast-renormalizable fixed points (for Subtarget B).
+-/
+theorem residual_fixed_point_normalization_ingredients_of_refined_fixed_data_and_unique
+    (h_refined : MoleculeConjectureRefined)
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_unique :
+      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
+    MoleculeResidualFixedPointNormalizationIngredients :=
+  ⟨
+    residual_fixed_point_existence_of_refined_contract h_refined,
+    fixed_point_local_normalization_transfer_of_fixed_data_and_unique h_fixed_data h_unique
+  ⟩
+
 structure MoleculeHypothesisPack where
   h_bounds : PseudoSiegelAPrioriBounds
   h_conj :
