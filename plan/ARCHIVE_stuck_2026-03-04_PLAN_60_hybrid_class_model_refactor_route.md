@@ -1,7 +1,7 @@
 # PLAN 60 - Hybrid-Class Model Refactor Route
 
-Status: ACTIVE
-Progress: [#########-] 99%
+Status: STUCK (ARCHIVED)
+Progress: [##########] 100%
 Scope: Break the current identity-model bottleneck (`HybridClass := BMol`) so the hybrid-level unique-fixed-point source can be constructed from a genuinely hybrid-level source, not by recycling map-level uniqueness.
 Acceptance:
 1. Export a nontrivial hybrid-class abstraction seam (or quotient interface) that does not force `toHybridClass f = toHybridClass g ↔ f = g` in the active route.
@@ -169,3 +169,10 @@ Last Updated: 2026-03-04
   blocked on replacing the direct source theorem
   `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct` with a
   non-`molecule_h_norm` source produced upstream.
+- Final stuck check (2026-03-04):
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_iff_uniqueness_source_of_bounds`
+    is axiom-clean and shows the remaining model-collapse input is equivalent
+    (under active bounds) to map-level uniqueness.
+  - Current zero-arg route remains `Molecule.molecule_h_norm`-backed on all
+    probe-matrix branches.
+  These satisfy the PLAN_60 stuck rule and hand off to PLAN_61.

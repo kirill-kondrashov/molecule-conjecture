@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 99%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_60
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_61
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-04
 
@@ -49,12 +49,12 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_60 | Hybrid-class model refactor route | ACTIVE | [#########-] 99% |
+| PLAN_61 | Upstream hybrid-class uniqueness source replacement | ACTIVE | [##--------] 20% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_60 (hybrid-class model refactor track), then PLAN_43.
+- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_61 (upstream class-uniqueness replacement), then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -148,6 +148,9 @@ Last Updated: 2026-03-04
 - Archived STUCK plan:
   - `ARCHIVE_stuck_2026-03-04_PLAN_59_hybrid_unique_fixed_point_source_constructor.md`
     (superseded by PLAN_60 hybrid-class model refactor route).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_60_hybrid_class_model_refactor_route.md`
+    (superseded by PLAN_61 upstream hybrid-class uniqueness source replacement).
 - `PLAN_47` progress:
   - Introduced narrowed residual bounds-assembly source pack in
     `Molecule/Conjecture.lean`:
@@ -364,7 +367,7 @@ Last Updated: 2026-03-04
   - STUCK condition met: every constructor route is still tied to
     `molecule_h_norm` or an equivalent uniqueness assumption in the current
     model route.
-- `PLAN_60` progress:
+- `PLAN_60` final (archived as STUCK):
   - Opened successor model-refactor track after archiving PLAN_59 as stuck.
   - Added current-model bottleneck lemmas in
     `Molecule/RenormalizationFixedPointUniqueness.lean`:
@@ -470,6 +473,22 @@ Last Updated: 2026-03-04
   - Next target is replacing the map-level collapse source input in the lifted
     model-source route with a non-`molecule_h_norm` source, then rerunning
     hybrid/uniqueness/orbit wrapper probes.
+  - Final stuck check:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_iff_uniqueness_source_of_bounds`
+    is axiom-clean and identifies the current route as equivalence-bound under
+    active bounds; all zero-arg model-collapse wrappers remain
+    `Molecule.molecule_h_norm`-backed.
+- `PLAN_61` progress:
+  - Opened successor track to replace
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct` with
+    a non-`molecule_h_norm` upstream source.
+  - Inherited PLAN_60 obstruction/probe matrix and set first execution target to
+    upstream constructor discovery in PLAN_49/53.
+  - Added dedicated replacement seam and routed current direct theorem through it:
+    `MoleculeResidualHybridClassFixedPointUniquenessDirectSource`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_assembly_sources`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct_of_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
