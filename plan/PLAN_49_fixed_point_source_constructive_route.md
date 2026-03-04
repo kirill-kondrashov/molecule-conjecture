@@ -199,6 +199,9 @@ Last Updated: 2026-03-04
     anchor contracts are explicitly equivalent to those direct contracts.
   - canonical/refined constructor routes from model-collapse-direct contracts
     into anchor/direct seams are now explicit.
+  - canonical/refined map-level uniqueness contracts are now explicitly
+    equivalent to canonical/refined map-level direct-uniqueness contracts, with
+    matching anchor-contract equivalences and constructor routes.
 - Sub-plan linkage:
   - model-level witness bottleneck is tracked explicitly in
     `PLAN_53_fixed_point_model_bottleneck_refactor.md`.

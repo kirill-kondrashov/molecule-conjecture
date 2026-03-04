@@ -1,7 +1,7 @@
 # PLAN 66 - Canonical Uniqueness Constructive Source
 
 Status: ACTIVE
-Progress: [#######---] 70%
+Progress: [########--] 80%
 Scope: Construct a non-`molecule_h_norm` theorem for canonical/refined map-level uniqueness (`MoleculeResidualFixedPointUniquenessOfCanonicalSource` or refined counterpart), then route PLAN_65 anchor/direct seams through it.
 Acceptance:
 1. `#print axioms` for one of:
@@ -80,3 +80,16 @@ Last Updated: 2026-03-04
     `molecule_residual_direct_seam_anchor_source_of_refined_and_model_collapse_direct_of_refined_source`,
     `molecule_residual_fixed_point_uniqueness_direct_source_of_refined_and_model_collapse_direct_of_refined_source`.
   - targeted probes confirm these constructor routes are ground-axiom-only.
+- Direct-uniqueness contract checkpoint:
+  - canonical/refined map-level uniqueness contracts are now explicitly
+    equivalent to canonical/refined map-level direct-uniqueness contracts via:
+    `molecule_residual_fixed_point_uniqueness_of_canonical_source_iff_fixed_point_uniqueness_direct_of_canonical_source`,
+    `molecule_residual_fixed_point_uniqueness_of_refined_source_iff_fixed_point_uniqueness_direct_of_refined_source`.
+  - canonical/refined anchor contracts are explicitly equivalent to those
+    direct-uniqueness contracts via:
+    `molecule_residual_direct_seam_anchor_of_canonical_source_iff_fixed_point_uniqueness_direct_of_canonical_source`,
+    `molecule_residual_direct_seam_anchor_of_refined_source_iff_fixed_point_uniqueness_direct_of_refined_source`.
+  - added canonical/refined constructor routes from direct-uniqueness contracts
+    into anchor seams (and thus direct seams).
+  - targeted probes confirm these equivalence and constructor theorems are
+    ground-axiom-only.

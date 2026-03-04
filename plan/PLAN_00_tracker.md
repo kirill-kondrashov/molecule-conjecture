@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_66 | Canonical uniqueness constructive source | ACTIVE | [#######---] 70% |
+| PLAN_66 | Canonical uniqueness constructive source | ACTIVE | [########--] 80% |
 
 ## Dependency Map
 
@@ -731,6 +731,15 @@ Last Updated: 2026-03-04
     contracts into anchor/direct seams.
   - Probe checkpoint:
     new PLAN_66 model-collapse-direct constructor routes are
+    ground-axiom-only.
+  - Added canonical/refined contract-equivalence layer between map-level
+    uniqueness contracts and map-level direct-uniqueness contracts.
+  - Added canonical/refined anchor-contract equivalence to map-level
+    direct-uniqueness contracts.
+  - Added canonical/refined constructor routes from direct-uniqueness contracts
+    into anchor seams.
+  - Probe checkpoint:
+    new PLAN_66 direct-uniqueness contract/equivalence/constructor theorems are
     ground-axiom-only.
   - Current active target:
     construct a non-`molecule_h_norm` theorem for
