@@ -1690,13 +1690,6 @@ def MoleculeResidualFixedPointDataSource : Prop :=
   FixedPointNormalizationData
 
 /--
-Current residual fixed-point data source (legacy global-norm route).
--/
-theorem molecule_residual_fixed_point_data_source :
-    MoleculeResidualFixedPointDataSource :=
-  molecule_h_fixed_data_direct
-
-/--
 Explicit replacement seam for residual fixed-point normalization data.
 The PLAN_45 cutover target is to replace this source theorem with a seed-free
 construction.
@@ -1787,6 +1780,27 @@ theorem molecule_residual_fixed_point_transfer_source :
   fixed_point_local_normalization_transfer_of_global_norm molecule_h_norm
 
 /--
+Build residual fixed-point data source from explicit existence and transfer
+source theorems.
+-/
+theorem molecule_residual_fixed_point_data_source_of_sources
+    (h_exists : MoleculeResidualFixedPointExistenceSource)
+    (h_transfer : MoleculeResidualFixedPointTransferSource) :
+    MoleculeResidualFixedPointDataSource :=
+  fixed_point_normalization_data_of_fixed_exists_and_transfer
+    h_exists
+    h_transfer
+
+/--
+Current residual fixed-point data source (legacy global-norm route).
+-/
+theorem molecule_residual_fixed_point_data_source :
+    MoleculeResidualFixedPointDataSource :=
+  molecule_residual_fixed_point_data_source_of_sources
+    molecule_residual_fixed_point_existence_source
+    molecule_residual_fixed_point_transfer_source
+
+/--
 Assemble residual fixed-point-normalization ingredients from explicit existence
 and transfer source theorems.
 -/
@@ -1827,8 +1841,8 @@ Current bundled ingredient source theorem (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_normalization_ingredients :
     MoleculeResidualFixedPointNormalizationIngredients :=
-  molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer
-    molecule_residual_fixed_point_data_source
+  molecule_residual_fixed_point_normalization_ingredients_of_sources
+    molecule_residual_fixed_point_existence_source
     molecule_residual_fixed_point_transfer_source
 
 /--
@@ -2055,12 +2069,24 @@ theorem molecule_residual_fixed_point_assembly_sources_of_sources
   ⟨h_fixed_data, h_fixed_transfer⟩
 
 /--
+Build fixed-point-only assembly sources from explicit fixed-point existence and
+fixed-transfer source theorems.
+-/
+theorem molecule_residual_fixed_point_assembly_sources_of_exists_and_transfer
+    (h_exists : MoleculeResidualFixedPointExistenceSource)
+    (h_transfer : MoleculeResidualFixedPointTransferSource) :
+    MoleculeResidualFixedPointAssemblySources :=
+  molecule_residual_fixed_point_assembly_sources_of_sources
+    (molecule_residual_fixed_point_data_source_of_sources h_exists h_transfer)
+    h_transfer
+
+/--
 Current fixed-point-only assembly source pack.
 -/
 theorem molecule_residual_fixed_point_assembly_sources :
     MoleculeResidualFixedPointAssemblySources :=
-  molecule_residual_fixed_point_assembly_sources_of_sources
-    molecule_residual_fixed_point_data_source
+  molecule_residual_fixed_point_assembly_sources_of_exists_and_transfer
+    molecule_residual_fixed_point_existence_source
     molecule_residual_fixed_point_transfer_source
 
 /--

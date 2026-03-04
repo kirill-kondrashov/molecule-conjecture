@@ -1,7 +1,7 @@
 # PLAN 53 - Fixed-Point Model Bottleneck Refactor
 
 Status: ACTIVE
-Progress: [######----] 60%
+Progress: [#######---] 70%
 Scope: Resolve the model-level bottleneck exposed by `no_fixed_point_implies_renormalizable` so the fixed-point ingredient route can be rebuilt without `molecule_h_norm` and without relying on the false bridge contract.
 Acceptance:
 1. The fixed-point ingredient route no longer depends on `FixedPointImpliesRenormalizable`.
@@ -29,6 +29,12 @@ Last Updated: 2026-03-04
   bridge+uniqueness routing:
   - `molecule_residual_fixed_point_existence_source`
   - `molecule_residual_fixed_point_transfer_source`
+- [x] Decouple current fixed-point data source theorem from one-off fixed-data
+  seed by composing from explicit source seams:
+  - `molecule_residual_fixed_point_data_source_of_sources`.
+- [x] Decouple current fixed-point assembly source theorem from fixed-data
+  source dependency by routing through explicit existence + transfer seams:
+  - `molecule_residual_fixed_point_assembly_sources_of_exists_and_transfer`.
 - [ ] Replace `molecule_residual_fixed_point_data_source` with a non-circular
   non-`molecule_h_norm` theorem-level source.
 - [ ] Re-run fixed-point and top-level axiom probes after replacing
@@ -47,6 +53,10 @@ Last Updated: 2026-03-04
     `renormalizable_fixed_exists_of_global_norm`.
   - `molecule_residual_fixed_point_transfer_source` now routes through
     `fixed_point_local_normalization_transfer_of_global_norm`.
+- Current fixed-point data/assembly source routing is now explicit-source
+  composed:
+  - `molecule_residual_fixed_point_data_source_of_sources`
+  - `molecule_residual_fixed_point_assembly_sources_of_exists_and_transfer`.
 - Probe checkpoint:
   - `#print axioms Molecule.molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer`
     is ground-axiom-only.

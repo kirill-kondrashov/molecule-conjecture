@@ -44,10 +44,10 @@ Last Updated: 2026-03-04
 | PLAN_41 | Residual bounds elimination | DONE | [##########] 100% |
 | PLAN_42 | Post-axiom contract hardening | DONE | [##########] 100% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
-| PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 97% |
-| PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 97% |
+| PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 98% |
+| PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 98% |
 | PLAN_51 | Orbit fixed-data source replacement | ACTIVE | [###-------] 30% |
-| PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [######----] 60% |
+| PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [#######---] 70% |
 
 ## Dependency Map
 
@@ -159,6 +159,11 @@ Last Updated: 2026-03-04
     `molecule_residual_non_ground_sources_of_ingredients_and_orbit`.
   - Split fixed-point ingredient route into explicit bridge + transfer seams
     and routed ingredient assembly through that path.
+  - Rewired current fixed-point ingredient/data/assembly theorems through
+    explicit existence + transfer seam composition:
+    `molecule_residual_fixed_point_normalization_ingredients_of_sources`,
+    `molecule_residual_fixed_point_data_source_of_sources`,
+    `molecule_residual_fixed_point_assembly_sources_of_exists_and_transfer`.
   - Added local orbit-obligation seam in `Molecule/Conjecture.lean`:
     `MoleculeOrbitClauseAt` and
     `molecule_orbit_clause_at_of_orbit_clause`.
@@ -204,6 +209,12 @@ Last Updated: 2026-03-04
   - Current existence/transfer source theorems are bridge-free and ex-falso-free:
     `molecule_residual_fixed_point_existence_source`,
     `molecule_residual_fixed_point_transfer_source`.
+  - Current fixed-point data source theorem now routes via explicit source
+    composition:
+    `molecule_residual_fixed_point_data_source_of_sources`.
+  - Current fixed-point assembly source theorem now routes via explicit
+    existence+transfer seam:
+    `molecule_residual_fixed_point_assembly_sources_of_exists_and_transfer`.
   - Next target is constructive replacement of:
     `molecule_residual_fixed_point_normalization_ingredients`.
 - `PLAN_51` progress:
@@ -228,6 +239,10 @@ Last Updated: 2026-03-04
     routing:
     `molecule_residual_fixed_point_existence_source`,
     `molecule_residual_fixed_point_transfer_source`.
+  - Decoupled current fixed-point data/assembly source theorems from one-off
+    fixed-data seed routing:
+    `molecule_residual_fixed_point_data_source_of_sources`,
+    `molecule_residual_fixed_point_assembly_sources_of_exists_and_transfer`.
   - Targeted probe confirms
     `molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer`
     is axiom-clean modulo ground axioms.
