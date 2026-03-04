@@ -48,7 +48,7 @@ Last Updated: 2026-03-04
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 99% |
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 80% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
-| PLAN_57 | Orbit minimal theorem debt extraction | ACTIVE | [########--] 82% |
+| PLAN_57 | Orbit minimal theorem debt extraction | ACTIVE | [#########-] 91% |
 
 ## Dependency Map
 
@@ -310,15 +310,27 @@ Last Updated: 2026-03-04
     `molecule_residual_canonical_orbit_at_debt_source_of_landing_and_at_fixed_data_source`,
     `molecule_residual_canonical_orbit_structure_source_of_transport_source`,
     `molecule_residual_canonical_orbit_at_debt_source_of_landing_and_transport_source`.
+  - Added canonical `V`-bound source seam and decomposition:
+    `MoleculeResidualCanonicalVBoundSource`,
+    `molecule_residual_canonical_orbit_landing_source_of_structure_and_vbound_source`,
+    `molecule_residual_canonical_orbit_at_debt_source_of_structure_and_vbound_source`,
+    `molecule_residual_canonical_vbound_source`.
+  - Added global `V`-bound seam and projection route:
+    `MoleculeResidualGlobalVBoundSource`,
+    `molecule_residual_global_vbound_source_of_h_norm`,
+    `molecule_residual_global_vbound_source`,
+    `molecule_residual_canonical_vbound_source_of_global_vbound_source`.
   - Targeted probes confirm debt seam constructor theorems are axiom-clean
   modulo ground axioms; current theorem
   `molecule_residual_canonical_orbit_at_debt_source` still carries
   `Molecule.molecule_h_norm`, and
     `molecule_residual_orbit_clause_at_fixed_data_source` inherits that.
   - Current explicit debt target is now
-    `molecule_residual_canonical_orbit_landing_source`, while structure-side
-    constructor seams are already source-clean modulo ground axioms.
-  - Next target is constructive replacement of the landing-source route.
+    `molecule_residual_global_vbound_source`: landing/debt reconstruction and
+    canonical `V`-bound projection seams are source-clean modulo ground axioms
+    once global `V`-bound control is provided.
+  - Next target is constructive replacement of the global `V`-bound source
+    route.
 
 ## Current Critical Blockers
 

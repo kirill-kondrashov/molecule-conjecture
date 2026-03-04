@@ -1551,6 +1551,32 @@ def MoleculeResidualCanonicalOrbitAtDebtSource : Prop :=
       (fun n => n + 1)
 
 /--
+Canonical fixed-data `V`-bound source seam used to derive canonical landing
+control from structural orbit obligations.
+-/
+def MoleculeResidualCanonicalVBoundSource : Prop :=
+  ∀ (f_star : BMol),
+    Rfast f_star = f_star →
+    IsFastRenormalizable f_star →
+    criticalValue f_star = 0 →
+    f_star.V ⊆ Metric.ball 0 0.1
+
+/--
+Global `V`-bound source seam, independent of fixed-point assumptions.
+-/
+def MoleculeResidualGlobalVBoundSource : Prop :=
+  ∀ f : BMol, f.V ⊆ Metric.ball 0 0.1
+
+/--
+Project canonical fixed-data `V`-bound control from a global `V`-bound source.
+-/
+theorem molecule_residual_canonical_vbound_source_of_global_vbound_source
+    (h_global_vbound : MoleculeResidualGlobalVBoundSource) :
+    MoleculeResidualCanonicalVBoundSource := by
+  intro f_star _h_fixed _h_renorm _h_crit
+  exact h_global_vbound f_star
+
+/--
 PLAN_57 micro-split A: canonical orbit landing control only.
 -/
 def MoleculeResidualCanonicalOrbitLandingSource : Prop :=
@@ -1580,6 +1606,40 @@ def MoleculeResidualCanonicalOrbitStructureSource : Prop :=
       criticalValue f ∈ (Rfast^[n] f).U ∧
       (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
       (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)
+
+/--
+Derive canonical orbit landing control from structural obligations plus a
+canonical fixed-data `V`-bound source.
+-/
+theorem molecule_residual_canonical_orbit_landing_source_of_structure_and_vbound_source
+    (h_structure : MoleculeResidualCanonicalOrbitStructureSource)
+    (h_vbound : MoleculeResidualCanonicalVBoundSource) :
+    MoleculeResidualCanonicalOrbitLandingSource := by
+  intro f_star h_fixed h_renorm h_crit n t f h_n h_t h_pre
+  rcases h_structure f_star h_fixed h_renorm h_crit n t f h_n h_t h_pre with
+    ⟨h_maps, h_cv, _h_eq, _h_card⟩
+  have h_target : Rfast^[n] f = f_star := by
+    simpa using h_pre
+  have h_image_in_targetV : (f.f^[t] (criticalValue f)) ∈ (Rfast^[n] f).V :=
+    h_maps h_cv
+  have h_image_in_starV : (f.f^[t] (criticalValue f)) ∈ f_star.V := by
+    simpa [h_target] using h_image_in_targetV
+  exact h_vbound f_star h_fixed h_renorm h_crit h_image_in_starV
+
+/--
+Assemble the PLAN_57 canonical orbit-at debt source from structural obligations
+and a canonical fixed-data `V`-bound source.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_of_structure_and_vbound_source
+    (h_structure : MoleculeResidualCanonicalOrbitStructureSource)
+    (h_vbound : MoleculeResidualCanonicalVBoundSource) :
+    MoleculeResidualCanonicalOrbitAtDebtSource := by
+  intro f_star h_fixed h_renorm h_crit n t f h_n h_t h_pre
+  have h_land :=
+    molecule_residual_canonical_orbit_landing_source_of_structure_and_vbound_source
+      h_structure h_vbound f_star h_fixed h_renorm h_crit n t f h_n h_t h_pre
+  have h_struct := h_structure f_star h_fixed h_renorm h_crit n t f h_n h_t h_pre
+  exact ⟨h_struct.1, h_struct.2.1, h_land, h_struct.2.2.1, h_struct.2.2.2⟩
 
 /--
 Assemble the canonical orbit-at debt source from micro-split landing and
@@ -1840,20 +1900,33 @@ theorem molecule_residual_orbit_transport_source :
     molecule_residual_orbit_clause_source
 
 /--
-Current PLAN_57 canonical orbit-at debt source theorem.
+Project global `V`-bound control from the legacy normalization axiom package.
 -/
-theorem molecule_residual_canonical_orbit_at_debt_source :
-    MoleculeResidualCanonicalOrbitAtDebtSource :=
-  molecule_residual_canonical_orbit_at_debt_source_of_transport_source
-    molecule_residual_orbit_transport_source
+theorem molecule_residual_global_vbound_source_of_h_norm
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1)) :
+    MoleculeResidualGlobalVBoundSource := by
+  intro f
+  have hK := h_norm ({f} : Set BMol)
+  exact hK.2.2 f (by simp)
 
 /--
-Current canonical orbit landing-source theorem (residual debt target).
+Current global `V`-bound source.
 -/
-theorem molecule_residual_canonical_orbit_landing_source :
-    MoleculeResidualCanonicalOrbitLandingSource :=
-  (molecule_residual_canonical_orbit_landing_and_structure_of_debt_source
-    molecule_residual_canonical_orbit_at_debt_source).1
+theorem molecule_residual_global_vbound_source :
+    MoleculeResidualGlobalVBoundSource :=
+  molecule_residual_global_vbound_source_of_h_norm molecule_h_norm
+
+/--
+Current canonical fixed-data `V`-bound source.
+-/
+theorem molecule_residual_canonical_vbound_source :
+    MoleculeResidualCanonicalVBoundSource :=
+  molecule_residual_canonical_vbound_source_of_global_vbound_source
+    molecule_residual_global_vbound_source
 
 /--
 Current canonical orbit structural-source theorem.
@@ -1862,6 +1935,24 @@ theorem molecule_residual_canonical_orbit_structure_source :
     MoleculeResidualCanonicalOrbitStructureSource :=
   molecule_residual_canonical_orbit_structure_source_of_transport_source
     molecule_residual_orbit_transport_source
+
+/--
+Current PLAN_57 canonical orbit-at debt source theorem.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source :
+    MoleculeResidualCanonicalOrbitAtDebtSource :=
+  molecule_residual_canonical_orbit_at_debt_source_of_structure_and_vbound_source
+    molecule_residual_canonical_orbit_structure_source
+    molecule_residual_canonical_vbound_source
+
+/--
+Current canonical orbit landing-source theorem (residual debt target).
+-/
+theorem molecule_residual_canonical_orbit_landing_source :
+    MoleculeResidualCanonicalOrbitLandingSource :=
+  molecule_residual_canonical_orbit_landing_source_of_structure_and_vbound_source
+    molecule_residual_canonical_orbit_structure_source
+    molecule_residual_canonical_vbound_source
 
 /--
 Current fixed-data canonical orbit-at source theorem.

@@ -1,7 +1,7 @@
 # PLAN 57 - Orbit Minimal Theorem Debt Extraction
 
 Status: ACTIVE
-Progress: [########--] 82%
+Progress: [#########-] 91%
 Scope: After PLAN_56 decomposition got stuck, isolate one minimal theorem debt
 item whose proof would unlock a non-`molecule_h_norm` constructor for
 `MoleculeResidualOrbitClauseForFixedDataSource`.
@@ -40,9 +40,22 @@ Last Updated: 2026-03-04
   - `molecule_residual_canonical_orbit_at_debt_source_of_landing_and_at_fixed_data_source`
   - `molecule_residual_canonical_orbit_structure_source_of_transport_source`
   - `molecule_residual_canonical_orbit_at_debt_source_of_landing_and_transport_source`.
-- [ ] Attack the remaining landing-only debt target constructively:
-  - prove `MoleculeResidualCanonicalOrbitLandingSource` from strictly weaker,
-    non-`molecule_h_norm` ingredients (or replace the current source route).
+- [x] Add canonical `V`-bound seam and route landing/debt through
+  `structure + V`-bound:
+  - `MoleculeResidualCanonicalVBoundSource`
+  - `molecule_residual_canonical_orbit_landing_source_of_structure_and_vbound_source`
+  - `molecule_residual_canonical_orbit_at_debt_source_of_structure_and_vbound_source`
+  - current theorem `molecule_residual_canonical_orbit_at_debt_source` now
+    routes through this decomposition.
+- [x] Split canonical `V`-bound debt into global and fixed-data projections:
+  - `MoleculeResidualGlobalVBoundSource`
+  - `molecule_residual_global_vbound_source_of_h_norm`
+  - `molecule_residual_canonical_vbound_source_of_global_vbound_source`
+  - current `molecule_residual_canonical_vbound_source` now routes through
+    `molecule_residual_global_vbound_source`.
+- [ ] Attack the remaining global `V`-bound source debt target constructively:
+  - replace `molecule_residual_global_vbound_source` with a non-axiomatic
+    source route.
 
 ## Notes
 
@@ -57,5 +70,13 @@ Last Updated: 2026-03-04
   - current theorem `molecule_residual_canonical_orbit_at_debt_source` still
     carries `Molecule.molecule_h_norm`, and
     `molecule_residual_orbit_clause_at_fixed_data_source` inherits that.
-  - current theorem `molecule_residual_canonical_orbit_landing_source` is now
-    explicit and remains the residual `Molecule.molecule_h_norm` carrier.
+  - landing and debt reconstruction seams from `structure + V`-bound are
+    axiom-clean modulo ground axioms.
+  - current theorems
+    `molecule_residual_canonical_orbit_landing_source` and
+    `molecule_residual_canonical_orbit_at_debt_source` now carry
+    `Molecule.molecule_h_norm` only via
+    `molecule_residual_canonical_vbound_source`.
+  - `molecule_residual_canonical_vbound_source` now carries
+    `Molecule.molecule_h_norm` only via
+    `molecule_residual_global_vbound_source`.
