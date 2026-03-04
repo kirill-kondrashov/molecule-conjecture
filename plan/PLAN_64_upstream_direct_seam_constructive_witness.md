@@ -1,7 +1,7 @@
 # PLAN 64 - Upstream Direct-Seam Constructive Witness
 
 Status: ACTIVE
-Progress: [#####-----] 50%
+Progress: [######----] 65%
 Scope: Prove one non-`molecule_h_norm` zero-arg constructor for the direct-seam equivalence class identified in PLAN_63, then propagate that cutover through collapse/uniqueness/model-collapse direct seams.
 Acceptance:
 1. At least one anchor theorem in the direct-seam class is non-`molecule_h_norm`:
@@ -32,7 +32,15 @@ Last Updated: 2026-03-04
   - `MoleculeResidualDirectSeamAnchorOfCanonicalSource`
   - `MoleculeResidualDirectSeamAnchorOfRefinedSource`.
 - [ ] Implement and cut over the anchor zero-arg theorem.
-- [ ] Propagate cutover through direct-seam equivalence constructors.
+- [x] Implement anchor zero-arg theorem and route later direct-chain theorems
+  through it:
+  - `molecule_residual_direct_seam_anchor_source`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`.
+- [ ] Propagate cutover through direct-seam equivalence constructors for the
+  early direct seam theorems:
+  - `molecule_residual_fixed_point_hybrid_class_collapse_direct_source`
+  - `molecule_residual_fixed_point_uniqueness_direct_source`.
 - [ ] Re-run full direct-chain axiom probes and sync PLAN_49/53 notes.
 
 ## Notes
@@ -59,3 +67,14 @@ Last Updated: 2026-03-04
     - `molecule_residual_fixed_point_uniqueness_direct_source_of_refined_anchor_source`.
   - probe result:
     all new source-level constructors are ground-axiom-only.
+- Checkpoint (2026-03-04, anchor zero-arg cutover):
+  - added current zero-arg anchor theorem:
+    `molecule_residual_direct_seam_anchor_source`.
+  - routed later direct-chain theorems through anchor aliases:
+    `molecule_residual_fixed_point_hybrid_class_collapse_direct_source_via_anchor_source`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_via_anchor_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`.
+  - probe result:
+    current zero-arg anchor and routed aliases remain
+    `Molecule.molecule_h_norm`-backed.

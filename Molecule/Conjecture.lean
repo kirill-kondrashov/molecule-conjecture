@@ -4122,21 +4122,46 @@ theorem molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_via_
     molecule_residual_fixed_point_uniqueness_source_direct
 
 /--
+Current zero-arg PLAN_64 anchor source theorem.
+-/
+theorem molecule_residual_direct_seam_anchor_source :
+    MoleculeResidualDirectSeamAnchorSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_of_fixed_point_uniqueness_direct_source
+    molecule_residual_fixed_point_uniqueness_direct_source
+
+/--
+Current direct map-level hybrid-class-collapse seam routed via the PLAN_64
+anchor source theorem.
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_direct_source_via_anchor_source :
+    MoleculeResidualFixedPointHybridClassCollapseDirectSource :=
+  molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_anchor_source
+    molecule_residual_direct_seam_anchor_source
+
+/--
+Current direct map-level fixed-point uniqueness seam routed via the PLAN_64
+anchor source theorem.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source_via_anchor_source :
+    MoleculeResidualFixedPointUniquenessDirectSource :=
+  molecule_residual_fixed_point_uniqueness_direct_source_of_anchor_source
+    molecule_residual_direct_seam_anchor_source
+
+/--
 Direct hybrid-class fixed-point uniqueness source theorem routed through the
 dedicated direct-source seam.
 -/
 theorem molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct :
     MoleculeResidualHybridClassFixedPointUniquenessSource :=
   molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_fixed_point_uniqueness_direct_source
-    molecule_residual_fixed_point_uniqueness_direct_source
+    molecule_residual_fixed_point_uniqueness_direct_source_via_anchor_source
 
 /--
 Current direct hybrid-class-uniqueness model-collapse source seam.
 -/
 theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source :
     MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource :=
-  molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_of_fixed_point_uniqueness_direct_source
-    molecule_residual_fixed_point_uniqueness_direct_source
+  molecule_residual_direct_seam_anchor_source
 
 /--
 Current model-collapse source for hybrid-class-uniqueness model sources.

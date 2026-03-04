@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_64 | Upstream direct-seam constructive witness | ACTIVE | [#####-----] 50% |
+| PLAN_64 | Upstream direct-seam constructive witness | ACTIVE | [######----] 65% |
 
 ## Dependency Map
 
@@ -637,6 +637,17 @@ Last Updated: 2026-03-04
     `MoleculeResidualDirectSeamAnchorOfRefinedSource`.
   - Added ground-axiom-only canonical/refined projection constructors into
     direct collapse/uniqueness seams.
+  - Added current zero-arg anchor theorem:
+    `molecule_residual_direct_seam_anchor_source`.
+  - Routed later direct-chain theorems through the anchor path:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`,
+    plus direct-seam aliases
+    `molecule_residual_fixed_point_hybrid_class_collapse_direct_source_via_anchor_source`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_via_anchor_source`.
+  - Probe checkpoint:
+    current zero-arg anchor and routed aliases remain
+    `Molecule.molecule_h_norm`-backed.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
