@@ -1,7 +1,7 @@
 # PLAN 68 - Non-h_norm Direct Contract Source Constructor
 
 Status: ACTIVE
-Progress: [####------] 45%
+Progress: [######----] 65%
 Scope: Build a non-`molecule_h_norm` source-constructor path for direct-uniqueness contracts, then cut over the zero-arg direct/anchor seams through that source.
 Acceptance:
 1. `#print axioms` for at least one theorem implementing one of:
@@ -32,7 +32,7 @@ Last Updated: 2026-03-04
 - [x] Implement constructors from that pack to direct/anchor source seams.
 - [x] Add explicit pack constructors from canonical/refined direct-contract
   assumptions.
-- [ ] Attempt non-circular witness candidates against the source pack and
+- [x] Attempt non-circular witness candidates against the source pack and
   record targeted `#print axioms` outputs.
 - [ ] If witness candidates remain `molecule_h_norm`-backed, extract an
   explicit obstruction theorem and spin the next successor plan.
@@ -56,5 +56,13 @@ Last Updated: 2026-03-04
   - targeted probes confirm all new seam/constructor theorems are
     ground-axiom-only; current zero-arg direct-contract theorem remains
     `Molecule.molecule_h_norm`-backed.
+- Candidate probe checkpoint (2026-03-04):
+  - added source-pack-to-contract constructors:
+    `molecule_residual_fixed_point_uniqueness_direct_of_canonical_source_of_direct_contract_cutover_sources`,
+    `molecule_residual_fixed_point_uniqueness_direct_of_refined_source_of_direct_contract_cutover_sources`.
+  - targeted probes confirm these constructors are ground-axiom-only.
+  - candidate result remains unchanged:
+    `molecule_residual_fixed_point_uniqueness_direct_of_canonical_source` is
+    still `Molecule.molecule_h_norm`-backed.
 - Immediate objective is to replace theorem-level source construction, not add
   new axioms.

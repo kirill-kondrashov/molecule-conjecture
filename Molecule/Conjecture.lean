@@ -4614,6 +4614,24 @@ theorem molecule_residual_direct_seam_anchor_source_of_direct_contract_cutover_s
     h_sources.directOfCanonical
 
 /--
+Build canonical direct-contract goal from direct-contract cutover sources.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_of_canonical_source_of_direct_contract_cutover_sources
+    (h_sources : MoleculeResidualDirectContractCutoverSources) :
+    MoleculeResidualFixedPointUniquenessDirectOfCanonicalSource :=
+  h_sources.directOfCanonical
+
+/--
+Build refined direct-contract goal from direct-contract cutover sources.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_of_refined_source_of_direct_contract_cutover_sources
+    (h_sources : MoleculeResidualDirectContractCutoverSources) :
+    MoleculeResidualFixedPointUniquenessDirectOfRefinedSource :=
+  molecule_residual_fixed_point_uniqueness_direct_of_refined_source_of_fixed_point_uniqueness_direct_source
+    (molecule_residual_fixed_point_uniqueness_direct_source_of_direct_contract_cutover_sources
+      h_sources)
+
+/--
 Assemble direct-contract cutover sources from canonical data and a canonical
 direct-contract theorem.
 -/

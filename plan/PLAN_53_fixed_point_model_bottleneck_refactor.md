@@ -136,3 +136,7 @@ Last Updated: 2026-03-04
   - targeted probes confirm the new cutover-source seam is ground-axiom-only;
     current canonical/refined direct-contract theorems remain
     `Molecule.molecule_h_norm`-backed.
+  - added source-pack-to-contract constructors:
+    `molecule_residual_fixed_point_uniqueness_direct_of_canonical_source_of_direct_contract_cutover_sources`,
+    `molecule_residual_fixed_point_uniqueness_direct_of_refined_source_of_direct_contract_cutover_sources`,
+    both ground-axiom-only in targeted probes.
