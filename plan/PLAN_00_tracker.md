@@ -44,8 +44,8 @@ Last Updated: 2026-03-04
 | PLAN_41 | Residual bounds elimination | DONE | [##########] 100% |
 | PLAN_42 | Post-axiom contract hardening | DONE | [##########] 100% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
-| PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 90% |
-| PLAN_49 | Constructive fixed-point source route | ACTIVE | [########--] 80% |
+| PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 95% |
+| PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 90% |
 | PLAN_50 | Orbit-clause local contract narrowing | ACTIVE | [########--] 80% |
 
 ## Dependency Map
@@ -147,6 +147,9 @@ Last Updated: 2026-03-04
   - Split fixed-point assembly constructor to explicit source-level seam:
     `molecule_residual_fixed_point_assembly_sources_of_sources`.
   - Narrowed non-ground source pack to carry fixed-point ingredients directly.
+  - Routed non-ground source theorem through explicit ingredient+orbit
+    constructor:
+    `molecule_residual_non_ground_sources_of_ingredients_and_orbit`.
   - Added local orbit-obligation seam in `Molecule/Conjecture.lean`:
     `MoleculeOrbitClauseAt` and
     `molecule_orbit_clause_at_of_orbit_clause`.
@@ -177,6 +180,8 @@ Last Updated: 2026-03-04
     `molecule_residual_fixed_point_assembly_sources_of_sources`.
   - Narrowed non-ground source pack to carry fixed-point ingredients directly,
     concentrating the fixed-point blocker at ingredient source construction.
+  - Added explicit non-ground constructor from ingredient + local-orbit
+    sources and routed `molecule_residual_non_ground_sources` through it.
   - Verified
     `molecule_residual_fixed_point_normalization_ingredients_of_fixed_point_assembly_sources`
     remains axiom-clean modulo ground axioms after the refactor.

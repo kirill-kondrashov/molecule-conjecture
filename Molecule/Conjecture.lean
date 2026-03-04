@@ -1965,6 +1965,16 @@ theorem molecule_residual_fixed_point_assembly_sources :
 Build bundled non-ground residual sources from fixed-point and orbit-clause
 source packs.
 -/
+theorem molecule_residual_non_ground_sources_of_ingredients_and_orbit
+    (h_ingredients : MoleculeResidualFixedPointNormalizationIngredients)
+    (h_orbit_clause : MoleculeResidualOrbitClauseForFixedDataSource) :
+    MoleculeResidualNonGroundSources :=
+  ⟨h_ingredients, h_orbit_clause⟩
+
+/--
+Build bundled non-ground residual sources from fixed-point and orbit-clause
+source packs.
+-/
 theorem molecule_residual_non_ground_sources_of_fixed_point_and_orbit_sources
     (h_fixed_sources : MoleculeResidualFixedPointAssemblySources)
     (h_orbit_clause : MoleculeResidualOrbitClauseForFixedDataSource) :
@@ -1973,15 +1983,17 @@ theorem molecule_residual_non_ground_sources_of_fixed_point_and_orbit_sources
     molecule_residual_fixed_point_normalization_ingredients_of_sources
       (renormalizable_fixed_exists_of_fixed_point_normalization_data h_fixed_sources.fixedData)
       h_fixed_sources.fixedTransfer
-  exact ⟨h_ingredients, h_orbit_clause⟩
+  exact molecule_residual_non_ground_sources_of_ingredients_and_orbit
+    h_ingredients
+    h_orbit_clause
 
 /--
 Current bundled non-ground residual sources.
 -/
 theorem molecule_residual_non_ground_sources :
     MoleculeResidualNonGroundSources :=
-  molecule_residual_non_ground_sources_of_fixed_point_and_orbit_sources
-    molecule_residual_fixed_point_assembly_sources
+  molecule_residual_non_ground_sources_of_ingredients_and_orbit
+    molecule_residual_fixed_point_normalization_ingredients
     molecule_residual_orbit_clause_for_fixed_data_source
 
 /--
