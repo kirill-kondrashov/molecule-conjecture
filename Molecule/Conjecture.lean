@@ -2745,6 +2745,17 @@ def molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_uniqu
     molecule_residual_lifted_hybrid_class_fixed_point_lift_source
 
 /--
+Build direct hybrid-class fixed-point uniqueness source seam from map-level
+uniqueness.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_uniqueness_source
+    (h_unique : MoleculeResidualFixedPointUniquenessSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessDirectSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_model_sources
+    (molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_uniqueness_source
+      h_unique)
+
+/--
 Build hybrid-class-uniqueness model sources from model-collapse input.
 -/
 def molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_model_collapse_source
@@ -3648,11 +3659,19 @@ theorem molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources :
 Direct hybrid-class fixed-point uniqueness source theorem routed through the
 assembly-source constructor.
 -/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_via_uniqueness_source_direct :
+    MoleculeResidualHybridClassFixedPointUniquenessDirectSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_uniqueness_source
+    molecule_residual_fixed_point_uniqueness_source_direct
+
+/--
+Direct hybrid-class fixed-point uniqueness source theorem routed through the
+dedicated direct-source seam.
+-/
 theorem molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct :
     MoleculeResidualHybridClassFixedPointUniquenessSource :=
   molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct_of_source
-    (molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_assembly_sources
-      molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources)
+    molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_via_uniqueness_source_direct
 
 /--
 Current model-collapse source for hybrid-class-uniqueness model sources.
