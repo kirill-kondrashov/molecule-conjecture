@@ -111,3 +111,5 @@ Last Updated: 2026-03-04
     now exist from hybrid-class uniqueness/collapse source assumptions.
   - canonical/refined uniqueness contracts are now explicitly equivalent to
     canonical/refined hybrid-class-uniqueness contracts.
+  - canonical/refined uniqueness contracts are now explicitly equivalent to
+    canonical/refined hybrid-class-uniqueness model-collapse contracts.

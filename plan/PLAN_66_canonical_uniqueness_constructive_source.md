@@ -1,7 +1,7 @@
 # PLAN 66 - Canonical Uniqueness Constructive Source
 
 Status: ACTIVE
-Progress: [####------] 40%
+Progress: [#####-----] 50%
 Scope: Construct a non-`molecule_h_norm` theorem for canonical/refined map-level uniqueness (`MoleculeResidualFixedPointUniquenessOfCanonicalSource` or refined counterpart), then route PLAN_65 anchor/direct seams through it.
 Acceptance:
 1. `#print axioms` for one of:
@@ -51,7 +51,14 @@ Last Updated: 2026-03-04
     uniqueness remains `Molecule.molecule_h_norm`-backed.
 - Contract-equivalence checkpoint:
   - canonical/refined map-level uniqueness contracts are now explicitly
-    equivalent to canonical/refined hybrid-class-uniqueness contracts via:
+  equivalent to canonical/refined hybrid-class-uniqueness contracts via:
     `molecule_residual_fixed_point_uniqueness_of_canonical_source_iff_hybrid_class_fixed_point_uniqueness_of_canonical_source`,
     `molecule_residual_fixed_point_uniqueness_of_refined_source_iff_hybrid_class_fixed_point_uniqueness_of_refined_source`.
+  - targeted probes confirm these equivalence theorems are ground-axiom-only.
+- Model-collapse equivalence checkpoint:
+  - canonical/refined map-level uniqueness contracts are now explicitly
+    equivalent to canonical/refined hybrid-class-uniqueness model-collapse
+    contracts via:
+    `molecule_residual_fixed_point_uniqueness_of_canonical_source_iff_model_collapse_of_canonical_source`,
+    `molecule_residual_fixed_point_uniqueness_of_refined_source_iff_model_collapse_of_refined_source`.
   - targeted probes confirm these equivalence theorems are ground-axiom-only.
