@@ -1,7 +1,7 @@
 # PLAN 64 - Upstream Direct-Seam Constructive Witness
 
 Status: ACTIVE
-Progress: [###-------] 30%
+Progress: [#####-----] 50%
 Scope: Prove one non-`molecule_h_norm` zero-arg constructor for the direct-seam equivalence class identified in PLAN_63, then propagate that cutover through collapse/uniqueness/model-collapse direct seams.
 Acceptance:
 1. At least one anchor theorem in the direct-seam class is non-`molecule_h_norm`:
@@ -27,8 +27,10 @@ Last Updated: 2026-03-04
 - [x] Add projection constructors from anchor seam to the other direct seams:
   - `molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_anchor_source`
   - `molecule_residual_fixed_point_uniqueness_direct_source_of_anchor_source`.
-- [ ] Define minimal upstream theorem statement that yields the anchor seam from
-  refined/canonical packages without `molecule_h_norm`.
+- [x] Define minimal upstream theorem statement that yields the anchor seam from
+  refined/canonical packages without `molecule_h_norm`:
+  - `MoleculeResidualDirectSeamAnchorOfCanonicalSource`
+  - `MoleculeResidualDirectSeamAnchorOfRefinedSource`.
 - [ ] Implement and cut over the anchor zero-arg theorem.
 - [ ] Propagate cutover through direct-seam equivalence constructors.
 - [ ] Re-run full direct-chain axiom probes and sync PLAN_49/53 notes.
@@ -47,3 +49,13 @@ Last Updated: 2026-03-04
     anchor conversion constructors are ground-axiom-only (`propext`,
     `Classical.choice`, `Quot.sound`); current zero-arg direct seams remain
     `Molecule.molecule_h_norm`-backed.
+- Checkpoint (2026-03-04, upstream contract formalization):
+  - added canonical/refined anchor-source contracts and conversion/projection
+    constructors:
+    - `molecule_residual_direct_seam_anchor_of_refined_source_of_canonical_source`
+    - `molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_canonical_anchor_source`
+    - `molecule_residual_fixed_point_uniqueness_direct_source_of_canonical_anchor_source`
+    - `molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_refined_anchor_source`
+    - `molecule_residual_fixed_point_uniqueness_direct_source_of_refined_anchor_source`.
+  - probe result:
+    all new source-level constructors are ground-axiom-only.
