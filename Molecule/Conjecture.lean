@@ -22,6 +22,7 @@ import Molecule.BanachSlice
 import Molecule.FirstStepConstruction
 import Molecule.Problem4_3
 import Molecule.HyperbolicityTheorems
+import Molecule.RenormalizationFixedPointUniqueness
 
 namespace Molecule
 
@@ -2304,6 +2305,52 @@ def MoleculeResidualFixedPointUniquenessSource : Prop :=
            (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2
 
 /--
+Source seam: all fast-renormalizable fixed points collapse to one hybrid class.
+-/
+def MoleculeResidualFixedPointHybridClassCollapseSource : Prop :=
+  ∀ f1 f2, Rfast f1 = f1 → IsFastRenormalizable f1 →
+           Rfast f2 = f2 → IsFastRenormalizable f2 →
+           toHybridClass f1 = toHybridClass f2
+
+/--
+Build uniqueness from hybrid-class collapse using fixed-point rigidity in a
+hybrid class.
+-/
+theorem molecule_residual_fixed_point_uniqueness_source_of_hybrid_class_collapse_source
+    (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
+    MoleculeResidualFixedPointUniquenessSource := by
+  intro f1 f2 h1 h2
+  have h_class :
+      toHybridClass f1 = toHybridClass f2 :=
+    h_collapse f1 f2 h1.1 h1.2 h2.1 h2.2
+  exact fixed_points_in_same_class_eq f1 f2 h1.2 h1.1 h2.2 h2.1 h_class
+
+/--
+Project hybrid-class collapse from fixed-point uniqueness.
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_source_of_uniqueness_source
+    (h_unique : MoleculeResidualFixedPointUniquenessSource) :
+    MoleculeResidualFixedPointHybridClassCollapseSource := by
+  intro f1 f2 h_fix1 h_renorm1 h_fix2 h_renorm2
+  exact congrArg toHybridClass (h_unique f1 f2 ⟨h_fix1, h_renorm1⟩ ⟨h_fix2, h_renorm2⟩)
+
+/--
+Assemble canonical orbit-at debt source from transport + fixed-data + hybrid
+class collapse source seams.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_hybrid_class_collapse_source
+    (h_transport : MoleculeResidualOrbitTransportSource)
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
+    MoleculeResidualCanonicalOrbitAtDebtSource :=
+  molecule_residual_canonical_orbit_at_debt_source_of_structure_fixed_data_and_unique
+    (molecule_residual_canonical_orbit_structure_source_of_transport_source
+      h_transport)
+    h_fixed_data
+    (molecule_residual_fixed_point_uniqueness_source_of_hybrid_class_collapse_source
+      h_collapse)
+
+/--
 Project fixed-point transfer components from fixed-data and uniqueness source
 seams.
 -/
@@ -2411,6 +2458,26 @@ theorem molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_dat
     molecule_residual_orbit_transport_source
     molecule_h_fixed_data_direct
     molecule_residual_fixed_point_uniqueness_source
+
+/--
+Current hybrid-class-collapse source theorem projected from the uniqueness
+source seam.
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_source :
+    MoleculeResidualFixedPointHybridClassCollapseSource :=
+  molecule_residual_fixed_point_hybrid_class_collapse_source_of_uniqueness_source
+    molecule_residual_fixed_point_uniqueness_source
+
+/--
+Current PLAN_57 canonical orbit-at debt source routed via transport +
+fixed-data + hybrid-class-collapse source seams.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_hybrid_class_collapse_source :
+    MoleculeResidualCanonicalOrbitAtDebtSource :=
+  molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_hybrid_class_collapse_source
+    molecule_residual_orbit_transport_source
+    molecule_h_fixed_data_direct
+    molecule_residual_fixed_point_hybrid_class_collapse_source
 
 /--
 Build residual fixed-point data source from explicit existence and transfer

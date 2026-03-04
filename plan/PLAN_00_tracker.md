@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_58 | Fixed-point uniqueness source constructive route | ACTIVE | [##--------] 20% |
+| PLAN_58 | Fixed-point uniqueness source constructive route | ACTIVE | [###-------] 35% |
 
 ## Dependency Map
 
@@ -316,8 +316,16 @@ Last Updated: 2026-03-04
     `Molecule/RenormalizationFixedPointUniqueness.lean`:
     available theorems are assumption-driven wrappers; no standalone
     non-assumptive uniqueness constructor exists yet.
-  - Next target is seam extraction for a non-ex-falso uniqueness constructor
-    route.
+  - Added explicit seam extraction around hybrid-class collapse:
+    `MoleculeResidualFixedPointHybridClassCollapseSource`,
+    `molecule_residual_fixed_point_uniqueness_source_of_hybrid_class_collapse_source`,
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_of_uniqueness_source`,
+    and transport integration theorem
+    `molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_hybrid_class_collapse_source`.
+  - Targeted probe confirms these new seam theorems are axiom-clean modulo
+    ground axioms.
+  - Next target is rewiring
+    `molecule_residual_fixed_point_uniqueness_source` through the new seam path.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
