@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 99%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_55
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_56
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-04
 
@@ -48,12 +48,12 @@ Last Updated: 2026-03-04
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 99% |
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 80% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
-| PLAN_55 | Orbit constructive source extraction v2 | ACTIVE | [##--------] 20% |
+| PLAN_56 | Orbit clause constructor decomposition | ACTIVE | [##--------] 20% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_55 (orbit constructive source extraction), then PLAN_43.
+- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_56 (orbit constructor decomposition), then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -135,6 +135,9 @@ Last Updated: 2026-03-04
 - Archived STUCK plan:
   - `ARCHIVE_stuck_2026-03-04_PLAN_51_orbit_fixed_data_source_replacement.md`
     (superseded by PLAN_54 orbit source contract refactor).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_55_orbit_constructive_source_extraction_v2.md`
+    (superseded by PLAN_56 decomposition track).
 - `PLAN_47` progress:
   - Introduced narrowed residual bounds-assembly source pack in
     `Molecule/Conjecture.lean`:
@@ -278,15 +281,15 @@ Last Updated: 2026-03-04
     ground axioms, while `molecule_residual_bounds_from_fixed_data` now carries
     `Molecule.molecule_h_norm` only via the current orbit source theorem.
   - Plan outcome: done; single canonical orbit-source theorem name retained.
-- `PLAN_55` progress:
-  - Opened the post-refactor constructive orbit-source track.
-  - Baseline now starts from the PLAN_54 canonicalized route with one
-    orbit-side frontier theorem:
+- `PLAN_56` progress:
+  - Opened decomposition-first replacement track after PLAN_55 was archived as
+    stuck.
+  - Baseline remains the PLAN_54 canonicalized single-frontier route:
     `molecule_residual_orbit_clause_for_fixed_data_source`.
-  - Next target is post-PLAN_54 candidate inventory for a non-circular
-    constructor of `MoleculeResidualOrbitClauseForFixedDataSource`.
+  - Next target is the first decomposition seam theorem that reduces constructor
+    input contracts below the full global orbit clause.
 
 ## Current Critical Blockers
 
 1. Root blocker: `Molecule.molecule_h_norm` remains in the zero-arg theorem path.
-2. Active mitigation: PLAN_47 integration track, PLAN_49 fixed-point source track, PLAN_53 model bottleneck track, PLAN_55 orbit constructive source track.
+2. Active mitigation: PLAN_47 integration track, PLAN_49 fixed-point source track, PLAN_53 model bottleneck track, PLAN_56 orbit decomposition track.

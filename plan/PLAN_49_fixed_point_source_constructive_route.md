@@ -98,7 +98,7 @@ Last Updated: 2026-03-04
     `molecule_residual_fixed_point_assembly_sources_of_exists_and_transfer`.
   - targeted probes confirm these new seam theorems are axiom-clean modulo
     ground axioms.
-- This plan runs in parallel with PLAN_55 (orbit constructive source extraction route).
+- This plan runs in parallel with PLAN_56 (orbit clause constructor decomposition route).
 - Sub-plan linkage:
   - model-level witness bottleneck is tracked explicitly in
     `PLAN_53_fixed_point_model_bottleneck_refactor.md`.
