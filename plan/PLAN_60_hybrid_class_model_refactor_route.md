@@ -1,7 +1,7 @@
 # PLAN 60 - Hybrid-Class Model Refactor Route
 
 Status: ACTIVE
-Progress: [#########-] 90%
+Progress: [#########-] 92%
 Scope: Break the current identity-model bottleneck (`HybridClass := BMol`) so the hybrid-level unique-fixed-point source can be constructed from a genuinely hybrid-level source, not by recycling map-level uniqueness.
 Acceptance:
 1. Export a nontrivial hybrid-class abstraction seam (or quotient interface) that does not force `toHybridClass f = toHybridClass g ↔ f = g` in the active route.
@@ -41,8 +41,16 @@ Last Updated: 2026-03-04
     `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_collapse_source`
     through this route.
 - [x] Rewire the public current-route theorem names and rerun axiom probes.
+- [x] Add model-source abstraction layer over hybrid projection seams and route
+  the current uniqueness theorem through it:
+  - `MoleculeResidualHybridClassFixedPointUniquenessModelSources`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_model_sources`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_assembly_sources`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources`
+  - current `molecule_residual_hybrid_class_fixed_point_uniqueness_source`
+    now consumes the model-source route.
 - [ ] Replace the current theorem-level source
-  `molecule_residual_hybrid_class_fixed_point_uniqueness_source` with a
+  `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources` with a
   constructor from a nontrivial hybrid abstraction seam (not tied to the
   current identity-model collapse path), then re-run probes.
 - [x] Introduce and route through explicit assembly-source pack:
@@ -93,3 +101,12 @@ Last Updated: 2026-03-04
   even though the seam-level collapse/lift constructors are individually clean.
 - The new assembly-source theorem layer is axiom-clean modulo ground axioms; the
   current assembled source theorem remains `molecule_h_norm`-backed.
+- The new model-source constructor theorem
+  `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_model_sources`
+  and current-seam packaging theorem
+  `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_assembly_sources`
+  are axiom-clean modulo ground axioms.
+- The current model-source value theorem
+  `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources` still
+  carries `Molecule.molecule_h_norm` because it is instantiated from the current
+  identity-model collapse source.

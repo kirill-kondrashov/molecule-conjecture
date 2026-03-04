@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_60 | Hybrid-class model refactor route | ACTIVE | [#########-] 90% |
+| PLAN_60 | Hybrid-class model refactor route | ACTIVE | [#########-] 92% |
 
 ## Dependency Map
 
@@ -412,12 +412,23 @@ Last Updated: 2026-03-04
     `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_assembly_sources`,
     `molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources_of_hybrid_class_collapse_source`,
     `molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources`.
+  - Added model-source pack for non-identity seam cutover and routed the current
+    uniqueness theorem through it:
+    `MoleculeResidualHybridClassFixedPointUniquenessModelSources`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_model_sources`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_assembly_sources`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source`.
+  - Targeted probe checkpoint:
+    model-source constructor/packaging theorems are axiom-clean modulo ground
+    axioms, while the current model-source value and routed current uniqueness
+    theorem still carry `Molecule.molecule_h_norm`.
   - Targeted probe confirms the new seam scaffold is axiom-clean modulo ground
     axioms.
-  - Next target is replacing current source
-    `molecule_residual_hybrid_class_fixed_point_uniqueness_source` with a
-    constructor from a non-identity hybrid abstraction seam, then rerunning
-    hybrid/uniqueness/orbit wrapper probes.
+  - Next target is replacing the current model-source value
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources` with
+    a non-identity seam instantiation, then rerunning hybrid/uniqueness/orbit
+    wrapper probes.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

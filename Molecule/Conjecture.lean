@@ -2357,6 +2357,20 @@ structure MoleculeResidualHybridClassFixedPointUniquenessAssemblySources where
   lift : MoleculeResidualHybridClassFixedPointLiftSource
 
 /--
+Model-source pack for deriving current hybrid-class fixed-point uniqueness from
+a potentially nontrivial projection seam.
+-/
+structure MoleculeResidualHybridClassFixedPointUniquenessModelSources where
+  seam : HybridProjectionSeam
+  collapse : HybridFixedPointCollapseIn seam
+  lift : HybridClassFixedPointLiftSource seam
+  toCurrentClass : seam.Class → HybridClass
+  liftCurrentFixed :
+    ∀ c : HybridClass, (IsFastRenormalizable c ∧ R_hybrid c = c) →
+      ∃ cs : seam.Class,
+        toCurrentClass cs = c ∧ seam.renorm cs ∧ seam.Rclass cs = cs
+
+/--
 Current source theorem for hybrid-projection injectivity.
 -/
 theorem molecule_residual_hybrid_projection_injective_source :
@@ -2406,6 +2420,30 @@ theorem molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_c
     h_lift
 
 /--
+Build current hybrid-class fixed-point uniqueness from a model-source pack over
+an arbitrary projection seam.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_model_sources
+    (h_sources : MoleculeResidualHybridClassFixedPointUniquenessModelSources) :
+    MoleculeResidualHybridClassFixedPointUniquenessSource := by
+  intro c1 c2 hc1 hc2
+  rcases h_sources.liftCurrentFixed c1 hc1 with
+    ⟨s1, hs1_current, hs1_renorm, hs1_fix⟩
+  rcases h_sources.liftCurrentFixed c2 hc2 with
+    ⟨s2, hs2_current, hs2_renorm, hs2_fix⟩
+  have h_unique_in_seam : HybridClassFixedPointUniquenessIn h_sources.seam :=
+    hybrid_class_fixed_point_uniqueness_in_of_collapse_and_lift
+      h_sources.seam
+      h_sources.collapse
+      h_sources.lift
+  have hs_eq : s1 = s2 :=
+    h_unique_in_seam s1 s2 ⟨hs1_renorm, hs1_fix⟩ ⟨hs2_renorm, hs2_fix⟩
+  calc
+    c1 = h_sources.toCurrentClass s1 := by simpa using hs1_current.symm
+    _ = h_sources.toCurrentClass s2 := by simp [hs_eq]
+    _ = c2 := by simpa using hs2_current
+
+/--
 Build hybrid-class uniqueness source from the explicit assembly-source pack.
 -/
 theorem molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_assembly_sources
@@ -2414,6 +2452,20 @@ theorem molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_assembly
   molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_lift_source
     h_sources.collapse
     h_sources.lift
+
+/--
+Build a model-source pack from the explicit current-seam assembly-source pack.
+-/
+def molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_assembly_sources
+    (h_sources : MoleculeResidualHybridClassFixedPointUniquenessAssemblySources) :
+    MoleculeResidualHybridClassFixedPointUniquenessModelSources where
+  seam := currentHybridProjectionSeam
+  collapse := h_sources.collapse
+  lift := h_sources.lift
+  toCurrentClass := fun c => c
+  liftCurrentFixed := by
+    intro c hc
+    exact ⟨c, rfl, hc.1, hc.2⟩
 
 /--
 Build hybrid-class uniqueness assembly sources from the legacy
@@ -3342,12 +3394,20 @@ theorem molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources :
     molecule_residual_fixed_point_hybrid_class_collapse_source
 
 /--
+Current model-source pack for hybrid-class fixed-point uniqueness.
+-/
+def molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources :
+    MoleculeResidualHybridClassFixedPointUniquenessModelSources :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_assembly_sources
+    molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources
+
+/--
 Current hybrid-class fixed-point uniqueness source theorem.
 -/
 theorem molecule_residual_hybrid_class_fixed_point_uniqueness_source :
     MoleculeResidualHybridClassFixedPointUniquenessSource :=
-  molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_assembly_sources
-    molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources
+  molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_model_sources
+    molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources
 
 /--
 Current hybrid-class unique fixed-point source theorem.
