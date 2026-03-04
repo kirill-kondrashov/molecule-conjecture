@@ -2320,6 +2320,13 @@ def MoleculeResidualFixedPointHybridClassCollapseSource : Prop :=
            toHybridClass f1 = toHybridClass f2
 
 /--
+Dedicated replacement seam for the current direct map-level hybrid-class
+collapse theorem.
+-/
+def MoleculeResidualFixedPointHybridClassCollapseDirectSource : Prop :=
+  MoleculeResidualFixedPointHybridClassCollapseSource
+
+/--
 Source seam: the hybrid-class renormalization operator has a unique
 fast-renormalizable fixed point.
 -/
@@ -2949,14 +2956,31 @@ theorem molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data
     h_unique
 
 /--
-Current hybrid-class-collapse source theorem (legacy route from the current
-uniqueness proof body).
+Current direct map-level hybrid-class-collapse source theorem (legacy route
+from the current uniqueness proof body).
 -/
-theorem molecule_residual_fixed_point_hybrid_class_collapse_source_direct :
-    MoleculeResidualFixedPointHybridClassCollapseSource := by
+theorem molecule_residual_fixed_point_hybrid_class_collapse_direct_source :
+    MoleculeResidualFixedPointHybridClassCollapseDirectSource := by
   intro f1 f2 h_fix1 h_renorm1 h_fix2 h_renorm2
   exact congrArg toHybridClass
     (molecule_h_unique f1 f2 ⟨h_fix1, h_renorm1⟩ ⟨h_fix2, h_renorm2⟩)
+
+/--
+Recover map-level hybrid-class collapse from the dedicated direct-source seam.
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_source_direct_of_source
+    (h_source : MoleculeResidualFixedPointHybridClassCollapseDirectSource) :
+    MoleculeResidualFixedPointHybridClassCollapseSource :=
+  h_source
+
+/--
+Current map-level hybrid-class-collapse source theorem, routed through the
+dedicated direct-source seam.
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_source_direct :
+    MoleculeResidualFixedPointHybridClassCollapseSource :=
+  molecule_residual_fixed_point_hybrid_class_collapse_source_direct_of_source
+    molecule_residual_fixed_point_hybrid_class_collapse_direct_source
 
 /--
 Build direct map-level fixed-point uniqueness source seam from hybrid-class

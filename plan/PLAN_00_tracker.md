@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_62 | Upstream map-uniqueness source replacement | ACTIVE | [#########-] 90% |
+| PLAN_62 | Upstream map-uniqueness source replacement | ACTIVE | [#########-] 94% |
 
 ## Dependency Map
 
@@ -561,6 +561,13 @@ Last Updated: 2026-03-04
   - Residual blocker concentration checkpoint:
     frontier is unchanged and now localizes to
     `molecule_residual_fixed_point_hybrid_class_collapse_source_direct`.
+  - Added dedicated direct-source seam for the concentrated blocker:
+    `MoleculeResidualFixedPointHybridClassCollapseDirectSource` with
+    projection theorem
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_direct_of_source`.
+  - Probe checkpoint:
+    the new projection theorem is ground-axiom-only; current direct-source
+    collapse theorem remains `Molecule.molecule_h_norm`-backed.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

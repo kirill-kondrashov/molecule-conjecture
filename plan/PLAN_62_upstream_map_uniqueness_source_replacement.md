@@ -1,7 +1,7 @@
 # PLAN 62 - Upstream Map-Uniqueness Source Replacement
 
 Status: ACTIVE
-Progress: [#########-] 90%
+Progress: [#########-] 94%
 Scope: Replace `molecule_residual_fixed_point_uniqueness_source_direct` with a non-`molecule_h_norm` theorem-level constructor from upstream fixed-point tracks, then feed that constructor into PLAN_61 replacement seams.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_uniqueness_source_direct` does not include `Molecule.molecule_h_norm`.
@@ -37,6 +37,10 @@ Last Updated: 2026-03-04
   `molecule_residual_fixed_point_uniqueness_direct_source`
   (`molecule_residual_fixed_point_hybrid_class_collapse_source_direct`) with a
   non-`molecule_h_norm` theorem-level source.
+- [x] Isolate the concentrated blocker behind an explicit direct-source seam:
+  - `MoleculeResidualFixedPointHybridClassCollapseDirectSource`
+  - `molecule_residual_fixed_point_hybrid_class_collapse_source_direct_of_source`
+  and route current collapse source theorem through it.
 
 ## Notes
 
@@ -85,3 +89,13 @@ Last Updated: 2026-03-04
   - current frontier is unchanged (`Molecule.molecule_h_norm` only), now
     concentrated at:
     `molecule_residual_fixed_point_hybrid_class_collapse_source_direct`.
+- Checkpoint (2026-03-04, concentrated blocker seam isolation):
+  - added dedicated direct-source seam for the concentrated blocker:
+    `MoleculeResidualFixedPointHybridClassCollapseDirectSource`.
+  - routed
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_direct`
+    through `..._of_source`.
+  - probe result:
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_direct_of_source`
+    is ground-axiom-only; current direct-source/collapse-source theorems remain
+    `Molecule.molecule_h_norm`-backed.
