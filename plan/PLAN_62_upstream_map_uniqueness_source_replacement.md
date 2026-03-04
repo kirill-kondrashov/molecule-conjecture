@@ -1,7 +1,7 @@
 # PLAN 62 - Upstream Map-Uniqueness Source Replacement
 
 Status: ACTIVE
-Progress: [#####-----] 55%
+Progress: [#######---] 70%
 Scope: Replace `molecule_residual_fixed_point_uniqueness_source_direct` with a non-`molecule_h_norm` theorem-level constructor from upstream fixed-point tracks, then feed that constructor into PLAN_61 replacement seams.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_uniqueness_source_direct` does not include `Molecule.molecule_h_norm`.
@@ -22,6 +22,11 @@ Last Updated: 2026-03-04
 - [x] Introduce a dedicated replacement seam for
   `molecule_residual_fixed_point_uniqueness_source_direct`.
 - [x] Prove/export one non-`molecule_h_norm` theorem into that seam.
+- [x] Add source-parameterized PLAN_61 seam routing hooks from the map-level
+  direct uniqueness seam:
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_fixed_point_uniqueness_direct_source`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_fixed_point_uniqueness_direct_source`
+  - `molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_fixed_point_uniqueness_direct_source`.
 - [ ] Rewire through PLAN_61 seams:
   - `molecule_residual_fixed_point_uniqueness_source_direct`
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`
@@ -52,3 +57,12 @@ Last Updated: 2026-03-04
     `molecule_residual_fixed_point_uniqueness_direct_source` and
     `molecule_residual_fixed_point_uniqueness_source_direct_routed` remain
     `Molecule.molecule_h_norm`-backed.
+- Checkpoint (2026-03-04, seam routing hooks):
+  - added source-parameterized seam-routing hooks that propagate from
+    `MoleculeResidualFixedPointUniquenessDirectSource` into PLAN_61 seam outputs:
+    - hybrid-class uniqueness source,
+    - hybrid-class model-collapse source,
+    - hybrid-unique source under bounds.
+  - probe result:
+    all three hooks are ground-axiom-only (`propext`, `Classical.choice`,
+    `Quot.sound`).

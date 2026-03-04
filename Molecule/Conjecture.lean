@@ -3817,6 +3817,42 @@ theorem molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_iff_
     molecule_residual_bounds
 
 /--
+Route hybrid-class fixed-point uniqueness source through the dedicated
+map-level direct uniqueness seam.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_fixed_point_uniqueness_direct_source
+    (h_unique_direct : MoleculeResidualFixedPointUniquenessDirectSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct_of_source
+    (molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_uniqueness_source
+      (molecule_residual_fixed_point_uniqueness_source_direct_of_source
+        h_unique_direct))
+
+/--
+Route hybrid-class model-collapse source through the dedicated map-level direct
+uniqueness seam.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_fixed_point_uniqueness_direct_source
+    (h_unique_direct : MoleculeResidualFixedPointUniquenessDirectSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_direct_source
+    (molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_fixed_point_uniqueness_direct_source
+      h_unique_direct)
+
+/--
+Route hybrid-unique fixed-point source construction through the dedicated
+map-level direct uniqueness seam under any bounds witness.
+-/
+theorem molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_fixed_point_uniqueness_direct_source
+    (h_bounds : PseudoSiegelAPrioriBounds)
+    (h_unique_direct : MoleculeResidualFixedPointUniquenessDirectSource) :
+    MoleculeResidualHybridUniqueFixedPointSource :=
+  molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_uniqueness_source
+    h_bounds
+    (molecule_residual_fixed_point_uniqueness_source_direct_of_source
+      h_unique_direct)
+
+/--
 Current hybrid-class fixed-point uniqueness source theorem.
 -/
 theorem molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources :

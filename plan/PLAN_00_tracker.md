@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_62 | Upstream map-uniqueness source replacement | ACTIVE | [#####-----] 55% |
+| PLAN_62 | Upstream map-uniqueness source replacement | ACTIVE | [#######---] 70% |
 
 ## Dependency Map
 
@@ -538,6 +538,13 @@ Last Updated: 2026-03-04
     route (`molecule_residual_fixed_point_uniqueness_direct_source`,
     `molecule_residual_fixed_point_uniqueness_source_direct_routed`) remains
     `Molecule.molecule_h_norm`-backed.
+  - Added source-parameterized seam-routing hooks from the map-level direct
+    uniqueness seam into PLAN_61 outputs:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_fixed_point_uniqueness_direct_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_fixed_point_uniqueness_direct_source`,
+    `molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_fixed_point_uniqueness_direct_source`.
+  - Probe checkpoint:
+    these seam-routing hooks are ground-axiom-only.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
