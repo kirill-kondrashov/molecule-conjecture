@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_59 | Hybrid unique fixed-point source constructor | ACTIVE | [#####-----] 55% |
+| PLAN_59 | Hybrid unique fixed-point source constructor | ACTIVE | [#######---] 70% |
 
 ## Dependency Map
 
@@ -202,7 +202,9 @@ Last Updated: 2026-03-04
     axiom-clean modulo ground axioms.
   - Completed constructor inventory for fixed-point source route:
     `molecule_residual_fixed_point_data_source` is currently global-norm backed,
-    and `molecule_residual_fixed_point_uniqueness_source` is currently ex-falso.
+    and the direct legacy uniqueness theorem
+    `molecule_residual_fixed_point_uniqueness_source_direct`
+    remains ex-falso-backed.
   - Added forward constructor seam checkpoint:
     `molecule_residual_non_ground_sources_of_fixed_point_and_orbit_sources`
     is axiom-clean modulo ground axioms.
@@ -333,6 +335,16 @@ Last Updated: 2026-03-04
     `molecule_residual_fixed_point_uniqueness_source_via_hybrid_unique_fixed_point_source`,
     `molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_hybrid_unique_fixed_point_source`,
     `molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source_via_hybrid_unique_fixed_point_source`.
+  - Added hybrid-class-collapse bridge constructors into the hybrid-unique
+    source:
+    `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_collapse_source`,
+    `molecule_residual_hybrid_unique_fixed_point_source_of_refined_and_hybrid_class_collapse_source`,
+    `molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_hybrid_class_collapse_source`.
+  - Rewired the public uniqueness theorem through the hybrid-unique seam:
+    `molecule_residual_fixed_point_uniqueness_source` now routes through
+    `molecule_residual_hybrid_unique_fixed_point_source`; the previous direct
+    path is preserved as
+    `molecule_residual_fixed_point_uniqueness_source_direct`.
   - Targeted probe confirms these wrappers are axiom-clean modulo ground
     axioms at the seam level and still carry `Molecule.molecule_h_norm` in the
     current routed path.

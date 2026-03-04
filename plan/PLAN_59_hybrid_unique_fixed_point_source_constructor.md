@@ -1,7 +1,7 @@
 # PLAN 59 - Hybrid Unique Fixed-Point Source Constructor
 
 Status: ACTIVE
-Progress: [#####-----] 55%
+Progress: [#######---] 70%
 Scope: Replace the remaining uniqueness bottleneck by constructing a non-`molecule_h_norm` source for hybrid-level uniqueness, then derive map-level fixed-point uniqueness and route downstream orbit-debt composition through that source.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_uniqueness_source` does not include `Molecule.molecule_h_norm`.
@@ -31,9 +31,13 @@ Last Updated: 2026-03-04
   - `molecule_residual_fixed_point_uniqueness_source_via_hybrid_unique_fixed_point_source`
   - `molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_hybrid_unique_fixed_point_source`
   - `molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source_via_hybrid_unique_fixed_point_source`.
+- [x] Add hybrid-class-collapse bridge constructors into the hybrid-unique source:
+  - `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_collapse_source`
+  - `molecule_residual_hybrid_unique_fixed_point_source_of_refined_and_hybrid_class_collapse_source`
+  - `molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_hybrid_class_collapse_source`.
 - [ ] Construct a non-`molecule_h_norm` theorem for `MoleculeResidualHybridUniqueFixedPointSource`.
-- [ ] Rewire current uniqueness source (`molecule_residual_fixed_point_uniqueness_source`) to the constructive hybrid-unique source.
-- [ ] Re-run fixed-point/orbit/top-level axiom probes and update tracker.
+- [x] Rewire current uniqueness source (`molecule_residual_fixed_point_uniqueness_source`) to the hybrid-unique source route, preserving a direct legacy theorem as `molecule_residual_fixed_point_uniqueness_source_direct`.
+- [x] Re-run fixed-point/orbit/top-level axiom probes and update tracker.
 
 ## Notes
 
@@ -44,8 +48,13 @@ Last Updated: 2026-03-04
   axiom-clean modulo ground axioms; current theorem
   `molecule_residual_hybrid_unique_fixed_point_source` still carries
   `Molecule.molecule_h_norm`.
+- Current public uniqueness theorem
+  `molecule_residual_fixed_point_uniqueness_source` now routes through
+  `molecule_residual_hybrid_unique_fixed_point_source`; the former direct route
+  is retained as `molecule_residual_fixed_point_uniqueness_source_direct`.
 - The current-route wrappers above compile and probe as expected; they still
   carry `Molecule.molecule_h_norm` through the current hybrid-unique source
   theorem.
 - The remaining blocker is now concentrated at construction of:
-  `MoleculeResidualHybridUniqueFixedPointSource`.
+  `MoleculeResidualHybridUniqueFixedPointSource` (currently inherited via
+  `molecule_residual_fixed_point_hybrid_class_collapse_source_direct`).

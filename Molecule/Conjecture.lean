@@ -2465,9 +2465,9 @@ theorem molecule_residual_fixed_point_hybrid_class_collapse_source_direct :
     (molecule_h_unique f1 f2 ⟨h_fix1, h_renorm1⟩ ⟨h_fix2, h_renorm2⟩)
 
 /--
-Current fixed-point uniqueness source theorem.
+Current fixed-point uniqueness source theorem (direct legacy route).
 -/
-theorem molecule_residual_fixed_point_uniqueness_source :
+theorem molecule_residual_fixed_point_uniqueness_source_direct :
     MoleculeResidualFixedPointUniquenessSource :=
   molecule_residual_fixed_point_uniqueness_source_of_hybrid_class_collapse_source
     molecule_residual_fixed_point_hybrid_class_collapse_source_direct
@@ -2519,7 +2519,7 @@ theorem molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_dat
   molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_uniqueness_source
     molecule_residual_orbit_transport_source
     molecule_h_fixed_data_direct
-    molecule_residual_fixed_point_uniqueness_source
+    molecule_residual_fixed_point_uniqueness_source_direct
 
 /--
 Current hybrid-class-collapse source theorem projected from the uniqueness
@@ -2691,11 +2691,11 @@ theorem residual_fixed_point_existence_of_refined_contract
 
 /--
 Assemble hybrid-class unique fixed-point source from canonical fixed-point data
-and a map-level uniqueness source.
+and a hybrid-class-collapse source.
 -/
-theorem molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_uniqueness_source
+theorem molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_collapse_source
     (h_canonical : CanonicalFastFixedPointData)
-    (h_unique : MoleculeResidualFixedPointUniquenessSource) :
+    (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
     MoleculeResidualHybridUniqueFixedPointSource := by
   rcases h_canonical with ⟨g, h_renorm_g, h_fix_g⟩
   refine ⟨toHybridClass g, ?_, ?_⟩
@@ -2703,9 +2703,34 @@ theorem molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_uniq
   · intro y hy
     have hy_fix : Rfast y = y := by
       simpa [R_hybrid] using hy.2
-    have h_eq : y = g :=
-      h_unique y g ⟨hy_fix, hy.1⟩ ⟨h_fix_g, h_renorm_g⟩
-    simpa [toHybridClass] using h_eq
+    have h_class : toHybridClass y = toHybridClass g :=
+      h_collapse y g hy_fix hy.1 h_fix_g h_renorm_g
+    simpa [toHybridClass] using h_class
+
+/--
+Assemble hybrid-class unique fixed-point source from canonical fixed-point data
+and a map-level uniqueness source.
+-/
+theorem molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_uniqueness_source
+    (h_canonical : CanonicalFastFixedPointData)
+    (h_unique : MoleculeResidualFixedPointUniquenessSource) :
+    MoleculeResidualHybridUniqueFixedPointSource :=
+  molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_collapse_source
+    h_canonical
+    (molecule_residual_fixed_point_hybrid_class_collapse_source_of_uniqueness_source
+      h_unique)
+
+/--
+Assemble hybrid-class unique fixed-point source from refined contract
+assumptions and a hybrid-class-collapse source.
+-/
+theorem molecule_residual_hybrid_unique_fixed_point_source_of_refined_and_hybrid_class_collapse_source
+    (h_refined : MoleculeConjectureRefined)
+    (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
+    MoleculeResidualHybridUniqueFixedPointSource :=
+  molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_collapse_source
+    h_refined.2
+    h_collapse
 
 /--
 Assemble hybrid-class unique fixed-point source from refined contract
@@ -2715,9 +2740,10 @@ theorem molecule_residual_hybrid_unique_fixed_point_source_of_refined_and_unique
     (h_refined : MoleculeConjectureRefined)
     (h_unique : MoleculeResidualFixedPointUniquenessSource) :
     MoleculeResidualHybridUniqueFixedPointSource :=
-  molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_uniqueness_source
-    h_refined.2
-    h_unique
+  molecule_residual_hybrid_unique_fixed_point_source_of_refined_and_hybrid_class_collapse_source
+    h_refined
+    (molecule_residual_fixed_point_hybrid_class_collapse_source_of_uniqueness_source
+      h_unique)
 
 /--
 Assemble residual fixed-point-normalization ingredients from:
@@ -3072,6 +3098,18 @@ theorem canonical_fast_fixed_point_data_from_bounds :
   canonical_fast_fixed_point_data_of_bounds molecule_residual_bounds
 
 /--
+Assemble hybrid-class unique fixed-point source from bounds and hybrid-class-
+collapse source seams.
+-/
+theorem molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_hybrid_class_collapse_source
+    (h_bounds : PseudoSiegelAPrioriBounds)
+    (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
+    MoleculeResidualHybridUniqueFixedPointSource :=
+  molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_collapse_source
+    (canonical_fast_fixed_point_data_of_bounds h_bounds)
+    h_collapse
+
+/--
 Assemble hybrid-class unique fixed-point source from bounds and map-level
 uniqueness source seams.
 -/
@@ -3079,27 +3117,35 @@ theorem molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_uniquen
     (h_bounds : PseudoSiegelAPrioriBounds)
     (h_unique : MoleculeResidualFixedPointUniquenessSource) :
     MoleculeResidualHybridUniqueFixedPointSource :=
-  molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_uniqueness_source
-    (canonical_fast_fixed_point_data_of_bounds h_bounds)
-    h_unique
+  molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_hybrid_class_collapse_source
+    h_bounds
+    (molecule_residual_fixed_point_hybrid_class_collapse_source_of_uniqueness_source
+      h_unique)
 
 /--
 Current hybrid-class unique fixed-point source theorem.
 -/
 theorem molecule_residual_hybrid_unique_fixed_point_source :
     MoleculeResidualHybridUniqueFixedPointSource :=
-  molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_uniqueness_source
+  molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_hybrid_class_collapse_source
     molecule_residual_bounds
-    molecule_residual_fixed_point_uniqueness_source
+    molecule_residual_fixed_point_hybrid_class_collapse_source
 
 /--
 Current map-level fixed-point uniqueness theorem routed via the hybrid-unique
 source seam.
 -/
-theorem molecule_residual_fixed_point_uniqueness_source_via_hybrid_unique_fixed_point_source :
+theorem molecule_residual_fixed_point_uniqueness_source :
     MoleculeResidualFixedPointUniquenessSource :=
   molecule_residual_fixed_point_uniqueness_source_of_hybrid_unique_fixed_point_source
     molecule_residual_hybrid_unique_fixed_point_source
+
+/--
+Compatibility alias: explicit theorem name for the hybrid-unique route.
+-/
+theorem molecule_residual_fixed_point_uniqueness_source_via_hybrid_unique_fixed_point_source :
+    MoleculeResidualFixedPointUniquenessSource :=
+  molecule_residual_fixed_point_uniqueness_source
 
 /--
 Current PLAN_57 canonical orbit-at debt source routed via transport +
