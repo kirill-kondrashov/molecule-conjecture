@@ -3113,6 +3113,25 @@ theorem molecule_residual_fixed_point_uniqueness_direct_source :
     molecule_residual_fixed_point_hybrid_class_collapse_source_direct
 
 /--
+The direct map-level hybrid-class-collapse seam and the direct map-level
+fixed-point uniqueness seam are equivalent.
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_direct_source_iff_fixed_point_uniqueness_direct_source :
+    MoleculeResidualFixedPointHybridClassCollapseDirectSource ↔
+      MoleculeResidualFixedPointUniquenessDirectSource := by
+  constructor
+  · intro h_collapse_direct
+    exact
+      molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_collapse_source
+        (molecule_residual_fixed_point_hybrid_class_collapse_source_direct_of_source
+          h_collapse_direct)
+  · intro h_unique_direct
+    exact
+      molecule_residual_fixed_point_hybrid_class_collapse_source_of_uniqueness_source
+        (molecule_residual_fixed_point_uniqueness_source_direct_of_source
+          h_unique_direct)
+
+/--
 Current fixed-point uniqueness source theorem (direct legacy route), now
 expressed through the dedicated direct-source seam.
 -/
