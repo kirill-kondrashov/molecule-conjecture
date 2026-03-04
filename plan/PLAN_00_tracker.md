@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_61 | Upstream hybrid-class uniqueness source replacement | ACTIVE | [####------] 40% |
+| PLAN_61 | Upstream hybrid-class uniqueness source replacement | ACTIVE | [#####-----] 50% |
 
 ## Dependency Map
 
@@ -496,6 +496,10 @@ Last Updated: 2026-03-04
   - Added direct-source equivalence certificates versus map-level uniqueness:
     `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_iff_uniqueness_source_of_bounds`,
     `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_iff_uniqueness_source`.
+  - Added direct-source hooks from hybrid-unique/current uniqueness routes:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_hybrid_unique_fixed_point_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_via_hybrid_unique_fixed_point_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_via_uniqueness_source`.
   - Probe checkpoint:
     the hook theorem is axiom-clean modulo ground axioms; current zero-arg route
     remains `Molecule.molecule_h_norm`-backed.

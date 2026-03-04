@@ -2756,6 +2756,17 @@ theorem molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_u
       h_unique)
 
 /--
+Build direct hybrid-class fixed-point uniqueness source seam from hybrid-unique
+source assumptions.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_hybrid_unique_fixed_point_source
+    (h_hybrid_unique : MoleculeResidualHybridUniqueFixedPointSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessDirectSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_uniqueness_source
+    (molecule_residual_fixed_point_uniqueness_source_of_hybrid_unique_fixed_point_source
+      h_hybrid_unique)
+
+/--
 Build hybrid-class-uniqueness model sources from model-collapse input.
 -/
 def molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_model_collapse_source
@@ -3775,6 +3786,15 @@ theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_sou
     molecule_residual_hybrid_unique_fixed_point_source
 
 /--
+Current direct hybrid-class uniqueness source seam routed from current
+hybrid-unique source.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_via_hybrid_unique_fixed_point_source :
+    MoleculeResidualHybridClassFixedPointUniquenessDirectSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_hybrid_unique_fixed_point_source
+    molecule_residual_hybrid_unique_fixed_point_source
+
+/--
 Current map-level fixed-point uniqueness theorem routed via the hybrid-unique
 source seam.
 -/
@@ -3782,6 +3802,15 @@ theorem molecule_residual_fixed_point_uniqueness_source :
     MoleculeResidualFixedPointUniquenessSource :=
   molecule_residual_fixed_point_uniqueness_source_of_hybrid_unique_fixed_point_source
     molecule_residual_hybrid_unique_fixed_point_source
+
+/--
+Current direct hybrid-class uniqueness source seam routed from the current
+map-level uniqueness theorem.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_via_uniqueness_source :
+    MoleculeResidualHybridClassFixedPointUniquenessDirectSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_uniqueness_source
+    molecule_residual_fixed_point_uniqueness_source
 
 /--
 Compatibility alias: explicit theorem name for the hybrid-unique route.

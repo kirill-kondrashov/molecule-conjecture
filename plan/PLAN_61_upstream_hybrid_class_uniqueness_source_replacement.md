@@ -1,7 +1,7 @@
 # PLAN 61 - Upstream Hybrid-Class Uniqueness Source Replacement
 
 Status: ACTIVE
-Progress: [####------] 40%
+Progress: [#####-----] 50%
 Scope: Replace `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct` with a non-`molecule_h_norm` theorem-level source produced upstream, then cut that source through the model-collapse/model-source path.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct` does not include `Molecule.molecule_h_norm`.
@@ -30,6 +30,10 @@ Last Updated: 2026-03-04
 - [x] Add direct-source equivalence certificates against map-level uniqueness:
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_iff_uniqueness_source_of_bounds`
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_iff_uniqueness_source`.
+- [x] Add additional upstream hooks into the direct-source seam:
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_hybrid_unique_fixed_point_source`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_via_hybrid_unique_fixed_point_source`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_via_uniqueness_source`.
 - [ ] Prove/export one non-`molecule_h_norm` theorem into that seam.
 - [ ] Rewire:
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`
@@ -57,3 +61,6 @@ Last Updated: 2026-03-04
 - The direct-source equivalence theorem under bounds is axiom-clean and
   confirms that, on current zero-arg route, eliminating direct-source dependence
   requires upstream elimination of map-level uniqueness dependence.
+- The new parameterized hook theorem from hybrid-unique source assumptions is
+  axiom-clean modulo ground axioms; current zero-arg wrappers through
+  hybrid-unique/current uniqueness remain `Molecule.molecule_h_norm`-backed.
