@@ -1,12 +1,12 @@
 # PLAN 42 - Post-Axiom Contract Hardening
 
-Status: ACTIVE
-Progress: [#########-] 90%
+Status: DONE
+Progress: [##########] 100%
 Scope: Recover mathematical strength after the axiom-elimination cutover by replacing placeholder contracts with nontrivial theorem-consumed payloads.
 Acceptance: `molecule_conjecture_refined` remains axiom-free while `PseudoSiegelAPrioriBounds` and hyperbolicity predicates are strengthened beyond trivial witnesses.
 Dependencies: `Molecule/Conjecture.lean`, `Molecule/Hyperbolicity.lean`, `Molecule/Problem4_3.lean`, `Molecule/BoundsToHyperbolicity.lean`, `plan/PLAN_41_residual_bounds_elimination.md`
 Stuck Rule: STUCK if strengthening any contract necessarily reintroduces a project axiom in `check_axioms`.
-Last Updated: 2026-03-03
+Last Updated: 2026-03-04
 
 ## Work Log
 

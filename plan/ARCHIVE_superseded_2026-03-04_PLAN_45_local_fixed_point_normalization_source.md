@@ -1,12 +1,12 @@
 # PLAN 45 - Local Fixed-Point Normalization Source
 
-Status: ACTIVE
+Status: SUPERSEDED (ARCHIVED 2026-03-04)
 Progress: [#########-] 97%
 Scope: Replace the inconsistent global-normalization seam with a local fixed-point normalization source that can feed Problem 4.3 bounds without `molecule_h_norm`.
 Acceptance: `molecule_residual_bounds_seed_free` no longer depends on `molecule_h_norm`; `check_axioms` for `Molecule.molecule_conjecture_refined` does not report `Molecule.molecule_h_norm`.
 Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/FixedPointExistence.lean`, `plan/PLAN_44_constructive_slice_witness_refactor.md`
 Stuck Rule: STUCK if no theorem-level route can produce `FixedPointNormalizationData` without reintroducing project axioms.
-Last Updated: 2026-03-03
+Last Updated: 2026-03-04
 
 ## Motivation
 

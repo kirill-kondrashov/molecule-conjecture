@@ -1,12 +1,12 @@
 # PLAN 00 - Molecule Hypothesis Elimination Tracker
 
 Status: ACTIVE
-Progress: [#########-] 92%
+Progress: [#########-] 93%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_45, PLAN_47, PLAN_48
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_48, PLAN_49
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
-Last Updated: 2026-03-03
+Last Updated: 2026-03-04
 
 ## Plan Matrix
 
@@ -42,16 +42,16 @@ Last Updated: 2026-03-03
 | PLAN_39 | HMol compactness model alignment | DONE | [##########] 100% |
 | PLAN_40 | Analytic residual triple elimination | DONE | [##########] 100% |
 | PLAN_41 | Residual bounds elimination | DONE | [##########] 100% |
-| PLAN_42 | Post-axiom contract hardening | ACTIVE | [#########-] 90% |
+| PLAN_42 | Post-axiom contract hardening | DONE | [##########] 100% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
-| PLAN_45 | Local fixed-point normalization source | ACTIVE | [#########-] 97% |
-| PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [###-------] 30% |
+| PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [####------] 40% |
 | PLAN_48 | Constructive orbit-clause route | ACTIVE | [###-------] 30% |
+| PLAN_49 | Constructive fixed-point source route | ACTIVE | [##--------] 20% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_47 (constructive source rebuild) + PLAN_48 (orbit clause track), then PLAN_45 wrap-up, then PLAN_43.
+- Current queue is PLAN_47 (integration) + PLAN_48 (orbit clause track) + PLAN_49 (fixed-point source track), then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -96,7 +96,10 @@ Last Updated: 2026-03-03
 - Archived STUCK plan:
   - `ARCHIVE_stuck_2026-03-04_PLAN_44_constructive_slice_witness_refactor.md`
     (replaced by PLAN_45).
-- `PLAN_45` progress:
+- Archived SUPERSEDED plan:
+  - `ARCHIVE_superseded_2026-03-04_PLAN_45_local_fixed_point_normalization_source.md`
+    (handoff to PLAN_47/49).
+- `PLAN_45` delivered:
   - Added local bounds seam
     `problem_4_3_bounds_established_conjecture_from_fixed_data_and_transport`.
   - Rewired `molecule_residual_bounds_seed_free` through
@@ -128,6 +131,9 @@ Last Updated: 2026-03-03
     `molecule_residual_bounds_assembly_sources`.
   - Rewired `molecule_residual_bounds_seed_free` through
     `molecule_residual_bounds_seed_free_of_bounds_assembly_sources`.
+  - Split fixed-point assembly path from orbit-clause path via:
+    `MoleculeResidualFixedPointAssemblySources` and
+    `molecule_residual_bounds_assembly_sources_of_fixed_point_and_orbit_sources`.
   - Targeted axiom probe confirms:
     `molecule_residual_bounds_seed_free_of_bounds_assembly_sources` and
     `molecule_residual_bounds_seed_free_of_non_ground_sources` are axiom-clean
@@ -143,8 +149,17 @@ Last Updated: 2026-03-03
     these modules consume orbit-clause assumptions but do not produce them.
   - Next target is an explicit constructive constructor theorem (or minimal
     new source assumptions) for `MoleculeResidualOrbitClauseSource`.
+- `PLAN_49` progress:
+  - Added fixed-point-only assembly seam and bridge theorems:
+    `molecule_residual_fixed_point_assembly_sources_of_non_ground_sources`,
+    `molecule_residual_fixed_point_normalization_ingredients_of_fixed_point_assembly_sources`.
+  - Targeted axiom probe confirms these fixed-point assembly seam theorems are
+    axiom-clean modulo ground axioms.
+  - Next target is constructive replacement of:
+    `molecule_residual_fixed_point_data_source` and
+    `molecule_residual_fixed_point_uniqueness_source`.
 
 ## Current Critical Blockers
 
 1. Root blocker: `Molecule.molecule_h_norm` remains in the zero-arg theorem path.
-2. Active mitigation: PLAN_42 contract hardening and PLAN_45 local fixed-point normalization source.
+2. Active mitigation: PLAN_47 integration track, PLAN_48 orbit-clause track, PLAN_49 fixed-point source track.

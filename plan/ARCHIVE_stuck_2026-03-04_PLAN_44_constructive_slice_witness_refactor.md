@@ -73,7 +73,9 @@ Last Updated: 2026-03-03
 
 - Blocked on contract shape: the residual path still depends on a global-normalization
   contract now formally shown inconsistent in this model.
-- Replacement path is tracked in `PLAN_45_local_fixed_point_normalization_source.md`.
+- Replacement path is tracked in
+  `ARCHIVE_superseded_2026-03-04_PLAN_45_local_fixed_point_normalization_source.md`,
+  with active continuation in `PLAN_47_h_norm_elimination_constructive_source_rebuild.md`.
 
 ## Candidate Implementation Notes
 

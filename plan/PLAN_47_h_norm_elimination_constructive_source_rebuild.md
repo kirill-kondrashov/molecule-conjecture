@@ -1,13 +1,13 @@
 # PLAN 47 - `molecule_h_norm` Elimination via Constructive Source Rebuild
 
 Status: ACTIVE
-Progress: [###-------] 30%
+Progress: [####------] 40%
 Scope: Remove the last project axiom `Molecule.molecule_h_norm` from the zero-argument route by replacing the remaining non-ground source constructors with theorem-level constructive proofs.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_non_ground_sources` does not include `Molecule.molecule_h_norm`.
 2. `#print axioms Molecule.molecule_residual_bounds_seed_free` does not include `Molecule.molecule_h_norm`.
 3. `#print axioms Molecule.molecule_conjecture_refined` does not include `Molecule.molecule_h_norm`.
-Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/RenormalizationFixedPointUniqueness.lean`, `plan/PLAN_45_local_fixed_point_normalization_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_46_seed_free_ingredient_constructor.md`
+Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/RenormalizationFixedPointUniqueness.lean`, `plan/PLAN_48_orbit_clause_constructive_route.md`, `plan/PLAN_49_fixed_point_source_constructive_route.md`, `plan/ARCHIVE_superseded_2026-03-04_PLAN_45_local_fixed_point_normalization_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_46_seed_free_ingredient_constructor.md`
 Stuck Rule: STUCK if both source tracks below cannot advance without introducing a new project axiom or weakening exported theorem statements.
 Last Updated: 2026-03-04
 
@@ -27,6 +27,9 @@ Last Updated: 2026-03-04
 - [x] Verify axiom profile of narrowed assembly route:
   - `molecule_residual_bounds_seed_free_of_bounds_assembly_sources` is axiom-clean
     modulo ground axioms (`propext`, `Classical.choice`, `Quot.sound`).
+- [x] Split fixed-point assembly seam from orbit-clause seam:
+  - `MoleculeResidualFixedPointAssemblySources`
+  - `molecule_residual_fixed_point_normalization_ingredients_of_fixed_point_assembly_sources`
 - [ ] Replace current ingredient seed route with a constructive theorem package that does not use `molecule_h_norm`.
 - [ ] Export theorem-level bridge:
   - constructive `MoleculeResidualFixedPointNormalizationIngredients`.
