@@ -45,6 +45,18 @@ Last Updated: 2026-03-04
   `molecule_residual_hybrid_class_fixed_point_uniqueness_source` with a
   constructor from a nontrivial hybrid abstraction seam (not tied to the
   current identity-model collapse path), then re-run probes.
+- [x] Generalize seam-level uniqueness machinery to collapse + lift contracts in
+  `Molecule/RenormalizationFixedPointUniqueness.lean`:
+  - `HybridFixedPointCollapseIn`
+  - `HybridClassFixedPointLiftSource`
+  - `HybridClassFixedPointUniquenessIn`
+  - `hybrid_class_fixed_point_uniqueness_in_of_collapse_and_lift`
+  - `hybrid_unique_fixed_point_in_of_exists_and_collapse_and_lift`.
+- [x] Rewire `Molecule/Conjecture.lean` constructors to consume lift-based
+  route:
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_lift_source`
+  - `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_collapse_source`
+  - current `molecule_residual_hybrid_class_fixed_point_uniqueness_source`.
 
 ## Notes
 
@@ -61,3 +73,6 @@ Last Updated: 2026-03-04
 - Public current-route theorem names are now rewired through the hybrid-class
   uniqueness wrapper; probes were rerun and show the wrapper is clean while the
   current source theorem still carries `Molecule.molecule_h_norm`.
+- The active route no longer requires projection injectivity for hybrid-class
+  uniqueness; it now uses a seam-level fixed-point lift contract. The remaining
+  blocker is that the current lift source is still the identity-model instance.

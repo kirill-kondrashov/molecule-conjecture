@@ -390,6 +390,17 @@ Last Updated: 2026-03-04
     `molecule_residual_hybrid_unique_fixed_point_source` now routes via
     `molecule_residual_hybrid_class_fixed_point_uniqueness_source`, and probes
     were rerun for hybrid/uniqueness/orbit wrapper theorems.
+  - Generalized seam-level uniqueness machinery in
+    `Molecule/RenormalizationFixedPointUniqueness.lean` to collapse + lift
+    contracts:
+    `HybridFixedPointCollapseIn`, `HybridClassFixedPointLiftSource`,
+    `HybridClassFixedPointUniquenessIn`,
+    `hybrid_class_fixed_point_uniqueness_in_of_collapse_and_lift`,
+    `hybrid_unique_fixed_point_in_of_exists_and_collapse_and_lift`.
+  - Rewired `Molecule/Conjecture.lean` constructors to the lift-based route:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_lift_source`,
+    `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_collapse_source`,
+    and current `molecule_residual_hybrid_class_fixed_point_uniqueness_source`.
   - Targeted probe confirms the new seam scaffold is axiom-clean modulo ground
     axioms.
   - Next target is replacing current source
