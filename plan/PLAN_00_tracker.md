@@ -47,7 +47,7 @@ Last Updated: 2026-03-04
 | PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 98% |
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 99% |
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 80% |
-| PLAN_54 | Orbit source contract refactor | ACTIVE | [###-------] 30% |
+| PLAN_54 | Orbit source contract refactor | ACTIVE | [######----] 60% |
 
 ## Dependency Map
 
@@ -251,7 +251,12 @@ Last Updated: 2026-03-04
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
     `molecule_residual_bounds_from_fixed_data_localized`.
+  - Added explicit orbit-source composition seam theorems:
+    `molecule_residual_orbit_clause_for_fixed_data_source_of_orbit_clause_source`,
+    `molecule_residual_orbit_clause_for_fixed_data_source_of_transport_source`.
   - Targeted probe confirms
+    `molecule_residual_orbit_clause_for_fixed_data_source_of_orbit_clause_source`,
+    `molecule_residual_orbit_clause_for_fixed_data_source_of_transport_source`,
     `molecule_residual_bounds_from_fixed_data_localized` and
     `molecule_residual_bounds_from_fixed_data_and_local_orbit_source`
     are axiom-clean modulo ground axioms.

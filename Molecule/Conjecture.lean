@@ -1568,6 +1568,25 @@ theorem molecule_residual_orbit_clause_for_fixed_data_source_of_local
   exact h_orbit_at f_star D U a b h_fixed h_renorm h_openD h_openU h_inU h_cv
 
 /--
+Build narrowed fixed-data orbit source from a global orbit-clause source.
+-/
+theorem molecule_residual_orbit_clause_for_fixed_data_source_of_orbit_clause_source
+    (h_orbit : MoleculeResidualOrbitClauseSource) :
+    MoleculeResidualOrbitClauseForFixedDataSource :=
+  molecule_residual_orbit_clause_for_fixed_data_source_of_local
+    (molecule_residual_orbit_clause_at_source_of_orbit_clause h_orbit)
+
+/--
+Build narrowed fixed-data orbit source from bundled residual orbit-transport
+source data.
+-/
+theorem molecule_residual_orbit_clause_for_fixed_data_source_of_transport_source
+    (h_transport : MoleculeResidualOrbitTransportSource) :
+    MoleculeResidualOrbitClauseForFixedDataSource :=
+  molecule_residual_orbit_clause_for_fixed_data_source_of_orbit_clause_source
+    h_transport.h_orbit
+
+/--
 Current narrowed fixed-data orbit source (legacy ex-falso route).
 -/
 theorem molecule_residual_orbit_clause_for_fixed_data_source :
