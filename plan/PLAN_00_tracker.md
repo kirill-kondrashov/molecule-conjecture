@@ -189,10 +189,9 @@ Last Updated: 2026-03-04
     `molecule_residual_fixed_point_normalization_ingredients_of_fixed_point_assembly_sources`
     remains axiom-clean modulo ground axioms after the refactor.
   - Current fixed-point blocker is concentrated at:
-    `molecule_residual_fixed_point_assembly_sources`.
+    `molecule_residual_fixed_point_normalization_ingredients`.
   - Next target is constructive replacement of:
-    `molecule_residual_fixed_point_data_source` and
-    `molecule_residual_fixed_point_uniqueness_source`.
+    `molecule_residual_fixed_point_normalization_ingredients`.
 - `PLAN_51` progress:
   - Inherited narrowed orbit-side seam from PLAN_50:
     `MoleculeResidualOrbitClauseForFixedDataSource`.

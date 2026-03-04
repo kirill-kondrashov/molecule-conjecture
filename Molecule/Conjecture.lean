@@ -1743,6 +1743,19 @@ theorem molecule_residual_fixed_point_normalization_ingredients :
     molecule_residual_fixed_point_transfer_source
 
 /--
+Explicit replacement seam for the bundled fixed-point ingredient source.
+-/
+def MoleculeResidualFixedPointIngredientsSource : Prop :=
+  MoleculeResidualFixedPointNormalizationIngredients
+
+/--
+Current fixed-point ingredient source theorem (legacy global-norm route).
+-/
+theorem molecule_residual_fixed_point_ingredients_source :
+    MoleculeResidualFixedPointIngredientsSource :=
+  molecule_residual_fixed_point_normalization_ingredients
+
+/--
 Current residual fixed-point normalization source (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_normalization_source :
@@ -1921,7 +1934,7 @@ Bundled non-ground residual sources currently carrying the final project axiom
 dependency.
 -/
 structure MoleculeResidualNonGroundSources where
-  fixedIngredients : MoleculeResidualFixedPointNormalizationIngredients
+  fixedIngredients : MoleculeResidualFixedPointIngredientsSource
   orbitClause : MoleculeResidualOrbitClauseForFixedDataSource
 
 /--
@@ -1993,7 +2006,7 @@ Current bundled non-ground residual sources.
 theorem molecule_residual_non_ground_sources :
     MoleculeResidualNonGroundSources :=
   molecule_residual_non_ground_sources_of_ingredients_and_orbit
-    molecule_residual_fixed_point_normalization_ingredients
+    molecule_residual_fixed_point_ingredients_source
     molecule_residual_orbit_clause_for_fixed_data_source
 
 /--
