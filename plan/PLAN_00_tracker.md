@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_58 | Fixed-point uniqueness source constructive route | ACTIVE | [###-------] 35% |
+| PLAN_58 | Fixed-point uniqueness source constructive route | ACTIVE | [######----] 60% |
 
 ## Dependency Map
 
@@ -324,8 +324,15 @@ Last Updated: 2026-03-04
     `molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_hybrid_class_collapse_source`.
   - Targeted probe confirms these new seam theorems are axiom-clean modulo
     ground axioms.
-  - Next target is rewiring
-    `molecule_residual_fixed_point_uniqueness_source` through the new seam path.
+  - Rewired
+    `molecule_residual_fixed_point_uniqueness_source` through the seam path:
+    `molecule_residual_fixed_point_uniqueness_source_of_hybrid_class_collapse_source`
+    using
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_direct`.
+  - Build/check + targeted probes rerun completed; current uniqueness and
+    hybrid-collapse source theorems still carry `Molecule.molecule_h_norm`.
+  - Next target is constructive replacement of
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_direct`.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

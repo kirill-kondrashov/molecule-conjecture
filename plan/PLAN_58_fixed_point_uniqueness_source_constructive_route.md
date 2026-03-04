@@ -1,7 +1,7 @@
 # PLAN 58 - Fixed-Point Uniqueness Source Constructive Route
 
 Status: ACTIVE
-Progress: [###-------] 35%
+Progress: [######----] 60%
 Scope: Replace the current ex-falso uniqueness source (`molecule_residual_fixed_point_uniqueness_source`) with a theorem-level constructor route that does not depend on `molecule_h_norm`, and integrate it into fixed-point/orbit composition seams.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_uniqueness_source` does not include `Molecule.molecule_h_norm`.
@@ -21,8 +21,10 @@ Last Updated: 2026-03-04
   - `molecule_residual_fixed_point_hybrid_class_collapse_source_of_uniqueness_source`
   - transport integration seam:
     `molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_hybrid_class_collapse_source`.
-- [ ] Rewire `molecule_residual_fixed_point_uniqueness_source` through the new seam path.
-- [ ] Re-run `make build`, `make check`, and targeted `#print axioms` probes.
+- [x] Rewire `molecule_residual_fixed_point_uniqueness_source` through the new seam path.
+- [x] Re-run `make build`, `make check`, and targeted `#print axioms` probes.
+- [ ] Replace `molecule_residual_fixed_point_hybrid_class_collapse_source_direct`
+  with a constructive non-`molecule_h_norm` source theorem.
 
 ## Notes
 
@@ -40,3 +42,7 @@ Last Updated: 2026-03-04
   - new seam theorems above are ground-axiom-only modulo source inputs.
   - current theorem `molecule_residual_fixed_point_hybrid_class_collapse_source`
     still carries `Molecule.molecule_h_norm` via current uniqueness source.
+  - after rewiring, `molecule_residual_fixed_point_uniqueness_source` now routes
+    through `molecule_residual_fixed_point_uniqueness_source_of_hybrid_class_collapse_source`
+    using `molecule_residual_fixed_point_hybrid_class_collapse_source_direct`
+    (still carrying `Molecule.molecule_h_norm`).

@@ -2404,11 +2404,22 @@ theorem molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data
     h_unique
 
 /--
+Current hybrid-class-collapse source theorem (legacy route from the current
+uniqueness proof body).
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_source_direct :
+    MoleculeResidualFixedPointHybridClassCollapseSource := by
+  intro f1 f2 h_fix1 h_renorm1 h_fix2 h_renorm2
+  exact congrArg toHybridClass
+    (molecule_h_unique f1 f2 ⟨h_fix1, h_renorm1⟩ ⟨h_fix2, h_renorm2⟩)
+
+/--
 Current fixed-point uniqueness source theorem.
 -/
 theorem molecule_residual_fixed_point_uniqueness_source :
     MoleculeResidualFixedPointUniquenessSource :=
-  molecule_h_unique
+  molecule_residual_fixed_point_uniqueness_source_of_hybrid_class_collapse_source
+    molecule_residual_fixed_point_hybrid_class_collapse_source_direct
 
 /--
 Assemble fixed-point transfer source from fixed-point normalization data and
@@ -2465,8 +2476,7 @@ source seam.
 -/
 theorem molecule_residual_fixed_point_hybrid_class_collapse_source :
     MoleculeResidualFixedPointHybridClassCollapseSource :=
-  molecule_residual_fixed_point_hybrid_class_collapse_source_of_uniqueness_source
-    molecule_residual_fixed_point_uniqueness_source
+  molecule_residual_fixed_point_hybrid_class_collapse_source_direct
 
 /--
 Current PLAN_57 canonical orbit-at debt source routed via transport +
