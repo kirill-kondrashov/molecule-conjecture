@@ -1,7 +1,7 @@
 # PLAN 62 - Upstream Map-Uniqueness Source Replacement
 
 Status: ACTIVE
-Progress: [#######---] 70%
+Progress: [########--] 82%
 Scope: Replace `molecule_residual_fixed_point_uniqueness_source_direct` with a non-`molecule_h_norm` theorem-level constructor from upstream fixed-point tracks, then feed that constructor into PLAN_61 replacement seams.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_uniqueness_source_direct` does not include `Molecule.molecule_h_norm`.
@@ -28,10 +28,12 @@ Last Updated: 2026-03-04
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_fixed_point_uniqueness_direct_source`
   - `molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_fixed_point_uniqueness_direct_source`.
 - [ ] Rewire through PLAN_61 seams:
-  - `molecule_residual_fixed_point_uniqueness_source_direct`
-  - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`
-  - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source`
-  - `molecule_residual_hybrid_unique_fixed_point_source`.
+  - completed:
+    - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`
+    - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source`
+    - `molecule_residual_hybrid_unique_fixed_point_source`
+  - remaining:
+    - `molecule_residual_fixed_point_uniqueness_source_direct`.
 - [ ] Re-run probes and sync PLAN_47/49/53 integration notes.
 
 ## Notes
@@ -66,3 +68,12 @@ Last Updated: 2026-03-04
   - probe result:
     all three hooks are ground-axiom-only (`propext`, `Classical.choice`,
     `Quot.sound`).
+- Checkpoint (2026-03-04, zero-arg cutover):
+  - rewired current zero-arg theorems through the new direct-seam hooks:
+    - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`
+    - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source`
+    - `molecule_residual_hybrid_unique_fixed_point_source`
+  - probe result:
+    frontier unchanged; the rewired zero-arg theorems above and
+    `molecule_residual_fixed_point_uniqueness_source_direct` still carry
+    `Molecule.molecule_h_norm`.

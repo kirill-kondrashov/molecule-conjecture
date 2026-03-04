@@ -3875,16 +3875,16 @@ dedicated direct-source seam.
 -/
 theorem molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct :
     MoleculeResidualHybridClassFixedPointUniquenessSource :=
-  molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct_of_source
-    molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_via_uniqueness_source_direct
+  molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_fixed_point_uniqueness_direct_source
+    molecule_residual_fixed_point_uniqueness_direct_source
 
 /--
 Current model-collapse source for hybrid-class-uniqueness model sources.
 -/
 theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source :
     MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource :=
-  molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_direct_source
-    molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct
+  molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_fixed_point_uniqueness_direct_source
+    molecule_residual_fixed_point_uniqueness_direct_source
 
 /--
 Current model-collapse source routed directly from map-level hybrid-class
@@ -3932,9 +3932,9 @@ Current hybrid-class unique fixed-point source theorem.
 -/
 theorem molecule_residual_hybrid_unique_fixed_point_source :
     MoleculeResidualHybridUniqueFixedPointSource :=
-  molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_hybrid_class_uniqueness_source
+  molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_fixed_point_uniqueness_direct_source
     molecule_residual_bounds
-    molecule_residual_hybrid_class_fixed_point_uniqueness_source
+    molecule_residual_fixed_point_uniqueness_direct_source
 
 /--
 Current model-collapse source routed from current hybrid-unique source.
