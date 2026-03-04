@@ -2514,7 +2514,7 @@ theorem molecule_residual_canonical_orbit_at_debt_source_via_fixed_point_transfe
 Current PLAN_57 canonical orbit-at debt source routed via transport +
 fixed-data + uniqueness source seams.
 -/
-theorem molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source :
+theorem molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source_direct :
     MoleculeResidualCanonicalOrbitAtDebtSource :=
   molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_uniqueness_source
     molecule_residual_orbit_transport_source
@@ -3160,15 +3160,23 @@ theorem molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_dat
 
 /--
 Current PLAN_57 canonical orbit-at debt source routed via transport +
+fixed-data + map-level uniqueness source seams.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source :
+    MoleculeResidualCanonicalOrbitAtDebtSource :=
+  molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_uniqueness_source
+    molecule_residual_orbit_transport_source
+    molecule_h_fixed_data_direct
+    molecule_residual_fixed_point_uniqueness_source
+
+/--
+Current PLAN_57 canonical orbit-at debt source routed via transport +
 fixed-data + map-level uniqueness, where uniqueness is itself routed through
 the hybrid-unique source seam.
 -/
 theorem molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source_via_hybrid_unique_fixed_point_source :
     MoleculeResidualCanonicalOrbitAtDebtSource :=
-  molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_uniqueness_source
-    molecule_residual_orbit_transport_source
-    molecule_h_fixed_data_direct
-    molecule_residual_fixed_point_uniqueness_source_via_hybrid_unique_fixed_point_source
+  molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source
 
 theorem molecule_residual_gap :
   ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},

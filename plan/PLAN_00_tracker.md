@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_59 | Hybrid unique fixed-point source constructor | ACTIVE | [#######---] 70% |
+| PLAN_59 | Hybrid unique fixed-point source constructor | ACTIVE | [########--] 78% |
 
 ## Dependency Map
 
@@ -345,6 +345,12 @@ Last Updated: 2026-03-04
     `molecule_residual_hybrid_unique_fixed_point_source`; the previous direct
     path is preserved as
     `molecule_residual_fixed_point_uniqueness_source_direct`.
+  - Rewired the public orbit-debt wrapper theorem name through that public
+    uniqueness theorem:
+    `molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source`
+    now routes through the hybrid-unique path; the previous direct path is
+    preserved as
+    `molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source_direct`.
   - Targeted probe confirms these wrappers are axiom-clean modulo ground
     axioms at the seam level and still carry `Molecule.molecule_h_norm` in the
     current routed path.
