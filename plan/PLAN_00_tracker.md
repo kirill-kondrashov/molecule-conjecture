@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_60 | Hybrid-class model refactor route | ACTIVE | [#########-] 96% |
+| PLAN_60 | Hybrid-class model refactor route | ACTIVE | [#########-] 97% |
 
 ## Dependency Map
 
@@ -443,6 +443,10 @@ Last Updated: 2026-03-04
   - Added lifted-seam constructor routes from hybrid-class uniqueness:
     `molecule_residual_lifted_hybrid_fixed_point_collapse_source_of_hybrid_class_uniqueness_source`,
     `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_hybrid_class_uniqueness_source`.
+  - Rewired current lifted model-source instantiation to consume a direct
+    hybrid-class uniqueness source seam:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources`.
   - Probe checkpoint:
     these alternative lifted-seam constructors are axiom-clean modulo ground
     axioms; current routed theorem still carries `Molecule.molecule_h_norm`.

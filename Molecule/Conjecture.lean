@@ -3524,12 +3524,21 @@ theorem molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources :
     molecule_residual_fixed_point_hybrid_class_collapse_source
 
 /--
+Direct hybrid-class fixed-point uniqueness source theorem routed through the
+assembly-source constructor.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct :
+    MoleculeResidualHybridClassFixedPointUniquenessSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_assembly_sources
+    molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources
+
+/--
 Current model-source pack for hybrid-class fixed-point uniqueness.
 -/
 def molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources :
     MoleculeResidualHybridClassFixedPointUniquenessModelSources :=
-  molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_hybrid_class_collapse_source
-    molecule_residual_fixed_point_hybrid_class_collapse_source
+  molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_hybrid_class_uniqueness_source
+    molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct
 
 /--
 Current hybrid-class fixed-point uniqueness source theorem.
