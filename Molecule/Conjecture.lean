@@ -1535,6 +1535,42 @@ def MoleculeResidualOrbitClauseAtFixedDataSource : Prop :=
     MoleculeOrbitClauseAt D U a b
 
 /--
+PLAN_57 debt statement: fixed-data canonical orbit-at constructor contract.
+This isolates one theorem-sized target equivalent to
+`MoleculeResidualOrbitClauseAtFixedDataSource`.
+-/
+def MoleculeResidualCanonicalOrbitAtDebtSource : Prop :=
+  ∀ (f_star : BMol),
+    Rfast f_star = f_star →
+    IsFastRenormalizable f_star →
+    criticalValue f_star = 0 →
+    MoleculeOrbitClauseAt
+      (Metric.ball 0 0.1)
+      ({ g : BMol | g = f_star })
+      (fun n => n)
+      (fun n => n + 1)
+
+/--
+Bridge: the PLAN_57 canonical orbit-at debt statement implies the fixed-data
+canonical orbit-at source contract.
+-/
+theorem molecule_residual_orbit_clause_at_fixed_data_source_of_canonical_debt_source
+    (h_debt : MoleculeResidualCanonicalOrbitAtDebtSource) :
+    MoleculeResidualOrbitClauseAtFixedDataSource := by
+  intro f_star h_fixed h_renorm h_crit
+  exact h_debt f_star h_fixed h_renorm h_crit
+
+/--
+Bridge: fixed-data canonical orbit-at source contract implies the PLAN_57
+canonical orbit-at debt statement.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_of_at_fixed_data_source
+    (h_orbit_fixed_at : MoleculeResidualOrbitClauseAtFixedDataSource) :
+    MoleculeResidualCanonicalOrbitAtDebtSource := by
+  intro f_star h_fixed h_renorm h_crit
+  exact h_orbit_fixed_at f_star h_fixed h_renorm h_crit
+
+/--
 Assemble orbit-clause source from the local orbit-obligation source seam.
 -/
 theorem molecule_residual_orbit_clause_source_of_local
@@ -1680,8 +1716,10 @@ Current fixed-data canonical orbit-at source theorem.
 -/
 theorem molecule_residual_orbit_clause_at_fixed_data_source :
     MoleculeResidualOrbitClauseAtFixedDataSource :=
-  molecule_residual_orbit_clause_at_fixed_data_source_of_transport_source
-    molecule_residual_orbit_transport_source
+  molecule_residual_orbit_clause_at_fixed_data_source_of_canonical_debt_source
+    (molecule_residual_canonical_orbit_at_debt_source_of_at_fixed_data_source
+      (molecule_residual_orbit_clause_at_fixed_data_source_of_transport_source
+        molecule_residual_orbit_transport_source))
 
 /--
 Current narrowed fixed-data orbit source (legacy route, now directly routed via

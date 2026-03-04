@@ -48,7 +48,7 @@ Last Updated: 2026-03-04
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 99% |
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 80% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
-| PLAN_57 | Orbit minimal theorem debt extraction | ACTIVE | [##--------] 20% |
+| PLAN_57 | Orbit minimal theorem debt extraction | ACTIVE | [#####-----] 50% |
 
 ## Dependency Map
 
@@ -292,8 +292,17 @@ Last Updated: 2026-03-04
     `molecule_residual_orbit_clause_for_fixed_data_source_of_at_fixed_data_source`,
     `molecule_residual_orbit_clause_at_fixed_data_source_of_orbit_clause_source`,
     `molecule_residual_orbit_clause_at_fixed_data_source_of_transport_source`.
-  - Next target is to define one explicit debt theorem statement and bridge it
-    into `MoleculeResidualOrbitClauseAtFixedDataSource`.
+  - Added explicit debt statement:
+    `MoleculeResidualCanonicalOrbitAtDebtSource`.
+  - Added debt-bridge theorems:
+    `molecule_residual_orbit_clause_at_fixed_data_source_of_canonical_debt_source`,
+    `molecule_residual_canonical_orbit_at_debt_source_of_at_fixed_data_source`.
+  - Targeted probes confirm debt-bridge seam theorems are axiom-clean modulo
+    ground axioms, while current theorem
+    `molecule_residual_orbit_clause_at_fixed_data_source` still carries
+    `Molecule.molecule_h_norm`.
+  - Next target is go/no-go: direct proof attempt on the debt statement vs
+    one narrower micro-split.
 
 ## Current Critical Blockers
 
