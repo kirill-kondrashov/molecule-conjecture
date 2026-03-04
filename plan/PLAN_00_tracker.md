@@ -46,7 +46,7 @@ Last Updated: 2026-03-04
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 99% |
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 99% |
-| PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 80% |
+| PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 85% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
 
@@ -255,6 +255,18 @@ Last Updated: 2026-03-04
     `molecule_residual_fixed_point_normalization_ingredients` and
     `molecule_residual_non_ground_sources` still carry
     `Molecule.molecule_h_norm`.
+  - Added cross-track integration seams from fixed-data + uniqueness to
+    transfer components and canonical orbit-debt composition:
+    `fixed_point_critical_value_transfer_source_of_fixed_data_and_unique`,
+    `fixed_point_vbound_transfer_source_of_fixed_data_and_unique`,
+    `molecule_residual_canonical_vbound_source_of_fixed_data_and_unique`,
+    `molecule_residual_canonical_orbit_at_debt_source_of_structure_fixed_data_and_unique`,
+    and source wrappers
+    `fixed_point_transfer_components_of_fixed_data_and_uniqueness_source`,
+    `molecule_residual_canonical_vbound_source_of_fixed_data_and_uniqueness_source`,
+    `molecule_residual_canonical_orbit_at_debt_source_of_structure_fixed_data_and_uniqueness_source`.
+  - Targeted probe confirms these integration seams are axiom-clean modulo
+    ground axioms.
   - Next target is constructive replacement of:
     `molecule_residual_fixed_point_normalization_ingredients`.
 - `PLAN_53` progress:
@@ -278,6 +290,13 @@ Last Updated: 2026-03-04
   - Targeted probe confirms
     `molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer`
     is axiom-clean modulo ground axioms.
+  - Added cross-track integration seams:
+    `fixed_point_critical_value_transfer_source_of_fixed_data_and_unique`,
+    `fixed_point_vbound_transfer_source_of_fixed_data_and_unique`,
+    `molecule_residual_canonical_vbound_source_of_fixed_data_and_unique`,
+    `molecule_residual_canonical_orbit_at_debt_source_of_structure_fixed_data_and_unique`.
+  - Targeted probe confirms these integration seams are axiom-clean modulo
+    ground axioms.
   - Next target is constructive replacement of
     `molecule_residual_fixed_point_data_source`.
 - `PLAN_54` progress:

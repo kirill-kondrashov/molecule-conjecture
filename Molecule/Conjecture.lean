@@ -470,6 +470,34 @@ theorem fixed_point_local_normalization_transfer_of_fixed_data_and_unique
   exact ⟨h_crit_star, h_domain_star⟩
 
 /--
+Project the critical-value transfer component from fixed data + uniqueness.
+-/
+theorem fixed_point_critical_value_transfer_source_of_fixed_data_and_unique
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_unique :
+      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
+    FixedPointCriticalValueTransferSource := by
+  intro f h_fixed h_renorm
+  exact
+    (fixed_point_local_normalization_transfer_of_fixed_data_and_unique
+      h_fixed_data h_unique f h_fixed h_renorm).1
+
+/--
+Project the `V`-bound transfer component from fixed data + uniqueness.
+-/
+theorem fixed_point_vbound_transfer_source_of_fixed_data_and_unique
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_unique :
+      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
+    FixedPointVBoundTransferSource := by
+  intro f h_fixed h_renorm
+  exact
+    (fixed_point_local_normalization_transfer_of_fixed_data_and_unique
+      h_fixed_data h_unique f h_fixed h_renorm).2
+
+/--
 Build bundled residual fixed-point-normalization ingredients from:
 - one normalized fast-renormalizable fixed point, and
 - uniqueness of fast-renormalizable fixed points.
@@ -1644,6 +1672,19 @@ theorem molecule_residual_canonical_vbound_source_of_fixed_point_vbound_transfer
   exact h_vbound f_star h_fixed h_renorm
 
 /--
+Project canonical fixed-data `V`-bound control from fixed data + uniqueness.
+-/
+theorem molecule_residual_canonical_vbound_source_of_fixed_data_and_unique
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_unique :
+      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
+    MoleculeResidualCanonicalVBoundSource :=
+  molecule_residual_canonical_vbound_source_of_fixed_point_vbound_transfer
+    (fixed_point_vbound_transfer_source_of_fixed_data_and_unique
+      h_fixed_data h_unique)
+
+/--
 Project fixed-point `V`-bound transfer source from fixed-point local
 normalization transfer.
 -/
@@ -1727,6 +1768,24 @@ theorem molecule_residual_canonical_orbit_at_debt_source_of_structure_and_vbound
       h_structure h_vbound f_star h_fixed h_renorm h_crit n t f h_n h_t h_pre
   have h_struct := h_structure f_star h_fixed h_renorm h_crit n t f h_n h_t h_pre
   exact ⟨h_struct.1, h_struct.2.1, h_land, h_struct.2.2.1, h_struct.2.2.2⟩
+
+/--
+Assemble the PLAN_57 canonical orbit-at debt source from:
+- canonical orbit structural obligations,
+- fixed-point normalization data, and
+- uniqueness of fast-renormalizable fixed points.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_of_structure_fixed_data_and_unique
+    (h_structure : MoleculeResidualCanonicalOrbitStructureSource)
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_unique :
+      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
+    MoleculeResidualCanonicalOrbitAtDebtSource :=
+  molecule_residual_canonical_orbit_at_debt_source_of_structure_and_vbound_source
+    h_structure
+    (molecule_residual_canonical_vbound_source_of_fixed_data_and_unique
+      h_fixed_data h_unique)
 
 /--
 Assemble the canonical orbit-at debt source from micro-split landing and
@@ -2243,6 +2302,44 @@ Source seam for fixed-point uniqueness on fast-renormalizable fixed points.
 def MoleculeResidualFixedPointUniquenessSource : Prop :=
   ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
            (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2
+
+/--
+Project fixed-point transfer components from fixed-data and uniqueness source
+seams.
+-/
+theorem fixed_point_transfer_components_of_fixed_data_and_uniqueness_source
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_unique : MoleculeResidualFixedPointUniquenessSource) :
+    FixedPointCriticalValueTransferSource ∧ FixedPointVBoundTransferSource :=
+  ⟨
+    fixed_point_critical_value_transfer_source_of_fixed_data_and_unique
+      h_fixed_data h_unique,
+    fixed_point_vbound_transfer_source_of_fixed_data_and_unique
+      h_fixed_data h_unique
+  ⟩
+
+/--
+Project canonical fixed-data `V`-bound control from fixed-data and uniqueness
+source seams.
+-/
+theorem molecule_residual_canonical_vbound_source_of_fixed_data_and_uniqueness_source
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_unique : MoleculeResidualFixedPointUniquenessSource) :
+    MoleculeResidualCanonicalVBoundSource :=
+  molecule_residual_canonical_vbound_source_of_fixed_data_and_unique
+    h_fixed_data h_unique
+
+/--
+Assemble canonical orbit-at debt source from structure + fixed-data +
+uniqueness source seams.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_of_structure_fixed_data_and_uniqueness_source
+    (h_structure : MoleculeResidualCanonicalOrbitStructureSource)
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_unique : MoleculeResidualFixedPointUniquenessSource) :
+    MoleculeResidualCanonicalOrbitAtDebtSource :=
+  molecule_residual_canonical_orbit_at_debt_source_of_structure_fixed_data_and_unique
+    h_structure h_fixed_data h_unique
 
 /--
 Current fixed-point uniqueness source theorem.

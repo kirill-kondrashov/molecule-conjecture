@@ -1,7 +1,7 @@
 # PLAN 53 - Fixed-Point Model Bottleneck Refactor
 
 Status: ACTIVE
-Progress: [########--] 80%
+Progress: [########--] 85%
 Scope: Resolve the model-level bottleneck exposed by `no_fixed_point_implies_renormalizable` so the fixed-point ingredient route can be rebuilt without `molecule_h_norm` and without relying on the false bridge contract.
 Acceptance:
 1. The fixed-point ingredient route no longer depends on `FixedPointImpliesRenormalizable`.
@@ -39,6 +39,12 @@ Last Updated: 2026-03-04
   normalization theorem dependency by routing through explicit existence +
   transfer seam composition:
   - `molecule_residual_fixed_point_ingredients_source_of_sources`.
+- [x] Add fixed-data+uniqueness transfer-component projections and wire them
+  into canonical orbit-debt composition seams for cross-track integration:
+  - `fixed_point_critical_value_transfer_source_of_fixed_data_and_unique`
+  - `fixed_point_vbound_transfer_source_of_fixed_data_and_unique`
+  - `molecule_residual_canonical_vbound_source_of_fixed_data_and_unique`
+  - `molecule_residual_canonical_orbit_at_debt_source_of_structure_fixed_data_and_unique`.
 - [ ] Replace `molecule_residual_fixed_point_data_source` with a non-circular
   non-`molecule_h_norm` theorem-level source.
 - [ ] Re-run fixed-point and top-level axiom probes after replacing
@@ -66,3 +72,6 @@ Last Updated: 2026-03-04
 - Probe checkpoint:
   - `#print axioms Molecule.molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer`
     is ground-axiom-only.
+- Integration checkpoint:
+  - fixed-data+uniqueness transfer-component projections and canonical
+    orbit-debt composition seams are ground-axiom-only modulo source inputs.
