@@ -1565,6 +1565,32 @@ theorem residual_fixed_point_existence_of_refined_contract
     MoleculeResidualFixedPointExistenceSource :=
   residual_fixed_point_existence_of_canonical_fast_fixed_point_data h_refined.2
 
+/--
+Assemble residual fixed-point-normalization ingredients from:
+- canonical fixed-point data, and
+- fixed-point local normalization transfer.
+-/
+theorem residual_fixed_point_normalization_ingredients_of_canonical_and_transfer
+    (h_canonical : CanonicalFastFixedPointData)
+    (h_transfer : FixedPointLocalNormalizationTransfer) :
+    MoleculeResidualFixedPointNormalizationIngredients :=
+  ⟨
+    residual_fixed_point_existence_of_canonical_fast_fixed_point_data h_canonical,
+    h_transfer
+  ⟩
+
+/--
+Assemble residual fixed-point-normalization ingredients from refined contract
+assumptions plus fixed-point local normalization transfer.
+-/
+theorem residual_fixed_point_normalization_ingredients_of_refined_and_transfer
+    (h_refined : MoleculeConjectureRefined)
+    (h_transfer : FixedPointLocalNormalizationTransfer) :
+    MoleculeResidualFixedPointNormalizationIngredients :=
+  residual_fixed_point_normalization_ingredients_of_canonical_and_transfer
+    h_refined.2
+    h_transfer
+
 structure MoleculeHypothesisPack where
   h_bounds : PseudoSiegelAPrioriBounds
   h_conj :

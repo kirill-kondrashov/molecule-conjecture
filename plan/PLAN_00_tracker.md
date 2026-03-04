@@ -46,7 +46,7 @@ Last Updated: 2026-03-03
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_44 | Constructive slice witness refactor | STUCK | [#########-] 90% |
 | PLAN_45 | Local fixed-point normalization source | ACTIVE | [#########-] 97% |
-| PLAN_46 | Seed-free ingredient constructor | ACTIVE | [#####-----] 50% |
+| PLAN_46 | Seed-free ingredient constructor | ACTIVE | [######----] 60% |
 
 ## Dependency Map
 
@@ -127,6 +127,9 @@ Last Updated: 2026-03-03
   - Added generic Subtarget B bridge skeleton:
     `fixed_point_local_normalization_transfer_of_fixed_data_and_unique` and
     `residual_fixed_point_normalization_ingredients_of_fixed_data_and_unique`.
+  - Added assumption-level ingredient constructors:
+    `residual_fixed_point_normalization_ingredients_of_canonical_and_transfer`
+    and `..._of_refined_and_transfer`.
 
 ## Current Critical Blockers
 
