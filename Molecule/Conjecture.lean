@@ -1657,6 +1657,17 @@ theorem molecule_residual_orbit_clause_at_fixed_data_source_of_orbit_clause_sour
     (molecule_residual_orbit_clause_at_source_of_orbit_clause h_orbit)
 
 /--
+Build the PLAN_57 canonical orbit-at debt source from a global orbit-clause
+source.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_of_orbit_clause_source
+    (h_orbit : MoleculeResidualOrbitClauseSource) :
+    MoleculeResidualCanonicalOrbitAtDebtSource :=
+  molecule_residual_canonical_orbit_at_debt_source_of_at_fixed_data_source
+    (molecule_residual_orbit_clause_at_fixed_data_source_of_orbit_clause_source
+      h_orbit)
+
+/--
 Build narrowed fixed-data orbit source from bundled residual orbit-transport
 source data.
 -/
@@ -1674,6 +1685,16 @@ theorem molecule_residual_orbit_clause_at_fixed_data_source_of_transport_source
     (h_transport : MoleculeResidualOrbitTransportSource) :
     MoleculeResidualOrbitClauseAtFixedDataSource :=
   molecule_residual_orbit_clause_at_fixed_data_source_of_orbit_clause_source
+    h_transport.h_orbit
+
+/--
+Build the PLAN_57 canonical orbit-at debt source from bundled residual
+orbit-transport source data.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_of_transport_source
+    (h_transport : MoleculeResidualOrbitTransportSource) :
+    MoleculeResidualCanonicalOrbitAtDebtSource :=
+  molecule_residual_canonical_orbit_at_debt_source_of_orbit_clause_source
     h_transport.h_orbit
 
 /--
@@ -1712,14 +1733,20 @@ theorem molecule_residual_orbit_transport_source :
     molecule_residual_orbit_clause_source
 
 /--
+Current PLAN_57 canonical orbit-at debt source theorem.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source :
+    MoleculeResidualCanonicalOrbitAtDebtSource :=
+  molecule_residual_canonical_orbit_at_debt_source_of_transport_source
+    molecule_residual_orbit_transport_source
+
+/--
 Current fixed-data canonical orbit-at source theorem.
 -/
 theorem molecule_residual_orbit_clause_at_fixed_data_source :
     MoleculeResidualOrbitClauseAtFixedDataSource :=
   molecule_residual_orbit_clause_at_fixed_data_source_of_canonical_debt_source
-    (molecule_residual_canonical_orbit_at_debt_source_of_at_fixed_data_source
-      (molecule_residual_orbit_clause_at_fixed_data_source_of_transport_source
-        molecule_residual_orbit_transport_source))
+    molecule_residual_canonical_orbit_at_debt_source
 
 /--
 Current narrowed fixed-data orbit source (legacy route, now directly routed via

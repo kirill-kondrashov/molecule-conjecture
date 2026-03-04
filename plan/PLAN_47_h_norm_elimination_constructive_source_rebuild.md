@@ -67,6 +67,9 @@ Last Updated: 2026-03-04
 - [x] Isolate minimal theorem-debt statement and bridge seam:
   - `MoleculeResidualCanonicalOrbitAtDebtSource`
   - `molecule_residual_orbit_clause_at_fixed_data_source_of_canonical_debt_source`.
+- [x] Add source constructors into the theorem-debt statement:
+  - `molecule_residual_canonical_orbit_at_debt_source_of_orbit_clause_source`
+  - `molecule_residual_canonical_orbit_at_debt_source_of_transport_source`.
 - [ ] Identify a non-ex-falso orbit transport/orbit clause route from existing theorem infrastructure.
 - [ ] Prove/export a theorem-level `MoleculeResidualOrbitClauseSource` constructor without `molecule_h_norm`.
 - [ ] Wire `molecule_residual_orbit_transport_source` through the constructive orbit-clause route.

@@ -1,7 +1,7 @@
 # PLAN 57 - Orbit Minimal Theorem Debt Extraction
 
 Status: ACTIVE
-Progress: [#####-----] 50%
+Progress: [#######---] 70%
 Scope: After PLAN_56 decomposition got stuck, isolate one minimal theorem debt
 item whose proof would unlock a non-`molecule_h_norm` constructor for
 `MoleculeResidualOrbitClauseForFixedDataSource`.
@@ -28,6 +28,11 @@ Last Updated: 2026-03-04
   - `molecule_residual_orbit_clause_at_fixed_data_source_of_canonical_debt_source`
   - `molecule_residual_canonical_orbit_at_debt_source_of_at_fixed_data_source`.
 - [x] Probe axiom footprints for the debt-statement seam and constructor bridge.
+- [x] Add explicit constructors from orbit-clause / transport sources into the
+  debt statement:
+  - `molecule_residual_canonical_orbit_at_debt_source_of_orbit_clause_source`
+  - `molecule_residual_canonical_orbit_at_debt_source_of_transport_source`
+  - current theorem `molecule_residual_canonical_orbit_at_debt_source`.
 - [ ] Decide next execution step: direct proof attempt vs another micro-split.
 
 ## Notes
@@ -36,5 +41,8 @@ Last Updated: 2026-03-04
 - Goal is to force the blocker down to one theorem-sized target.
 - Probe checkpoint:
   - debt bridge theorems above are axiom-clean modulo ground axioms.
-  - current theorem `molecule_residual_orbit_clause_at_fixed_data_source` still
-    carries `Molecule.molecule_h_norm`.
+  - constructors into the debt statement from orbit-clause/transport sources
+    are axiom-clean modulo ground axioms.
+  - current theorem `molecule_residual_canonical_orbit_at_debt_source` still
+    carries `Molecule.molecule_h_norm`, and
+    `molecule_residual_orbit_clause_at_fixed_data_source` inherits that.
