@@ -1,7 +1,7 @@
 # PLAN 57 - Orbit Minimal Theorem Debt Extraction
 
 Status: ACTIVE
-Progress: [#######---] 70%
+Progress: [########--] 82%
 Scope: After PLAN_56 decomposition got stuck, isolate one minimal theorem debt
 item whose proof would unlock a non-`molecule_h_norm` constructor for
 `MoleculeResidualOrbitClauseForFixedDataSource`.
@@ -33,7 +33,16 @@ Last Updated: 2026-03-04
   - `molecule_residual_canonical_orbit_at_debt_source_of_orbit_clause_source`
   - `molecule_residual_canonical_orbit_at_debt_source_of_transport_source`
   - current theorem `molecule_residual_canonical_orbit_at_debt_source`.
-- [ ] Decide next execution step: direct proof attempt vs another micro-split.
+- [x] Decide next execution step: another micro-split, splitting canonical debt
+  into landing + structure contracts and adding recomposition/projection seams.
+- [x] Add structure-only projection and mixed constructors:
+  - `molecule_residual_canonical_orbit_structure_source_of_at_fixed_data_source`
+  - `molecule_residual_canonical_orbit_at_debt_source_of_landing_and_at_fixed_data_source`
+  - `molecule_residual_canonical_orbit_structure_source_of_transport_source`
+  - `molecule_residual_canonical_orbit_at_debt_source_of_landing_and_transport_source`.
+- [ ] Attack the remaining landing-only debt target constructively:
+  - prove `MoleculeResidualCanonicalOrbitLandingSource` from strictly weaker,
+    non-`molecule_h_norm` ingredients (or replace the current source route).
 
 ## Notes
 
@@ -43,6 +52,10 @@ Last Updated: 2026-03-04
   - debt bridge theorems above are axiom-clean modulo ground axioms.
   - constructors into the debt statement from orbit-clause/transport sources
     are axiom-clean modulo ground axioms.
+  - landing/structure split and mixed constructor seams are axiom-clean modulo
+    ground axioms.
   - current theorem `molecule_residual_canonical_orbit_at_debt_source` still
     carries `Molecule.molecule_h_norm`, and
     `molecule_residual_orbit_clause_at_fixed_data_source` inherits that.
+  - current theorem `molecule_residual_canonical_orbit_landing_source` is now
+    explicit and remains the residual `Molecule.molecule_h_norm` carrier.

@@ -1551,6 +1551,89 @@ def MoleculeResidualCanonicalOrbitAtDebtSource : Prop :=
       (fun n => n + 1)
 
 /--
+PLAN_57 micro-split A: canonical orbit landing control only.
+-/
+def MoleculeResidualCanonicalOrbitLandingSource : Prop :=
+  ∀ (f_star : BMol),
+    Rfast f_star = f_star →
+    IsFastRenormalizable f_star →
+    criticalValue f_star = 0 →
+    ∀ (n t : ℕ) (f : BMol),
+      n ≥ 1 →
+      t ∈ ({n, n + 1} : Set ℕ) →
+      f ∈ (Rfast^[n]) ⁻¹' ({ g : BMol | g = f_star }) →
+      (f.f^[t] (criticalValue f)) ∈ Metric.ball 0 0.1
+
+/--
+PLAN_57 micro-split B: canonical orbit structural pullback obligations.
+-/
+def MoleculeResidualCanonicalOrbitStructureSource : Prop :=
+  ∀ (f_star : BMol),
+    Rfast f_star = f_star →
+    IsFastRenormalizable f_star →
+    criticalValue f_star = 0 →
+    ∀ (n t : ℕ) (f : BMol),
+      n ≥ 1 →
+      t ∈ ({n, n + 1} : Set ℕ) →
+      f ∈ (Rfast^[n]) ⁻¹' ({ g : BMol | g = f_star }) →
+      MapsTo (f.f^[t]) (Rfast^[n] f).U (Rfast^[n] f).V ∧
+      criticalValue f ∈ (Rfast^[n] f).U ∧
+      (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
+      (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)
+
+/--
+Assemble the canonical orbit-at debt source from micro-split landing and
+structural source contracts.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_of_landing_and_structure
+    (h_landing : MoleculeResidualCanonicalOrbitLandingSource)
+    (h_structure : MoleculeResidualCanonicalOrbitStructureSource) :
+    MoleculeResidualCanonicalOrbitAtDebtSource := by
+  intro f_star h_fixed h_renorm h_crit n t f h_n h_t h_pre
+  have h_land := h_landing f_star h_fixed h_renorm h_crit n t f h_n h_t h_pre
+  have h_struct := h_structure f_star h_fixed h_renorm h_crit n t f h_n h_t h_pre
+  exact ⟨h_struct.1, h_struct.2.1, h_land, h_struct.2.2.1, h_struct.2.2.2⟩
+
+/--
+Decompose the canonical orbit-at debt source into landing and structural
+micro-split source contracts.
+-/
+theorem molecule_residual_canonical_orbit_landing_and_structure_of_debt_source
+    (h_debt : MoleculeResidualCanonicalOrbitAtDebtSource) :
+    MoleculeResidualCanonicalOrbitLandingSource ∧
+      MoleculeResidualCanonicalOrbitStructureSource := by
+  refine ⟨?_, ?_⟩
+  · intro f_star h_fixed h_renorm h_crit n t f h_n h_t h_pre
+    exact (h_debt f_star h_fixed h_renorm h_crit n t f h_n h_t h_pre).2.2.1
+  · intro f_star h_fixed h_renorm h_crit n t f h_n h_t h_pre
+    have h_full := h_debt f_star h_fixed h_renorm h_crit n t f h_n h_t h_pre
+    exact ⟨h_full.1, h_full.2.1, h_full.2.2.2.1, h_full.2.2.2.2⟩
+
+/--
+Project canonical orbit structural obligations from the fixed-data canonical
+orbit-at source contract.
+-/
+theorem molecule_residual_canonical_orbit_structure_source_of_at_fixed_data_source
+    (h_orbit_fixed_at : MoleculeResidualOrbitClauseAtFixedDataSource) :
+    MoleculeResidualCanonicalOrbitStructureSource := by
+  intro f_star h_fixed h_renorm h_crit n t f h_n h_t h_pre
+  have h_full := h_orbit_fixed_at f_star h_fixed h_renorm h_crit n t f h_n h_t h_pre
+  exact ⟨h_full.1, h_full.2.1, h_full.2.2.2.1, h_full.2.2.2.2⟩
+
+/--
+Assemble the PLAN_57 canonical orbit-at debt source from landing control and
+fixed-data canonical orbit-at source (which supplies structural obligations).
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_of_landing_and_at_fixed_data_source
+    (h_landing : MoleculeResidualCanonicalOrbitLandingSource)
+    (h_orbit_fixed_at : MoleculeResidualOrbitClauseAtFixedDataSource) :
+    MoleculeResidualCanonicalOrbitAtDebtSource :=
+  molecule_residual_canonical_orbit_at_debt_source_of_landing_and_structure
+    h_landing
+    (molecule_residual_canonical_orbit_structure_source_of_at_fixed_data_source
+      h_orbit_fixed_at)
+
+/--
 Bridge: the PLAN_57 canonical orbit-at debt statement implies the fixed-data
 canonical orbit-at source contract.
 -/
@@ -1698,6 +1781,30 @@ theorem molecule_residual_canonical_orbit_at_debt_source_of_transport_source
     h_transport.h_orbit
 
 /--
+Build canonical orbit structural-source obligations from bundled residual
+orbit-transport source data.
+-/
+theorem molecule_residual_canonical_orbit_structure_source_of_transport_source
+    (h_transport : MoleculeResidualOrbitTransportSource) :
+    MoleculeResidualCanonicalOrbitStructureSource :=
+  molecule_residual_canonical_orbit_structure_source_of_at_fixed_data_source
+    (molecule_residual_orbit_clause_at_fixed_data_source_of_transport_source
+      h_transport)
+
+/--
+Assemble the PLAN_57 canonical orbit-at debt source from landing control and
+bundled residual orbit-transport source data.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_of_landing_and_transport_source
+    (h_landing : MoleculeResidualCanonicalOrbitLandingSource)
+    (h_transport : MoleculeResidualOrbitTransportSource) :
+    MoleculeResidualCanonicalOrbitAtDebtSource :=
+  molecule_residual_canonical_orbit_at_debt_source_of_landing_and_structure
+    h_landing
+    (molecule_residual_canonical_orbit_structure_source_of_transport_source
+      h_transport)
+
+/--
 Assemble residual orbit-transport source from explicit pseudo-Siegel and
 orbit-clause sources.
 -/
@@ -1738,6 +1845,22 @@ Current PLAN_57 canonical orbit-at debt source theorem.
 theorem molecule_residual_canonical_orbit_at_debt_source :
     MoleculeResidualCanonicalOrbitAtDebtSource :=
   molecule_residual_canonical_orbit_at_debt_source_of_transport_source
+    molecule_residual_orbit_transport_source
+
+/--
+Current canonical orbit landing-source theorem (residual debt target).
+-/
+theorem molecule_residual_canonical_orbit_landing_source :
+    MoleculeResidualCanonicalOrbitLandingSource :=
+  (molecule_residual_canonical_orbit_landing_and_structure_of_debt_source
+    molecule_residual_canonical_orbit_at_debt_source).1
+
+/--
+Current canonical orbit structural-source theorem.
+-/
+theorem molecule_residual_canonical_orbit_structure_source :
+    MoleculeResidualCanonicalOrbitStructureSource :=
+  molecule_residual_canonical_orbit_structure_source_of_transport_source
     molecule_residual_orbit_transport_source
 
 /--

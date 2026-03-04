@@ -48,7 +48,7 @@ Last Updated: 2026-03-04
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 99% |
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 80% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
-| PLAN_57 | Orbit minimal theorem debt extraction | ACTIVE | [#######---] 70% |
+| PLAN_57 | Orbit minimal theorem debt extraction | ACTIVE | [########--] 82% |
 
 ## Dependency Map
 
@@ -301,13 +301,24 @@ Last Updated: 2026-03-04
     `molecule_residual_canonical_orbit_at_debt_source_of_orbit_clause_source`,
     `molecule_residual_canonical_orbit_at_debt_source_of_transport_source`,
     and current theorem `molecule_residual_canonical_orbit_at_debt_source`.
+  - Added canonical debt micro-split and constructor seams:
+    `MoleculeResidualCanonicalOrbitLandingSource`,
+    `MoleculeResidualCanonicalOrbitStructureSource`,
+    `molecule_residual_canonical_orbit_at_debt_source_of_landing_and_structure`,
+    `molecule_residual_canonical_orbit_landing_and_structure_of_debt_source`,
+    `molecule_residual_canonical_orbit_structure_source_of_at_fixed_data_source`,
+    `molecule_residual_canonical_orbit_at_debt_source_of_landing_and_at_fixed_data_source`,
+    `molecule_residual_canonical_orbit_structure_source_of_transport_source`,
+    `molecule_residual_canonical_orbit_at_debt_source_of_landing_and_transport_source`.
   - Targeted probes confirm debt seam constructor theorems are axiom-clean
-    modulo ground axioms; current theorem
-    `molecule_residual_canonical_orbit_at_debt_source` still carries
-    `Molecule.molecule_h_norm`, and
+  modulo ground axioms; current theorem
+  `molecule_residual_canonical_orbit_at_debt_source` still carries
+  `Molecule.molecule_h_norm`, and
     `molecule_residual_orbit_clause_at_fixed_data_source` inherits that.
-  - Next target is go/no-go: direct proof attempt on the debt statement vs
-    one narrower micro-split.
+  - Current explicit debt target is now
+    `molecule_residual_canonical_orbit_landing_source`, while structure-side
+    constructor seams are already source-clean modulo ground axioms.
+  - Next target is constructive replacement of the landing-source route.
 
 ## Current Critical Blockers
 
