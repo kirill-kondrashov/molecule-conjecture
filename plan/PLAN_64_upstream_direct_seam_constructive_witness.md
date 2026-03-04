@@ -1,7 +1,7 @@
 # PLAN 64 - Upstream Direct-Seam Constructive Witness
 
 Status: ACTIVE
-Progress: [#---------] 10%
+Progress: [###-------] 30%
 Scope: Prove one non-`molecule_h_norm` zero-arg constructor for the direct-seam equivalence class identified in PLAN_63, then propagate that cutover through collapse/uniqueness/model-collapse direct seams.
 Acceptance:
 1. At least one anchor theorem in the direct-seam class is non-`molecule_h_norm`:
@@ -21,8 +21,12 @@ Last Updated: 2026-03-04
   - collapse direct seam,
   - map-level uniqueness direct seam,
   - hybrid-class model-collapse direct seam.
-- [ ] Select anchor seam for constructive replacement (prefer model-collapse
-  direct seam if upstream theorem fits naturally there).
+- [x] Select anchor seam for constructive replacement:
+  - `MoleculeResidualDirectSeamAnchorSource :=
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource`.
+- [x] Add projection constructors from anchor seam to the other direct seams:
+  - `molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_anchor_source`
+  - `molecule_residual_fixed_point_uniqueness_direct_source_of_anchor_source`.
 - [ ] Define minimal upstream theorem statement that yields the anchor seam from
   refined/canonical packages without `molecule_h_norm`.
 - [ ] Implement and cut over the anchor zero-arg theorem.
@@ -36,3 +40,10 @@ Last Updated: 2026-03-04
   equivalence/cutover scaffolding.
 - This successor is the first plan that requires a genuinely new upstream
   theorem-level witness, not additional seam refactoring.
+- Checkpoint (2026-03-04):
+  - introduced explicit PLAN_64 anchor seam and conversion constructors into the
+    direct collapse/uniqueness seams.
+  - probe result:
+    anchor conversion constructors are ground-axiom-only (`propext`,
+    `Classical.choice`, `Quot.sound`); current zero-arg direct seams remain
+    `Molecule.molecule_h_norm`-backed.

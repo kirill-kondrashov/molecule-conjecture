@@ -2392,6 +2392,14 @@ def MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource : P
   MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource
 
 /--
+PLAN_64 anchor seam: the direct hybrid-class model-collapse source.
+Constructive upstream replacement may target this seam and propagate via
+equivalence theorems.
+-/
+def MoleculeResidualDirectSeamAnchorSource : Prop :=
+  MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource
+
+/--
 Source seam: lift any renormalizable fixed lifted hybrid class to a
 renormalizable fixed map in `BMol`.
 -/
@@ -3077,6 +3085,16 @@ theorem molecule_residual_fixed_point_hybrid_class_collapse_direct_source_iff_hy
         h_model_direct
 
 /--
+Project direct map-level hybrid-class-collapse seam from the PLAN_64 anchor
+seam.
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_anchor_source
+    (h_anchor : MoleculeResidualDirectSeamAnchorSource) :
+    MoleculeResidualFixedPointHybridClassCollapseDirectSource :=
+  (molecule_residual_fixed_point_hybrid_class_collapse_direct_source_iff_hybrid_class_uniqueness_model_collapse_direct_source).2
+    h_anchor
+
+/--
 Build direct map-level fixed-point uniqueness source seam from hybrid-class
 collapse source assumptions.
 -/
@@ -3130,6 +3148,17 @@ theorem molecule_residual_fixed_point_hybrid_class_collapse_direct_source_iff_fi
       molecule_residual_fixed_point_hybrid_class_collapse_source_of_uniqueness_source
         (molecule_residual_fixed_point_uniqueness_source_direct_of_source
           h_unique_direct)
+
+/--
+Project direct map-level fixed-point uniqueness seam from the PLAN_64 anchor
+seam.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source_of_anchor_source
+    (h_anchor : MoleculeResidualDirectSeamAnchorSource) :
+    MoleculeResidualFixedPointUniquenessDirectSource :=
+  (molecule_residual_fixed_point_hybrid_class_collapse_direct_source_iff_fixed_point_uniqueness_direct_source).1
+    (molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_anchor_source
+      h_anchor)
 
 /--
 Current fixed-point uniqueness source theorem (direct legacy route), now
