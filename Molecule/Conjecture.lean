@@ -4451,6 +4451,72 @@ theorem molecule_residual_fixed_point_uniqueness_direct_source_of_refined_and_mo
       h_refined h_model_collapse_direct_refined)
 
 /--
+Build a canonical-contract map-level direct-uniqueness contract from a
+model-collapse-direct source theorem.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_of_canonical_source_of_model_collapse_direct_source
+    (h_model_collapse_direct :
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource) :
+    MoleculeResidualFixedPointUniquenessDirectOfCanonicalSource :=
+  fun h_canonical =>
+    molecule_residual_fixed_point_uniqueness_direct_source_of_canonical_and_model_collapse_direct_of_canonical_source
+      h_canonical
+      (fun _ => h_model_collapse_direct)
+
+/--
+Build a refined-contract map-level direct-uniqueness contract from a
+model-collapse-direct source theorem.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_of_refined_source_of_model_collapse_direct_source
+    (h_model_collapse_direct :
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource) :
+    MoleculeResidualFixedPointUniquenessDirectOfRefinedSource :=
+  fun h_refined =>
+    molecule_residual_fixed_point_uniqueness_direct_source_of_refined_and_model_collapse_direct_of_refined_source
+      h_refined
+      (fun _ => h_model_collapse_direct)
+
+/--
+Build a canonical-contract map-level direct-uniqueness contract from a
+map-level direct-uniqueness source theorem.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_of_canonical_source_of_fixed_point_uniqueness_direct_source
+    (h_unique_direct : MoleculeResidualFixedPointUniquenessDirectSource) :
+    MoleculeResidualFixedPointUniquenessDirectOfCanonicalSource :=
+  molecule_residual_fixed_point_uniqueness_direct_of_canonical_source_of_model_collapse_direct_source
+    ((molecule_residual_fixed_point_hybrid_class_collapse_direct_source_iff_hybrid_class_uniqueness_model_collapse_direct_source).1
+      ((molecule_residual_fixed_point_hybrid_class_collapse_direct_source_iff_fixed_point_uniqueness_direct_source).2
+        h_unique_direct))
+
+/--
+Build a refined-contract map-level direct-uniqueness contract from a
+map-level direct-uniqueness source theorem.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_of_refined_source_of_fixed_point_uniqueness_direct_source
+    (h_unique_direct : MoleculeResidualFixedPointUniquenessDirectSource) :
+    MoleculeResidualFixedPointUniquenessDirectOfRefinedSource :=
+  molecule_residual_fixed_point_uniqueness_direct_of_refined_source_of_model_collapse_direct_source
+    ((molecule_residual_fixed_point_hybrid_class_collapse_direct_source_iff_hybrid_class_uniqueness_model_collapse_direct_source).1
+      ((molecule_residual_fixed_point_hybrid_class_collapse_direct_source_iff_fixed_point_uniqueness_direct_source).2
+        h_unique_direct))
+
+/--
+Current canonical-contract map-level direct-uniqueness contract theorem.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_of_canonical_source :
+    MoleculeResidualFixedPointUniquenessDirectOfCanonicalSource :=
+  molecule_residual_fixed_point_uniqueness_direct_of_canonical_source_of_fixed_point_uniqueness_direct_source
+    molecule_residual_fixed_point_uniqueness_direct_source
+
+/--
+Current refined-contract map-level direct-uniqueness contract theorem.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_of_refined_source :
+    MoleculeResidualFixedPointUniquenessDirectOfRefinedSource :=
+  molecule_residual_fixed_point_uniqueness_direct_of_refined_source_of_fixed_point_uniqueness_direct_source
+    molecule_residual_fixed_point_uniqueness_direct_source
+
+/--
 Under canonical fixed-point existence, hybrid-level unique-fixed-point source
 and map-level uniqueness source are equivalent.
 -/

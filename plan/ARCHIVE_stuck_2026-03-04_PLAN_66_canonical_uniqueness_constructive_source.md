@@ -1,7 +1,7 @@
 # PLAN 66 - Canonical Uniqueness Constructive Source
 
-Status: ACTIVE
-Progress: [########--] 80%
+Status: STUCK (ARCHIVED)
+Progress: [##########] 100%
 Scope: Construct a non-`molecule_h_norm` theorem for canonical/refined map-level uniqueness (`MoleculeResidualFixedPointUniquenessOfCanonicalSource` or refined counterpart), then route PLAN_65 anchor/direct seams through it.
 Acceptance:
 1. `#print axioms` for one of:
@@ -25,6 +25,8 @@ Last Updated: 2026-03-04
   - canonical/refined conditional cutover constructors into anchor/direct seams.
 - [x] Enumerate candidate non-circular uniqueness-source theorem statements from
   canonical/refined packages.
+- [x] Implement contract-layer canonical/refined uniqueness/direct/anchor
+  equivalence and cutover constructors.
 - [ ] Implement one theorem into:
   - `MoleculeResidualFixedPointUniquenessOfCanonicalSource`, or
   - `MoleculeResidualFixedPointUniquenessOfRefinedSource`.
@@ -93,3 +95,12 @@ Last Updated: 2026-03-04
     into anchor seams (and thus direct seams).
   - targeted probes confirm these equivalence and constructor theorems are
     ground-axiom-only.
+- Final stuck check (2026-03-04):
+  - current canonical/refined direct-uniqueness contract theorems
+    (`molecule_residual_fixed_point_uniqueness_direct_of_canonical_source`,
+    `molecule_residual_fixed_point_uniqueness_direct_of_refined_source`)
+    still include `Molecule.molecule_h_norm` in `#print axioms`.
+  - no remaining candidate in this plan scope yields a non-`molecule_h_norm`
+    witness theorem; all added routes are contract-level equivalence/cutover
+    reductions.
+  - successor plan: `PLAN_67_non_h_norm_direct_contract_witness.md`.
