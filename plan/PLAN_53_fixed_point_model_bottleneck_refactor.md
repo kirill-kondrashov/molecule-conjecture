@@ -109,3 +109,5 @@ Last Updated: 2026-03-04
     theorem construction, with no remaining seam rearrangement debt.
   - candidate-source constructors into canonical/refined uniqueness contracts
     now exist from hybrid-class uniqueness/collapse source assumptions.
+  - canonical/refined uniqueness contracts are now explicitly equivalent to
+    canonical/refined hybrid-class-uniqueness contracts.

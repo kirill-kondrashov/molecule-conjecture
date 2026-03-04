@@ -3469,6 +3469,20 @@ def MoleculeResidualFixedPointUniquenessOfRefinedSource : Prop :=
   MoleculeConjectureRefined → MoleculeResidualFixedPointUniquenessSource
 
 /--
+Upstream constructive source contract: produce hybrid-class fixed-point
+uniqueness from canonical fixed-point data.
+-/
+def MoleculeResidualHybridClassFixedPointUniquenessOfCanonicalSource : Prop :=
+  CanonicalFastFixedPointData → MoleculeResidualHybridClassFixedPointUniquenessSource
+
+/--
+Upstream constructive source contract: produce hybrid-class fixed-point
+uniqueness from refined contract data.
+-/
+def MoleculeResidualHybridClassFixedPointUniquenessOfRefinedSource : Prop :=
+  MoleculeConjectureRefined → MoleculeResidualHybridClassFixedPointUniquenessSource
+
+/--
 Lift canonical uniqueness-source contract to refined-contract uniqueness-source
 contract.
 -/
@@ -3485,6 +3499,16 @@ theorem molecule_residual_direct_seam_anchor_of_refined_source_of_canonical_sour
     (h_anchor_canonical : MoleculeResidualDirectSeamAnchorOfCanonicalSource) :
     MoleculeResidualDirectSeamAnchorOfRefinedSource :=
   fun h_refined => h_anchor_canonical h_refined.2
+
+/--
+Lift canonical hybrid-class-uniqueness contract to refined-contract
+hybrid-class-uniqueness contract.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_of_refined_source_of_canonical_source
+    (h_class_unique_canonical :
+      MoleculeResidualHybridClassFixedPointUniquenessOfCanonicalSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessOfRefinedSource :=
+  fun h_refined => h_class_unique_canonical h_refined.2
 
 /--
 Build canonical-contract anchor-source contract from a map-level fixed-point
@@ -3839,6 +3863,85 @@ theorem molecule_residual_fixed_point_uniqueness_of_refined_source_of_hybrid_cla
   molecule_residual_fixed_point_uniqueness_of_refined_source_of_canonical_source
     (molecule_residual_fixed_point_uniqueness_of_canonical_source_of_hybrid_class_collapse_source
       h_collapse)
+
+/--
+Build a canonical-contract hybrid-class-uniqueness contract from a
+canonical-contract map-level uniqueness contract.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_of_canonical_source_of_fixed_point_uniqueness_of_canonical_source
+    (h_unique_canonical : MoleculeResidualFixedPointUniquenessOfCanonicalSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessOfCanonicalSource :=
+  fun h_canonical =>
+    (molecule_residual_fixed_point_hybrid_class_collapse_source_iff_hybrid_class_uniqueness_source).1
+      (molecule_residual_fixed_point_hybrid_class_collapse_source_of_uniqueness_source
+        (h_unique_canonical h_canonical))
+
+/--
+Build a canonical-contract map-level uniqueness contract from a
+canonical-contract hybrid-class-uniqueness contract.
+-/
+theorem molecule_residual_fixed_point_uniqueness_of_canonical_source_of_hybrid_class_fixed_point_uniqueness_of_canonical_source
+    (h_class_unique_canonical :
+      MoleculeResidualHybridClassFixedPointUniquenessOfCanonicalSource) :
+    MoleculeResidualFixedPointUniquenessOfCanonicalSource :=
+  fun h_canonical =>
+    molecule_residual_fixed_point_uniqueness_source_of_hybrid_unique_fixed_point_source
+      (molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_uniqueness_source
+        h_canonical
+        (h_class_unique_canonical h_canonical))
+
+/--
+Canonical-contract map-level uniqueness and hybrid-class-uniqueness contracts
+are equivalent.
+-/
+theorem molecule_residual_fixed_point_uniqueness_of_canonical_source_iff_hybrid_class_fixed_point_uniqueness_of_canonical_source :
+    MoleculeResidualFixedPointUniquenessOfCanonicalSource ↔
+      MoleculeResidualHybridClassFixedPointUniquenessOfCanonicalSource := by
+  constructor
+  · exact
+      molecule_residual_hybrid_class_fixed_point_uniqueness_of_canonical_source_of_fixed_point_uniqueness_of_canonical_source
+  · exact
+      molecule_residual_fixed_point_uniqueness_of_canonical_source_of_hybrid_class_fixed_point_uniqueness_of_canonical_source
+
+/--
+Build a refined-contract hybrid-class-uniqueness contract from a refined-contract
+map-level uniqueness contract.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_of_refined_source_of_fixed_point_uniqueness_of_refined_source
+    (h_unique_refined : MoleculeResidualFixedPointUniquenessOfRefinedSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessOfRefinedSource :=
+  fun h_refined =>
+    (molecule_residual_fixed_point_hybrid_class_collapse_source_iff_hybrid_class_uniqueness_source).1
+      (molecule_residual_fixed_point_hybrid_class_collapse_source_of_uniqueness_source
+        (h_unique_refined h_refined))
+
+/--
+Build a refined-contract map-level uniqueness contract from a refined-contract
+hybrid-class-uniqueness contract.
+-/
+theorem molecule_residual_fixed_point_uniqueness_of_refined_source_of_hybrid_class_fixed_point_uniqueness_of_refined_source
+    (h_class_unique_refined :
+      MoleculeResidualHybridClassFixedPointUniquenessOfRefinedSource) :
+    MoleculeResidualFixedPointUniquenessOfRefinedSource :=
+  fun h_refined =>
+    molecule_residual_fixed_point_uniqueness_source_of_hybrid_unique_fixed_point_source
+      (molecule_residual_hybrid_unique_fixed_point_source_of_refined_and_hybrid_class_collapse_source
+        h_refined
+        (molecule_residual_fixed_point_hybrid_class_collapse_source_of_hybrid_class_uniqueness_source
+          (h_class_unique_refined h_refined)))
+
+/--
+Refined-contract map-level uniqueness and hybrid-class-uniqueness contracts are
+equivalent.
+-/
+theorem molecule_residual_fixed_point_uniqueness_of_refined_source_iff_hybrid_class_fixed_point_uniqueness_of_refined_source :
+    MoleculeResidualFixedPointUniquenessOfRefinedSource ↔
+      MoleculeResidualHybridClassFixedPointUniquenessOfRefinedSource := by
+  constructor
+  · exact
+      molecule_residual_hybrid_class_fixed_point_uniqueness_of_refined_source_of_fixed_point_uniqueness_of_refined_source
+  · exact
+      molecule_residual_fixed_point_uniqueness_of_refined_source_of_hybrid_class_fixed_point_uniqueness_of_refined_source
 
 /--
 Under canonical fixed-point existence, hybrid-level unique-fixed-point source

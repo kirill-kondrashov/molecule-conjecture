@@ -190,6 +190,8 @@ Last Updated: 2026-03-04
     counterpart).
   - candidate-source constructors into canonical/refined uniqueness contracts
     are now available from hybrid-class uniqueness/collapse source assumptions.
+  - canonical/refined uniqueness contracts are now explicitly equivalent to
+    canonical/refined hybrid-class-uniqueness contracts.
 - Sub-plan linkage:
   - model-level witness bottleneck is tracked explicitly in
     `PLAN_53_fixed_point_model_bottleneck_refactor.md`.
