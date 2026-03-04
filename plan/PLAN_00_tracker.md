@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_60 | Hybrid-class model refactor route | ACTIVE | [#########-] 98% |
+| PLAN_60 | Hybrid-class model refactor route | ACTIVE | [#########-] 99% |
 
 ## Dependency Map
 
@@ -452,6 +452,16 @@ Last Updated: 2026-03-04
     `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_*`,
     `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_model_collapse_source`,
     `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source`.
+  - Added current-route model-collapse probe-matrix wrappers:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_via_hybrid_class_collapse_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_via_uniqueness_source_direct`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_via_hybrid_class_uniqueness_source_direct`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_via_hybrid_unique_fixed_point_source`.
+  - Probe checkpoint:
+    all current zero-arg model-collapse wrappers remain
+    `Molecule.molecule_h_norm`-backed; remaining PLAN_60 step depends on
+    replacing `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`
+    with a non-`molecule_h_norm` source.
   - Probe checkpoint:
     these alternative lifted-seam constructors are axiom-clean modulo ground
     axioms; current routed theorem still carries `Molecule.molecule_h_norm`.

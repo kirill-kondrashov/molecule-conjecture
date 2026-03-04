@@ -3594,6 +3594,31 @@ theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_sou
     molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct
 
 /--
+Current model-collapse source routed directly from map-level hybrid-class
+collapse source.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_via_hybrid_class_collapse_source :
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_hybrid_class_collapse_source
+    molecule_residual_fixed_point_hybrid_class_collapse_source
+
+/--
+Current model-collapse source routed from direct map-level uniqueness source.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_via_uniqueness_source_direct :
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_uniqueness_source
+    molecule_residual_fixed_point_uniqueness_source_direct
+
+/--
+Current model-collapse source routed from direct hybrid-class uniqueness source.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_via_hybrid_class_uniqueness_source_direct :
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_hybrid_class_uniqueness_source
+    molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct
+
+/--
 Current model-source pack for hybrid-class fixed-point uniqueness.
 -/
 def molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources :
@@ -3617,6 +3642,14 @@ theorem molecule_residual_hybrid_unique_fixed_point_source :
   molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_hybrid_class_uniqueness_source
     molecule_residual_bounds
     molecule_residual_hybrid_class_fixed_point_uniqueness_source
+
+/--
+Current model-collapse source routed from current hybrid-unique source.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_via_hybrid_unique_fixed_point_source :
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_hybrid_unique_fixed_point_source
+    molecule_residual_hybrid_unique_fixed_point_source
 
 /--
 Current map-level fixed-point uniqueness theorem routed via the hybrid-unique
