@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_60 | Hybrid-class model refactor route | ACTIVE | [##--------] 20% |
+| PLAN_60 | Hybrid-class model refactor route | ACTIVE | [####------] 40% |
 
 ## Dependency Map
 
@@ -369,8 +369,15 @@ Last Updated: 2026-03-04
   - Added current-model bottleneck lemmas in
     `Molecule/RenormalizationFixedPointUniqueness.lean`:
     `toHybridClass_injective`, `toHybridClass_eq_iff`.
-  - Next target is a nontrivial hybrid-class abstraction seam that can support
-    a hybrid-unique source constructor independent of map-level uniqueness.
+  - Added first-pass abstraction seam scaffold in
+    `Molecule/RenormalizationFixedPointUniqueness.lean`:
+    `HybridProjectionSeam`, `currentHybridProjectionSeam`,
+    `current_hybrid_projection_seam_proj_injective`,
+    `current_hybrid_projection_seam_proj_eq_iff`.
+  - Targeted probe confirms the new seam scaffold is axiom-clean modulo ground
+    axioms.
+  - Next target is refactoring hybrid-collapse / rigidity consumers to use this
+    seam and remove identity-model collapse from the active route.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

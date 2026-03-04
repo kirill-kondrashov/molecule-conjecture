@@ -17,6 +17,35 @@ noncomputable instance : Inhabited HybridClass := ⟨defaultBMol⟩
 def toHybridClass (f : BMol) : HybridClass := f
 
 /--
+Abstraction seam for hybrid-class modeling.
+This decouples downstream constructor routing from the current identity-model
+choice `HybridClass := BMol`.
+-/
+structure HybridProjectionSeam where
+  Class : Type
+  proj : BMol → Class
+  renorm : Class → Prop
+  Rclass : Class → Class
+  renorm_proj : ∀ f : BMol, IsFastRenormalizable f → renorm (proj f)
+  fixed_proj : ∀ f : BMol, Rfast f = f → Rclass (proj f) = proj f
+
+/--
+Current seam instance induced by the present identity-model choice
+`HybridClass := BMol`.
+-/
+noncomputable def currentHybridProjectionSeam : HybridProjectionSeam where
+  Class := HybridClass
+  proj := toHybridClass
+  renorm := IsFastRenormalizable
+  Rclass := fun c => Rfast c
+  renorm_proj := by
+    intro f h_renorm
+    simpa [toHybridClass] using h_renorm
+  fixed_proj := by
+    intro f h_fix
+    simpa [toHybridClass] using h_fix
+
+/--
 Current-model bottleneck: `toHybridClass` is injective because `HybridClass` is
 currently modeled as `BMol`.
 -/
@@ -35,6 +64,21 @@ theorem toHybridClass_eq_iff (f g : BMol) :
     exact toHybridClass_injective hfg
   · intro h
     simp [h]
+
+/--
+Current seam projection remains injective in the identity-model instance.
+-/
+theorem current_hybrid_projection_seam_proj_injective :
+    Function.Injective currentHybridProjectionSeam.proj := by
+  simpa [currentHybridProjectionSeam] using toHybridClass_injective
+
+/--
+Current seam projection equality still collapses to map equality in the
+identity-model instance.
+-/
+theorem current_hybrid_projection_seam_proj_eq_iff (f g : BMol) :
+    currentHybridProjectionSeam.proj f = currentHybridProjectionSeam.proj g ↔ f = g := by
+  simpa [currentHybridProjectionSeam] using toHybridClass_eq_iff f g
 
 /--
 Renormalization operator on hybrid classes.
