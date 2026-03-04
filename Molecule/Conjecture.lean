@@ -1622,21 +1622,13 @@ theorem molecule_residual_orbit_transport_source :
     molecule_residual_orbit_clause_source
 
 /--
-Current narrowed fixed-data orbit source, routed via the bundled residual
-orbit-transport source package.
--/
-theorem molecule_residual_orbit_clause_for_fixed_data_source_via_transport :
-    MoleculeResidualOrbitClauseForFixedDataSource :=
-  molecule_residual_orbit_clause_for_fixed_data_source_of_transport_source
-    molecule_residual_orbit_transport_source
-
-/--
-Current narrowed fixed-data orbit source (legacy route, now via transport
-wrapper for source-graph uniformity).
+Current narrowed fixed-data orbit source (legacy route, now directly routed via
+the bundled residual orbit-transport source package).
 -/
 theorem molecule_residual_orbit_clause_for_fixed_data_source :
     MoleculeResidualOrbitClauseForFixedDataSource :=
-  molecule_residual_orbit_clause_for_fixed_data_source_via_transport
+  molecule_residual_orbit_clause_for_fixed_data_source_of_transport_source
+    molecule_residual_orbit_transport_source
 
 def constant_analytic_chart (f : BMol → BMol) :
     AnalyticChart f (Set.univ : Set BMol) where
@@ -2164,7 +2156,7 @@ theorem molecule_residual_non_ground_sources :
     MoleculeResidualNonGroundSources :=
   molecule_residual_non_ground_sources_of_ingredients_and_orbit
     molecule_residual_fixed_point_ingredients_source
-    molecule_residual_orbit_clause_for_fixed_data_source_via_transport
+    molecule_residual_orbit_clause_for_fixed_data_source
 
 /--
 Build fixed-point normalization ingredients from fixed-point-only assembly

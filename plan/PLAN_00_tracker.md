@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 99%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_55
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-04
 
@@ -47,12 +47,13 @@ Last Updated: 2026-03-04
 | PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 99% |
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 99% |
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 80% |
-| PLAN_54 | Orbit source contract refactor | ACTIVE | [#########-] 95% |
+| PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
+| PLAN_55 | Orbit constructive source extraction v2 | ACTIVE | [##--------] 20% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_54 (orbit source contract refactor), then PLAN_43.
+- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_55 (orbit constructive source extraction), then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -171,7 +172,7 @@ Last Updated: 2026-03-04
   - Cut over active top-path non-ground source assembly to transport-routed
     orbit wrapper:
     `molecule_residual_non_ground_sources` now consumes
-    `molecule_residual_orbit_clause_for_fixed_data_source_via_transport`.
+    `molecule_residual_orbit_clause_for_fixed_data_source`.
   - Added local orbit-obligation seam in `Molecule/Conjecture.lean`:
     `MoleculeOrbitClauseAt` and
     `molecule_orbit_clause_at_of_orbit_clause`.
@@ -260,30 +261,32 @@ Last Updated: 2026-03-04
   - Added explicit orbit-source composition seam theorems:
     `molecule_residual_orbit_clause_for_fixed_data_source_of_orbit_clause_source`,
     `molecule_residual_orbit_clause_for_fixed_data_source_of_transport_source`.
-  - Added transport-routed current-wrapper theorem:
-    `molecule_residual_orbit_clause_for_fixed_data_source_via_transport`.
   - Targeted probe confirms
     `molecule_residual_orbit_clause_for_fixed_data_source_of_orbit_clause_source`,
     `molecule_residual_orbit_clause_for_fixed_data_source_of_transport_source`,
     `molecule_residual_bounds_from_fixed_data_localized`,
     and `molecule_residual_bounds_from_fixed_data_and_local_orbit_source`
-    are axiom-clean modulo ground axioms; while
-    `molecule_residual_orbit_clause_for_fixed_data_source_via_transport`
-    carries `Molecule.molecule_h_norm` via the current transport source.
+    are axiom-clean modulo ground axioms.
   - Cut over the active top-path non-ground source assembly:
     `molecule_residual_non_ground_sources` now consumes
-    `molecule_residual_orbit_clause_for_fixed_data_source_via_transport`.
+    `molecule_residual_orbit_clause_for_fixed_data_source`.
   - Completed declaration-order cleanup:
     `molecule_residual_orbit_clause_for_fixed_data_source` now routes through
-    `molecule_residual_orbit_clause_for_fixed_data_source_via_transport`.
+    the transport-source composition theorem directly.
   - Probe checkpoint:
     `molecule_residual_bounds_from_fixed_data_localized` is axiom-clean modulo
     ground axioms, while `molecule_residual_bounds_from_fixed_data` now carries
     `Molecule.molecule_h_norm` only via the current orbit source theorem.
-  - Next target is deciding whether to keep both theorem names or collapse to
-    one canonical exported orbit-source theorem name.
+  - Plan outcome: done; single canonical orbit-source theorem name retained.
+- `PLAN_55` progress:
+  - Opened the post-refactor constructive orbit-source track.
+  - Baseline now starts from the PLAN_54 canonicalized route with one
+    orbit-side frontier theorem:
+    `molecule_residual_orbit_clause_for_fixed_data_source`.
+  - Next target is post-PLAN_54 candidate inventory for a non-circular
+    constructor of `MoleculeResidualOrbitClauseForFixedDataSource`.
 
 ## Current Critical Blockers
 
 1. Root blocker: `Molecule.molecule_h_norm` remains in the zero-arg theorem path.
-2. Active mitigation: PLAN_47 integration track, PLAN_49 fixed-point source track, PLAN_53 model bottleneck track, PLAN_54 orbit source contract refactor track.
+2. Active mitigation: PLAN_47 integration track, PLAN_49 fixed-point source track, PLAN_53 model bottleneck track, PLAN_55 orbit constructive source track.
