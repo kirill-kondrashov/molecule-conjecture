@@ -4218,6 +4218,88 @@ theorem molecule_residual_direct_seam_anchor_of_refined_source_iff_model_collaps
       molecule_residual_fixed_point_uniqueness_of_refined_source_iff_model_collapse_direct_of_refined_source
 
 /--
+Build the PLAN_64 anchor seam from:
+- canonical fixed-point data, and
+- a canonical-contract model-collapse-direct contract.
+-/
+theorem molecule_residual_direct_seam_anchor_source_of_canonical_and_model_collapse_direct_of_canonical_source
+    (h_canonical : CanonicalFastFixedPointData)
+    (h_model_collapse_direct_canonical :
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfCanonicalSource) :
+    MoleculeResidualDirectSeamAnchorSource :=
+  ((molecule_residual_direct_seam_anchor_of_canonical_source_iff_model_collapse_direct_of_canonical_source).2
+    h_model_collapse_direct_canonical) h_canonical
+
+/--
+Build the PLAN_64 anchor seam from:
+- refined contract data, and
+- a refined-contract model-collapse-direct contract.
+-/
+theorem molecule_residual_direct_seam_anchor_source_of_refined_and_model_collapse_direct_of_refined_source
+    (h_refined : MoleculeConjectureRefined)
+    (h_model_collapse_direct_refined :
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfRefinedSource) :
+    MoleculeResidualDirectSeamAnchorSource :=
+  ((molecule_residual_direct_seam_anchor_of_refined_source_iff_model_collapse_direct_of_refined_source).2
+    h_model_collapse_direct_refined) h_refined
+
+/--
+Project direct map-level hybrid-class-collapse seam from:
+- canonical fixed-point data, and
+- a canonical-contract model-collapse-direct contract.
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_canonical_and_model_collapse_direct_of_canonical_source
+    (h_canonical : CanonicalFastFixedPointData)
+    (h_model_collapse_direct_canonical :
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfCanonicalSource) :
+    MoleculeResidualFixedPointHybridClassCollapseDirectSource :=
+  molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_anchor_source
+    (molecule_residual_direct_seam_anchor_source_of_canonical_and_model_collapse_direct_of_canonical_source
+      h_canonical h_model_collapse_direct_canonical)
+
+/--
+Project direct map-level fixed-point uniqueness seam from:
+- canonical fixed-point data, and
+- a canonical-contract model-collapse-direct contract.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source_of_canonical_and_model_collapse_direct_of_canonical_source
+    (h_canonical : CanonicalFastFixedPointData)
+    (h_model_collapse_direct_canonical :
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfCanonicalSource) :
+    MoleculeResidualFixedPointUniquenessDirectSource :=
+  molecule_residual_fixed_point_uniqueness_direct_source_of_anchor_source
+    (molecule_residual_direct_seam_anchor_source_of_canonical_and_model_collapse_direct_of_canonical_source
+      h_canonical h_model_collapse_direct_canonical)
+
+/--
+Project direct map-level hybrid-class-collapse seam from:
+- refined contract data, and
+- a refined-contract model-collapse-direct contract.
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_refined_and_model_collapse_direct_of_refined_source
+    (h_refined : MoleculeConjectureRefined)
+    (h_model_collapse_direct_refined :
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfRefinedSource) :
+    MoleculeResidualFixedPointHybridClassCollapseDirectSource :=
+  molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_anchor_source
+    (molecule_residual_direct_seam_anchor_source_of_refined_and_model_collapse_direct_of_refined_source
+      h_refined h_model_collapse_direct_refined)
+
+/--
+Project direct map-level fixed-point uniqueness seam from:
+- refined contract data, and
+- a refined-contract model-collapse-direct contract.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source_of_refined_and_model_collapse_direct_of_refined_source
+    (h_refined : MoleculeConjectureRefined)
+    (h_model_collapse_direct_refined :
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectOfRefinedSource) :
+    MoleculeResidualFixedPointUniquenessDirectSource :=
+  molecule_residual_fixed_point_uniqueness_direct_source_of_anchor_source
+    (molecule_residual_direct_seam_anchor_source_of_refined_and_model_collapse_direct_of_refined_source
+      h_refined h_model_collapse_direct_refined)
+
+/--
 Under canonical fixed-point existence, hybrid-level unique-fixed-point source
 and map-level uniqueness source are equivalent.
 -/

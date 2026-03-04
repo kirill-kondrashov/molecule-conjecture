@@ -116,3 +116,5 @@ Last Updated: 2026-03-04
   - canonical/refined uniqueness contracts are now explicitly equivalent to
     canonical/refined model-collapse-direct contracts, and canonical/refined
     anchor contracts are explicitly equivalent to those direct contracts.
+  - canonical/refined constructor routes from model-collapse-direct contracts
+    into anchor/direct seams are now explicit.
