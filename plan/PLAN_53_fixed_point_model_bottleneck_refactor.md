@@ -10,7 +10,7 @@ Acceptance:
    without `molecule_h_norm`.
 3. `molecule_residual_fixed_point_normalization_ingredients` can be rebuilt from
    the new source path.
-Dependencies: `Molecule/Conjecture.lean`, `Molecule/FixedPointExistence.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/RenormalizationTheorem.lean`, `plan/PLAN_49_fixed_point_source_constructive_route.md`, `plan/PLAN_65_canonical_to_anchor_constructive_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_64_upstream_direct_seam_constructive_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_63_upstream_hybrid_collapse_constructive_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_62_upstream_map_uniqueness_source_replacement.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_61_upstream_hybrid_class_uniqueness_source_replacement.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_60_hybrid_class_model_refactor_route.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_59_hybrid_unique_fixed_point_source_constructor.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_52_fixed_point_renorm_witness_extraction.md`
+Dependencies: `Molecule/Conjecture.lean`, `Molecule/FixedPointExistence.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/RenormalizationTheorem.lean`, `plan/PLAN_49_fixed_point_source_constructive_route.md`, `plan/PLAN_66_canonical_uniqueness_constructive_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_65_canonical_to_anchor_constructive_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_64_upstream_direct_seam_constructive_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_63_upstream_hybrid_collapse_constructive_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_62_upstream_map_uniqueness_source_replacement.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_61_upstream_hybrid_class_uniqueness_source_replacement.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_60_hybrid_class_model_refactor_route.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_59_hybrid_unique_fixed_point_source_constructor.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_52_fixed_point_renorm_witness_extraction.md`
 Stuck Rule: STUCK if every non-circular witness candidate still forces the default fixed-point trap (`defaultBMol` fixed but non-renormalizable) without a model-level refactor path.
 Last Updated: 2026-03-04
 
@@ -103,3 +103,9 @@ Last Updated: 2026-03-04
     canonical/refined uniqueness-contract goals;
   - the model bottleneck is unchanged: a non-`molecule_h_norm` uniqueness
     source theorem is still the upstream requirement.
+- PLAN_66 kickoff checkpoint (2026-03-04):
+  - PLAN_65 archived as STUCK after conditional cutover layer completion.
+  - active bottleneck is now isolated exactly at canonical/refined uniqueness
+    theorem construction, with no remaining seam rearrangement debt.
+  - candidate-source constructors into canonical/refined uniqueness contracts
+    now exist from hybrid-class uniqueness/collapse source assumptions.

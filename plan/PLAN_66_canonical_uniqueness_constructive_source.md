@@ -1,0 +1,51 @@
+# PLAN 66 - Canonical Uniqueness Constructive Source
+
+Status: ACTIVE
+Progress: [###-------] 30%
+Scope: Construct a non-`molecule_h_norm` theorem for canonical/refined map-level uniqueness (`MoleculeResidualFixedPointUniquenessOfCanonicalSource` or refined counterpart), then route PLAN_65 anchor/direct seams through it.
+Acceptance:
+1. `#print axioms` for one of:
+   - `molecule_residual_fixed_point_uniqueness_of_canonical_source_of_anchor_of_canonical_source`,
+   - a new theorem implementing `MoleculeResidualFixedPointUniquenessOfCanonicalSource`,
+   does not include `Molecule.molecule_h_norm`.
+2. Using that theorem, the conditional cutover constructors from PLAN_65 can instantiate a non-`molecule_h_norm` anchor/direct-seam route.
+3. After propagation, `#print axioms` for:
+   - `molecule_residual_direct_seam_anchor_source`, and
+   - `molecule_residual_fixed_point_uniqueness_direct_source`
+   no longer include `Molecule.molecule_h_norm`.
+4. `make build` and `make check` pass.
+Dependencies: `Molecule/Conjecture.lean`, `Molecule/RenormalizationFixedPointUniqueness.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/FixedPointExistence.lean`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_65_canonical_to_anchor_constructive_witness.md`, `plan/PLAN_49_fixed_point_source_constructive_route.md`, `plan/PLAN_53_fixed_point_model_bottleneck_refactor.md`
+Stuck Rule: STUCK if every candidate canonical/refined uniqueness theorem still reduces to current zero-arg uniqueness source routes known `molecule_h_norm`-backed.
+Last Updated: 2026-03-04
+
+## Work Plan
+
+- [x] Inherit PLAN_65 equivalence/cutover scaffolding:
+  - anchor-source <-> uniqueness-source equivalences at source and contract layers;
+  - canonical/refined conditional cutover constructors into anchor/direct seams.
+- [x] Enumerate candidate non-circular uniqueness-source theorem statements from
+  canonical/refined packages.
+- [ ] Implement one theorem into:
+  - `MoleculeResidualFixedPointUniquenessOfCanonicalSource`, or
+  - `MoleculeResidualFixedPointUniquenessOfRefinedSource`.
+- [ ] Instantiate PLAN_65 conditional cutovers with the new theorem and route
+  current anchor/direct zero-arg theorems through that path.
+- [ ] Re-run direct-chain probes and sync PLAN_49/53 integration notes.
+
+## Notes
+
+- PLAN_65 is archived STUCK after proving that canonical/refined anchor goals
+  are equivalent to canonical/refined uniqueness goals and adding all
+  conditional cutover constructors.
+- Immediate upstream target is now explicit and minimal:
+  a non-`molecule_h_norm` witness for
+  `MoleculeResidualFixedPointUniquenessOfCanonicalSource`
+  (or refined counterpart).
+- Candidate inventory checkpoint:
+  - implemented contract constructors from hybrid-class source candidates:
+    `molecule_residual_fixed_point_uniqueness_of_canonical_source_of_hybrid_class_uniqueness_source`,
+    `molecule_residual_fixed_point_uniqueness_of_canonical_source_of_hybrid_class_collapse_source`,
+    `molecule_residual_fixed_point_uniqueness_of_refined_source_of_hybrid_class_uniqueness_source`,
+    `molecule_residual_fixed_point_uniqueness_of_refined_source_of_hybrid_class_collapse_source`.
+  - targeted probes show these are ground-axiom-only; zero-arg direct
+    uniqueness remains `Molecule.molecule_h_norm`-backed.
