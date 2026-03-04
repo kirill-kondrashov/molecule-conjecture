@@ -1520,6 +1520,21 @@ def MoleculeResidualOrbitClauseForFixedDataSource : Prop :=
     MoleculeOrbitClauseAt D U a b
 
 /--
+Decomposition seam: only the fixed-data canonical `(a, b, D, U)` orbit-at
+obligation, without extra normalization payload fields.
+-/
+def MoleculeResidualOrbitClauseAtFixedDataSource : Prop :=
+  ∀ (f_star : BMol),
+    Rfast f_star = f_star →
+    IsFastRenormalizable f_star →
+    criticalValue f_star = 0 →
+    let a : ℕ → ℕ := fun n => n
+    let b : ℕ → ℕ := fun n => n + 1
+    let D : Set ℂ := Metric.ball 0 0.1
+    let U : Set BMol := { g | g = f_star }
+    MoleculeOrbitClauseAt D U a b
+
+/--
 Assemble orbit-clause source from the local orbit-obligation source seam.
 -/
 theorem molecule_residual_orbit_clause_source_of_local
@@ -1546,12 +1561,13 @@ theorem molecule_residual_orbit_clause_at_source :
   molecule_h_orbit_at
 
 /--
-Build narrowed fixed-data orbit source from the local orbit-obligation source.
+Project fixed-data canonical orbit-at source from the local orbit-obligation
+source.
 -/
-theorem molecule_residual_orbit_clause_for_fixed_data_source_of_local
+theorem molecule_residual_orbit_clause_at_fixed_data_source_of_local
     (h_orbit_at : MoleculeResidualOrbitClauseAtSource) :
-    MoleculeResidualOrbitClauseForFixedDataSource := by
-  intro f_star h_fixed h_renorm h_crit _h_domain
+    MoleculeResidualOrbitClauseAtFixedDataSource := by
+  intro f_star h_fixed h_renorm h_crit
   let a : ℕ → ℕ := fun n => n
   let b : ℕ → ℕ := fun n => n + 1
   let D : Set ℂ := Metric.ball 0 0.1
@@ -1566,6 +1582,25 @@ theorem molecule_residual_orbit_clause_for_fixed_data_source_of_local
     simp [D, Metric.mem_ball]
     norm_num
   exact h_orbit_at f_star D U a b h_fixed h_renorm h_openD h_openU h_inU h_cv
+
+/--
+Build narrowed fixed-data orbit source from the fixed-data canonical orbit-at
+contract.
+-/
+theorem molecule_residual_orbit_clause_for_fixed_data_source_of_at_fixed_data_source
+    (h_orbit_fixed_at : MoleculeResidualOrbitClauseAtFixedDataSource) :
+    MoleculeResidualOrbitClauseForFixedDataSource := by
+  intro f_star h_fixed h_renorm h_crit _h_domain
+  exact h_orbit_fixed_at f_star h_fixed h_renorm h_crit
+
+/--
+Build narrowed fixed-data orbit source from the local orbit-obligation source.
+-/
+theorem molecule_residual_orbit_clause_for_fixed_data_source_of_local
+    (h_orbit_at : MoleculeResidualOrbitClauseAtSource) :
+    MoleculeResidualOrbitClauseForFixedDataSource :=
+  molecule_residual_orbit_clause_for_fixed_data_source_of_at_fixed_data_source
+    (molecule_residual_orbit_clause_at_fixed_data_source_of_local h_orbit_at)
 
 /--
 Build narrowed fixed-data orbit source from a global orbit-clause source.

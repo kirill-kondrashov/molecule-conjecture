@@ -57,6 +57,9 @@ Last Updated: 2026-03-04
 
 ## Track B - Constructive orbit-clause source
 
+- [x] Add first decomposition seam on the local constructor route:
+  - `MoleculeResidualOrbitClauseAtFixedDataSource`
+  - `molecule_residual_orbit_clause_for_fixed_data_source_of_at_fixed_data_source`.
 - [ ] Identify a non-ex-falso orbit transport/orbit clause route from existing theorem infrastructure.
 - [ ] Prove/export a theorem-level `MoleculeResidualOrbitClauseSource` constructor without `molecule_h_norm`.
 - [ ] Wire `molecule_residual_orbit_transport_source` through the constructive orbit-clause route.

@@ -48,7 +48,7 @@ Last Updated: 2026-03-04
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 99% |
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 80% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
-| PLAN_56 | Orbit clause constructor decomposition | ACTIVE | [##--------] 20% |
+| PLAN_56 | Orbit clause constructor decomposition | ACTIVE | [#####-----] 50% |
 
 ## Dependency Map
 
@@ -286,8 +286,13 @@ Last Updated: 2026-03-04
     stuck.
   - Baseline remains the PLAN_54 canonicalized single-frontier route:
     `molecule_residual_orbit_clause_for_fixed_data_source`.
-  - Next target is the first decomposition seam theorem that reduces constructor
-    input contracts below the full global orbit clause.
+  - Added first decomposition seam route:
+    `MoleculeResidualOrbitClauseAtFixedDataSource`,
+    `molecule_residual_orbit_clause_for_fixed_data_source_of_at_fixed_data_source`.
+  - Targeted probe confirms the new decomposition seam theorems are axiom-clean
+    modulo ground axioms.
+  - Next target is go/no-go decision: continue constructive proof on this seam
+    or split one narrower theorem-debt sub-plan.
 
 ## Current Critical Blockers
 

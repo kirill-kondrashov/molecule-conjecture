@@ -1,7 +1,7 @@
 # PLAN 56 - Orbit Clause Constructor Decomposition
 
 Status: ACTIVE
-Progress: [##--------] 20%
+Progress: [#####-----] 50%
 Scope: Replace the stuck PLAN_55 search with a decomposition-first route that
 isolates the minimal missing theorem needed to construct
 `MoleculeResidualOrbitClauseForFixedDataSource` without `molecule_h_norm`.
@@ -24,10 +24,13 @@ Last Updated: 2026-03-04
   orbit-side frontier theorem on active path.
 - [x] Record PLAN_55 blocker: post-PLAN_54 inventory found no exported
   non-circular constructor in current orbit modules.
-- [ ] Implement a first decomposition seam theorem that factors
+- [x] Implement a first decomposition seam theorem that factors
   `MoleculeResidualOrbitClauseForFixedDataSource` through a strictly smaller
-  contract than the current global orbit clause.
-- [ ] Probe the new decomposition seam theorem(s) with `#print axioms`.
+  contract than the current global orbit clause:
+  - `MoleculeResidualOrbitClauseAtFixedDataSource`
+  - `molecule_residual_orbit_clause_for_fixed_data_source_of_at_fixed_data_source`
+  (drops the unused `h_domain` payload from the local constructor route).
+- [x] Probe the new decomposition seam theorem(s) with `#print axioms`.
 - [ ] Decide go/no-go: continue constructive proof on this seam or open a
   further minimal sub-plan.
 
@@ -36,3 +39,8 @@ Last Updated: 2026-03-04
 - This plan supersedes the active role of PLAN_55 (now archived as stuck).
 - Goal is to isolate one minimal theorem debt item, not to solve the full orbit
   constructive route in one step.
+- Probe checkpoint:
+  - `molecule_residual_orbit_clause_at_fixed_data_source_of_local` is
+    axiom-clean modulo ground axioms.
+  - `molecule_residual_orbit_clause_for_fixed_data_source_of_at_fixed_data_source`
+    is axiom-clean modulo ground axioms.
