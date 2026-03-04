@@ -211,6 +211,12 @@ Last Updated: 2026-03-04
 - PLAN_68 kickoff checkpoint (2026-03-04):
   - successor target is now source-constructor replacement for direct-contract
     goals, then zero-arg cutover through that source.
+  - added direct-contract cutover-source seam in `Molecule/Conjecture.lean`:
+    `MoleculeResidualDirectContractCutoverSources` and its direct/anchor
+    constructor routes from canonical/refined direct-contract assumptions.
+  - targeted probes confirm the new cutover-source seam is ground-axiom-only;
+    current canonical/refined direct-contract theorems remain
+    `Molecule.molecule_h_norm`-backed.
 - Sub-plan linkage:
   - model-level witness bottleneck is tracked explicitly in
     `PLAN_53_fixed_point_model_bottleneck_refactor.md`.

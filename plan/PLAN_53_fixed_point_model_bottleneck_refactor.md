@@ -130,3 +130,9 @@ Last Updated: 2026-03-04
 - PLAN_68 kickoff checkpoint (2026-03-04):
   - active bottleneck remains direct-contract source construction for
     canonical/refined packages without `molecule_h_norm`.
+  - added direct-contract cutover-source seam in `Molecule/Conjecture.lean`:
+    `MoleculeResidualDirectContractCutoverSources` and its direct/anchor
+    constructor routes from canonical/refined direct-contract assumptions.
+  - targeted probes confirm the new cutover-source seam is ground-axiom-only;
+    current canonical/refined direct-contract theorems remain
+    `Molecule.molecule_h_norm`-backed.

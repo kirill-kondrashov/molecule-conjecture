@@ -4587,6 +4587,59 @@ theorem molecule_residual_direct_seam_anchor_source_via_canonical_direct_contrac
       h_unique_direct_canonical
 
 /--
+Minimal source pack for direct-contract cutover into direct/anchor seams.
+-/
+structure MoleculeResidualDirectContractCutoverSources : Prop where
+  canonicalData : CanonicalFastFixedPointData
+  directOfCanonical : MoleculeResidualFixedPointUniquenessDirectOfCanonicalSource
+
+/--
+Build direct-uniqueness source seam from direct-contract cutover sources.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source_of_direct_contract_cutover_sources
+    (h_sources : MoleculeResidualDirectContractCutoverSources) :
+    MoleculeResidualFixedPointUniquenessDirectSource :=
+  molecule_residual_fixed_point_uniqueness_direct_source_via_canonical_direct_contract
+    h_sources.canonicalData
+    h_sources.directOfCanonical
+
+/--
+Build anchor source seam from direct-contract cutover sources.
+-/
+theorem molecule_residual_direct_seam_anchor_source_of_direct_contract_cutover_sources
+    (h_sources : MoleculeResidualDirectContractCutoverSources) :
+    MoleculeResidualDirectSeamAnchorSource :=
+  molecule_residual_direct_seam_anchor_source_via_canonical_direct_contract
+    h_sources.canonicalData
+    h_sources.directOfCanonical
+
+/--
+Assemble direct-contract cutover sources from canonical data and a canonical
+direct-contract theorem.
+-/
+theorem molecule_residual_direct_contract_cutover_sources_of_canonical_and_direct_of_canonical
+    (h_canonical : CanonicalFastFixedPointData)
+    (h_direct_canonical : MoleculeResidualFixedPointUniquenessDirectOfCanonicalSource) :
+    MoleculeResidualDirectContractCutoverSources :=
+  ⟨h_canonical, h_direct_canonical⟩
+
+/--
+Assemble direct-contract cutover sources from refined data and a refined
+direct-contract theorem.
+-/
+theorem molecule_residual_direct_contract_cutover_sources_of_refined_and_direct_of_refined
+    (h_refined : MoleculeConjectureRefined)
+    (h_direct_refined : MoleculeResidualFixedPointUniquenessDirectOfRefinedSource) :
+    MoleculeResidualDirectContractCutoverSources :=
+  ⟨
+    h_refined.2,
+    fun _ =>
+      molecule_residual_fixed_point_uniqueness_direct_source_via_refined_direct_contract
+        h_refined
+        h_direct_refined
+  ⟩
+
+/--
 Under canonical fixed-point existence, hybrid-level unique-fixed-point source
 and map-level uniqueness source are equivalent.
 -/

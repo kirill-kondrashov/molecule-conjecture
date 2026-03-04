@@ -1,7 +1,7 @@
 # PLAN 68 - Non-h_norm Direct Contract Source Constructor
 
 Status: ACTIVE
-Progress: [##--------] 20%
+Progress: [####------] 45%
 Scope: Build a non-`molecule_h_norm` source-constructor path for direct-uniqueness contracts, then cut over the zero-arg direct/anchor seams through that source.
 Acceptance:
 1. `#print axioms` for at least one theorem implementing one of:
@@ -27,10 +27,11 @@ Last Updated: 2026-03-04
   - `molecule_residual_fixed_point_uniqueness_direct_source_via_canonical_direct_contract`
   - `molecule_residual_fixed_point_uniqueness_direct_source_via_refined_direct_contract`
   - `molecule_residual_direct_seam_anchor_source_via_canonical_direct_contract`
-- [ ] Introduce a minimal direct-contract source pack that isolates exactly the
+- [x] Introduce a minimal direct-contract source pack that isolates exactly the
   upstream constructive obligations still missing.
-- [ ] Implement a constructor from that pack to canonical/refined
-  direct-contract goals and to direct/anchor source seams.
+- [x] Implement constructors from that pack to direct/anchor source seams.
+- [x] Add explicit pack constructors from canonical/refined direct-contract
+  assumptions.
 - [ ] Attempt non-circular witness candidates against the source pack and
   record targeted `#print axioms` outputs.
 - [ ] If witness candidates remain `molecule_h_norm`-backed, extract an
@@ -43,5 +44,17 @@ Last Updated: 2026-03-04
 - Probe checkpoint inherited from PLAN_67 closeout:
   - wrappers and constructors are ground-axiom-only;
   - current direct-contract theorems remain `Molecule.molecule_h_norm`-backed.
+- New checkpoint (2026-03-04):
+  - added source-pack seam:
+    `MoleculeResidualDirectContractCutoverSources`.
+  - added cutover constructors:
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_direct_contract_cutover_sources`,
+    `molecule_residual_direct_seam_anchor_source_of_direct_contract_cutover_sources`.
+  - added pack constructors:
+    `molecule_residual_direct_contract_cutover_sources_of_canonical_and_direct_of_canonical`,
+    `molecule_residual_direct_contract_cutover_sources_of_refined_and_direct_of_refined`.
+  - targeted probes confirm all new seam/constructor theorems are
+    ground-axiom-only; current zero-arg direct-contract theorem remains
+    `Molecule.molecule_h_norm`-backed.
 - Immediate objective is to replace theorem-level source construction, not add
   new axioms.

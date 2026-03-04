@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_68 | Non-h_norm direct contract source constructor | ACTIVE | [##--------] 20% |
+| PLAN_68 | Non-h_norm direct contract source constructor | ACTIVE | [####------] 45% |
 
 ## Dependency Map
 
@@ -773,6 +773,17 @@ Last Updated: 2026-03-04
   - Active target is now explicit source-constructor replacement:
     build a non-`molecule_h_norm` theorem-level source for direct-contract
     goals, then route zero-arg direct/anchor seams through it.
+  - Added minimal cutover-source pack and constructors in
+    `Molecule/Conjecture.lean`:
+    `MoleculeResidualDirectContractCutoverSources`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_direct_contract_cutover_sources`,
+    `molecule_residual_direct_seam_anchor_source_of_direct_contract_cutover_sources`,
+    `molecule_residual_direct_contract_cutover_sources_of_canonical_and_direct_of_canonical`,
+    `molecule_residual_direct_contract_cutover_sources_of_refined_and_direct_of_refined`.
+  - Probe checkpoint:
+    these new cutover-source seam theorems are ground-axiom-only, while current
+    canonical/refined direct-contract theorems remain
+    `Molecule.molecule_h_norm`-backed.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
