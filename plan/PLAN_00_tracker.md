@@ -1,7 +1,7 @@
 # PLAN 00 - Molecule Hypothesis Elimination Tracker
 
 Status: ACTIVE
-Progress: [#########-] 97%
+Progress: [#########-] 98%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
 Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_50
@@ -44,8 +44,8 @@ Last Updated: 2026-03-04
 | PLAN_41 | Residual bounds elimination | DONE | [##########] 100% |
 | PLAN_42 | Post-axiom contract hardening | DONE | [##########] 100% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
-| PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [######----] 60% |
-| PLAN_49 | Constructive fixed-point source route | ACTIVE | [####------] 45% |
+| PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#######---] 70% |
+| PLAN_49 | Constructive fixed-point source route | ACTIVE | [######----] 60% |
 | PLAN_50 | Orbit-clause local contract narrowing | ACTIVE | [########--] 80% |
 
 ## Dependency Map
@@ -142,6 +142,8 @@ Last Updated: 2026-03-04
   - Narrowed orbit source component in non-ground/bounds-assembly packs to
     fixed-data local orbit contract:
     `MoleculeResidualOrbitClauseForFixedDataSource`.
+  - Narrowed fixed-point component in non-ground/bounds-assembly packs to carry
+    fixed-point transfer source directly.
   - Added local orbit-obligation seam in `Molecule/Conjecture.lean`:
     `MoleculeOrbitClauseAt` and
     `molecule_orbit_clause_at_of_orbit_clause`.
@@ -165,6 +167,11 @@ Last Updated: 2026-03-04
   - Added forward constructor seam checkpoint:
     `molecule_residual_non_ground_sources_of_fixed_point_and_orbit_sources`
     is axiom-clean modulo ground axioms.
+  - Narrowed fixed-point source packs to carry transfer directly (instead of
+    uniqueness), reducing replacement surface.
+  - Verified
+    `molecule_residual_fixed_point_normalization_ingredients_of_fixed_point_assembly_sources`
+    remains axiom-clean modulo ground axioms after the refactor.
   - Current fixed-point blocker is concentrated at:
     `molecule_residual_fixed_point_assembly_sources`.
   - Next target is constructive replacement of:
