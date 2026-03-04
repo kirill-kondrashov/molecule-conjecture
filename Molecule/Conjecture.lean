@@ -1923,7 +1923,7 @@ dependency.
 structure MoleculeResidualNonGroundSources where
   fixedData : FixedPointNormalizationData
   fixedUniqueness : MoleculeResidualFixedPointUniquenessSource
-  orbitClause : MoleculeResidualOrbitClauseSource
+  orbitClause : MoleculeResidualOrbitClauseForFixedDataSource
 
 /--
 Fixed-point-only slice of the bundled non-ground source pack.
@@ -1954,7 +1954,7 @@ source packs.
 -/
 theorem molecule_residual_non_ground_sources_of_fixed_point_and_orbit_sources
     (h_fixed_sources : MoleculeResidualFixedPointAssemblySources)
-    (h_orbit_clause : MoleculeResidualOrbitClauseSource) :
+    (h_orbit_clause : MoleculeResidualOrbitClauseForFixedDataSource) :
     MoleculeResidualNonGroundSources :=
   ⟨h_fixed_sources.fixedData, h_fixed_sources.fixedUniqueness, h_orbit_clause⟩
 
@@ -1965,7 +1965,7 @@ theorem molecule_residual_non_ground_sources :
     MoleculeResidualNonGroundSources :=
   molecule_residual_non_ground_sources_of_fixed_point_and_orbit_sources
     molecule_residual_fixed_point_assembly_sources
-    molecule_residual_orbit_clause_source
+    molecule_residual_orbit_clause_for_fixed_data_source
 
 /--
 Build fixed-point normalization ingredients from fixed-point-only assembly
@@ -1989,7 +1989,7 @@ Narrowed source package needed for the residual bounds assembly:
 -/
 structure MoleculeResidualBoundsAssemblySources where
   ingredients : MoleculeResidualFixedPointNormalizationIngredients
-  orbitClause : MoleculeResidualOrbitClauseSource
+  orbitClause : MoleculeResidualOrbitClauseForFixedDataSource
 
 /--
 Build narrowed residual bounds-assembly sources from:
@@ -1998,7 +1998,7 @@ Build narrowed residual bounds-assembly sources from:
 -/
 theorem molecule_residual_bounds_assembly_sources_of_fixed_point_and_orbit_sources
     (h_fixed_sources : MoleculeResidualFixedPointAssemblySources)
-    (h_orbit_clause : MoleculeResidualOrbitClauseSource) :
+    (h_orbit_clause : MoleculeResidualOrbitClauseForFixedDataSource) :
     MoleculeResidualBoundsAssemblySources :=
   ⟨
     molecule_residual_fixed_point_normalization_ingredients_of_fixed_point_assembly_sources
@@ -2077,13 +2077,9 @@ theorem molecule_residual_bounds_seed_free_of_bounds_assembly_sources
     PseudoSiegelAPrioriBounds := by
   have h_fixed_data : MoleculeResidualFixedPointNormalizationSource :=
     molecule_residual_fixed_point_normalization_source_of_ingredients h_sources.ingredients
-  have h_orbit_at : MoleculeResidualOrbitClauseAtSource :=
-    molecule_residual_orbit_clause_at_source_of_orbit_clause h_sources.orbitClause
-  have h_orbit_fixed_data : MoleculeResidualOrbitClauseForFixedDataSource :=
-    molecule_residual_orbit_clause_for_fixed_data_source_of_local h_orbit_at
   exact molecule_residual_bounds_from_fixed_data_and_local_orbit_source
     h_fixed_data
-    h_orbit_fixed_data
+    h_sources.orbitClause
 
 /--
 Residual bounds constructor from bundled non-ground source inputs.

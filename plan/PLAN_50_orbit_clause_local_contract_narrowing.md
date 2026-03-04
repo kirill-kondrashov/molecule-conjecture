@@ -1,7 +1,7 @@
 # PLAN 50 - Orbit-Clause Local Contract Narrowing
 
 Status: ACTIVE
-Progress: [######----] 65%
+Progress: [########--] 80%
 Scope: Replace the stalled global orbit-clause elimination route with a local-obligation route by narrowing orbit-clause interfaces around the exact obligations consumed in the residual bounds pipeline.
 Acceptance:
 1. Local orbit-clause seam theorem(s) compile and are wired into Conjecture/Problem4_3 interfaces without regressions.
@@ -29,6 +29,10 @@ Last Updated: 2026-03-04
   - `molecule_residual_bounds_from_fixed_data_and_local_orbit_source`
   - `molecule_residual_bounds_seed_free_of_bounds_assembly_sources` now uses
     local-orbit conversion (`..._at_source_of_orbit_clause`).
+- [x] Narrow residual source packs to carry fixed-data local orbit source
+  directly (instead of full global orbit-clause source):
+  - `MoleculeResidualNonGroundSources.orbitClause`
+  - `MoleculeResidualBoundsAssemblySources.orbitClause`
 - [ ] Rebuild `molecule_residual_orbit_clause_source` from the narrowed local contract path.
 - [ ] Re-run `make build`, `make check`, and targeted `#print axioms` probes.
 
@@ -43,4 +47,7 @@ Last Updated: 2026-03-04
     (`molecule_residual_orbit_clause_at_source`) remains `molecule_h_norm`-backed;
   - local fixed-data orbit-source constructor theorem and local-orbit residual
     bounds constructor are ground-only;
+  - non-ground and bounds-assembly packs now depend on fixed-data local orbit
+    source type directly; global orbit-clause source is no longer needed in
+    those pack definitions;
   - top-level axiom frontier still includes `Molecule.molecule_h_norm`.
