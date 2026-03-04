@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_60 | Hybrid-class model refactor route | ACTIVE | [######----] 60% |
+| PLAN_60 | Hybrid-class model refactor route | ACTIVE | [########--] 80% |
 
 ## Dependency Map
 
@@ -378,6 +378,14 @@ Last Updated: 2026-03-04
     `HybridProjectionInjective`, `map_eq_of_hybrid_projection_eq`,
     `fixed_points_in_same_class_eq` now routes via
     `currentHybridProjectionSeam`.
+  - Added hybrid-class uniqueness source seams and constructor route:
+    `MoleculeResidualHybridProjectionInjectiveSource`,
+    `MoleculeResidualHybridClassFixedPointUniquenessSource`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_projection_injective_source`,
+    `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_uniqueness_source`.
+  - Rewired
+    `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_collapse_source`
+    through the hybrid-class uniqueness constructor route.
   - Targeted probe confirms the new seam scaffold is axiom-clean modulo ground
     axioms.
   - Next target is refactoring hybrid-collapse / rigidity consumers to use this

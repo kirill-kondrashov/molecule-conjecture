@@ -1,7 +1,7 @@
 # PLAN 60 - Hybrid-Class Model Refactor Route
 
 Status: ACTIVE
-Progress: [######----] 60%
+Progress: [########--] 80%
 Scope: Break the current identity-model bottleneck (`HybridClass := BMol`) so the hybrid-level unique-fixed-point source can be constructed from a genuinely hybrid-level source, not by recycling map-level uniqueness.
 Acceptance:
 1. Export a nontrivial hybrid-class abstraction seam (or quotient interface) that does not force `toHybridClass f = toHybridClass g ↔ f = g` in the active route.
@@ -31,7 +31,15 @@ Last Updated: 2026-03-04
   - `HybridProjectionInjective`
   - `map_eq_of_hybrid_projection_eq`
   - `fixed_points_in_same_class_eq` now routes through `currentHybridProjectionSeam`.
-- [ ] Reconstruct hybrid-unique source constructor route without map-level uniqueness assumption.
+- [x] Reconstruct theorem-level hybrid-unique constructor route without
+  map-level uniqueness assumption:
+  - `MoleculeResidualHybridProjectionInjectiveSource`
+  - `MoleculeResidualHybridClassFixedPointUniquenessSource`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_projection_injective_source`
+  - `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_uniqueness_source`
+  - and rewired
+    `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_collapse_source`
+    through this route.
 - [ ] Rewire the public current-route theorem names and rerun axiom probes.
 
 ## Notes
@@ -42,3 +50,7 @@ Last Updated: 2026-03-04
   axioms; active current-route theorem
   `molecule_residual_hybrid_unique_fixed_point_source` still carries
   `Molecule.molecule_h_norm`.
+- Targeted probe confirms the new hybrid-class uniqueness constructor route
+  theorems are axiom-clean modulo ground axioms; the remaining blocker is
+  still the current theorem-level source
+  `molecule_residual_hybrid_unique_fixed_point_source`.

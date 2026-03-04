@@ -2320,6 +2320,49 @@ def MoleculeResidualHybridUniqueFixedPointSource : Prop :=
   ∃! c : HybridClass, IsFastRenormalizable c ∧ R_hybrid c = c
 
 /--
+Source seam: injectivity of the active hybrid projection model.
+-/
+def MoleculeResidualHybridProjectionInjectiveSource : Prop :=
+  HybridProjectionInjective currentHybridProjectionSeam
+
+/--
+Source seam: uniqueness of fast-renormalizable fixed points directly at the
+hybrid-class level.
+-/
+def MoleculeResidualHybridClassFixedPointUniquenessSource : Prop :=
+  ∀ c1 c2 : HybridClass,
+    (IsFastRenormalizable c1 ∧ R_hybrid c1 = c1) →
+    (IsFastRenormalizable c2 ∧ R_hybrid c2 = c2) →
+    c1 = c2
+
+/--
+Current source theorem for hybrid-projection injectivity.
+-/
+theorem molecule_residual_hybrid_projection_injective_source :
+    MoleculeResidualHybridProjectionInjectiveSource :=
+  current_hybrid_projection_seam_proj_injective
+
+/--
+Build hybrid-class fixed-point uniqueness from:
+- hybrid-class collapse on fast-renormalizable fixed points, and
+- injectivity of the active hybrid projection seam.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_projection_injective_source
+    (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource)
+    (h_proj_inj : MoleculeResidualHybridProjectionInjectiveSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessSource := by
+  intro c1 c2 h1 h2
+  have h_fix1 : Rfast c1 = c1 := by
+    simpa [R_hybrid] using h1.2
+  have h_fix2 : Rfast c2 = c2 := by
+    simpa [R_hybrid] using h2.2
+  have h_class : toHybridClass c1 = toHybridClass c2 :=
+    h_collapse c1 c2 h_fix1 h1.1 h_fix2 h2.1
+  exact
+    map_eq_of_hybrid_projection_eq currentHybridProjectionSeam h_proj_inj
+      (by simpa [currentHybridProjectionSeam] using h_class)
+
+/--
 Project hybrid-class collapse from unique fixed point on hybrid classes.
 -/
 theorem molecule_residual_fixed_point_hybrid_class_collapse_source_of_hybrid_unique_fixed_point_source
@@ -2701,21 +2744,37 @@ theorem residual_fixed_point_existence_of_refined_contract
 
 /--
 Assemble hybrid-class unique fixed-point source from canonical fixed-point data
+and a hybrid-class fixed-point uniqueness source.
+-/
+theorem molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_uniqueness_source
+    (h_canonical : CanonicalFastFixedPointData)
+    (h_class_unique : MoleculeResidualHybridClassFixedPointUniquenessSource) :
+    MoleculeResidualHybridUniqueFixedPointSource := by
+  rcases h_canonical with ⟨g, h_renorm_g, h_fix_g⟩
+  refine ⟨toHybridClass g, ?_, ?_⟩
+  · exact ⟨h_renorm_g, by simpa [R_hybrid, toHybridClass] using h_fix_g⟩
+  · intro y hy
+    exact
+      h_class_unique y (toHybridClass g) hy
+        ⟨h_renorm_g, by simpa [R_hybrid, toHybridClass] using h_fix_g⟩
+
+/--
+Assemble hybrid-class unique fixed-point source from canonical fixed-point data
 and a hybrid-class-collapse source.
 -/
 theorem molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_collapse_source
     (h_canonical : CanonicalFastFixedPointData)
     (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
     MoleculeResidualHybridUniqueFixedPointSource := by
-  rcases h_canonical with ⟨g, h_renorm_g, h_fix_g⟩
-  refine ⟨toHybridClass g, ?_, ?_⟩
-  · exact ⟨h_renorm_g, by simpa [R_hybrid, toHybridClass] using h_fix_g⟩
-  · intro y hy
-    have hy_fix : Rfast y = y := by
-      simpa [R_hybrid] using hy.2
-    have h_class : toHybridClass y = toHybridClass g :=
-      h_collapse y g hy_fix hy.1 h_fix_g h_renorm_g
-    simpa [toHybridClass] using h_class
+  have h_class_unique :
+      MoleculeResidualHybridClassFixedPointUniquenessSource :=
+    molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_projection_injective_source
+      h_collapse
+      molecule_residual_hybrid_projection_injective_source
+  exact
+    molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_uniqueness_source
+      h_canonical
+      h_class_unique
 
 /--
 Assemble hybrid-class unique fixed-point source from canonical fixed-point data
