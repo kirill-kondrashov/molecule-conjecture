@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_59 | Hybrid unique fixed-point source constructor | ACTIVE | [####------] 45% |
+| PLAN_59 | Hybrid unique fixed-point source constructor | ACTIVE | [#####-----] 55% |
 
 ## Dependency Map
 
@@ -328,6 +328,14 @@ Last Updated: 2026-03-04
   - Targeted probe confirms these bridge constructors are axiom-clean modulo
     ground axioms; current hybrid-unique source theorem still carries
     `Molecule.molecule_h_norm`.
+  - Added explicit current-route wrappers through the hybrid-unique source seam:
+    `molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_uniqueness_source`,
+    `molecule_residual_fixed_point_uniqueness_source_via_hybrid_unique_fixed_point_source`,
+    `molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_hybrid_unique_fixed_point_source`,
+    `molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source_via_hybrid_unique_fixed_point_source`.
+  - Targeted probe confirms these wrappers are axiom-clean modulo ground
+    axioms at the seam level and still carry `Molecule.molecule_h_norm` in the
+    current routed path.
   - Next target is a constructive theorem-level source for
     `MoleculeResidualHybridUniqueFixedPointSource` without
     `Molecule.molecule_h_norm`.

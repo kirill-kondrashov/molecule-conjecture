@@ -1,7 +1,7 @@
 # PLAN 59 - Hybrid Unique Fixed-Point Source Constructor
 
 Status: ACTIVE
-Progress: [####------] 45%
+Progress: [#####-----] 55%
 Scope: Replace the remaining uniqueness bottleneck by constructing a non-`molecule_h_norm` source for hybrid-level uniqueness, then derive map-level fixed-point uniqueness and route downstream orbit-debt composition through that source.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_uniqueness_source` does not include `Molecule.molecule_h_norm`.
@@ -26,6 +26,11 @@ Last Updated: 2026-03-04
   - `molecule_residual_hybrid_unique_fixed_point_source_of_refined_and_uniqueness_source`
   - current theorem:
     `molecule_residual_hybrid_unique_fixed_point_source`.
+- [x] Add explicit current-route wrappers through the hybrid-unique source seam:
+  - `molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_uniqueness_source`
+  - `molecule_residual_fixed_point_uniqueness_source_via_hybrid_unique_fixed_point_source`
+  - `molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_hybrid_unique_fixed_point_source`
+  - `molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source_via_hybrid_unique_fixed_point_source`.
 - [ ] Construct a non-`molecule_h_norm` theorem for `MoleculeResidualHybridUniqueFixedPointSource`.
 - [ ] Rewire current uniqueness source (`molecule_residual_fixed_point_uniqueness_source`) to the constructive hybrid-unique source.
 - [ ] Re-run fixed-point/orbit/top-level axiom probes and update tracker.
@@ -39,5 +44,8 @@ Last Updated: 2026-03-04
   axiom-clean modulo ground axioms; current theorem
   `molecule_residual_hybrid_unique_fixed_point_source` still carries
   `Molecule.molecule_h_norm`.
+- The current-route wrappers above compile and probe as expected; they still
+  carry `Molecule.molecule_h_norm` through the current hybrid-unique source
+  theorem.
 - The remaining blocker is now concentrated at construction of:
   `MoleculeResidualHybridUniqueFixedPointSource`.

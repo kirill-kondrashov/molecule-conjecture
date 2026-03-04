@@ -3072,13 +3072,57 @@ theorem canonical_fast_fixed_point_data_from_bounds :
   canonical_fast_fixed_point_data_of_bounds molecule_residual_bounds
 
 /--
+Assemble hybrid-class unique fixed-point source from bounds and map-level
+uniqueness source seams.
+-/
+theorem molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_uniqueness_source
+    (h_bounds : PseudoSiegelAPrioriBounds)
+    (h_unique : MoleculeResidualFixedPointUniquenessSource) :
+    MoleculeResidualHybridUniqueFixedPointSource :=
+  molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_uniqueness_source
+    (canonical_fast_fixed_point_data_of_bounds h_bounds)
+    h_unique
+
+/--
 Current hybrid-class unique fixed-point source theorem.
 -/
 theorem molecule_residual_hybrid_unique_fixed_point_source :
     MoleculeResidualHybridUniqueFixedPointSource :=
-  molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_uniqueness_source
-    canonical_fast_fixed_point_data_from_bounds
+  molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_uniqueness_source
+    molecule_residual_bounds
     molecule_residual_fixed_point_uniqueness_source
+
+/--
+Current map-level fixed-point uniqueness theorem routed via the hybrid-unique
+source seam.
+-/
+theorem molecule_residual_fixed_point_uniqueness_source_via_hybrid_unique_fixed_point_source :
+    MoleculeResidualFixedPointUniquenessSource :=
+  molecule_residual_fixed_point_uniqueness_source_of_hybrid_unique_fixed_point_source
+    molecule_residual_hybrid_unique_fixed_point_source
+
+/--
+Current PLAN_57 canonical orbit-at debt source routed via transport +
+fixed-data + hybrid-unique source seams.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_hybrid_unique_fixed_point_source :
+    MoleculeResidualCanonicalOrbitAtDebtSource :=
+  molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_hybrid_unique_fixed_point_source
+    molecule_residual_orbit_transport_source
+    molecule_h_fixed_data_direct
+    molecule_residual_hybrid_unique_fixed_point_source
+
+/--
+Current PLAN_57 canonical orbit-at debt source routed via transport +
+fixed-data + map-level uniqueness, where uniqueness is itself routed through
+the hybrid-unique source seam.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source_via_hybrid_unique_fixed_point_source :
+    MoleculeResidualCanonicalOrbitAtDebtSource :=
+  molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_uniqueness_source
+    molecule_residual_orbit_transport_source
+    molecule_h_fixed_data_direct
+    molecule_residual_fixed_point_uniqueness_source_via_hybrid_unique_fixed_point_source
 
 theorem molecule_residual_gap :
   ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
