@@ -2350,6 +2350,20 @@ def MoleculeResidualHybridClassFixedPointLiftSource : Prop :=
   HybridClassFixedPointLiftSource currentHybridProjectionSeam
 
 /--
+Source seam: collapse on projected classes of fast-renormalizable fixed maps in
+the lifted hybrid projection seam.
+-/
+def MoleculeResidualLiftedHybridFixedPointCollapseSource : Prop :=
+  HybridFixedPointCollapseIn liftedHybridProjectionSeam
+
+/--
+Source seam: lift any renormalizable fixed lifted hybrid class to a
+renormalizable fixed map in `BMol`.
+-/
+def MoleculeResidualLiftedHybridClassFixedPointLiftSource : Prop :=
+  HybridClassFixedPointLiftSource liftedHybridProjectionSeam
+
+/--
 Assembly source pack for hybrid-class fixed-point uniqueness.
 -/
 structure MoleculeResidualHybridClassFixedPointUniquenessAssemblySources where
@@ -2385,6 +2399,13 @@ theorem molecule_residual_hybrid_class_fixed_point_lift_source :
   current_hybrid_projection_seam_fixed_point_lift_source
 
 /--
+Current source theorem for lifted-seam hybrid-class fixed-point lift.
+-/
+theorem molecule_residual_lifted_hybrid_class_fixed_point_lift_source :
+    MoleculeResidualLiftedHybridClassFixedPointLiftSource :=
+  lifted_hybrid_projection_seam_fixed_point_lift_source
+
+/--
 Bridge the map-level hybrid-class-collapse source into the current seam-level
 collapse contract.
 -/
@@ -2404,6 +2425,17 @@ theorem molecule_residual_hybrid_fixed_point_collapse_source_of_hybrid_class_col
     MoleculeResidualHybridFixedPointCollapseSource :=
   molecule_residual_hybrid_fixed_point_collapse_in_current_seam_of_hybrid_class_collapse_source
     h_collapse
+
+/--
+Bridge the map-level hybrid-class-collapse source into the lifted seam-level
+collapse contract.
+-/
+theorem molecule_residual_lifted_hybrid_fixed_point_collapse_source_of_hybrid_class_collapse_source
+    (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
+    MoleculeResidualLiftedHybridFixedPointCollapseSource := by
+  intro f1 f2 h_fix1 h_renorm1 h_fix2 h_renorm2
+  exact Subtype.ext
+    (h_collapse f1 f2 h_fix1 h_renorm1 h_fix2 h_renorm2)
 
 /--
 Build hybrid-class fixed-point uniqueness from:
@@ -2466,6 +2498,35 @@ def molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_assem
   liftCurrentFixed := by
     intro c hc
     exact ⟨c, rfl, hc.1, hc.2⟩
+
+/--
+Build a model-source pack from explicit lifted-seam collapse and lift sources.
+-/
+def molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_lifted_sources
+    (h_collapse : MoleculeResidualLiftedHybridFixedPointCollapseSource)
+    (h_lift : MoleculeResidualLiftedHybridClassFixedPointLiftSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessModelSources where
+  seam := liftedHybridProjectionSeam
+  collapse := h_collapse
+  lift := h_lift
+  toCurrentClass := fun c => c.1
+  liftCurrentFixed := by
+    intro c hc
+    refine ⟨⟨c, trivial⟩, rfl, ?_, ?_⟩
+    · simpa [liftedHybridProjectionSeam] using hc.1
+    · exact Subtype.ext (by simpa [R_hybrid] using hc.2)
+
+/--
+Build a model-source pack from the map-level hybrid-class-collapse source,
+routed through the lifted seam.
+-/
+def molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_hybrid_class_collapse_source
+    (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessModelSources :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_lifted_sources
+    (molecule_residual_lifted_hybrid_fixed_point_collapse_source_of_hybrid_class_collapse_source
+      h_collapse)
+    molecule_residual_lifted_hybrid_class_fixed_point_lift_source
 
 /--
 Build hybrid-class uniqueness assembly sources from the legacy
@@ -3398,8 +3459,8 @@ Current model-source pack for hybrid-class fixed-point uniqueness.
 -/
 def molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources :
     MoleculeResidualHybridClassFixedPointUniquenessModelSources :=
-  molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_assembly_sources
-    molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources
+  molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_hybrid_class_collapse_source
+    molecule_residual_fixed_point_hybrid_class_collapse_source
 
 /--
 Current hybrid-class fixed-point uniqueness source theorem.

@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_60 | Hybrid-class model refactor route | ACTIVE | [#########-] 92% |
+| PLAN_60 | Hybrid-class model refactor route | ACTIVE | [#########-] 94% |
 
 ## Dependency Map
 
@@ -423,12 +423,22 @@ Last Updated: 2026-03-04
     model-source constructor/packaging theorems are axiom-clean modulo ground
     axioms, while the current model-source value and routed current uniqueness
     theorem still carry `Molecule.molecule_h_norm`.
+  - Replaced current model-source instantiation with a non-identity lifted seam
+    route:
+    `liftedHybridProjectionSeam`,
+    `MoleculeResidualLiftedHybridFixedPointCollapseSource`,
+    `MoleculeResidualLiftedHybridClassFixedPointLiftSource`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_lifted_sources`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_hybrid_class_collapse_source`.
+  - Probe checkpoint:
+    lifted-seam constructors are axiom-clean modulo ground axioms; the current
+    model-source value still carries `Molecule.molecule_h_norm` via the
+    map-level collapse source input.
   - Targeted probe confirms the new seam scaffold is axiom-clean modulo ground
     axioms.
-  - Next target is replacing the current model-source value
-    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources` with
-    a non-identity seam instantiation, then rerunning hybrid/uniqueness/orbit
-    wrapper probes.
+  - Next target is replacing the map-level collapse source input in the lifted
+    model-source route with a non-`molecule_h_norm` source, then rerunning
+    hybrid/uniqueness/orbit wrapper probes.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

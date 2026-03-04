@@ -46,6 +46,22 @@ noncomputable def currentHybridProjectionSeam : HybridProjectionSeam where
     simpa [toHybridClass] using h_fix
 
 /--
+Lifted seam instance that wraps `HybridClass` in a subtype to provide a
+non-identity projection surface for model-source routing.
+-/
+noncomputable def liftedHybridProjectionSeam : HybridProjectionSeam where
+  Class := { c : HybridClass // True }
+  proj := fun f => ⟨toHybridClass f, trivial⟩
+  renorm := fun c => IsFastRenormalizable c.1
+  Rclass := fun c => ⟨Rfast c.1, trivial⟩
+  renorm_proj := by
+    intro f h_renorm
+    simpa [toHybridClass] using h_renorm
+  fixed_proj := by
+    intro f h_fix
+    exact Subtype.ext (by simpa [toHybridClass] using h_fix)
+
+/--
 Current-model bottleneck: `toHybridClass` is injective because `HybridClass` is
 currently modeled as `BMol`.
 -/
@@ -157,6 +173,16 @@ theorem current_hybrid_projection_seam_fixed_point_lift_source :
   refine ⟨c, ?_, hc.1, ?_⟩
   · simp [currentHybridProjectionSeam, toHybridClass]
   · simpa [currentHybridProjectionSeam] using hc.2
+
+/--
+Lift source in the `ULift`-wrapped seam instance.
+-/
+theorem lifted_hybrid_projection_seam_fixed_point_lift_source :
+    HybridClassFixedPointLiftSource liftedHybridProjectionSeam := by
+  intro c hc
+  refine ⟨c.1, ?_, hc.1, ?_⟩
+  · simp [liftedHybridProjectionSeam, toHybridClass]
+  · exact congrArg Subtype.val hc.2
 
 /--
 Map equality projected from seam-level class equality under an injective

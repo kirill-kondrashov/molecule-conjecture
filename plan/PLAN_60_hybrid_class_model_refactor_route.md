@@ -1,7 +1,7 @@
 # PLAN 60 - Hybrid-Class Model Refactor Route
 
 Status: ACTIVE
-Progress: [#########-] 92%
+Progress: [#########-] 94%
 Scope: Break the current identity-model bottleneck (`HybridClass := BMol`) so the hybrid-level unique-fixed-point source can be constructed from a genuinely hybrid-level source, not by recycling map-level uniqueness.
 Acceptance:
 1. Export a nontrivial hybrid-class abstraction seam (or quotient interface) that does not force `toHybridClass f = toHybridClass g ↔ f = g` in the active route.
@@ -49,10 +49,15 @@ Last Updated: 2026-03-04
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources`
   - current `molecule_residual_hybrid_class_fixed_point_uniqueness_source`
     now consumes the model-source route.
-- [ ] Replace the current theorem-level source
+- [x] Replace the current theorem-level source
   `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources` with a
   constructor from a nontrivial hybrid abstraction seam (not tied to the
   current identity-model collapse path), then re-run probes.
+- [ ] Replace the current map-level collapse input for the lifted model-source
+  route with a non-`molecule_h_norm` source and re-run probes:
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_source`
+  - `molecule_residual_hybrid_unique_fixed_point_source`.
 - [x] Introduce and route through explicit assembly-source pack:
   - `MoleculeResidualHybridClassFixedPointUniquenessAssemblySources`
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_assembly_sources`
@@ -110,3 +115,12 @@ Last Updated: 2026-03-04
   `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources` still
   carries `Molecule.molecule_h_norm` because it is instantiated from the current
   identity-model collapse source.
+- The current model-source value theorem now routes through a non-identity
+  lifted seam (`liftedHybridProjectionSeam`) via:
+  - `MoleculeResidualLiftedHybridFixedPointCollapseSource`
+  - `MoleculeResidualLiftedHybridClassFixedPointLiftSource`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_lifted_sources`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_hybrid_class_collapse_source`.
+- Targeted probes confirm the lifted-seam constructors above are axiom-clean
+  modulo ground axioms; the remaining `Molecule.molecule_h_norm` dependency is
+  inherited from the current map-level collapse source input.
