@@ -48,12 +48,12 @@ Last Updated: 2026-03-04
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 99% |
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 80% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
-| PLAN_57 | Orbit minimal theorem debt extraction | ACTIVE | [#########-] 96% |
+| PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_57 (orbit theorem-debt extraction), then PLAN_43.
+- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor), then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -334,13 +334,12 @@ Last Updated: 2026-03-04
   `molecule_residual_canonical_orbit_at_debt_source` still carries
   `Molecule.molecule_h_norm`, and
     `molecule_residual_orbit_clause_at_fixed_data_source` inherits that.
-  - Current explicit debt target is now
-    `molecule_residual_renorm_vbound_source`: landing/debt reconstruction and
-    canonical `V`-bound projection seams are source-clean modulo ground axioms
-    once renormalizable-point `V`-bound control is provided.
-  - Next target is constructive replacement of the renormalizable-point
-    `V`-bound source route (or equivalent cutover through fixed-point transfer
-    source replacement).
+  - Completed with explicit transfer-routed cutover theorems:
+    `molecule_residual_canonical_vbound_source_via_fixed_point_transfer_source`
+    and
+    `molecule_residual_canonical_orbit_at_debt_source_via_fixed_point_transfer_source`.
+  - Handoff target is now PLAN_49: constructive replacement of
+    `molecule_residual_fixed_point_transfer_source`.
 
 ## Current Critical Blockers
 

@@ -1,7 +1,7 @@
 # PLAN 57 - Orbit Minimal Theorem Debt Extraction
 
-Status: ACTIVE
-Progress: [#########-] 96%
+Status: DONE
+Progress: [##########] 100%
 Scope: After PLAN_56 decomposition got stuck, isolate one minimal theorem debt
 item whose proof would unlock a non-`molecule_h_norm` constructor for
 `MoleculeResidualOrbitClauseForFixedDataSource`.
@@ -64,15 +64,19 @@ Last Updated: 2026-03-04
   stronger `V`-bound formulations:
   - `molecule_residual_canonical_vbound_source_of_fixed_point_local_transfer`
   - `molecule_residual_canonical_vbound_source_of_fixed_point_transfer_source`.
-- [ ] Attack the remaining renormalizable-point `V`-bound debt target
-  constructively:
-  - replace `molecule_residual_renorm_vbound_source` with a non-axiomatic
-    source route.
+- [x] Finish with an explicit non-dead-end handoff route:
+  - added
+    `molecule_residual_canonical_vbound_source_via_fixed_point_transfer_source`
+    and
+    `molecule_residual_canonical_orbit_at_debt_source_via_fixed_point_transfer_source`;
+    constructive source replacement now hands off to PLAN_49 fixed-point
+    transfer-source work.
 
 ## Notes
 
 - This plan supersedes the active role of PLAN_56 (now archived as stuck).
-- Goal is to force the blocker down to one theorem-sized target.
+- Goal was to force the blocker down to one theorem-sized target and hand off
+  remaining source replacement to the fixed-point transfer track.
 - Probe checkpoint:
   - debt bridge theorems above are axiom-clean modulo ground axioms.
   - constructors into the debt statement from orbit-clause/transport sources
@@ -95,3 +99,6 @@ Last Updated: 2026-03-04
   - transfer-based projection bridges above are axiom-clean modulo ground
     axioms, giving a non-dead-end cutover route via fixed-point transfer once
     the source replacement lands.
+  - completion handoff:
+    `molecule_residual_canonical_orbit_at_debt_source_via_fixed_point_transfer_source`
+    is now the explicit transfer-routed cutover theorem for PLAN_49 to finish.

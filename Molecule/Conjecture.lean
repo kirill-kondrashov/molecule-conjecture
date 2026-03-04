@@ -1976,8 +1976,8 @@ Current canonical fixed-data `V`-bound source.
 -/
 theorem molecule_residual_canonical_vbound_source :
     MoleculeResidualCanonicalVBoundSource :=
-  molecule_residual_canonical_vbound_source_of_renorm_vbound_source
-    molecule_residual_renorm_vbound_source
+  molecule_residual_canonical_vbound_source_of_fixed_point_local_transfer
+    (fixed_point_local_normalization_transfer_of_global_norm molecule_h_norm)
 
 /--
 Current canonical orbit structural-source theorem.
@@ -2200,6 +2200,25 @@ Current fixed-point local-normalization transfer source theorem.
 theorem molecule_residual_fixed_point_transfer_source :
     MoleculeResidualFixedPointTransferSource :=
   fixed_point_local_normalization_transfer_of_global_norm molecule_h_norm
+
+/--
+Current canonical fixed-data `V`-bound source routed via fixed-point transfer
+source seam.
+-/
+theorem molecule_residual_canonical_vbound_source_via_fixed_point_transfer_source :
+    MoleculeResidualCanonicalVBoundSource :=
+  molecule_residual_canonical_vbound_source_of_fixed_point_transfer_source
+    molecule_residual_fixed_point_transfer_source
+
+/--
+Current PLAN_57 canonical orbit-at debt source routed via fixed-point transfer
+source seam.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_via_fixed_point_transfer_source :
+    MoleculeResidualCanonicalOrbitAtDebtSource :=
+  molecule_residual_canonical_orbit_at_debt_source_of_structure_and_vbound_source
+    molecule_residual_canonical_orbit_structure_source
+    molecule_residual_canonical_vbound_source_via_fixed_point_transfer_source
 
 /--
 Build residual fixed-point data source from explicit existence and transfer
