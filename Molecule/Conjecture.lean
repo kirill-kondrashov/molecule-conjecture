@@ -1390,6 +1390,20 @@ theorem molecule_orbit_transport_data_of_orbit_only
 theorem molecule_orbit_transport_data : MoleculeOrbitTransportData :=
   molecule_orbit_transport_data_of_orbit_only molecule_orbit_only_data
 
+/--
+Explicit replacement seam for residual orbit-transport data used in the
+Problem 4.3 bounds route.
+-/
+def MoleculeResidualOrbitTransportSource : Prop :=
+  MoleculeOrbitTransportData
+
+/--
+Current residual orbit-transport source (legacy global-norm/ex-falso route).
+-/
+theorem molecule_residual_orbit_transport_source :
+    MoleculeResidualOrbitTransportSource :=
+  molecule_orbit_transport_data
+
 def constant_analytic_chart (f : BMol → BMol) :
     AnalyticChart f (Set.univ : Set BMol) where
   E := SliceSpace
@@ -1455,6 +1469,15 @@ theorem molecule_h_unique :
   exact False.elim molecule_h_norm_inconsistent
 
 /--
+Direct fixed-point normalization seed used to decouple source-assembly routing
+from the legacy global-normalization theorem bodies.
+-/
+theorem molecule_h_fixed_data_direct : FixedPointNormalizationData :=
+  fixed_point_normalization_data_of_fixed_exists_and_transfer
+    (renormalizable_fixed_exists_of_global_norm molecule_h_norm)
+    (fixed_point_local_normalization_transfer_of_global_norm molecule_h_norm)
+
+/--
 Explicit replacement seam for residual fixed-point normalization data.
 The PLAN_45 cutover target is to replace this source theorem with a seed-free
 construction.
@@ -1480,11 +1503,9 @@ def MoleculeResidualFixedPointExistenceSource : Prop :=
 Current fixed-point existence source (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_existence_source :
-    MoleculeResidualFixedPointExistenceSource := by
-  rcases fixed_point_exists with ⟨f_star, h_fixed, _h_cv⟩
-  have h_renorm : IsFastRenormalizable f_star := by
-    exact (molecule_h_norm ({f_star} : Set BMol)).1 f_star (by simp)
-  exact ⟨f_star, h_renorm, h_fixed⟩
+    MoleculeResidualFixedPointExistenceSource :=
+  renormalizable_fixed_exists_of_fixed_point_normalization_data
+    molecule_h_fixed_data_direct
 
 /--
 Current fixed-point local-normalization transfer source (legacy global-norm route).
@@ -1497,17 +1518,18 @@ Current fixed-point local-normalization transfer source theorem.
 -/
 theorem molecule_residual_fixed_point_transfer_source :
     MoleculeResidualFixedPointTransferSource :=
-  fixed_point_local_normalization_transfer_of_global_norm molecule_h_norm
+  fixed_point_local_normalization_transfer_of_fixed_data_and_unique
+    molecule_h_fixed_data_direct
+    molecule_h_unique
 
 /--
 Current bundled ingredient source theorem (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_normalization_ingredients :
     MoleculeResidualFixedPointNormalizationIngredients :=
-  ⟨
-    molecule_residual_fixed_point_existence_source,
-    molecule_residual_fixed_point_transfer_source
-  ⟩
+  residual_fixed_point_normalization_ingredients_of_fixed_data_and_unique
+    molecule_h_fixed_data_direct
+    molecule_h_unique
 
 /--
 Current residual fixed-point normalization source (legacy global-norm route).
@@ -1694,7 +1716,7 @@ theorem molecule_residual_bounds_from_fixed_data
     PseudoSiegelAPrioriBounds :=
   problem_4_3_bounds_established_conjecture_from_fixed_data_and_transport
     h_fixed_data
-    molecule_orbit_transport_data
+    molecule_residual_orbit_transport_source
 
 /-- Seed-free bounds source: avoid the legacy `molecule_h_data` bundle. -/
 theorem molecule_residual_bounds_seed_free : PseudoSiegelAPrioriBounds :=

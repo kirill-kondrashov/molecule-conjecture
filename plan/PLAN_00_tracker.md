@@ -46,7 +46,7 @@ Last Updated: 2026-03-03
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_44 | Constructive slice witness refactor | STUCK | [#########-] 90% |
 | PLAN_45 | Local fixed-point normalization source | ACTIVE | [#########-] 97% |
-| PLAN_46 | Seed-free ingredient constructor | ACTIVE | [#######---] 70% |
+| PLAN_46 | Seed-free ingredient constructor | ACTIVE | [#########-] 85% |
 
 ## Dependency Map
 
@@ -132,6 +132,11 @@ Last Updated: 2026-03-03
     and `..._of_refined_and_transfer`.
   - Added assumption-level combined A+B constructor:
     `residual_fixed_point_normalization_ingredients_of_refined_fixed_data_and_unique`.
+  - Rewired zero-arg ingredient assembly through fixed-data/uniqueness bridges
+    (with `molecule_h_fixed_data_direct` as current seed).
+  - Isolated residual orbit-transport dependency behind
+    `molecule_residual_orbit_transport_source`, now used by
+    `molecule_residual_bounds_from_fixed_data`.
 
 ## Current Critical Blockers
 
