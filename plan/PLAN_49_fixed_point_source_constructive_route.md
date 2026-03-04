@@ -1,7 +1,7 @@
 # PLAN 49 - Constructive Fixed-Point Source Route
 
 Status: ACTIVE
-Progress: [#########-] 90%
+Progress: [#########-] 95%
 Scope: Eliminate `molecule_h_norm` from the fixed-point side of the residual source pipeline by replacing the current fixed-point ingredient seed with a constructive theorem-level source.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_normalization_ingredients` does not include `Molecule.molecule_h_norm`.
@@ -33,6 +33,10 @@ Last Updated: 2026-03-04
 - [x] Add explicit non-ground constructor from ingredient + local orbit sources:
   - `molecule_residual_non_ground_sources_of_ingredients_and_orbit`
   and route `molecule_residual_non_ground_sources` through it.
+- [x] Split and route fixed-point ingredient source through explicit bridge + transfer seams:
+  - `MoleculeResidualFixedPointBridgeSource`
+  - `molecule_residual_fixed_point_existence_source_of_bridge`
+  - `molecule_residual_fixed_point_normalization_ingredients_of_bridge_and_transfer`
 - [ ] Add constructive replacement theorem for
   `molecule_residual_fixed_point_normalization_ingredients`.
 - [ ] Rebuild `molecule_residual_non_ground_sources` with constructive
@@ -65,6 +69,9 @@ Last Updated: 2026-03-04
     `molecule_residual_non_ground_sources` now depends directly on:
     - `molecule_residual_fixed_point_normalization_ingredients`
     - `molecule_residual_orbit_clause_for_fixed_data_source`.
+  - fixed-point ingredient route no longer depends directly on the legacy
+    fixed-data existence projection; it now enters via explicit bridge source
+    plus transfer source seams.
 - This plan runs in parallel with PLAN_51 (orbit fixed-data source route).
 - Sub-plan linkage:
   - witness extraction bottleneck is tracked explicitly in

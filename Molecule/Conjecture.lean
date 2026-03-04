@@ -514,6 +514,19 @@ def FixedPointImpliesRenormalizable : Prop :=
   ∀ f : BMol, Rfast f = f → IsFastRenormalizable f
 
 /--
+Global normalization implies the fixed-point renormalizability bridge contract.
+-/
+theorem fixed_point_implies_renormalizable_of_global_norm
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1)) :
+    FixedPointImpliesRenormalizable := by
+  intro f _h_fixed
+  exact (h_norm ({f} : Set BMol)).1 f (by simp)
+
+/--
 Construct a renormalizable fixed-point witness from:
 - constructive fixed-point existence of `Rfast`, and
 - the fixed-point renormalizability bridge contract.
@@ -1694,12 +1707,34 @@ def MoleculeResidualFixedPointExistenceSource : Prop :=
   ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f
 
 /--
+Source seam for the fixed-point renormalizability bridge contract.
+-/
+def MoleculeResidualFixedPointBridgeSource : Prop :=
+  FixedPointImpliesRenormalizable
+
+/--
+Current fixed-point renormalizability bridge source theorem
+(legacy global-normalization route).
+-/
+theorem molecule_residual_fixed_point_bridge_source :
+    MoleculeResidualFixedPointBridgeSource :=
+  fixed_point_implies_renormalizable_of_global_norm molecule_h_norm
+
+/--
+Construct fixed-point existence source from the bridge contract.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_bridge
+    (h_bridge : MoleculeResidualFixedPointBridgeSource) :
+    MoleculeResidualFixedPointExistenceSource :=
+  renormalizable_fixed_exists_of_fixed_point_exists_and_bridge h_bridge
+
+/--
 Current fixed-point existence source (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_existence_source :
     MoleculeResidualFixedPointExistenceSource :=
-  renormalizable_fixed_exists_of_fixed_point_normalization_data
-    molecule_residual_fixed_point_data_source
+  molecule_residual_fixed_point_existence_source_of_bridge
+    molecule_residual_fixed_point_bridge_source
 
 /--
 Current fixed-point local-normalization transfer source (legacy global-norm route).
@@ -1753,12 +1788,25 @@ theorem molecule_residual_fixed_point_normalization_ingredients_of_sources
   ⟨h_exists, h_transfer⟩
 
 /--
+Construct fixed-point ingredients from:
+- fixed-point renormalizability bridge source, and
+- fixed-point local-normalization transfer source.
+-/
+theorem molecule_residual_fixed_point_normalization_ingredients_of_bridge_and_transfer
+    (h_bridge : MoleculeResidualFixedPointBridgeSource)
+    (h_transfer : MoleculeResidualFixedPointTransferSource) :
+    MoleculeResidualFixedPointNormalizationIngredients :=
+  molecule_residual_fixed_point_normalization_ingredients_of_sources
+    (molecule_residual_fixed_point_existence_source_of_bridge h_bridge)
+    h_transfer
+
+/--
 Current bundled ingredient source theorem (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_normalization_ingredients :
     MoleculeResidualFixedPointNormalizationIngredients :=
-  molecule_residual_fixed_point_normalization_ingredients_of_sources
-    molecule_residual_fixed_point_existence_source
+  molecule_residual_fixed_point_normalization_ingredients_of_bridge_and_transfer
+    molecule_residual_fixed_point_bridge_source
     molecule_residual_fixed_point_transfer_source
 
 /--

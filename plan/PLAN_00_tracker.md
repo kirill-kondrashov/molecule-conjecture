@@ -44,10 +44,10 @@ Last Updated: 2026-03-04
 | PLAN_41 | Residual bounds elimination | DONE | [##########] 100% |
 | PLAN_42 | Post-axiom contract hardening | DONE | [##########] 100% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
-| PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 95% |
-| PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 90% |
+| PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 97% |
+| PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 95% |
 | PLAN_51 | Orbit fixed-data source replacement | ACTIVE | [###-------] 30% |
-| PLAN_52 | Fixed-point renorm witness extraction | ACTIVE | [#####-----] 50% |
+| PLAN_52 | Fixed-point renorm witness extraction | ACTIVE | [#######---] 70% |
 
 ## Dependency Map
 
@@ -154,6 +154,8 @@ Last Updated: 2026-03-04
   - Routed non-ground source theorem through explicit ingredient+orbit
     constructor:
     `molecule_residual_non_ground_sources_of_ingredients_and_orbit`.
+  - Split fixed-point ingredient route into explicit bridge + transfer seams
+    and routed ingredient assembly through that path.
   - Added local orbit-obligation seam in `Molecule/Conjecture.lean`:
     `MoleculeOrbitClauseAt` and
     `molecule_orbit_clause_at_of_orbit_clause`.
@@ -186,6 +188,8 @@ Last Updated: 2026-03-04
     concentrating the fixed-point blocker at ingredient source construction.
   - Added explicit non-ground constructor from ingredient + local-orbit
     sources and routed `molecule_residual_non_ground_sources` through it.
+  - Added explicit fixed-point bridge source seam and routed fixed-point
+    existence/ingredient assembly through bridge + transfer seams.
   - Verified
     `molecule_residual_fixed_point_normalization_ingredients_of_fixed_point_assembly_sources`
     remains axiom-clean modulo ground axioms after the refactor.
@@ -213,6 +217,10 @@ Last Updated: 2026-03-04
   - Added theorem-level non-circular bridge seam:
     `FixedPointImpliesRenormalizable` and
     `renormalizable_fixed_exists_of_fixed_point_exists_and_bridge`.
+  - Threaded bridge seam into fixed-point ingredient route:
+    `molecule_residual_fixed_point_existence_source` and
+    `molecule_residual_fixed_point_normalization_ingredients` now use the
+    explicit bridge + transfer seam.
   - Next target is constructive proof/route for
     `FixedPointImpliesRenormalizable` on the active top path.
 

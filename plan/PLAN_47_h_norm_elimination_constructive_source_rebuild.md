@@ -1,7 +1,7 @@
 # PLAN 47 - `molecule_h_norm` Elimination via Constructive Source Rebuild
 
 Status: ACTIVE
-Progress: [#########-] 95%
+Progress: [#########-] 97%
 Scope: Remove the last project axiom `Molecule.molecule_h_norm` from the zero-argument route by replacing the remaining non-ground source constructors with theorem-level constructive proofs.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_non_ground_sources` does not include `Molecule.molecule_h_norm`.
@@ -44,9 +44,10 @@ Last Updated: 2026-03-04
 - [x] Route non-ground source theorem through explicit ingredient+orbit
   constructor:
   - `molecule_residual_non_ground_sources_of_ingredients_and_orbit`.
+- [x] Split fixed-point ingredient route into explicit bridge + transfer seams:
+  - `MoleculeResidualFixedPointBridgeSource`
+  - `molecule_residual_fixed_point_normalization_ingredients_of_bridge_and_transfer`.
 - [ ] Replace current ingredient seed route with a constructive theorem package that does not use `molecule_h_norm`.
-- [ ] Export theorem-level bridge:
-  - constructive `MoleculeResidualFixedPointNormalizationIngredients`.
 
 ## Track B - Constructive orbit-clause source
 
