@@ -1,7 +1,7 @@
 # PLAN 56 - Orbit Clause Constructor Decomposition
 
 Status: ACTIVE
-Progress: [#####-----] 50%
+Progress: [#######---] 70%
 Scope: Replace the stuck PLAN_55 search with a decomposition-first route that
 isolates the minimal missing theorem needed to construct
 `MoleculeResidualOrbitClauseForFixedDataSource` without `molecule_h_norm`.
@@ -31,6 +31,11 @@ Last Updated: 2026-03-04
   - `molecule_residual_orbit_clause_for_fixed_data_source_of_at_fixed_data_source`
   (drops the unused `h_domain` payload from the local constructor route).
 - [x] Probe the new decomposition seam theorem(s) with `#print axioms`.
+- [x] Add second decomposition layer from orbit-clause / transport sources into
+  `MoleculeResidualOrbitClauseAtFixedDataSource`:
+  - `molecule_residual_orbit_clause_at_fixed_data_source_of_orbit_clause_source`
+  - `molecule_residual_orbit_clause_at_fixed_data_source_of_transport_source`
+  - current theorem `molecule_residual_orbit_clause_at_fixed_data_source`.
 - [ ] Decide go/no-go: continue constructive proof on this seam or open a
   further minimal sub-plan.
 
@@ -44,3 +49,7 @@ Last Updated: 2026-03-04
     axiom-clean modulo ground axioms.
   - `molecule_residual_orbit_clause_for_fixed_data_source_of_at_fixed_data_source`
     is axiom-clean modulo ground axioms.
+  - `molecule_residual_orbit_clause_at_fixed_data_source_of_orbit_clause_source`
+    and `..._of_transport_source` are axiom-clean modulo ground axioms.
+  - Current theorem `molecule_residual_orbit_clause_at_fixed_data_source` still
+    carries `Molecule.molecule_h_norm` via current transport/orbit source.

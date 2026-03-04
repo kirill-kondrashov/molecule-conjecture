@@ -48,7 +48,7 @@ Last Updated: 2026-03-04
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 99% |
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 80% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
-| PLAN_56 | Orbit clause constructor decomposition | ACTIVE | [#####-----] 50% |
+| PLAN_56 | Orbit clause constructor decomposition | ACTIVE | [#######---] 70% |
 
 ## Dependency Map
 
@@ -289,8 +289,15 @@ Last Updated: 2026-03-04
   - Added first decomposition seam route:
     `MoleculeResidualOrbitClauseAtFixedDataSource`,
     `molecule_residual_orbit_clause_for_fixed_data_source_of_at_fixed_data_source`.
-  - Targeted probe confirms the new decomposition seam theorems are axiom-clean
-    modulo ground axioms.
+  - Added second decomposition layer from orbit-clause/transport sources to the
+    fixed-data canonical orbit-at seam:
+    `molecule_residual_orbit_clause_at_fixed_data_source_of_orbit_clause_source`,
+    `molecule_residual_orbit_clause_at_fixed_data_source_of_transport_source`,
+    and current theorem `molecule_residual_orbit_clause_at_fixed_data_source`.
+  - Targeted probes confirm decomposition seam theorems are axiom-clean modulo
+    ground axioms; current theorem
+    `molecule_residual_orbit_clause_at_fixed_data_source` still carries
+    `Molecule.molecule_h_norm` via current transport/orbit source route.
   - Next target is go/no-go decision: continue constructive proof on this seam
     or split one narrower theorem-debt sub-plan.
 

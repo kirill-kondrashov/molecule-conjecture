@@ -1612,6 +1612,15 @@ theorem molecule_residual_orbit_clause_for_fixed_data_source_of_orbit_clause_sou
     (molecule_residual_orbit_clause_at_source_of_orbit_clause h_orbit)
 
 /--
+Build fixed-data canonical orbit-at source from a global orbit-clause source.
+-/
+theorem molecule_residual_orbit_clause_at_fixed_data_source_of_orbit_clause_source
+    (h_orbit : MoleculeResidualOrbitClauseSource) :
+    MoleculeResidualOrbitClauseAtFixedDataSource :=
+  molecule_residual_orbit_clause_at_fixed_data_source_of_local
+    (molecule_residual_orbit_clause_at_source_of_orbit_clause h_orbit)
+
+/--
 Build narrowed fixed-data orbit source from bundled residual orbit-transport
 source data.
 -/
@@ -1619,6 +1628,16 @@ theorem molecule_residual_orbit_clause_for_fixed_data_source_of_transport_source
     (h_transport : MoleculeResidualOrbitTransportSource) :
     MoleculeResidualOrbitClauseForFixedDataSource :=
   molecule_residual_orbit_clause_for_fixed_data_source_of_orbit_clause_source
+    h_transport.h_orbit
+
+/--
+Build fixed-data canonical orbit-at source from bundled residual orbit-transport
+source data.
+-/
+theorem molecule_residual_orbit_clause_at_fixed_data_source_of_transport_source
+    (h_transport : MoleculeResidualOrbitTransportSource) :
+    MoleculeResidualOrbitClauseAtFixedDataSource :=
+  molecule_residual_orbit_clause_at_fixed_data_source_of_orbit_clause_source
     h_transport.h_orbit
 
 /--
@@ -1657,13 +1676,21 @@ theorem molecule_residual_orbit_transport_source :
     molecule_residual_orbit_clause_source
 
 /--
+Current fixed-data canonical orbit-at source theorem.
+-/
+theorem molecule_residual_orbit_clause_at_fixed_data_source :
+    MoleculeResidualOrbitClauseAtFixedDataSource :=
+  molecule_residual_orbit_clause_at_fixed_data_source_of_transport_source
+    molecule_residual_orbit_transport_source
+
+/--
 Current narrowed fixed-data orbit source (legacy route, now directly routed via
 the bundled residual orbit-transport source package).
 -/
 theorem molecule_residual_orbit_clause_for_fixed_data_source :
     MoleculeResidualOrbitClauseForFixedDataSource :=
-  molecule_residual_orbit_clause_for_fixed_data_source_of_transport_source
-    molecule_residual_orbit_transport_source
+  molecule_residual_orbit_clause_for_fixed_data_source_of_at_fixed_data_source
+    molecule_residual_orbit_clause_at_fixed_data_source
 
 def constant_analytic_chart (f : BMol → BMol) :
     AnalyticChart f (Set.univ : Set BMol) where
