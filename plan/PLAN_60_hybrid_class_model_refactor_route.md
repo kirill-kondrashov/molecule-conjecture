@@ -45,6 +45,12 @@ Last Updated: 2026-03-04
   `molecule_residual_hybrid_class_fixed_point_uniqueness_source` with a
   constructor from a nontrivial hybrid abstraction seam (not tied to the
   current identity-model collapse path), then re-run probes.
+- [x] Introduce and route through explicit assembly-source pack:
+  - `MoleculeResidualHybridClassFixedPointUniquenessAssemblySources`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_assembly_sources`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources_of_hybrid_class_collapse_source`
+  - current `molecule_residual_hybrid_class_fixed_point_uniqueness_source`
+    now consumes `molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources`.
 - [x] Generalize seam-level uniqueness machinery to collapse + lift contracts in
   `Molecule/RenormalizationFixedPointUniqueness.lean`:
   - `HybridFixedPointCollapseIn`
@@ -85,3 +91,5 @@ Last Updated: 2026-03-04
 - The active `molecule_residual_hybrid_class_fixed_point_uniqueness_source`
   still inherits `Molecule.molecule_h_norm` via the current collapse source,
   even though the seam-level collapse/lift constructors are individually clean.
+- The new assembly-source theorem layer is axiom-clean modulo ground axioms; the
+  current assembled source theorem remains `molecule_h_norm`-backed.

@@ -407,6 +407,11 @@ Last Updated: 2026-03-04
     `MoleculeResidualHybridFixedPointCollapseSource`,
     `molecule_residual_hybrid_fixed_point_collapse_source_of_hybrid_class_collapse_source`,
     `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_lift_source`.
+  - Added assembly-source pack and routed current uniqueness source through it:
+    `MoleculeResidualHybridClassFixedPointUniquenessAssemblySources`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_assembly_sources`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources_of_hybrid_class_collapse_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources`.
   - Targeted probe confirms the new seam scaffold is axiom-clean modulo ground
     axioms.
   - Next target is replacing current source

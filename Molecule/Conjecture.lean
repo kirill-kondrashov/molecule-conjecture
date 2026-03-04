@@ -2350,6 +2350,13 @@ def MoleculeResidualHybridClassFixedPointLiftSource : Prop :=
   HybridClassFixedPointLiftSource currentHybridProjectionSeam
 
 /--
+Assembly source pack for hybrid-class fixed-point uniqueness.
+-/
+structure MoleculeResidualHybridClassFixedPointUniquenessAssemblySources where
+  collapse : MoleculeResidualHybridFixedPointCollapseSource
+  lift : MoleculeResidualHybridClassFixedPointLiftSource
+
+/--
 Current source theorem for hybrid-projection injectivity.
 -/
 theorem molecule_residual_hybrid_projection_injective_source :
@@ -2397,6 +2404,29 @@ theorem molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_c
     currentHybridProjectionSeam
     h_collapse
     h_lift
+
+/--
+Build hybrid-class uniqueness source from the explicit assembly-source pack.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_assembly_sources
+    (h_sources : MoleculeResidualHybridClassFixedPointUniquenessAssemblySources) :
+    MoleculeResidualHybridClassFixedPointUniquenessSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_lift_source
+    h_sources.collapse
+    h_sources.lift
+
+/--
+Build hybrid-class uniqueness assembly sources from the legacy
+map-level hybrid-class-collapse source.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources_of_hybrid_class_collapse_source
+    (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessAssemblySources :=
+  ⟨
+    molecule_residual_hybrid_fixed_point_collapse_source_of_hybrid_class_collapse_source
+      h_collapse,
+    molecule_residual_hybrid_class_fixed_point_lift_source
+  ⟩
 
 /--
 Build hybrid-class fixed-point uniqueness from:
@@ -3306,12 +3336,18 @@ theorem molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_uniquen
 /--
 Current hybrid-class fixed-point uniqueness source theorem.
 -/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources :
+    MoleculeResidualHybridClassFixedPointUniquenessAssemblySources :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources_of_hybrid_class_collapse_source
+    molecule_residual_fixed_point_hybrid_class_collapse_source
+
+/--
+Current hybrid-class fixed-point uniqueness source theorem.
+-/
 theorem molecule_residual_hybrid_class_fixed_point_uniqueness_source :
     MoleculeResidualHybridClassFixedPointUniquenessSource :=
-  molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_lift_source
-    (molecule_residual_hybrid_fixed_point_collapse_source_of_hybrid_class_collapse_source
-      molecule_residual_fixed_point_hybrid_class_collapse_source)
-    molecule_residual_hybrid_class_fixed_point_lift_source
+  molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_assembly_sources
+    molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources
 
 /--
 Current hybrid-class unique fixed-point source theorem.
