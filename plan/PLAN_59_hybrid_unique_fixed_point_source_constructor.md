@@ -1,7 +1,7 @@
 # PLAN 59 - Hybrid Unique Fixed-Point Source Constructor
 
 Status: ACTIVE
-Progress: [###-------] 30%
+Progress: [####------] 45%
 Scope: Replace the remaining uniqueness bottleneck by constructing a non-`molecule_h_norm` source for hybrid-level uniqueness, then derive map-level fixed-point uniqueness and route downstream orbit-debt composition through that source.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_uniqueness_source` does not include `Molecule.molecule_h_norm`.
@@ -21,6 +21,11 @@ Last Updated: 2026-03-04
 - [x] Add downstream transport + fixed-data integration seam:
   - `molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_hybrid_unique_fixed_point_source`.
 - [x] Run `make build`, `make check`, and targeted `#print axioms` probes for the new seams.
+- [x] Add canonical/refined bridge constructors into the hybrid-unique source:
+  - `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_uniqueness_source`
+  - `molecule_residual_hybrid_unique_fixed_point_source_of_refined_and_uniqueness_source`
+  - current theorem:
+    `molecule_residual_hybrid_unique_fixed_point_source`.
 - [ ] Construct a non-`molecule_h_norm` theorem for `MoleculeResidualHybridUniqueFixedPointSource`.
 - [ ] Rewire current uniqueness source (`molecule_residual_fixed_point_uniqueness_source`) to the constructive hybrid-unique source.
 - [ ] Re-run fixed-point/orbit/top-level axiom probes and update tracker.
@@ -30,5 +35,9 @@ Last Updated: 2026-03-04
 - PLAN_58 is archived as stuck; it isolated and rewired the route but could not
   produce a constructive source theorem.
 - Current new seams are axiom-clean modulo ground axioms.
+- Canonical/refined bridge constructors into the hybrid-unique source are
+  axiom-clean modulo ground axioms; current theorem
+  `molecule_residual_hybrid_unique_fixed_point_source` still carries
+  `Molecule.molecule_h_norm`.
 - The remaining blocker is now concentrated at construction of:
   `MoleculeResidualHybridUniqueFixedPointSource`.

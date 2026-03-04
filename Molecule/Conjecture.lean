@@ -2690,6 +2690,36 @@ theorem residual_fixed_point_existence_of_refined_contract
   residual_fixed_point_existence_of_canonical_fast_fixed_point_data h_refined.2
 
 /--
+Assemble hybrid-class unique fixed-point source from canonical fixed-point data
+and a map-level uniqueness source.
+-/
+theorem molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_uniqueness_source
+    (h_canonical : CanonicalFastFixedPointData)
+    (h_unique : MoleculeResidualFixedPointUniquenessSource) :
+    MoleculeResidualHybridUniqueFixedPointSource := by
+  rcases h_canonical with ⟨g, h_renorm_g, h_fix_g⟩
+  refine ⟨toHybridClass g, ?_, ?_⟩
+  · exact ⟨h_renorm_g, by simpa [R_hybrid, toHybridClass] using h_fix_g⟩
+  · intro y hy
+    have hy_fix : Rfast y = y := by
+      simpa [R_hybrid] using hy.2
+    have h_eq : y = g :=
+      h_unique y g ⟨hy_fix, hy.1⟩ ⟨h_fix_g, h_renorm_g⟩
+    simpa [toHybridClass] using h_eq
+
+/--
+Assemble hybrid-class unique fixed-point source from refined contract
+assumptions and a map-level uniqueness source.
+-/
+theorem molecule_residual_hybrid_unique_fixed_point_source_of_refined_and_uniqueness_source
+    (h_refined : MoleculeConjectureRefined)
+    (h_unique : MoleculeResidualFixedPointUniquenessSource) :
+    MoleculeResidualHybridUniqueFixedPointSource :=
+  molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_uniqueness_source
+    h_refined.2
+    h_unique
+
+/--
 Assemble residual fixed-point-normalization ingredients from:
 - canonical fixed-point data, and
 - fixed-point local normalization transfer.
@@ -3040,6 +3070,15 @@ theorem molecule_residual_bounds : PseudoSiegelAPrioriBounds :=
 theorem canonical_fast_fixed_point_data_from_bounds :
     CanonicalFastFixedPointData :=
   canonical_fast_fixed_point_data_of_bounds molecule_residual_bounds
+
+/--
+Current hybrid-class unique fixed-point source theorem.
+-/
+theorem molecule_residual_hybrid_unique_fixed_point_source :
+    MoleculeResidualHybridUniqueFixedPointSource :=
+  molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_uniqueness_source
+    canonical_fast_fixed_point_data_from_bounds
+    molecule_residual_fixed_point_uniqueness_source
 
 theorem molecule_residual_gap :
   ∀ {f_star : BMol} {D : Set ℂ} {U : Set BMol} {a b : ℕ → ℕ},
