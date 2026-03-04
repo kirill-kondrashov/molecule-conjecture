@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_60 | Hybrid-class model refactor route | ACTIVE | [####------] 40% |
+| PLAN_60 | Hybrid-class model refactor route | ACTIVE | [######----] 60% |
 
 ## Dependency Map
 
@@ -374,6 +374,10 @@ Last Updated: 2026-03-04
     `HybridProjectionSeam`, `currentHybridProjectionSeam`,
     `current_hybrid_projection_seam_proj_injective`,
     `current_hybrid_projection_seam_proj_eq_iff`.
+  - Added seam-level projection contract and rewired first rigidity consumer:
+    `HybridProjectionInjective`, `map_eq_of_hybrid_projection_eq`,
+    `fixed_points_in_same_class_eq` now routes via
+    `currentHybridProjectionSeam`.
   - Targeted probe confirms the new seam scaffold is axiom-clean modulo ground
     axioms.
   - Next target is refactoring hybrid-collapse / rigidity consumers to use this

@@ -80,6 +80,22 @@ theorem current_hybrid_projection_seam_proj_eq_iff (f g : BMol) :
     currentHybridProjectionSeam.proj f = currentHybridProjectionSeam.proj g ↔ f = g := by
   simpa [currentHybridProjectionSeam] using toHybridClass_eq_iff f g
 
+/-- Injectivity contract for a hybrid projection seam. -/
+def HybridProjectionInjective (S : HybridProjectionSeam) : Prop :=
+  Function.Injective S.proj
+
+/--
+Map equality projected from seam-level class equality under an injective
+projection contract.
+-/
+theorem map_eq_of_hybrid_projection_eq
+    (S : HybridProjectionSeam)
+    (h_inj : HybridProjectionInjective S)
+    {f g : BMol}
+    (h_proj : S.proj f = S.proj g) :
+    f = g :=
+  h_inj h_proj
+
 /--
 Renormalization operator on hybrid classes.
 This is well-defined because renormalization preserves hybrid equivalence.
@@ -139,7 +155,11 @@ theorem fixed_points_in_same_class_eq (f g : BMol)
   (_hf : IsFastRenormalizable f) (_hf_fix : Rfast f = f)
   (_hg : IsFastRenormalizable g) (_hg_fix : Rfast g = g)
   (h_eq_class : toHybridClass f = toHybridClass g) :
-  f = g := (toHybridClass_eq_iff f g).1 h_eq_class
+  f = g := by
+  exact
+    map_eq_of_hybrid_projection_eq currentHybridProjectionSeam
+      current_hybrid_projection_seam_proj_injective
+      (by simpa [currentHybridProjectionSeam] using h_eq_class)
 
 /--
 Theorem: Uniqueness of the Renormalization Fixed Point.

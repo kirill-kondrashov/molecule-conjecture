@@ -1,7 +1,7 @@
 # PLAN 60 - Hybrid-Class Model Refactor Route
 
 Status: ACTIVE
-Progress: [####------] 40%
+Progress: [######----] 60%
 Scope: Break the current identity-model bottleneck (`HybridClass := BMol`) so the hybrid-level unique-fixed-point source can be constructed from a genuinely hybrid-level source, not by recycling map-level uniqueness.
 Acceptance:
 1. Export a nontrivial hybrid-class abstraction seam (or quotient interface) that does not force `toHybridClass f = toHybridClass g ↔ f = g` in the active route.
@@ -27,7 +27,10 @@ Last Updated: 2026-03-04
   - `currentHybridProjectionSeam`
   - `current_hybrid_projection_seam_proj_injective`
   - `current_hybrid_projection_seam_proj_eq_iff`.
-- [ ] Refactor hybrid-collapse / rigidity lemmas to consume the new abstraction seam.
+- [x] Refactor first rigidity consumer to the abstraction seam:
+  - `HybridProjectionInjective`
+  - `map_eq_of_hybrid_projection_eq`
+  - `fixed_points_in_same_class_eq` now routes through `currentHybridProjectionSeam`.
 - [ ] Reconstruct hybrid-unique source constructor route without map-level uniqueness assumption.
 - [ ] Rewire the public current-route theorem names and rerun axiom probes.
 
