@@ -99,5 +99,7 @@ Last Updated: 2026-03-04
     `molecule_residual_direct_seam_anchor_source_iff_fixed_point_uniqueness_source`;
   - canonical/refined anchor contracts now have non-circular wrappers from a
     uniqueness source theorem;
+  - canonical/refined anchor-contract goals are now explicitly equivalent to
+    canonical/refined uniqueness-contract goals;
   - the model bottleneck is unchanged: a non-`molecule_h_norm` uniqueness
     source theorem is still the upstream requirement.

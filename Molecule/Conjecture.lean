@@ -3455,6 +3455,29 @@ def MoleculeResidualDirectSeamAnchorOfRefinedSource : Prop :=
   MoleculeConjectureRefined → MoleculeResidualDirectSeamAnchorSource
 
 /--
+Upstream constructive source contract: produce map-level fixed-point uniqueness
+source from canonical fixed-point data.
+-/
+def MoleculeResidualFixedPointUniquenessOfCanonicalSource : Prop :=
+  CanonicalFastFixedPointData → MoleculeResidualFixedPointUniquenessSource
+
+/--
+Upstream constructive source contract: produce map-level fixed-point uniqueness
+source from refined contract data.
+-/
+def MoleculeResidualFixedPointUniquenessOfRefinedSource : Prop :=
+  MoleculeConjectureRefined → MoleculeResidualFixedPointUniquenessSource
+
+/--
+Lift canonical uniqueness-source contract to refined-contract uniqueness-source
+contract.
+-/
+theorem molecule_residual_fixed_point_uniqueness_of_refined_source_of_canonical_source
+    (h_unique_canonical : MoleculeResidualFixedPointUniquenessOfCanonicalSource) :
+    MoleculeResidualFixedPointUniquenessOfRefinedSource :=
+  fun h_refined => h_unique_canonical h_refined.2
+
+/--
 Lift canonical anchor-source contract to refined-contract anchor-source
 contract.
 -/
@@ -3482,6 +3505,71 @@ theorem molecule_residual_direct_seam_anchor_of_refined_source_of_uniqueness_sou
     MoleculeResidualDirectSeamAnchorOfRefinedSource :=
   fun _h_refined =>
     molecule_residual_direct_seam_anchor_source_of_uniqueness_source h_unique
+
+/--
+Build canonical-contract anchor-source contract from a canonical-contract
+uniqueness-source contract.
+-/
+theorem molecule_residual_direct_seam_anchor_of_canonical_source_of_uniqueness_of_canonical_source
+    (h_unique_canonical : MoleculeResidualFixedPointUniquenessOfCanonicalSource) :
+    MoleculeResidualDirectSeamAnchorOfCanonicalSource :=
+  fun h_canonical =>
+    molecule_residual_direct_seam_anchor_source_of_uniqueness_source
+      (h_unique_canonical h_canonical)
+
+/--
+Build canonical-contract uniqueness-source contract from a canonical-contract
+anchor-source contract.
+-/
+theorem molecule_residual_fixed_point_uniqueness_of_canonical_source_of_anchor_of_canonical_source
+    (h_anchor_canonical : MoleculeResidualDirectSeamAnchorOfCanonicalSource) :
+    MoleculeResidualFixedPointUniquenessOfCanonicalSource :=
+  fun h_canonical =>
+    (molecule_residual_direct_seam_anchor_source_iff_fixed_point_uniqueness_source).1
+      (h_anchor_canonical h_canonical)
+
+/--
+Canonical-contract anchor-source and uniqueness-source contracts are
+equivalent.
+-/
+theorem molecule_residual_direct_seam_anchor_of_canonical_source_iff_fixed_point_uniqueness_of_canonical_source :
+    MoleculeResidualDirectSeamAnchorOfCanonicalSource ↔
+      MoleculeResidualFixedPointUniquenessOfCanonicalSource := by
+  constructor
+  · exact molecule_residual_fixed_point_uniqueness_of_canonical_source_of_anchor_of_canonical_source
+  · exact molecule_residual_direct_seam_anchor_of_canonical_source_of_uniqueness_of_canonical_source
+
+/--
+Build refined-contract anchor-source contract from a refined-contract
+uniqueness-source contract.
+-/
+theorem molecule_residual_direct_seam_anchor_of_refined_source_of_uniqueness_of_refined_source
+    (h_unique_refined : MoleculeResidualFixedPointUniquenessOfRefinedSource) :
+    MoleculeResidualDirectSeamAnchorOfRefinedSource :=
+  fun h_refined =>
+    molecule_residual_direct_seam_anchor_source_of_uniqueness_source
+      (h_unique_refined h_refined)
+
+/--
+Build refined-contract uniqueness-source contract from a refined-contract
+anchor-source contract.
+-/
+theorem molecule_residual_fixed_point_uniqueness_of_refined_source_of_anchor_of_refined_source
+    (h_anchor_refined : MoleculeResidualDirectSeamAnchorOfRefinedSource) :
+    MoleculeResidualFixedPointUniquenessOfRefinedSource :=
+  fun h_refined =>
+    (molecule_residual_direct_seam_anchor_source_iff_fixed_point_uniqueness_source).1
+      (h_anchor_refined h_refined)
+
+/--
+Refined-contract anchor-source and uniqueness-source contracts are equivalent.
+-/
+theorem molecule_residual_direct_seam_anchor_of_refined_source_iff_fixed_point_uniqueness_of_refined_source :
+    MoleculeResidualDirectSeamAnchorOfRefinedSource ↔
+      MoleculeResidualFixedPointUniquenessOfRefinedSource := by
+  constructor
+  · exact molecule_residual_fixed_point_uniqueness_of_refined_source_of_anchor_of_refined_source
+  · exact molecule_residual_direct_seam_anchor_of_refined_source_of_uniqueness_of_refined_source
 
 /--
 Project direct map-level hybrid-class-collapse seam from canonical anchor-source

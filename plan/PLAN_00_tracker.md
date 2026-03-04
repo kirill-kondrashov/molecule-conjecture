@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_65 | Canonical-to-anchor constructive witness | ACTIVE | [###-------] 30% |
+| PLAN_65 | Canonical-to-anchor constructive witness | ACTIVE | [#####-----] 50% |
 
 ## Dependency Map
 
@@ -686,6 +686,12 @@ Last Updated: 2026-03-04
   - Added contract-level wrappers for canonical/refined anchor contracts:
     `molecule_residual_direct_seam_anchor_of_canonical_source_of_uniqueness_source`,
     `molecule_residual_direct_seam_anchor_of_refined_source_of_uniqueness_source`.
+  - Added canonical/refined contract-equivalence certificates:
+    `molecule_residual_direct_seam_anchor_of_canonical_source_iff_fixed_point_uniqueness_of_canonical_source`,
+    `molecule_residual_direct_seam_anchor_of_refined_source_iff_fixed_point_uniqueness_of_refined_source`.
+  - Probe checkpoint:
+    new PLAN_65 source/contract bridge theorems are ground-axiom-only
+    (`propext`, `Classical.choice`, `Quot.sound`).
   - Bottleneck checkpoint:
     zero-arg cutover remains blocked by absence of a non-`molecule_h_norm`
     theorem-level source for `MoleculeResidualFixedPointUniquenessSource`.

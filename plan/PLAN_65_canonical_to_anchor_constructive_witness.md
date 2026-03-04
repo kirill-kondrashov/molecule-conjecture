@@ -1,7 +1,7 @@
 # PLAN 65 - Canonical-To-Anchor Constructive Witness
 
 Status: ACTIVE
-Progress: [###-------] 30%
+Progress: [#####-----] 50%
 Scope: Construct a non-`molecule_h_norm` theorem yielding `MoleculeResidualDirectSeamAnchorSource` from canonical/refined packages, then cut over the direct-seam chain through that witness.
 Acceptance:
 1. `#print axioms` for at least one of the following no longer includes `Molecule.molecule_h_norm`:
@@ -27,7 +27,7 @@ Last Updated: 2026-03-04
   - `MoleculeResidualDirectSeamAnchorOfCanonicalSource`, or
   - `MoleculeResidualDirectSeamAnchorOfRefinedSource`.
 - [ ] Cut over `molecule_residual_direct_seam_anchor_source` to the new witness.
-- [ ] Re-run direct-chain probes and sync PLAN_49/53 integration notes.
+- [x] Re-run direct-chain probes and sync PLAN_49/53 integration notes.
 
 ## Notes
 
@@ -41,6 +41,13 @@ Last Updated: 2026-03-04
   - contract-level wrappers:
     `molecule_residual_direct_seam_anchor_of_canonical_source_of_uniqueness_source`,
     `molecule_residual_direct_seam_anchor_of_refined_source_of_uniqueness_source`.
+- Contract-equivalence checkpoint:
+  - canonical/refined anchor contracts are now explicitly equivalent to
+    canonical/refined uniqueness contracts via:
+    `molecule_residual_direct_seam_anchor_of_canonical_source_iff_fixed_point_uniqueness_of_canonical_source`,
+    `molecule_residual_direct_seam_anchor_of_refined_source_iff_fixed_point_uniqueness_of_refined_source`.
+  - targeted `#print axioms` probes for these new contract-level theorems are
+    ground-axiom-only (`propext`, `Classical.choice`, `Quot.sound`).
 - Current mathematical status:
   canonical/refined packaging now has the right cutover hooks, but no
   non-`molecule_h_norm` theorem producing

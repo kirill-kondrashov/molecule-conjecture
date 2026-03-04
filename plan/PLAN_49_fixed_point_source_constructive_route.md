@@ -179,6 +179,9 @@ Last Updated: 2026-03-04
     a non-`molecule_h_norm` theorem-level source for
     `MoleculeResidualFixedPointUniquenessSource` is still required to make
     these wrappers discharge `MoleculeResidualDirectSeamAnchorSource`.
+  - strengthened bottleneck certificate:
+    canonical/refined anchor-contract goals are now formally equivalent to
+    canonical/refined uniqueness-contract goals.
 - Sub-plan linkage:
   - model-level witness bottleneck is tracked explicitly in
     `PLAN_53_fixed_point_model_bottleneck_refactor.md`.
