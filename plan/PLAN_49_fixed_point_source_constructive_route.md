@@ -148,7 +148,7 @@ Last Updated: 2026-03-04
   - transport-wrapped integration seam above is axiom-clean modulo ground
     axioms; current routed theorem still carries `Molecule.molecule_h_norm`
     through current fixed-data/uniqueness/transport sources.
-- This plan runs in parallel with PLAN_57 (orbit minimal theorem-debt extraction route).
+- This plan now runs in parallel with PLAN_59 (hybrid unique fixed-point source constructor route) after PLAN_57 completion.
 - Sub-plan linkage:
   - model-level witness bottleneck is tracked explicitly in
     `PLAN_53_fixed_point_model_bottleneck_refactor.md`.
