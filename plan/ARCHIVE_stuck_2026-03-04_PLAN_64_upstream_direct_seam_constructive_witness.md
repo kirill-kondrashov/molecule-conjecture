@@ -1,7 +1,7 @@
 # PLAN 64 - Upstream Direct-Seam Constructive Witness
 
-Status: ACTIVE
-Progress: [########--] 86%
+Status: STUCK (ARCHIVED)
+Progress: [##########] 100%
 Scope: Prove one non-`molecule_h_norm` zero-arg constructor for the direct-seam equivalence class identified in PLAN_63, then propagate that cutover through collapse/uniqueness/model-collapse direct seams.
 Acceptance:
 1. At least one anchor theorem in the direct-seam class is non-`molecule_h_norm`:
@@ -38,13 +38,12 @@ Last Updated: 2026-03-04
   - `molecule_residual_direct_seam_anchor_source`
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source`
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`.
-- [ ] Propagate cutover through direct-seam equivalence constructors for the
+- [x] Propagate cutover through direct-seam equivalence constructors for the
   early direct seam theorems:
-  - completed:
-    - `molecule_residual_fixed_point_uniqueness_direct_source`
-      (via `..._of_anchor_source_early`)
-  - remaining:
-    - `molecule_residual_fixed_point_hybrid_class_collapse_direct_source`.
+  - `molecule_residual_fixed_point_uniqueness_direct_source`
+    (via `..._of_anchor_source_early`)
+  - `molecule_residual_fixed_point_hybrid_class_collapse_direct_source`
+    (via `..._of_anchor_source_early`).
 - [x] Re-run full direct-chain axiom probes and sync PLAN_49/53 notes.
 
 ## Notes
@@ -111,3 +110,20 @@ Last Updated: 2026-03-04
   - probe result:
     constructor is ground-axiom-only; zero-arg theorem remains
     `Molecule.molecule_h_norm`-backed because anchor currently is.
+- Checkpoint (2026-03-04, early direct collapse cutover):
+  - added declaration-order-safe constructor:
+    `molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_anchor_source_early`.
+  - rewired zero-arg
+    `molecule_residual_fixed_point_hybrid_class_collapse_direct_source`
+    through this constructor and the early anchor theorem.
+  - probe result:
+    constructor is ground-axiom-only; zero-arg theorem remains
+    `Molecule.molecule_h_norm`-backed because anchor currently is.
+- Final stuck check (2026-03-04):
+  - both early zero-arg direct theorems are now routed through anchor-based
+    constructors.
+  - remaining blocker is purely upstream witness content:
+    no theorem currently derives
+    `MoleculeResidualDirectSeamAnchorSource` from canonical/refined data
+    without using `molecule_h_norm` (only contract placeholders exist).
+  - successor work must construct that witness theorem (PLAN_65).
