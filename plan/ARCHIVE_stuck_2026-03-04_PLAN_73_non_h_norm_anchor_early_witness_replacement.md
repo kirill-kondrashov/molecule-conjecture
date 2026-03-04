@@ -1,7 +1,7 @@
 # PLAN 73 - Non-h_norm Anchor-Early Witness Replacement
 
-Status: ACTIVE
-Progress: [##--------] 20%
+Status: STUCK (ARCHIVED)
+Progress: [########--] 80%
 Scope: Replace the current zero-arg theorem `molecule_residual_direct_seam_anchor_source_early` (which drives PLAN_72/71/70/69) with a non-circular, non-`molecule_h_norm` witness route.
 Acceptance:
 1. `#print axioms` for at least one theorem implementing
@@ -21,13 +21,13 @@ Last Updated: 2026-03-04
 ## Work Plan
 
 - [x] Inherit PLAN_72/71/70/69 decomposition and obstruction checkpoints.
-- [ ] Enumerate upstream candidate theorem routes for
+- [x] Enumerate upstream candidate theorem routes for
   `MoleculeResidualDirectSeamAnchorSource` that avoid
   `molecule_residual_direct_seam_anchor_source_early`.
-- [ ] Introduce a minimal witness interface for the winning route.
-- [ ] Implement a non-`molecule_h_norm` witness theorem against that interface
+- [x] Introduce a minimal witness interface for the winning route.
+- [x] Implement a non-`molecule_h_norm` witness theorem against that interface
   and run targeted `#print axioms` probes.
-- [ ] Cut over PLAN_72/71/70/69 zero-arg routes through the new witness theorem
+- [x] Cut over PLAN_72/71/70/69 zero-arg routes through the new witness theorem
   and verify axiom frontier improvement.
 
 ## Notes
@@ -39,3 +39,15 @@ Last Updated: 2026-03-04
 - Current explicit bottleneck theorem:
   `molecule_residual_direct_seam_anchor_source_early` (proof body calls
   `molecule_h_unique`).
+- Final candidate-route checkpoint (2026-03-04):
+  - introduced direct-seam-anchor witness interface and candidate-route
+    constructors from uniqueness, direct-uniqueness, hybrid-unique,
+    hybrid-class-uniqueness, and hybrid-class-collapse assumptions.
+  - targeted probes confirm interface/candidate constructors are
+    ground-axiom-only.
+  - final stuck check:
+    all current zero-arg witness aliases remained
+    `Molecule.molecule_h_norm`-backed via
+    `molecule_residual_direct_seam_anchor_source_early`.
+  - successor plan:
+    `PLAN_74_non_h_norm_molecule_h_unique_replacement.md`.

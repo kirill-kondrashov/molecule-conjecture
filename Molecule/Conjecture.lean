@@ -5888,6 +5888,56 @@ theorem molecule_residual_direct_seam_anchor_witness_sources_iff_direct_seam_anc
         h_anchor
 
 /--
+Assemble PLAN_72 witness sources from map-level uniqueness source data.
+-/
+theorem molecule_residual_direct_seam_anchor_witness_sources_of_uniqueness_source
+    (h_unique : MoleculeResidualFixedPointUniquenessSource) :
+    MoleculeResidualDirectSeamAnchorSourceWitnessSources :=
+  ⟨molecule_residual_direct_seam_anchor_source_of_uniqueness_source h_unique⟩
+
+/--
+Assemble PLAN_72 witness sources from map-level direct-uniqueness source data.
+-/
+theorem molecule_residual_direct_seam_anchor_witness_sources_of_fixed_point_uniqueness_direct_source
+    (h_unique_direct : MoleculeResidualFixedPointUniquenessDirectSource) :
+    MoleculeResidualDirectSeamAnchorSourceWitnessSources :=
+  molecule_residual_direct_seam_anchor_witness_sources_of_uniqueness_source
+    (molecule_residual_fixed_point_uniqueness_source_direct_of_source
+      h_unique_direct)
+
+/--
+Assemble PLAN_72 witness sources from hybrid-unique fixed-point source data.
+-/
+theorem molecule_residual_direct_seam_anchor_witness_sources_of_hybrid_unique_fixed_point_source
+    (h_hybrid_unique : MoleculeResidualHybridUniqueFixedPointSource) :
+    MoleculeResidualDirectSeamAnchorSourceWitnessSources :=
+  molecule_residual_direct_seam_anchor_witness_sources_of_uniqueness_source
+    (molecule_residual_fixed_point_uniqueness_source_of_hybrid_unique_fixed_point_source
+      h_hybrid_unique)
+
+/--
+Assemble PLAN_72 witness sources from hybrid-class-uniqueness source data.
+-/
+theorem molecule_residual_direct_seam_anchor_witness_sources_of_hybrid_class_uniqueness_source
+    (h_class_unique : MoleculeResidualHybridClassFixedPointUniquenessSource) :
+    MoleculeResidualDirectSeamAnchorSourceWitnessSources :=
+  molecule_residual_direct_seam_anchor_witness_sources_of_uniqueness_source
+    (molecule_residual_fixed_point_uniqueness_source_of_hybrid_class_collapse_source
+      (molecule_residual_fixed_point_hybrid_class_collapse_source_of_hybrid_class_uniqueness_source
+        h_class_unique))
+
+/--
+Assemble PLAN_72 witness sources from map-level hybrid-class-collapse source
+data.
+-/
+theorem molecule_residual_direct_seam_anchor_witness_sources_of_fixed_point_hybrid_class_collapse_source
+    (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
+    MoleculeResidualDirectSeamAnchorSourceWitnessSources :=
+  molecule_residual_direct_seam_anchor_witness_sources_of_uniqueness_source
+    (molecule_residual_fixed_point_uniqueness_source_of_hybrid_class_collapse_source
+      h_collapse)
+
+/--
 Build PLAN_71 witness sources from PLAN_72 witness sources.
 -/
 theorem molecule_residual_hybrid_class_collapse_witness_sources_of_direct_seam_anchor_witness_sources
@@ -5939,6 +5989,51 @@ theorem molecule_residual_direct_source_breakout_sources_via_direct_seam_anchor_
   molecule_residual_direct_source_breakout_sources_of_canonical_and_direct_seam_anchor_witness_sources
     canonical_fast_fixed_point_data_from_bounds
     molecule_residual_direct_seam_anchor_source_witness_sources
+
+/--
+Current PLAN_72 witness-source theorem routed from current map-level uniqueness
+source theorem.
+-/
+theorem molecule_residual_direct_seam_anchor_source_witness_sources_via_uniqueness_source :
+    MoleculeResidualDirectSeamAnchorSourceWitnessSources :=
+  molecule_residual_direct_seam_anchor_witness_sources_of_uniqueness_source
+    molecule_residual_fixed_point_uniqueness_source
+
+/--
+Current PLAN_72 witness-source theorem routed from current map-level
+direct-uniqueness source theorem.
+-/
+theorem molecule_residual_direct_seam_anchor_source_witness_sources_via_uniqueness_source_direct :
+    MoleculeResidualDirectSeamAnchorSourceWitnessSources :=
+  molecule_residual_direct_seam_anchor_witness_sources_of_fixed_point_uniqueness_direct_source
+    molecule_residual_fixed_point_uniqueness_direct_source
+
+/--
+Current PLAN_72 witness-source theorem routed from current hybrid-unique
+fixed-point source theorem.
+-/
+theorem molecule_residual_direct_seam_anchor_source_witness_sources_via_hybrid_unique_fixed_point_source :
+    MoleculeResidualDirectSeamAnchorSourceWitnessSources :=
+  molecule_residual_direct_seam_anchor_witness_sources_of_hybrid_unique_fixed_point_source
+    molecule_residual_hybrid_unique_fixed_point_source
+
+/--
+Current PLAN_72 witness-source theorem routed from current hybrid-class
+uniqueness source theorem.
+-/
+theorem molecule_residual_direct_seam_anchor_source_witness_sources_via_hybrid_class_uniqueness_source :
+    MoleculeResidualDirectSeamAnchorSourceWitnessSources :=
+  molecule_residual_direct_seam_anchor_witness_sources_of_hybrid_class_uniqueness_source
+    molecule_residual_hybrid_class_fixed_point_uniqueness_source
+
+/--
+Current PLAN_72 witness-source theorem routed from current map-level
+hybrid-class-collapse source theorem.
+-/
+theorem molecule_residual_direct_seam_anchor_source_witness_sources_via_fixed_point_hybrid_class_collapse_source :
+    MoleculeResidualDirectSeamAnchorSourceWitnessSources :=
+  molecule_residual_direct_seam_anchor_witness_sources_of_fixed_point_hybrid_class_collapse_source
+    molecule_residual_fixed_point_hybrid_class_collapse_source
 
 /--
 Current direct hybrid-class uniqueness source seam routed from the current
