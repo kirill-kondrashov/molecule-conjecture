@@ -1852,11 +1852,25 @@ def MoleculeResidualFixedPointIngredientsSource : Prop :=
   MoleculeResidualFixedPointNormalizationIngredients
 
 /--
+Build fixed-point ingredient source from explicit existence and transfer
+source theorems.
+-/
+theorem molecule_residual_fixed_point_ingredients_source_of_sources
+    (h_exists : MoleculeResidualFixedPointExistenceSource)
+    (h_transfer : MoleculeResidualFixedPointTransferSource) :
+    MoleculeResidualFixedPointIngredientsSource :=
+  molecule_residual_fixed_point_normalization_ingredients_of_sources
+    h_exists
+    h_transfer
+
+/--
 Current fixed-point ingredient source theorem (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_ingredients_source :
     MoleculeResidualFixedPointIngredientsSource :=
-  molecule_residual_fixed_point_normalization_ingredients
+  molecule_residual_fixed_point_ingredients_source_of_sources
+    molecule_residual_fixed_point_existence_source
+    molecule_residual_fixed_point_transfer_source
 
 /--
 Current residual fixed-point normalization source (legacy global-norm route).
@@ -1864,7 +1878,7 @@ Current residual fixed-point normalization source (legacy global-norm route).
 theorem molecule_residual_fixed_point_normalization_source :
     MoleculeResidualFixedPointNormalizationSource :=
   molecule_residual_fixed_point_normalization_source_of_ingredients
-    molecule_residual_fixed_point_normalization_ingredients
+    molecule_residual_fixed_point_ingredients_source
 
 /--
 Localized fixed-point data witness used by the packed top-theorem route.
@@ -2219,6 +2233,18 @@ theorem molecule_residual_bounds_from_fixed_data_and_local_orbit_source
     h_fixed h_renorm h_D_open h_U_open h_f_in_U h_c1_in_D
     (h_orbit_fixed_data f_star h_fixed h_renorm h_crit_val h_f_star_sub_D) h_U_subset
   exact ⟨f_star, U, h_fixed, h_renorm, h_U_open, h_f_in_U, h_c1_in_D, h_main⟩
+
+/--
+Localized wrapper: residual bounds from fixed data using only the fixed-data
+local orbit source contract.
+-/
+theorem molecule_residual_bounds_from_fixed_data_localized
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_orbit_fixed_data : MoleculeResidualOrbitClauseForFixedDataSource) :
+    PseudoSiegelAPrioriBounds :=
+  molecule_residual_bounds_from_fixed_data_and_local_orbit_source
+    h_fixed_data
+    h_orbit_fixed_data
 
 /--
 Residual bounds constructor from narrowed bounds-assembly source inputs.

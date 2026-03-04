@@ -1,7 +1,7 @@
 # PLAN 49 - Constructive Fixed-Point Source Route
 
 Status: ACTIVE
-Progress: [#########-] 98%
+Progress: [#########-] 99%
 Scope: Eliminate `molecule_h_norm` from the fixed-point side of the residual source pipeline by replacing the current fixed-point ingredient seed with a constructive theorem-level source.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_normalization_ingredients` does not include `Molecule.molecule_h_norm`.
@@ -42,6 +42,9 @@ Last Updated: 2026-03-04
 - [x] Remove active fixed-data-source dependency from the current ingredient theorem by routing through:
   - `molecule_residual_fixed_point_normalization_ingredients_of_sources`
   with explicit existence + transfer sources.
+- [x] Add explicit ingredient-source seam constructor from existence + transfer:
+  - `molecule_residual_fixed_point_ingredients_source_of_sources`
+  and route current ingredient source theorem through it.
 - [ ] Add constructive replacement theorem for
   `molecule_residual_fixed_point_normalization_ingredients`.
 - [ ] Rebuild `molecule_residual_non_ground_sources` with constructive
@@ -87,12 +90,15 @@ Last Updated: 2026-03-04
   - `molecule_residual_fixed_point_data_source` now routes via explicit
     source composition:
     `molecule_residual_fixed_point_data_source_of_sources`.
+  - `molecule_residual_fixed_point_ingredients_source` now routes via explicit
+    source composition:
+    `molecule_residual_fixed_point_ingredients_source_of_sources`.
   - fixed-point assembly current theorem now routes via explicit
     existence+transfer seam:
     `molecule_residual_fixed_point_assembly_sources_of_exists_and_transfer`.
   - targeted probes confirm these new seam theorems are axiom-clean modulo
     ground axioms.
-- This plan runs in parallel with PLAN_51 (orbit fixed-data source route).
+- This plan runs in parallel with PLAN_54 (orbit source contract refactor route).
 - Sub-plan linkage:
   - model-level witness bottleneck is tracked explicitly in
     `PLAN_53_fixed_point_model_bottleneck_refactor.md`.

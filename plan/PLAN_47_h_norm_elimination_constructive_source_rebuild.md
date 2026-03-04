@@ -7,7 +7,7 @@ Acceptance:
 1. `#print axioms Molecule.molecule_residual_non_ground_sources` does not include `Molecule.molecule_h_norm`.
 2. `#print axioms Molecule.molecule_residual_bounds_seed_free` does not include `Molecule.molecule_h_norm`.
 3. `#print axioms Molecule.molecule_conjecture_refined` does not include `Molecule.molecule_h_norm`.
-Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/RenormalizationFixedPointUniqueness.lean`, `plan/PLAN_49_fixed_point_source_constructive_route.md`, `plan/PLAN_51_orbit_fixed_data_source_replacement.md`, `plan/PLAN_53_fixed_point_model_bottleneck_refactor.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_52_fixed_point_renorm_witness_extraction.md`, `plan/ARCHIVE_superseded_2026-03-04_PLAN_45_local_fixed_point_normalization_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_46_seed_free_ingredient_constructor.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_48_orbit_clause_constructive_route.md`, `plan/ARCHIVE_superseded_2026-03-04_PLAN_50_orbit_clause_local_contract_narrowing.md`
+Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/RenormalizationFixedPointUniqueness.lean`, `plan/PLAN_49_fixed_point_source_constructive_route.md`, `plan/PLAN_53_fixed_point_model_bottleneck_refactor.md`, `plan/PLAN_54_orbit_source_contract_refactor.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_51_orbit_fixed_data_source_replacement.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_52_fixed_point_renorm_witness_extraction.md`, `plan/ARCHIVE_superseded_2026-03-04_PLAN_45_local_fixed_point_normalization_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_46_seed_free_ingredient_constructor.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_48_orbit_clause_constructive_route.md`, `plan/ARCHIVE_superseded_2026-03-04_PLAN_50_orbit_clause_local_contract_narrowing.md`
 Stuck Rule: STUCK if both source tracks below cannot advance without introducing a new project axiom or weakening exported theorem statements.
 Last Updated: 2026-03-04
 
@@ -50,6 +50,7 @@ Last Updated: 2026-03-04
 - [x] Rewire current fixed-point ingredient/data/assembly theorems through
   explicit existence + transfer seam composition:
   - `molecule_residual_fixed_point_normalization_ingredients_of_sources`
+  - `molecule_residual_fixed_point_ingredients_source_of_sources`
   - `molecule_residual_fixed_point_data_source_of_sources`
   - `molecule_residual_fixed_point_assembly_sources_of_exists_and_transfer`.
 - [ ] Replace current ingredient seed route with a constructive theorem package that does not use `molecule_h_norm`.

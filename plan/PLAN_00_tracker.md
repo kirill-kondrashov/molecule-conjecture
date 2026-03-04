@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 99%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_51, PLAN_53
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-04
 
@@ -45,14 +45,14 @@ Last Updated: 2026-03-04
 | PLAN_42 | Post-axiom contract hardening | DONE | [##########] 100% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 98% |
-| PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 98% |
-| PLAN_51 | Orbit fixed-data source replacement | ACTIVE | [###-------] 30% |
-| PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [#######---] 70% |
+| PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 99% |
+| PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 80% |
+| PLAN_54 | Orbit source contract refactor | ACTIVE | [###-------] 30% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_51 (orbit fixed-data source track) + PLAN_53 (model bottleneck refactor), then PLAN_43.
+- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_54 (orbit source contract refactor), then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -131,6 +131,9 @@ Last Updated: 2026-03-04
 - Archived STUCK plan:
   - `ARCHIVE_stuck_2026-03-04_PLAN_52_fixed_point_renorm_witness_extraction.md`
     (superseded by PLAN_53 after bridge infeasibility gate).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_51_orbit_fixed_data_source_replacement.md`
+    (superseded by PLAN_54 orbit source contract refactor).
 - `PLAN_47` progress:
   - Introduced narrowed residual bounds-assembly source pack in
     `Molecule/Conjecture.lean`:
@@ -162,6 +165,7 @@ Last Updated: 2026-03-04
   - Rewired current fixed-point ingredient/data/assembly theorems through
     explicit existence + transfer seam composition:
     `molecule_residual_fixed_point_normalization_ingredients_of_sources`,
+    `molecule_residual_fixed_point_ingredients_source_of_sources`,
     `molecule_residual_fixed_point_data_source_of_sources`,
     `molecule_residual_fixed_point_assembly_sources_of_exists_and_transfer`.
   - Added local orbit-obligation seam in `Molecule/Conjecture.lean`:
@@ -212,22 +216,14 @@ Last Updated: 2026-03-04
   - Current fixed-point data source theorem now routes via explicit source
     composition:
     `molecule_residual_fixed_point_data_source_of_sources`.
+  - Current fixed-point ingredient source theorem now routes via explicit
+    source composition:
+    `molecule_residual_fixed_point_ingredients_source_of_sources`.
   - Current fixed-point assembly source theorem now routes via explicit
     existence+transfer seam:
     `molecule_residual_fixed_point_assembly_sources_of_exists_and_transfer`.
   - Next target is constructive replacement of:
     `molecule_residual_fixed_point_normalization_ingredients`.
-- `PLAN_51` progress:
-  - Inherited narrowed orbit-side seam from PLAN_50:
-    `MoleculeResidualOrbitClauseForFixedDataSource`.
-  - Top-path residual source packs already consume the fixed-data local orbit
-    source contract directly.
-  - Candidate inventory completed:
-    current `RenormalizationOrbit`/`RenormalizationPullback`/`Problem4_3*`
-    paths consume orbit-clause assumptions and do not yet produce a
-    constructive fixed-data local source theorem.
-  - Next target is constructive replacement of
-    `molecule_residual_orbit_clause_for_fixed_data_source`.
 - `PLAN_53` progress:
   - Opened replacement track for the fixed-point witness bottleneck after
     proving infeasibility gate:
@@ -243,13 +239,26 @@ Last Updated: 2026-03-04
     fixed-data seed routing:
     `molecule_residual_fixed_point_data_source_of_sources`,
     `molecule_residual_fixed_point_assembly_sources_of_exists_and_transfer`.
+  - Decoupled current fixed-point ingredient source theorem from direct
+    normalization theorem dependency:
+    `molecule_residual_fixed_point_ingredients_source_of_sources`.
   - Targeted probe confirms
     `molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer`
     is axiom-clean modulo ground axioms.
   - Next target is constructive replacement of
     `molecule_residual_fixed_point_data_source`.
+- `PLAN_54` progress:
+  - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
+  - Added localized residual-bounds wrapper seam:
+    `molecule_residual_bounds_from_fixed_data_localized`.
+  - Targeted probe confirms
+    `molecule_residual_bounds_from_fixed_data_localized` and
+    `molecule_residual_bounds_from_fixed_data_and_local_orbit_source`
+    are axiom-clean modulo ground axioms.
+  - Next target is explicit orbit-source composition seam theorem(s) and
+    further narrowing around `molecule_residual_orbit_clause_for_fixed_data_source`.
 
 ## Current Critical Blockers
 
 1. Root blocker: `Molecule.molecule_h_norm` remains in the zero-arg theorem path.
-2. Active mitigation: PLAN_47 integration track, PLAN_49 fixed-point source track, PLAN_51 orbit fixed-data source track, PLAN_53 model bottleneck track.
+2. Active mitigation: PLAN_47 integration track, PLAN_49 fixed-point source track, PLAN_53 model bottleneck track, PLAN_54 orbit source contract refactor track.
