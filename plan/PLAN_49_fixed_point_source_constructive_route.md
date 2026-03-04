@@ -1,7 +1,7 @@
 # PLAN 49 - Constructive Fixed-Point Source Route
 
 Status: ACTIVE
-Progress: [######----] 60%
+Progress: [#######---] 70%
 Scope: Eliminate `molecule_h_norm` from the fixed-point side of the residual source pipeline by replacing the current fixed-data/uniqueness seeds with constructive theorem-level sources.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_data_source` does not include `Molecule.molecule_h_norm`.
@@ -25,6 +25,9 @@ Last Updated: 2026-03-04
   uniqueness), reducing the constructive replacement surface:
   - `MoleculeResidualFixedPointAssemblySources.fixedTransfer`
   - `MoleculeResidualNonGroundSources.fixedTransfer`
+- [x] Add explicit fixed-point assembly constructor from source seams:
+  - `molecule_residual_fixed_point_assembly_sources_of_sources`
+  and route current assembly theorem through it.
 - [ ] Add constructive replacement theorem for `molecule_residual_fixed_point_data_source`.
 - [ ] Add constructive replacement theorem for `molecule_residual_fixed_point_uniqueness_source`.
 - [ ] Rebuild `molecule_residual_non_ground_sources` with constructive fixed-point source theorems.
@@ -45,6 +48,8 @@ Last Updated: 2026-03-04
     axiom-clean modulo ground axioms.
   - `molecule_residual_fixed_point_normalization_ingredients_of_fixed_point_assembly_sources`
     is axiom-clean modulo ground axioms.
+  - `molecule_residual_fixed_point_assembly_sources_of_sources` is axiom-clean
+    modulo ground axioms.
   - `molecule_residual_fixed_point_assembly_sources` remains the fixed-point
     `molecule_h_norm` carrier, now concentrated at `fixedData` + `fixedTransfer`.
 - This plan runs in parallel with PLAN_50 (orbit local-contract route).

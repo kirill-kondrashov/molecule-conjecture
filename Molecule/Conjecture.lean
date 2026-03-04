@@ -1941,12 +1941,23 @@ theorem molecule_residual_fixed_point_assembly_sources_of_non_ground_sources
   ⟨h_sources.fixedData, h_sources.fixedTransfer⟩
 
 /--
+Build fixed-point-only assembly sources from explicit fixed-data and
+fixed-transfer source theorems.
+-/
+theorem molecule_residual_fixed_point_assembly_sources_of_sources
+    (h_fixed_data : MoleculeResidualFixedPointDataSource)
+    (h_fixed_transfer : MoleculeResidualFixedPointTransferSource) :
+    MoleculeResidualFixedPointAssemblySources :=
+  ⟨h_fixed_data, h_fixed_transfer⟩
+
+/--
 Current fixed-point-only assembly source pack.
 -/
 theorem molecule_residual_fixed_point_assembly_sources :
-    MoleculeResidualFixedPointAssemblySources where
-  fixedData := molecule_residual_fixed_point_data_source
-  fixedTransfer := molecule_residual_fixed_point_transfer_source
+    MoleculeResidualFixedPointAssemblySources :=
+  molecule_residual_fixed_point_assembly_sources_of_sources
+    molecule_residual_fixed_point_data_source
+    molecule_residual_fixed_point_transfer_source
 
 /--
 Build bundled non-ground residual sources from fixed-point and orbit-clause
