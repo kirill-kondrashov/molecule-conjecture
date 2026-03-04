@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_64 | Upstream direct-seam constructive witness | ACTIVE | [#######---] 75% |
+| PLAN_64 | Upstream direct-seam constructive witness | ACTIVE | [########--] 82% |
 
 ## Dependency Map
 
@@ -655,6 +655,16 @@ Last Updated: 2026-03-04
   - Probe checkpoint:
     cutover aliases and rewired downstream theorem remain
     `Molecule.molecule_h_norm`-backed.
+  - Declaration-order refinement checkpoint:
+    moved `molecule_residual_direct_seam_anchor_source` earlier in the file and
+    added compatibility alias
+    `molecule_residual_direct_seam_anchor_source_via_uniqueness_direct_source`.
+  - Residual constraint:
+    direct rebinding of the original early zero-arg direct theorem names still
+    requires a wider declaration reorder.
+  - Integration sync checkpoint:
+    reran direct-chain probes and synced PLAN_49/53 notes with current PLAN_64
+    anchor/cutover status.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

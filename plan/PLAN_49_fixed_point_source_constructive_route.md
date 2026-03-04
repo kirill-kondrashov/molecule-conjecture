@@ -155,6 +155,15 @@ Last Updated: 2026-03-04
     `MoleculeResidualFixedPointUniquenessDirectSource`;
   - residual uniqueness-side blocker is concentrated at
     `molecule_residual_fixed_point_hybrid_class_collapse_source_direct`.
+- PLAN_64 integration checkpoint (2026-03-04):
+  - introduced direct-seam anchor-source contracts and zero-arg anchor/cutover
+    aliases:
+    `MoleculeResidualDirectSeamAnchorOfCanonicalSource`,
+    `MoleculeResidualDirectSeamAnchorOfRefinedSource`,
+    `molecule_residual_direct_seam_anchor_source`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_cutover`.
+  - probe status unchanged:
+    direct-seam zero-arg frontier is still `Molecule.molecule_h_norm`-backed.
 - Sub-plan linkage:
   - model-level witness bottleneck is tracked explicitly in
     `PLAN_53_fixed_point_model_bottleneck_refactor.md`.

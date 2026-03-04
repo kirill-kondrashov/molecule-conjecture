@@ -3085,6 +3085,14 @@ theorem molecule_residual_fixed_point_hybrid_class_collapse_direct_source_iff_hy
         h_model_direct
 
 /--
+Current zero-arg PLAN_64 anchor source theorem.
+-/
+theorem molecule_residual_direct_seam_anchor_source :
+    MoleculeResidualDirectSeamAnchorSource :=
+  (molecule_residual_fixed_point_hybrid_class_collapse_direct_source_iff_hybrid_class_uniqueness_model_collapse_direct_source).1
+    molecule_residual_fixed_point_hybrid_class_collapse_direct_source
+
+/--
 Project direct map-level hybrid-class-collapse seam from the PLAN_64 anchor
 seam.
 -/
@@ -4122,12 +4130,11 @@ theorem molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_via_
     molecule_residual_fixed_point_uniqueness_source_direct
 
 /--
-Current zero-arg PLAN_64 anchor source theorem.
+Compatibility alias: anchor source theorem obtained via uniqueness-direct route.
 -/
-theorem molecule_residual_direct_seam_anchor_source :
+theorem molecule_residual_direct_seam_anchor_source_via_uniqueness_direct_source :
     MoleculeResidualDirectSeamAnchorSource :=
-  molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_of_fixed_point_uniqueness_direct_source
-    molecule_residual_fixed_point_uniqueness_direct_source
+  molecule_residual_direct_seam_anchor_source
 
 /--
 Current direct map-level hybrid-class-collapse seam routed via the PLAN_64

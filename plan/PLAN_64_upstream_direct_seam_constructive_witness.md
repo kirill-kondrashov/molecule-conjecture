@@ -1,7 +1,7 @@
 # PLAN 64 - Upstream Direct-Seam Constructive Witness
 
 Status: ACTIVE
-Progress: [#######---] 75%
+Progress: [#######---] 78%
 Scope: Prove one non-`molecule_h_norm` zero-arg constructor for the direct-seam equivalence class identified in PLAN_63, then propagate that cutover through collapse/uniqueness/model-collapse direct seams.
 Acceptance:
 1. At least one anchor theorem in the direct-seam class is non-`molecule_h_norm`:
@@ -31,7 +31,8 @@ Last Updated: 2026-03-04
   refined/canonical packages without `molecule_h_norm`:
   - `MoleculeResidualDirectSeamAnchorOfCanonicalSource`
   - `MoleculeResidualDirectSeamAnchorOfRefinedSource`.
-- [ ] Implement and cut over the anchor zero-arg theorem.
+- [x] Implement anchor zero-arg theorem:
+  - `molecule_residual_direct_seam_anchor_source`.
 - [x] Implement anchor zero-arg theorem and route later direct-chain theorems
   through it:
   - `molecule_residual_direct_seam_anchor_source`
@@ -41,7 +42,7 @@ Last Updated: 2026-03-04
   early direct seam theorems:
   - `molecule_residual_fixed_point_hybrid_class_collapse_direct_source`
   - `molecule_residual_fixed_point_uniqueness_direct_source`.
-- [ ] Re-run full direct-chain axiom probes and sync PLAN_49/53 notes.
+- [x] Re-run full direct-chain axiom probes and sync PLAN_49/53 notes.
 
 ## Notes
 
@@ -88,3 +89,13 @@ Last Updated: 2026-03-04
   - probe result:
     cutover aliases and rewired downstream theorem remain
     `Molecule.molecule_h_norm`-backed.
+- Checkpoint (2026-03-04, declaration-order refinement):
+  - moved the anchor theorem declaration earlier (before the direct-uniqueness
+    source block) and added compatibility alias:
+    `molecule_residual_direct_seam_anchor_source_via_uniqueness_direct_source`.
+  - declaration-order constraint still prevents directly rebinding the original
+    early zero-arg direct theorem names without a wider reorder.
+- Checkpoint (2026-03-04, integration sync):
+  - reran direct-chain probes (`anchor`, `cutover`, `source_direct` theorems);
+  - synced PLAN_49 and PLAN_53 integration notes with current PLAN_64
+    anchor/cutover status.

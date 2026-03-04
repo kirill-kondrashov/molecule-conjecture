@@ -86,3 +86,8 @@ Last Updated: 2026-03-04
     `MoleculeResidualFixedPointUniquenessDirectSource`;
   - residual uniqueness-side blocker is concentrated at
     `molecule_residual_fixed_point_hybrid_class_collapse_source_direct`.
+- PLAN_64 integration checkpoint (2026-03-04):
+  - direct-seam anchor-source contracts and zero-arg cutover aliases are now
+    explicit in `Molecule/Conjecture.lean`;
+  - residual uniqueness-side blocker remains unchanged and still requires an
+    upstream non-`molecule_h_norm` witness theorem.
