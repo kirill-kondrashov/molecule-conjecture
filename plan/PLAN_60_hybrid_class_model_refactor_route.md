@@ -57,6 +57,11 @@ Last Updated: 2026-03-04
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_lift_source`
   - `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_collapse_source`
   - current `molecule_residual_hybrid_class_fixed_point_uniqueness_source`.
+- [x] Introduce direct seam-level collapse source in `Molecule/Conjecture.lean`
+  and rewire constructors through it:
+  - `MoleculeResidualHybridFixedPointCollapseSource`
+  - `molecule_residual_hybrid_fixed_point_collapse_source_of_hybrid_class_collapse_source`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_lift_source`.
 
 ## Notes
 
@@ -76,3 +81,6 @@ Last Updated: 2026-03-04
 - The active route no longer requires projection injectivity for hybrid-class
   uniqueness; it now uses a seam-level fixed-point lift contract. The remaining
   blocker is that the current lift source is still the identity-model instance.
+- The active `molecule_residual_hybrid_class_fixed_point_uniqueness_source`
+  still inherits `Molecule.molecule_h_norm` via the current collapse source,
+  even though the seam-level collapse/lift constructors are individually clean.
