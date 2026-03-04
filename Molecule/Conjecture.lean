@@ -2733,6 +2733,16 @@ theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_sou
     h_unique
 
 /--
+Project model-collapse source directly from the dedicated direct-source seam.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_direct_source
+    (h_direct : MoleculeResidualHybridClassFixedPointUniquenessDirectSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_hybrid_class_uniqueness_source
+    (molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct_of_source
+      h_direct)
+
+/--
 Build hybrid-class-uniqueness model sources from map-level uniqueness via the
 lifted seam.
 -/
@@ -2775,6 +2785,28 @@ def molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_model
   molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_lifted_sources
     h_collapse
     molecule_residual_lifted_hybrid_class_fixed_point_lift_source
+
+/--
+Build direct hybrid-class fixed-point uniqueness source seam from model-collapse
+input.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_model_collapse_source
+    (h_collapse : MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource) :
+    MoleculeResidualHybridClassFixedPointUniquenessDirectSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_model_sources
+    (molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_model_collapse_source
+      h_collapse)
+
+/--
+The model-collapse and direct hybrid-class fixed-point uniqueness source seams
+are equivalent.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_iff_direct_source :
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource ↔
+      MoleculeResidualHybridClassFixedPointUniquenessDirectSource := by
+  constructor
+  · exact molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_model_collapse_source
+  · exact molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_direct_source
 
 /--
 The hybrid-class-collapse and map-level uniqueness source seams are equivalent.
@@ -3724,7 +3756,7 @@ Current model-collapse source for hybrid-class-uniqueness model sources.
 -/
 theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source :
     MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource :=
-  molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_hybrid_class_uniqueness_source
+  molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_direct_source
     molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct
 
 /--

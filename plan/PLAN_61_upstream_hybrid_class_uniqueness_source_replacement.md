@@ -1,7 +1,7 @@
 # PLAN 61 - Upstream Hybrid-Class Uniqueness Source Replacement
 
 Status: ACTIVE
-Progress: [#####-----] 50%
+Progress: [######----] 60%
 Scope: Replace `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct` with a non-`molecule_h_norm` theorem-level source produced upstream, then cut that source through the model-collapse/model-source path.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct` does not include `Molecule.molecule_h_norm`.
@@ -34,6 +34,11 @@ Last Updated: 2026-03-04
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_hybrid_unique_fixed_point_source`
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_via_hybrid_unique_fixed_point_source`
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_via_uniqueness_source`.
+- [x] Add bidirectional seam conversions between direct-source and model-collapse
+  inputs:
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_direct_source`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_model_collapse_source`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_iff_direct_source`.
 - [ ] Prove/export one non-`molecule_h_norm` theorem into that seam.
 - [ ] Rewire:
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`
@@ -64,3 +69,6 @@ Last Updated: 2026-03-04
 - The new parameterized hook theorem from hybrid-unique source assumptions is
   axiom-clean modulo ground axioms; current zero-arg wrappers through
   hybrid-unique/current uniqueness remain `Molecule.molecule_h_norm`-backed.
+- New direct-source/model-collapse seam-conversion theorems above are axiom-clean
+  modulo ground axioms; this confirms that replacing either seam input is
+  equivalent at the theorem level.
