@@ -1398,11 +1398,51 @@ def MoleculeResidualOrbitTransportSource : Prop :=
   MoleculeOrbitTransportData
 
 /--
+Source seam for the pseudo-Siegel disk component of residual transport data.
+-/
+def MoleculeResidualPseudoSiegelSource : Prop :=
+  ∀ f_star (D : Set ℂ), IsOpen D → criticalValue f_star ∈ D → Rfast f_star = f_star →
+    ∃ D_ps, D_ps ⊆ D ∧ IsQuasidisk D_ps ∧ PseudoInvariant f_star D_ps ∧ criticalValue f_star ∈ D_ps
+
+/--
+Source seam for the orbit-clause component of residual transport data.
+-/
+def MoleculeResidualOrbitClauseSource : Prop :=
+  MoleculeOrbitClause
+
+/--
+Assemble residual orbit-transport source from explicit pseudo-Siegel and
+orbit-clause sources.
+-/
+theorem molecule_residual_orbit_transport_source_of_sources
+    (h_ps : MoleculeResidualPseudoSiegelSource)
+    (h_orbit : MoleculeResidualOrbitClauseSource) :
+    MoleculeResidualOrbitTransportSource where
+  h_ps := h_ps
+  h_orbit := h_orbit
+
+/--
+Current pseudo-Siegel source (axiom-clean).
+-/
+theorem molecule_residual_pseudo_siegel_source :
+    MoleculeResidualPseudoSiegelSource :=
+  molecule_h_ps
+
+/--
+Current orbit-clause source (still the residual `molecule_h_norm` carrier).
+-/
+theorem molecule_residual_orbit_clause_source :
+    MoleculeResidualOrbitClauseSource :=
+  molecule_h_orbit
+
+/--
 Current residual orbit-transport source (legacy global-norm/ex-falso route).
 -/
 theorem molecule_residual_orbit_transport_source :
     MoleculeResidualOrbitTransportSource :=
-  molecule_orbit_transport_data
+  molecule_residual_orbit_transport_source_of_sources
+    molecule_residual_pseudo_siegel_source
+    molecule_residual_orbit_clause_source
 
 def constant_analytic_chart (f : BMol → BMol) :
     AnalyticChart f (Set.univ : Set BMol) where
@@ -1478,6 +1518,19 @@ theorem molecule_h_fixed_data_direct : FixedPointNormalizationData :=
     (fixed_point_local_normalization_transfer_of_global_norm molecule_h_norm)
 
 /--
+Source seam for residual fixed-point normalization data.
+-/
+def MoleculeResidualFixedPointDataSource : Prop :=
+  FixedPointNormalizationData
+
+/--
+Current residual fixed-point data source (legacy global-norm route).
+-/
+theorem molecule_residual_fixed_point_data_source :
+    MoleculeResidualFixedPointDataSource :=
+  molecule_h_fixed_data_direct
+
+/--
 Explicit replacement seam for residual fixed-point normalization data.
 The PLAN_45 cutover target is to replace this source theorem with a seed-free
 construction.
@@ -1505,7 +1558,7 @@ Current fixed-point existence source (legacy global-norm route).
 theorem molecule_residual_fixed_point_existence_source :
     MoleculeResidualFixedPointExistenceSource :=
   renormalizable_fixed_exists_of_fixed_point_normalization_data
-    molecule_h_fixed_data_direct
+    molecule_residual_fixed_point_data_source
 
 /--
 Current fixed-point local-normalization transfer source (legacy global-norm route).
@@ -1514,22 +1567,58 @@ def MoleculeResidualFixedPointTransferSource : Prop :=
   FixedPointLocalNormalizationTransfer
 
 /--
+Source seam for fixed-point uniqueness on fast-renormalizable fixed points.
+-/
+def MoleculeResidualFixedPointUniquenessSource : Prop :=
+  ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+           (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2
+
+/--
+Current fixed-point uniqueness source theorem.
+-/
+theorem molecule_residual_fixed_point_uniqueness_source :
+    MoleculeResidualFixedPointUniquenessSource :=
+  molecule_h_unique
+
+/--
+Assemble fixed-point transfer source from fixed-point normalization data and
+uniqueness source.
+-/
+theorem molecule_residual_fixed_point_transfer_source_of_fixed_data_and_unique
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_unique : MoleculeResidualFixedPointUniquenessSource) :
+    MoleculeResidualFixedPointTransferSource :=
+  fixed_point_local_normalization_transfer_of_fixed_data_and_unique
+    h_fixed_data
+    h_unique
+
+/--
 Current fixed-point local-normalization transfer source theorem.
 -/
 theorem molecule_residual_fixed_point_transfer_source :
     MoleculeResidualFixedPointTransferSource :=
-  fixed_point_local_normalization_transfer_of_fixed_data_and_unique
-    molecule_h_fixed_data_direct
-    molecule_h_unique
+  molecule_residual_fixed_point_transfer_source_of_fixed_data_and_unique
+    molecule_residual_fixed_point_data_source
+    molecule_residual_fixed_point_uniqueness_source
+
+/--
+Assemble residual fixed-point-normalization ingredients from explicit existence
+and transfer source theorems.
+-/
+theorem molecule_residual_fixed_point_normalization_ingredients_of_sources
+    (h_exists : MoleculeResidualFixedPointExistenceSource)
+    (h_transfer : MoleculeResidualFixedPointTransferSource) :
+    MoleculeResidualFixedPointNormalizationIngredients :=
+  ⟨h_exists, h_transfer⟩
 
 /--
 Current bundled ingredient source theorem (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_normalization_ingredients :
     MoleculeResidualFixedPointNormalizationIngredients :=
-  residual_fixed_point_normalization_ingredients_of_fixed_data_and_unique
-    molecule_h_fixed_data_direct
-    molecule_h_unique
+  molecule_residual_fixed_point_normalization_ingredients_of_sources
+    molecule_residual_fixed_point_existence_source
+    molecule_residual_fixed_point_transfer_source
 
 /--
 Current residual fixed-point normalization source (legacy global-norm route).

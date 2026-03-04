@@ -46,7 +46,7 @@ Last Updated: 2026-03-03
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_44 | Constructive slice witness refactor | STUCK | [#########-] 90% |
 | PLAN_45 | Local fixed-point normalization source | ACTIVE | [#########-] 97% |
-| PLAN_46 | Seed-free ingredient constructor | ACTIVE | [#########-] 85% |
+| PLAN_46 | Seed-free ingredient constructor | ACTIVE | [#########-] 93% |
 
 ## Dependency Map
 
@@ -137,6 +137,14 @@ Last Updated: 2026-03-03
   - Isolated residual orbit-transport dependency behind
     `molecule_residual_orbit_transport_source`, now used by
     `molecule_residual_bounds_from_fixed_data`.
+  - Split orbit-transport source into explicit pseudo-Siegel and orbit-clause
+    sub-sources via `molecule_residual_orbit_transport_source_of_sources`.
+  - Split fixed-point ingredient seam with explicit uniqueness source
+    (`MoleculeResidualFixedPointUniquenessSource`) and source-level composition
+    wrappers.
+  - Added explicit fixed-point-data source seam
+    (`MoleculeResidualFixedPointDataSource`) and routed residual existence/
+    transfer sources through it.
 
 ## Current Critical Blockers
 
