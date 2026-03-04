@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 99%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_69
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_70
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-04
 
@@ -49,12 +49,12 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_69 | Non-h_norm direct-source witness breakout | ACTIVE | [#######---] 75% |
+| PLAN_70 | Non-h_norm model-collapse-direct source witness | ACTIVE | [##--------] 20% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_69 (direct-source witness breakout), then PLAN_43.
+- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_70 (model-collapse-direct source witness), then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -175,6 +175,9 @@ Last Updated: 2026-03-04
 - Archived STUCK plan:
   - `ARCHIVE_stuck_2026-03-04_PLAN_68_non_h_norm_direct_contract_source_constructor.md`
     (superseded by PLAN_69 non-h_norm direct-source witness breakout).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_69_non_h_norm_direct_source_witness_breakout.md`
+    (superseded by PLAN_70 non-h_norm model-collapse-direct source witness).
 - `PLAN_47` progress:
   - Introduced narrowed residual bounds-assembly source pack in
     `Molecule/Conjecture.lean`:
@@ -788,29 +791,28 @@ Last Updated: 2026-03-04
     cutover-source path is equivalent to current direct-source frontier under
     canonical/refined data; current direct-source/direct-contract theorems
     remain `Molecule.molecule_h_norm`-backed.
-- `PLAN_69` progress:
-  - Opened successor direct-source witness breakout track after archiving
-    PLAN_68 as STUCK.
-  - Active target is now a non-circular, non-`molecule_h_norm` theorem for
-    `MoleculeResidualFixedPointUniquenessDirectSource` (or stronger upstream
-    source), then zero-arg direct/anchor cutover.
-  - Selected upstream candidate seam:
-    `MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource`
-    with canonical data.
-  - Added breakout-source interface and constructors in
-    `Molecule/Conjecture.lean`:
+- `PLAN_69` final archived progress:
+  - Added breakout-source interface and constructors:
     `MoleculeResidualDirectSourceBreakoutSources`,
     `molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct`,
     `molecule_residual_direct_source_breakout_sources_of_refined_and_model_collapse_direct`,
     `molecule_residual_fixed_point_uniqueness_direct_source_of_direct_source_breakout_sources`,
     `molecule_residual_direct_seam_anchor_source_of_direct_source_breakout_sources`.
-  - Probe checkpoint:
-    these new breakout-source declarations are ground-axiom-only, while current
-    `molecule_residual_fixed_point_uniqueness_direct_source` remains
-    `Molecule.molecule_h_norm`-backed.
-  - Non-`molecule_h_norm` witness checkpoint:
-    `molecule_residual_fixed_point_uniqueness_direct_source_of_direct_source_breakout_sources`
-    now provides a direct-source theorem under the breakout interface.
+  - Added obstruction-equivalence/cutover layer:
+    `molecule_residual_direct_source_breakout_sources_iff_model_collapse_direct_source_of_canonical`,
+    `molecule_residual_direct_source_breakout_sources_iff_model_collapse_direct_source_of_refined`,
+    `molecule_residual_direct_source_breakout_sources`,
+    `molecule_residual_direct_seam_anchor_source_via_direct_source_breakout_sources`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_via_direct_source_breakout_sources`.
+  - Final stuck check:
+    breakout cutover stayed `Molecule.molecule_h_norm`-backed through
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source`.
+- `PLAN_70` progress:
+  - Opened successor model-collapse-direct source witness track after archiving
+    PLAN_69 as STUCK.
+  - Active target is now upstream replacement of
+    `MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource`
+    without `molecule_h_norm`, then breakout cutover.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

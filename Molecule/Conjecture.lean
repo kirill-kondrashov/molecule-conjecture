@@ -4747,6 +4747,40 @@ theorem molecule_residual_direct_seam_anchor_source_of_direct_source_breakout_so
     (fun _ => h_sources.modelCollapseDirect)
 
 /--
+Under canonical fixed-point data, PLAN_69 breakout sources are equivalent to
+model-collapse-direct source data.
+-/
+theorem molecule_residual_direct_source_breakout_sources_iff_model_collapse_direct_source_of_canonical
+    (h_canonical : CanonicalFastFixedPointData) :
+    MoleculeResidualDirectSourceBreakoutSources ↔
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource := by
+  constructor
+  · intro h_sources
+    exact h_sources.modelCollapseDirect
+  · intro h_model_collapse_direct
+    exact
+      molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct
+        h_canonical
+        h_model_collapse_direct
+
+/--
+Under refined data, PLAN_69 breakout sources are equivalent to
+model-collapse-direct source data.
+-/
+theorem molecule_residual_direct_source_breakout_sources_iff_model_collapse_direct_source_of_refined
+    (h_refined : MoleculeConjectureRefined) :
+    MoleculeResidualDirectSourceBreakoutSources ↔
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource := by
+  constructor
+  · intro h_sources
+    exact h_sources.modelCollapseDirect
+  · intro h_model_collapse_direct
+    exact
+      molecule_residual_direct_source_breakout_sources_of_refined_and_model_collapse_direct
+        h_refined
+        h_model_collapse_direct
+
+/--
 Under canonical fixed-point existence, hybrid-level unique-fixed-point source
 and map-level uniqueness source are equivalent.
 -/
@@ -5378,6 +5412,34 @@ Current direct hybrid-class-uniqueness model-collapse source seam.
 theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source :
     MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource :=
   molecule_residual_direct_seam_anchor_source
+
+/--
+Current PLAN_69 breakout-source theorem routed from:
+- current canonical fixed-point data theorem, and
+- current model-collapse-direct source theorem.
+-/
+theorem molecule_residual_direct_source_breakout_sources :
+    MoleculeResidualDirectSourceBreakoutSources :=
+  molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct
+    canonical_fast_fixed_point_data_from_bounds
+    molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source
+
+/--
+Current anchor source theorem routed through PLAN_69 breakout sources.
+-/
+theorem molecule_residual_direct_seam_anchor_source_via_direct_source_breakout_sources :
+    MoleculeResidualDirectSeamAnchorSource :=
+  molecule_residual_direct_seam_anchor_source_of_direct_source_breakout_sources
+    molecule_residual_direct_source_breakout_sources
+
+/--
+Current map-level direct-uniqueness source theorem routed through PLAN_69
+breakout sources.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source_via_direct_source_breakout_sources :
+    MoleculeResidualFixedPointUniquenessDirectSource :=
+  molecule_residual_fixed_point_uniqueness_direct_source_of_direct_source_breakout_sources
+    molecule_residual_direct_source_breakout_sources
 
 /--
 Current model-collapse source for hybrid-class-uniqueness model sources.

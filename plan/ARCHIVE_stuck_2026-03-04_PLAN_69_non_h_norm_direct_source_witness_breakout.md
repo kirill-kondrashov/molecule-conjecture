@@ -1,7 +1,7 @@
 # PLAN 69 - Non-h_norm Direct-Source Witness Breakout
 
-Status: ACTIVE
-Progress: [#######---] 75%
+Status: STUCK (ARCHIVED)
+Progress: [########--] 80%
 Scope: Break out of the direct-source circular path by constructing a non-`molecule_h_norm` theorem for `MoleculeResidualFixedPointUniquenessDirectSource` (or stronger upstream source) that does not route through the current direct-source theorem.
 Acceptance:
 1. `#print axioms` for at least one theorem implementing one of:
@@ -30,7 +30,7 @@ Last Updated: 2026-03-04
   candidate.
 - [x] Implement a non-`molecule_h_norm` witness theorem against that interface
   and run targeted `#print axioms` probes.
-- [ ] Cut over direct/anchor zero-arg seams via the new witness theorem.
+- [x] Cut over direct/anchor zero-arg seams via the new witness theorem.
 
 ## Notes
 
@@ -58,3 +58,15 @@ Last Updated: 2026-03-04
   - residual blocker is unchanged: current
     `molecule_residual_fixed_point_uniqueness_direct_source` remains
     `Molecule.molecule_h_norm`-backed.
+- Final cutover checkpoint (2026-03-04):
+  - added equivalence theorems:
+    `molecule_residual_direct_source_breakout_sources_iff_model_collapse_direct_source_of_canonical`,
+    `molecule_residual_direct_source_breakout_sources_iff_model_collapse_direct_source_of_refined`.
+  - added current-route breakout cutover aliases:
+    `molecule_residual_direct_source_breakout_sources`,
+    `molecule_residual_direct_seam_anchor_source_via_direct_source_breakout_sources`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_via_direct_source_breakout_sources`.
+  - targeted probes confirm equivalence layer is ground-axiom-only, but current
+    breakout zero-arg route remains `Molecule.molecule_h_norm`-backed through
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source`.
+  - successor plan: `PLAN_70_non_h_norm_model_collapse_direct_source_witness.md`.
