@@ -45,9 +45,9 @@ Last Updated: 2026-03-04
 | PLAN_42 | Post-axiom contract hardening | DONE | [##########] 100% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 97% |
-| PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 96% |
+| PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 97% |
 | PLAN_51 | Orbit fixed-data source replacement | ACTIVE | [###-------] 30% |
-| PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [#####-----] 50% |
+| PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [######----] 60% |
 
 ## Dependency Map
 
@@ -201,6 +201,9 @@ Last Updated: 2026-03-04
   - Current ingredient theorem now routes through fixed-data + transfer seam:
     `molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer`,
     removing active dependence on `FixedPointImpliesRenormalizable`.
+  - Current existence/transfer source theorems are bridge-free and ex-falso-free:
+    `molecule_residual_fixed_point_existence_source`,
+    `molecule_residual_fixed_point_transfer_source`.
   - Next target is constructive replacement of:
     `molecule_residual_fixed_point_normalization_ingredients`.
 - `PLAN_51` progress:
@@ -221,6 +224,10 @@ Last Updated: 2026-03-04
   - Added bridge-free ingredient routing checkpoint:
     `molecule_residual_fixed_point_normalization_ingredients` now routes through
     `molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer`.
+  - Decoupled current existence/transfer source theorems from bridge+uniqueness
+    routing:
+    `molecule_residual_fixed_point_existence_source`,
+    `molecule_residual_fixed_point_transfer_source`.
   - Targeted probe confirms
     `molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer`
     is axiom-clean modulo ground axioms.
