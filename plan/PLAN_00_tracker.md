@@ -44,10 +44,10 @@ Last Updated: 2026-03-04
 | PLAN_41 | Residual bounds elimination | DONE | [##########] 100% |
 | PLAN_42 | Post-axiom contract hardening | DONE | [##########] 100% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
-| PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 98% |
+| PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 99% |
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 99% |
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 80% |
-| PLAN_54 | Orbit source contract refactor | ACTIVE | [#######---] 70% |
+| PLAN_54 | Orbit source contract refactor | ACTIVE | [########--] 80% |
 
 ## Dependency Map
 
@@ -168,6 +168,10 @@ Last Updated: 2026-03-04
     `molecule_residual_fixed_point_ingredients_source_of_sources`,
     `molecule_residual_fixed_point_data_source_of_sources`,
     `molecule_residual_fixed_point_assembly_sources_of_exists_and_transfer`.
+  - Cut over active top-path non-ground source assembly to transport-routed
+    orbit wrapper:
+    `molecule_residual_non_ground_sources` now consumes
+    `molecule_residual_orbit_clause_for_fixed_data_source_via_transport`.
   - Added local orbit-obligation seam in `Molecule/Conjecture.lean`:
     `MoleculeOrbitClauseAt` and
     `molecule_orbit_clause_at_of_orbit_clause`.
@@ -260,11 +264,16 @@ Last Updated: 2026-03-04
     `molecule_residual_orbit_clause_for_fixed_data_source_of_orbit_clause_source`,
     `molecule_residual_orbit_clause_for_fixed_data_source_of_transport_source`,
     `molecule_residual_bounds_from_fixed_data_localized`,
-    `molecule_residual_orbit_clause_for_fixed_data_source_via_transport`, and
-    `molecule_residual_bounds_from_fixed_data_and_local_orbit_source`
-    are axiom-clean modulo ground axioms.
-  - Next target is explicit orbit-source composition seam theorem(s) and
-    further narrowing around `molecule_residual_orbit_clause_for_fixed_data_source`.
+    and `molecule_residual_bounds_from_fixed_data_and_local_orbit_source`
+    are axiom-clean modulo ground axioms; while
+    `molecule_residual_orbit_clause_for_fixed_data_source_via_transport`
+    carries `Molecule.molecule_h_norm` via the current transport source.
+  - Cut over the active top-path non-ground source assembly:
+    `molecule_residual_non_ground_sources` now consumes
+    `molecule_residual_orbit_clause_for_fixed_data_source_via_transport`.
+  - Next target is declaration-order cleanup to decide whether
+    `molecule_residual_orbit_clause_for_fixed_data_source` itself should route
+    through the transport wrapper theorem.
 
 ## Current Critical Blockers
 

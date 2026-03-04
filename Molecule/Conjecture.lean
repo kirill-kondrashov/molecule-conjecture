@@ -2164,7 +2164,7 @@ theorem molecule_residual_non_ground_sources :
     MoleculeResidualNonGroundSources :=
   molecule_residual_non_ground_sources_of_ingredients_and_orbit
     molecule_residual_fixed_point_ingredients_source
-    molecule_residual_orbit_clause_for_fixed_data_source
+    molecule_residual_orbit_clause_for_fixed_data_source_via_transport
 
 /--
 Build fixed-point normalization ingredients from fixed-point-only assembly

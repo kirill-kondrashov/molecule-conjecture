@@ -1,7 +1,7 @@
 # PLAN 47 - `molecule_h_norm` Elimination via Constructive Source Rebuild
 
 Status: ACTIVE
-Progress: [#########-] 98%
+Progress: [#########-] 99%
 Scope: Remove the last project axiom `Molecule.molecule_h_norm` from the zero-argument route by replacing the remaining non-ground source constructors with theorem-level constructive proofs.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_non_ground_sources` does not include `Molecule.molecule_h_norm`.
@@ -63,6 +63,10 @@ Last Updated: 2026-03-04
 
 ## Integration
 
+- [x] Cut over active top-path non-ground source assembly to transport-routed
+  orbit wrapper:
+  - `molecule_residual_non_ground_sources` now consumes
+    `molecule_residual_orbit_clause_for_fixed_data_source_via_transport`.
 - [ ] Rebuild `molecule_residual_non_ground_sources` from constructive Track A + Track B outputs.
 - [ ] Re-run `make build`, `make check`, and targeted `#print axioms` probes.
 - [ ] Mark plan DONE only when all acceptance checks pass.
