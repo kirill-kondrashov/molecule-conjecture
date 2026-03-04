@@ -243,13 +243,14 @@ Last Updated: 2026-03-04
   - Targeted probe confirms these transfer decomposition/projection seams are
     axiom-clean modulo ground axioms.
   - Cut over current fixed-point existence/ingredient theorem routing to
-    explicit `bridge + transfer` seam constructors:
+    explicit fixed-data + transfer seam constructors (bridge-free current path):
     `molecule_residual_fixed_point_existence_source` now routes via
-    `molecule_residual_fixed_point_existence_source_of_bridge`, and
+    `renormalizable_fixed_exists_of_fixed_point_normalization_data
+    molecule_h_fixed_data_direct`, and
     `molecule_residual_fixed_point_normalization_ingredients` now routes via
-    `molecule_residual_fixed_point_normalization_ingredients_of_bridge_and_transfer`.
+    `molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer`.
   - Targeted probe confirms
-    `molecule_residual_fixed_point_normalization_ingredients_of_bridge_and_transfer`
+    `molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer`
     remains axiom-clean modulo ground axioms; current
     `molecule_residual_fixed_point_normalization_ingredients` and
     `molecule_residual_non_ground_sources` still carry

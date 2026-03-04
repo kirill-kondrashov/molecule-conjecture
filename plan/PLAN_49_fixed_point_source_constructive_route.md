@@ -55,11 +55,13 @@ Last Updated: 2026-03-04
   - `molecule_residual_canonical_vbound_source_of_fixed_point_vbound_transfer`
   - `fixed_point_vbound_transfer_source_of_fixed_point_transfer_source`.
 - [x] Route current fixed-point existence and bundled ingredients through
-  explicit `bridge + transfer` seam constructors:
+  explicit fixed-data + transfer seam constructors (bridge-free current path):
   - `molecule_residual_fixed_point_existence_source` now routes via
-    `molecule_residual_fixed_point_existence_source_of_bridge`
+    `renormalizable_fixed_exists_of_fixed_point_normalization_data
+    molecule_h_fixed_data_direct`
   - `molecule_residual_fixed_point_normalization_ingredients` now routes via
-    `molecule_residual_fixed_point_normalization_ingredients_of_bridge_and_transfer`.
+    `molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer
+    molecule_h_fixed_data_direct molecule_residual_fixed_point_transfer_source`.
 - [ ] Add constructive replacement theorem for
   `molecule_residual_fixed_point_normalization_ingredients`.
 - [ ] Rebuild `molecule_residual_non_ground_sources` with constructive
@@ -118,13 +120,13 @@ Last Updated: 2026-03-04
     ground axioms.
   - canonical `V`-bound projection can now be cut over via transfer seam
     components without changing theorem interfaces.
-- New bridge-route checkpoint (2026-03-04):
-  - `molecule_residual_fixed_point_normalization_ingredients_of_bridge_and_transfer`
+- New fixed-data route checkpoint (2026-03-04):
+  - `molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer`
     remains axiom-clean modulo ground axioms.
   - current `molecule_residual_fixed_point_normalization_ingredients`,
     `molecule_residual_fixed_point_existence_source`, and
     `molecule_residual_non_ground_sources` still carry `Molecule.molecule_h_norm`
-    via current bridge/transfer source theorems.
+    via current fixed-data/transfer source theorems.
 - This plan runs in parallel with PLAN_57 (orbit minimal theorem-debt extraction route).
 - Sub-plan linkage:
   - model-level witness bottleneck is tracked explicitly in
