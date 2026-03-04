@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 99%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_63
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_64
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-04
 
@@ -49,12 +49,12 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_63 | Upstream hybrid-collapse constructive source | ACTIVE | [########--] 80% |
+| PLAN_64 | Upstream direct-seam constructive witness | ACTIVE | [#---------] 10% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_63 (upstream hybrid-collapse source replacement), then PLAN_43.
+- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_64 (upstream direct-seam constructive witness), then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -157,6 +157,9 @@ Last Updated: 2026-03-04
 - Archived STUCK plan:
   - `ARCHIVE_stuck_2026-03-04_PLAN_62_upstream_map_uniqueness_source_replacement.md`
     (superseded by PLAN_63 upstream hybrid-collapse constructive source).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_63_upstream_hybrid_collapse_constructive_source.md`
+    (superseded by PLAN_64 upstream direct-seam constructive witness).
 - `PLAN_47` progress:
   - Introduced narrowed residual bounds-assembly source pack in
     `Molecule/Conjecture.lean`:
@@ -575,7 +578,7 @@ Last Updated: 2026-03-04
     no non-circular non-`molecule_h_norm` constructor remained for
     `MoleculeResidualFixedPointHybridClassCollapseSource` within PLAN_62 seam
     rewiring scope.
-- `PLAN_63` progress:
+- `PLAN_63` final archived progress:
   - Opened successor upstream theorem track after archiving PLAN_62 as STUCK.
   - Initial objective is to construct a non-`molecule_h_norm` source for
     `MoleculeResidualFixedPointHybridClassCollapseDirectSource`.
@@ -611,6 +614,16 @@ Last Updated: 2026-03-04
   - Probe checkpoint:
     this equivalence theorem is ground-axiom-only; both zero-arg direct seams
     remain `Molecule.molecule_h_norm`-backed.
+  - Final stuck check:
+    seam reductions/equivalence certificates were complete, but no independent
+    non-`molecule_h_norm` zero-arg constructor was produced for any direct seam
+    in the equivalence class.
+- `PLAN_64` progress:
+  - Opened successor upstream theorem-witness track after archiving PLAN_63 as
+    STUCK.
+  - Initial anchor set is the direct-seam equivalence class:
+    collapse direct, map-level uniqueness direct, and hybrid-class
+    model-collapse direct seams.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

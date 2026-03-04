@@ -1,7 +1,7 @@
 # PLAN 63 - Upstream Hybrid-Collapse Constructive Source
 
-Status: ACTIVE
-Progress: [########--] 80%
+Status: STUCK (ARCHIVED)
+Progress: [##########] 100%
 Scope: Replace `molecule_residual_fixed_point_hybrid_class_collapse_direct_source` with a non-`molecule_h_norm` theorem-level constructor, then propagate that replacement through the already cut-over PLAN_62 seam path.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_hybrid_class_collapse_direct_source` does not include `Molecule.molecule_h_norm`.
@@ -88,3 +88,12 @@ Last Updated: 2026-03-04
   - probe result:
     this equivalence theorem is ground-axiom-only; both zero-arg direct seams
     remain `Molecule.molecule_h_norm`-backed.
+- Final stuck check (2026-03-04):
+  - seam-level reduction is complete:
+    direct collapse, direct map-uniqueness, and direct model-collapse seams are
+    now connected by ground-axiom-only equivalence/projection theorems.
+  - no non-circular non-`molecule_h_norm` zero-arg constructor was produced for
+    any seam in this equivalence class.
+  - successor work must prove one upstream theorem-level constructor for at
+    least one seam in this class from refined/canonical data without using
+    `molecule_h_norm` (tracked in PLAN_64).
