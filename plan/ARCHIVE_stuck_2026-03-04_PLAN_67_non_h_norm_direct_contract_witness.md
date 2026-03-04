@@ -1,7 +1,7 @@
 # PLAN 67 - Non-h_norm Direct Contract Witness
 
-Status: ACTIVE
-Progress: [###-------] 30%
+Status: STUCK (ARCHIVED)
+Progress: [#####-----] 50%
 Scope: Construct a non-`molecule_h_norm` theorem for canonical/refined map-level direct-uniqueness contract (`MoleculeResidualFixedPointUniquenessDirectOfCanonicalSource` or refined counterpart), then instantiate inherited cutover constructors to clear anchor/direct zero-arg seams.
 Acceptance:
 1. `#print axioms` for a theorem implementing one of:
@@ -53,3 +53,13 @@ Last Updated: 2026-03-04
   - probe checkpoint:
     constructors are ground-axiom-only; current direct-contract theorems remain
     `Molecule.molecule_h_norm`-backed.
+- Archive checkpoint:
+  - added order-safe wrapper/equivalence theorems:
+    `molecule_residual_fixed_point_uniqueness_direct_of_canonical_source_iff_direct_source_of_canonical`,
+    `molecule_residual_fixed_point_uniqueness_direct_of_refined_source_iff_direct_source_of_refined`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_via_canonical_direct_contract`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_via_refined_direct_contract`,
+    `molecule_residual_direct_seam_anchor_source_via_canonical_direct_contract`.
+  - targeted probe confirms wrapper layer is ground-axiom-only, but current
+    canonical/refined direct-contract theorems remain `molecule_h_norm`-backed.
+  - plan is archived STUCK per rule; successor is PLAN_68.

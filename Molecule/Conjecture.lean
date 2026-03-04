@@ -4517,6 +4517,76 @@ theorem molecule_residual_fixed_point_uniqueness_direct_of_refined_source :
     molecule_residual_fixed_point_uniqueness_direct_source
 
 /--
+Under a canonical fixed-point witness, canonical-contract map-level
+direct-uniqueness and map-level direct-uniqueness source are equivalent.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_of_canonical_source_iff_direct_source_of_canonical
+    (h_canonical : CanonicalFastFixedPointData) :
+    MoleculeResidualFixedPointUniquenessDirectOfCanonicalSource ↔
+      MoleculeResidualFixedPointUniquenessDirectSource := by
+  constructor
+  · intro h_unique_direct_canonical
+    exact h_unique_direct_canonical h_canonical
+  · intro h_unique_direct
+    exact fun _ => h_unique_direct
+
+/--
+Under a refined witness, refined-contract map-level direct-uniqueness and
+map-level direct-uniqueness source are equivalent.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_of_refined_source_iff_direct_source_of_refined
+    (h_refined : MoleculeConjectureRefined) :
+    MoleculeResidualFixedPointUniquenessDirectOfRefinedSource ↔
+      MoleculeResidualFixedPointUniquenessDirectSource := by
+  constructor
+  · intro h_unique_direct_refined
+    exact h_unique_direct_refined h_refined
+  · intro h_unique_direct
+    exact fun _ => h_unique_direct
+
+/--
+Recover map-level direct-uniqueness source from:
+- a canonical fixed-point witness, and
+- a canonical-contract direct-uniqueness theorem.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source_via_canonical_direct_contract :
+    CanonicalFastFixedPointData →
+    MoleculeResidualFixedPointUniquenessDirectOfCanonicalSource →
+    MoleculeResidualFixedPointUniquenessDirectSource :=
+  fun h_canonical h_unique_direct_canonical =>
+    (molecule_residual_fixed_point_uniqueness_direct_of_canonical_source_iff_direct_source_of_canonical
+      h_canonical).1
+      h_unique_direct_canonical
+
+/--
+Recover map-level direct-uniqueness source from:
+- a refined witness, and
+- a refined-contract direct-uniqueness theorem.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source_via_refined_direct_contract :
+    MoleculeConjectureRefined →
+    MoleculeResidualFixedPointUniquenessDirectOfRefinedSource →
+    MoleculeResidualFixedPointUniquenessDirectSource :=
+  fun h_refined h_unique_direct_refined =>
+    (molecule_residual_fixed_point_uniqueness_direct_of_refined_source_iff_direct_source_of_refined
+      h_refined).1
+      h_unique_direct_refined
+
+/--
+Recover anchor seam source from:
+- a canonical fixed-point witness, and
+- a canonical-contract direct-uniqueness theorem.
+-/
+theorem molecule_residual_direct_seam_anchor_source_via_canonical_direct_contract :
+    CanonicalFastFixedPointData →
+    MoleculeResidualFixedPointUniquenessDirectOfCanonicalSource →
+    MoleculeResidualDirectSeamAnchorSource :=
+  fun h_canonical h_unique_direct_canonical =>
+    molecule_residual_direct_seam_anchor_source_of_canonical_and_fixed_point_uniqueness_direct_of_canonical_source
+      h_canonical
+      h_unique_direct_canonical
+
+/--
 Under canonical fixed-point existence, hybrid-level unique-fixed-point source
 and map-level uniqueness source are equivalent.
 -/

@@ -10,7 +10,7 @@ Acceptance:
    without `molecule_h_norm`.
 3. `molecule_residual_fixed_point_normalization_ingredients` can be rebuilt from
    the new source path.
-Dependencies: `Molecule/Conjecture.lean`, `Molecule/FixedPointExistence.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/RenormalizationTheorem.lean`, `plan/PLAN_49_fixed_point_source_constructive_route.md`, `plan/PLAN_67_non_h_norm_direct_contract_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_66_canonical_uniqueness_constructive_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_65_canonical_to_anchor_constructive_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_64_upstream_direct_seam_constructive_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_63_upstream_hybrid_collapse_constructive_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_62_upstream_map_uniqueness_source_replacement.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_61_upstream_hybrid_class_uniqueness_source_replacement.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_60_hybrid_class_model_refactor_route.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_59_hybrid_unique_fixed_point_source_constructor.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_52_fixed_point_renorm_witness_extraction.md`
+Dependencies: `Molecule/Conjecture.lean`, `Molecule/FixedPointExistence.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/RenormalizationTheorem.lean`, `plan/PLAN_49_fixed_point_source_constructive_route.md`, `plan/PLAN_68_non_h_norm_direct_contract_source_constructor.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_67_non_h_norm_direct_contract_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_66_canonical_uniqueness_constructive_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_65_canonical_to_anchor_constructive_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_64_upstream_direct_seam_constructive_witness.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_63_upstream_hybrid_collapse_constructive_source.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_62_upstream_map_uniqueness_source_replacement.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_61_upstream_hybrid_class_uniqueness_source_replacement.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_60_hybrid_class_model_refactor_route.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_59_hybrid_unique_fixed_point_source_constructor.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_52_fixed_point_renorm_witness_extraction.md`
 Stuck Rule: STUCK if every non-circular witness candidate still forces the default fixed-point trap (`defaultBMol` fixed but non-renormalizable) without a model-level refactor path.
 Last Updated: 2026-03-04
 
@@ -121,11 +121,12 @@ Last Updated: 2026-03-04
   - canonical/refined map-level uniqueness contracts are now explicitly
     equivalent to canonical/refined map-level direct-uniqueness contracts, with
     matching anchor-contract equivalences and constructor routes.
-- PLAN_67 kickoff checkpoint (2026-03-04):
-  - PLAN_66 archived as STUCK after contract-level reductions completed without
-    a non-`molecule_h_norm` witness theorem.
-  - active bottleneck is now isolated at direct-contract witness theorem
-    construction for canonical/refined packages.
-  - candidate constructors and current canonical/refined direct-contract
-    theorems are now explicit; only the non-`molecule_h_norm` replacement
-    theorem remains.
+- PLAN_67 final archived checkpoint (2026-03-04):
+  - wrapper/equivalence reductions completed, including order-safe
+    direct-contract wrappers.
+  - targeted probes confirmed wrapper layer is ground-axiom-only.
+  - bottleneck unchanged: canonical/refined direct-contract theorems remained
+    `Molecule.molecule_h_norm`-backed.
+- PLAN_68 kickoff checkpoint (2026-03-04):
+  - active bottleneck remains direct-contract source construction for
+    canonical/refined packages without `molecule_h_norm`.
