@@ -1,6 +1,6 @@
 # PLAN 50 - Orbit-Clause Local Contract Narrowing
 
-Status: ACTIVE
+Status: SUPERSEDED (ARCHIVED 2026-03-04)
 Progress: [########--] 80%
 Scope: Replace the stalled global orbit-clause elimination route with a local-obligation route by narrowing orbit-clause interfaces around the exact obligations consumed in the residual bounds pipeline.
 Acceptance:
@@ -51,3 +51,5 @@ Last Updated: 2026-03-04
     source type directly; global orbit-clause source is no longer needed in
     those pack definitions;
   - top-level axiom frontier still includes `Molecule.molecule_h_norm`.
+  - Superseded by `PLAN_51_orbit_fixed_data_source_replacement.md` after the
+    top path was narrowed to fixed-data local orbit source contracts.

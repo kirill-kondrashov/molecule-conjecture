@@ -65,4 +65,4 @@ Last Updated: 2026-03-04
     `molecule_residual_non_ground_sources` now depends directly on:
     - `molecule_residual_fixed_point_normalization_ingredients`
     - `molecule_residual_orbit_clause_for_fixed_data_source`.
-- This plan runs in parallel with PLAN_50 (orbit local-contract route).
+- This plan runs in parallel with PLAN_51 (orbit fixed-data source route).
