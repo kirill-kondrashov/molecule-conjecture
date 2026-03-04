@@ -1587,14 +1587,6 @@ theorem molecule_residual_orbit_clause_for_fixed_data_source_of_transport_source
     h_transport.h_orbit
 
 /--
-Current narrowed fixed-data orbit source (legacy ex-falso route).
--/
-theorem molecule_residual_orbit_clause_for_fixed_data_source :
-    MoleculeResidualOrbitClauseForFixedDataSource :=
-  molecule_residual_orbit_clause_for_fixed_data_source_of_local
-    molecule_residual_orbit_clause_at_source
-
-/--
 Assemble residual orbit-transport source from explicit pseudo-Siegel and
 orbit-clause sources.
 -/
@@ -1637,6 +1629,14 @@ theorem molecule_residual_orbit_clause_for_fixed_data_source_via_transport :
     MoleculeResidualOrbitClauseForFixedDataSource :=
   molecule_residual_orbit_clause_for_fixed_data_source_of_transport_source
     molecule_residual_orbit_transport_source
+
+/--
+Current narrowed fixed-data orbit source (legacy route, now via transport
+wrapper for source-graph uniformity).
+-/
+theorem molecule_residual_orbit_clause_for_fixed_data_source :
+    MoleculeResidualOrbitClauseForFixedDataSource :=
+  molecule_residual_orbit_clause_for_fixed_data_source_via_transport
 
 def constant_analytic_chart (f : BMol → BMol) :
     AnalyticChart f (Set.univ : Set BMol) where

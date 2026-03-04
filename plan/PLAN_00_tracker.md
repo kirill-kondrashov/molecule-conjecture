@@ -47,7 +47,7 @@ Last Updated: 2026-03-04
 | PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 99% |
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 99% |
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 80% |
-| PLAN_54 | Orbit source contract refactor | ACTIVE | [########--] 80% |
+| PLAN_54 | Orbit source contract refactor | ACTIVE | [#########-] 90% |
 
 ## Dependency Map
 
@@ -271,9 +271,11 @@ Last Updated: 2026-03-04
   - Cut over the active top-path non-ground source assembly:
     `molecule_residual_non_ground_sources` now consumes
     `molecule_residual_orbit_clause_for_fixed_data_source_via_transport`.
-  - Next target is declaration-order cleanup to decide whether
-    `molecule_residual_orbit_clause_for_fixed_data_source` itself should route
-    through the transport wrapper theorem.
+  - Completed declaration-order cleanup:
+    `molecule_residual_orbit_clause_for_fixed_data_source` now routes through
+    `molecule_residual_orbit_clause_for_fixed_data_source_via_transport`.
+  - Next target is deciding whether to keep both theorem names or collapse to
+    one canonical exported orbit-source theorem name.
 
 ## Current Critical Blockers
 

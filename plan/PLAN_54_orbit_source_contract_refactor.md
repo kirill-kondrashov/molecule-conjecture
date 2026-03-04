@@ -1,7 +1,7 @@
 # PLAN 54 - Orbit Source Contract Refactor
 
 Status: ACTIVE
-Progress: [########--] 80%
+Progress: [#########-] 90%
 Scope: Replace the stuck direct constructive search (PLAN_51) with a refactor-first route that minimizes active dependence on legacy orbit transport wrappers and concentrates the orbit-side frontier at a single local source theorem.
 Acceptance:
 1. Legacy bounds/helper routes no longer depend on `MoleculeResidualOrbitTransportSource` when a local fixed-data orbit source is sufficient.
@@ -27,9 +27,13 @@ Last Updated: 2026-03-04
 - [x] Decide and implement top-path cutover to the transport-routed wrapper:
   - `molecule_residual_non_ground_sources` now uses
     `molecule_residual_orbit_clause_for_fixed_data_source_via_transport`.
-- [ ] Decide whether to reorder theorem declarations so
-  `molecule_residual_orbit_clause_for_fixed_data_source` itself can route via
+- [x] Reorder declarations so
+  `molecule_residual_orbit_clause_for_fixed_data_source` itself now routes via
   the transport wrapper without forward-reference issues.
+- [ ] Decide whether to keep both
+  `molecule_residual_orbit_clause_for_fixed_data_source` and
+  `molecule_residual_orbit_clause_for_fixed_data_source_via_transport`, or
+  collapse to one canonical exported theorem name.
 
 ## Notes
 
