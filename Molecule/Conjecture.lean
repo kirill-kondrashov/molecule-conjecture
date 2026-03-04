@@ -3648,6 +3648,41 @@ theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_sou
     molecule_residual_bounds
 
 /--
+Under any bounds witness, the direct hybrid-class fixed-point uniqueness source
+seam is equivalent to map-level fixed-point uniqueness.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_iff_uniqueness_source_of_bounds
+    (h_bounds : PseudoSiegelAPrioriBounds) :
+    MoleculeResidualHybridClassFixedPointUniquenessDirectSource ↔
+      MoleculeResidualFixedPointUniquenessSource := by
+  constructor
+  · intro h_direct
+    have h_hybrid_unique :
+        MoleculeResidualHybridUniqueFixedPointSource :=
+      molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_hybrid_class_uniqueness_source
+        h_bounds
+        (molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct_of_source
+          h_direct)
+    exact
+      molecule_residual_fixed_point_uniqueness_source_of_hybrid_unique_fixed_point_source
+        h_hybrid_unique
+  · intro h_unique
+    exact
+      molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_uniqueness_source
+        h_unique
+
+/--
+Current-route equivalence certificate:
+direct hybrid-class uniqueness source seam and map-level fixed-point uniqueness
+are equivalent under the active bounds source.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_iff_uniqueness_source :
+    MoleculeResidualHybridClassFixedPointUniquenessDirectSource ↔
+      MoleculeResidualFixedPointUniquenessSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_iff_uniqueness_source_of_bounds
+    molecule_residual_bounds
+
+/--
 Current hybrid-class fixed-point uniqueness source theorem.
 -/
 theorem molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources :
