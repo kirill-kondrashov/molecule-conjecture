@@ -46,7 +46,7 @@ Last Updated: 2026-03-03
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_45 | Local fixed-point normalization source | ACTIVE | [#########-] 97% |
 | PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [###-------] 30% |
-| PLAN_48 | Constructive orbit-clause route | ACTIVE | [#---------] 10% |
+| PLAN_48 | Constructive orbit-clause route | ACTIVE | [###-------] 30% |
 
 ## Dependency Map
 
@@ -136,6 +136,13 @@ Last Updated: 2026-03-03
   - Residual blocker remains concentrated in constructive replacement of:
     - ingredient source route, and
     - orbit-clause source route.
+- `PLAN_48` progress:
+  - Completed theorem-route inventory for orbit clause:
+    no non-circular constructor currently exists in
+    `Problem4_3*` / `RenormalizationOrbit` / `RenormalizationPullback`;
+    these modules consume orbit-clause assumptions but do not produce them.
+  - Next target is an explicit constructive constructor theorem (or minimal
+    new source assumptions) for `MoleculeResidualOrbitClauseSource`.
 
 ## Current Critical Blockers
 

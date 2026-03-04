@@ -1,7 +1,7 @@
 # PLAN 48 - Constructive Orbit-Clause Route
 
 Status: ACTIVE
-Progress: [#---------] 10%
+Progress: [###-------] 30%
 Scope: Eliminate the `molecule_h_norm` dependency in `molecule_residual_orbit_clause_source` by replacing the current ex-falso body with a theorem-level constructive route.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_orbit_clause_source` does not include `Molecule.molecule_h_norm`.
@@ -14,7 +14,7 @@ Last Updated: 2026-03-04
 ## Work Plan
 
 - [x] Isolate orbit clause as explicit source seam (`MoleculeResidualOrbitClauseSource`).
-- [ ] Inventory candidate upstream theorem routes for `MoleculeOrbitClause` that are not ex-falso.
+- [x] Inventory candidate upstream theorem routes for `MoleculeOrbitClause` that are not ex-falso.
 - [ ] Add a non-circular constructor theorem for `MoleculeResidualOrbitClauseSource` (if needed, with minimal source assumptions).
 - [ ] Route `molecule_residual_orbit_transport_source` through the new constructor.
 - [ ] Re-run `make build`, `make check`, and targeted `#print axioms` probes.
@@ -24,3 +24,10 @@ Last Updated: 2026-03-04
 - Current theorem body:
   - `molecule_h_orbit` is still `False.elim molecule_h_norm_inconsistent`.
 - This sub-plan is intentionally split from PLAN_47 so Track B can progress independently.
+- Inventory result (2026-03-04):
+  - `Problem4_3`/`Problem4_3_Lemmas` consume an orbit clause assumption but do not
+    currently produce one.
+  - `RenormalizationOrbit`/`RenormalizationPullback` theorems are downstream of an
+    orbit clause premise and therefore do not provide a non-circular constructor.
+  - Current codebase has no existing non-ex-falso constructor for
+    `MoleculeResidualOrbitClauseSource`; this is now the focused implementation target.
