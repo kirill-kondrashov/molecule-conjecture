@@ -19,7 +19,7 @@ Dependencies: `Molecule/Conjecture.lean`, `Molecule/RenormalizationFixedPointUni
 Stuck Rule: STUCK if every candidate uniqueness/anchor theorem still reduces to `molecule_h_unique` or equivalent `molecule_h_norm`-backed seams.
 Last Updated: 2026-03-04
 
-Superseded By: `plan/PLAN_75_non_h_norm_anchor_witness_source_cutover.md`
+Superseded By: `plan/ARCHIVE_stuck_2026-03-04_PLAN_75_non_h_norm_anchor_witness_source_cutover.md` (active successor: `plan/PLAN_76_non_h_norm_anchor_witness_bottleneck_break.md`)
 
 ## Work Plan
 

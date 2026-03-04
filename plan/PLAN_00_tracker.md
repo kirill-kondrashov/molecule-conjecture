@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 99%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_75
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-04
 
@@ -49,12 +49,12 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_75 | Non-h_norm anchor-witness source cutover | ACTIVE | [####------] 40% |
+| PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [##--------] 20% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_75 (anchor-witness source cutover), then PLAN_43.
+- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_76 (anchor-witness bottleneck break), then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -72,14 +72,15 @@ Last Updated: 2026-03-04
     `molecule_residual_non_ground_sources`,
     `molecule_residual_bounds_seed_free`,
     and `molecule_conjecture_refined`.
-  - PLAN_74/75 route-inventory probes show the selected parameterized witness
+  - PLAN_74/75/76 route-inventory probes show the selected parameterized witness
     propagation seams (including
     `MoleculeResidualPlan74WinningRouteSources`) are ground-axiom-only;
     current zero-arg PLAN_72/69 alias path is now routed through that bundle;
-    PLAN_75 now makes the zero-arg source interface explicit
+    PLAN_75 made the zero-arg source interface explicit
     (`MoleculeResidualAnchorWitnessZeroArgSource`) with ground-axiom-only
-    equivalence certificates to direct-seam-anchor and uniqueness contracts;
-    residual blocker remains a non-`molecule_h_norm` theorem for that source.
+    equivalence certificates to direct-seam-anchor and uniqueness contracts
+    and is now archived as STUCK; active PLAN_76 track targets a non-
+    `molecule_h_norm` zero-arg theorem for that source.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -212,6 +213,9 @@ Last Updated: 2026-03-04
 - Archived STUCK plan:
   - `ARCHIVE_stuck_2026-03-04_PLAN_74_non_h_norm_molecule_h_unique_replacement.md`
     (superseded by PLAN_75 non-h_norm anchor-witness source cutover).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_75_non_h_norm_anchor_witness_source_cutover.md`
+    (superseded by PLAN_76 non-h_norm anchor-witness bottleneck break).
 - `PLAN_47` progress:
   - Introduced narrowed residual bounds-assembly source pack in
     `Molecule/Conjecture.lean`:
@@ -875,23 +879,27 @@ Last Updated: 2026-03-04
     interface-level decomposition is ground-axiom-only, but all current
     zero-arg witness aliases remained `Molecule.molecule_h_norm`-backed via
     `molecule_residual_direct_seam_anchor_source_early`.
-- `PLAN_75` progress:
-  - Opened successor anchor-witness-source cutover track after archiving
-    PLAN_74 as STUCK.
-  - Inherited the PLAN_74 winning-route bundle:
-    `MoleculeResidualPlan74WinningRouteSources`.
+- `PLAN_75` final archived progress:
+  - Opened anchor-witness-source cutover track after archiving PLAN_74 as
+    STUCK.
+  - Inherited `MoleculeResidualPlan74WinningRouteSources` and routed zero-arg
+    PLAN_72/69 aliases through that bundle.
   - Added explicit zero-arg target interface:
-    `MoleculeResidualAnchorWitnessZeroArgSource`, and routed current breakout
-    alias assembly through this interface.
-  - Added explicit bottleneck equivalence certificates:
+    `MoleculeResidualAnchorWitnessZeroArgSource`.
+  - Added bottleneck equivalence certificates:
     `molecule_residual_anchor_witness_zero_arg_source_iff_direct_seam_anchor_source`
     and
     `molecule_residual_anchor_witness_zero_arg_source_iff_fixed_point_uniqueness_source`.
-  - Current PLAN_72/69 zero-arg aliases are cut over through the bundle, but
-    remain `Molecule.molecule_h_norm`-backed.
-  - Active target is now a non-`molecule_h_norm` zero-arg theorem producing
-    `MoleculeResidualDirectSeamAnchorSourceWitnessSources` (or
-    `MoleculeResidualDirectSeamAnchorSource`) for final cutover.
+  - Final stuck check: route isolation succeeded, but no non-`molecule_h_norm`
+    zero-arg source theorem was produced.
+- `PLAN_76` progress:
+  - Opened successor bottleneck-break track after archiving PLAN_75 as STUCK.
+  - Active goal is a genuinely new non-`molecule_h_norm` zero-arg source
+    theorem for `MoleculeResidualAnchorWitnessZeroArgSource`.
+  - Route status:
+    interface/equivalence inheritance [########--] 80%,
+    new zero-arg source theorem [#---------] 10%,
+    breakout/top-level cutover [#---------] 10%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
@@ -978,4 +986,4 @@ Last Updated: 2026-03-04
 ## Current Critical Blockers
 
 1. Root blocker: `Molecule.molecule_h_norm` remains in the zero-arg theorem path.
-2. Active mitigation: PLAN_47 integration track, PLAN_49 fixed-point source track, PLAN_53 model bottleneck track, PLAN_75 anchor-witness source cutover track.
+2. Active mitigation: PLAN_47 integration track, PLAN_49 fixed-point source track, PLAN_53 model bottleneck track, PLAN_76 anchor-witness bottleneck-break track.

@@ -1,7 +1,7 @@
 # PLAN 75 - Non-h_norm Anchor Witness Source Cutover
 
-Status: ACTIVE
-Progress: [####------] 40%
+Status: STUCK
+Progress: [#####-----] 50%
 Scope: Replace the zero-arg anchor-witness source feeding `MoleculeResidualPlan74WinningRouteSources` with a non-circular theorem that does not depend on `Molecule.molecule_h_norm`, then propagate that cutover through the breakout and top-level paths.
 Acceptance:
 1. `#print axioms` for at least one new zero-arg theorem implementing
@@ -18,6 +18,8 @@ Acceptance:
 Dependencies: `Molecule/Conjecture.lean`, `Molecule/RenormalizationFixedPointUniqueness.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/FixedPointExistence.lean`, `plan/PLAN_49_fixed_point_source_constructive_route.md`, `plan/PLAN_53_fixed_point_model_bottleneck_refactor.md`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_74_non_h_norm_molecule_h_unique_replacement.md`
 Stuck Rule: STUCK if every candidate zero-arg anchor-witness theorem is provably equivalent to the current `molecule_residual_direct_seam_anchor_source_early` route with no net axiom reduction.
 Last Updated: 2026-03-04
+
+Superseded By: `plan/PLAN_76_non_h_norm_anchor_witness_bottleneck_break.md`
 
 ## Work Plan
 
