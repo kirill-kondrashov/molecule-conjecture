@@ -1,7 +1,7 @@
 # PLAN 60 - Hybrid-Class Model Refactor Route
 
 Status: ACTIVE
-Progress: [#########-] 97%
+Progress: [#########-] 98%
 Scope: Break the current identity-model bottleneck (`HybridClass := BMol`) so the hybrid-level unique-fixed-point source can be constructed from a genuinely hybrid-level source, not by recycling map-level uniqueness.
 Acceptance:
 1. Export a nontrivial hybrid-class abstraction seam (or quotient interface) that does not force `toHybridClass f = toHybridClass g ↔ f = g` in the active route.
@@ -71,6 +71,13 @@ Last Updated: 2026-03-04
   hybrid-class uniqueness source seam (instead of direct collapse input):
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources`.
+- [x] Introduce explicit model-collapse source seam and route current
+  model-source assembly through it:
+  - `MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_*`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_model_collapse_source`
+  - current `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source`
+    and `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources`.
 - [x] Introduce and route through explicit assembly-source pack:
   - `MoleculeResidualHybridClassFixedPointUniquenessAssemblySources`
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_assembly_sources`
@@ -146,3 +153,8 @@ Last Updated: 2026-03-04
   (`molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`) still
   carries `Molecule.molecule_h_norm`, while the lifted model-source constructor
   from class-uniqueness inputs remains axiom-clean modulo ground axioms.
+- Targeted probes confirm all model-collapse source projection constructors and
+  `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_model_collapse_source`
+  are axiom-clean modulo ground axioms; the current
+  `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source`
+  still carries `Molecule.molecule_h_norm`.
