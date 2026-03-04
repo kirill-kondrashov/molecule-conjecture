@@ -1460,6 +1460,22 @@ def MoleculeResidualOrbitClauseAtSource : Prop :=
     MoleculeOrbitClauseAt D U a b
 
 /--
+Narrowed orbit-obligation source: only the local orbit clause needed by the
+fixed-data Problem 4.3 route (with canonical `a`, `b`, `D`, `U` choices).
+-/
+def MoleculeResidualOrbitClauseForFixedDataSource : Prop :=
+  ∀ (f_star : BMol),
+    Rfast f_star = f_star →
+    IsFastRenormalizable f_star →
+    criticalValue f_star = 0 →
+    f_star.V ⊆ Metric.ball 0 0.1 →
+    let a : ℕ → ℕ := fun n => n
+    let b : ℕ → ℕ := fun n => n + 1
+    let D : Set ℂ := Metric.ball 0 0.1
+    let U : Set BMol := { g | g = f_star }
+    MoleculeOrbitClauseAt D U a b
+
+/--
 Assemble orbit-clause source from the local orbit-obligation source seam.
 -/
 theorem molecule_residual_orbit_clause_source_of_local
@@ -1468,11 +1484,52 @@ theorem molecule_residual_orbit_clause_source_of_local
   h_orbit_at
 
 /--
+Project the local orbit-obligation source seam from a global orbit-clause
+source.
+-/
+theorem molecule_residual_orbit_clause_at_source_of_orbit_clause
+    (h_orbit : MoleculeResidualOrbitClauseSource) :
+    MoleculeResidualOrbitClauseAtSource := by
+  intro f_star D U a b h_fixed h_renorm h_openD h_openU h_inU h_cv
+  exact molecule_orbit_clause_at_of_orbit_clause
+    h_orbit f_star D U a b h_fixed h_renorm h_openD h_openU h_inU h_cv
+
+/--
 Current local orbit-obligation source (legacy ex-falso route).
 -/
 theorem molecule_residual_orbit_clause_at_source :
     MoleculeResidualOrbitClauseAtSource :=
   molecule_h_orbit_at
+
+/--
+Build narrowed fixed-data orbit source from the local orbit-obligation source.
+-/
+theorem molecule_residual_orbit_clause_for_fixed_data_source_of_local
+    (h_orbit_at : MoleculeResidualOrbitClauseAtSource) :
+    MoleculeResidualOrbitClauseForFixedDataSource := by
+  intro f_star h_fixed h_renorm h_crit _h_domain
+  let a : ℕ → ℕ := fun n => n
+  let b : ℕ → ℕ := fun n => n + 1
+  let D : Set ℂ := Metric.ball 0 0.1
+  let U : Set BMol := { g | g = f_star }
+  have h_openD : IsOpen D := Metric.isOpen_ball
+  have h_openU : IsOpen U := by
+    change True
+    trivial
+  have h_inU : f_star ∈ U := rfl
+  have h_cv : criticalValue f_star ∈ D := by
+    rw [h_crit]
+    simp [D, Metric.mem_ball]
+    norm_num
+  exact h_orbit_at f_star D U a b h_fixed h_renorm h_openD h_openU h_inU h_cv
+
+/--
+Current narrowed fixed-data orbit source (legacy ex-falso route).
+-/
+theorem molecule_residual_orbit_clause_for_fixed_data_source :
+    MoleculeResidualOrbitClauseForFixedDataSource :=
+  molecule_residual_orbit_clause_for_fixed_data_source_of_local
+    molecule_residual_orbit_clause_at_source
 
 /--
 Assemble residual orbit-transport source from explicit pseudo-Siegel and
@@ -1982,6 +2039,37 @@ theorem molecule_residual_bounds_from_fixed_data
     molecule_residual_orbit_transport_source
 
 /--
+Residual bounds source from fixed-point data and the narrowed local orbit-source
+contract.
+-/
+theorem molecule_residual_bounds_from_fixed_data_and_local_orbit_source
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_orbit_fixed_data : MoleculeResidualOrbitClauseForFixedDataSource) :
+    PseudoSiegelAPrioriBounds := by
+  rcases h_fixed_data with ⟨f_star, h_fixed, h_renorm, h_crit_val, h_f_star_sub_D⟩
+  let a : ℕ → ℕ := fun n => n
+  let b : ℕ → ℕ := fun n => n + 1
+  let D : Set ℂ := Metric.ball 0 0.1
+  let U : Set BMol := { g | g = f_star }
+  have h_D_open : IsOpen D := Metric.isOpen_ball
+  have h_U_open : IsOpen U := by
+    change True
+    trivial
+  have h_f_in_U : f_star ∈ U := rfl
+  have h_c1_in_D : criticalValue f_star ∈ D := by
+    rw [h_crit_val]
+    simp [D, Metric.mem_ball]
+    norm_num
+  have h_U_subset : ∀ g ∈ U, g.V ⊆ D := by
+    intro g hg
+    rw [mem_singleton_iff.mp hg]
+    exact h_f_star_sub_D
+  have h_main := renormalization_implies_bounds f_star D U a b (molecule_residual_pseudo_siegel_source f_star D)
+    h_fixed h_renorm h_D_open h_U_open h_f_in_U h_c1_in_D
+    (h_orbit_fixed_data f_star h_fixed h_renorm h_crit_val h_f_star_sub_D) h_U_subset
+  exact ⟨f_star, U, h_fixed, h_renorm, h_U_open, h_f_in_U, h_c1_in_D, h_main⟩
+
+/--
 Residual bounds constructor from narrowed bounds-assembly source inputs.
 -/
 theorem molecule_residual_bounds_seed_free_of_bounds_assembly_sources
@@ -1989,13 +2077,13 @@ theorem molecule_residual_bounds_seed_free_of_bounds_assembly_sources
     PseudoSiegelAPrioriBounds := by
   have h_fixed_data : MoleculeResidualFixedPointNormalizationSource :=
     molecule_residual_fixed_point_normalization_source_of_ingredients h_sources.ingredients
-  have h_transport : MoleculeResidualOrbitTransportSource :=
-    molecule_residual_orbit_transport_source_of_sources
-      molecule_residual_pseudo_siegel_source
-      h_sources.orbitClause
-  exact problem_4_3_bounds_established_conjecture_from_fixed_data_and_transport
+  have h_orbit_at : MoleculeResidualOrbitClauseAtSource :=
+    molecule_residual_orbit_clause_at_source_of_orbit_clause h_sources.orbitClause
+  have h_orbit_fixed_data : MoleculeResidualOrbitClauseForFixedDataSource :=
+    molecule_residual_orbit_clause_for_fixed_data_source_of_local h_orbit_at
+  exact molecule_residual_bounds_from_fixed_data_and_local_orbit_source
     h_fixed_data
-    h_transport
+    h_orbit_fixed_data
 
 /--
 Residual bounds constructor from bundled non-ground source inputs.
