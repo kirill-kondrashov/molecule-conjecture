@@ -89,5 +89,7 @@ Last Updated: 2026-03-04
 - PLAN_64 integration checkpoint (2026-03-04):
   - direct-seam anchor-source contracts and zero-arg cutover aliases are now
     explicit in `Molecule/Conjecture.lean`;
+  - zero-arg direct uniqueness now routes through a declaration-order-safe
+    anchor constructor;
   - residual uniqueness-side blocker remains unchanged and still requires an
     upstream non-`molecule_h_norm` witness theorem.

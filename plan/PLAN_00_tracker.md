@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_64 | Upstream direct-seam constructive witness | ACTIVE | [########--] 82% |
+| PLAN_64 | Upstream direct-seam constructive witness | ACTIVE | [########--] 86% |
 
 ## Dependency Map
 
@@ -665,6 +665,14 @@ Last Updated: 2026-03-04
   - Integration sync checkpoint:
     reran direct-chain probes and synced PLAN_49/53 notes with current PLAN_64
     anchor/cutover status.
+  - Added declaration-order-safe anchor constructor:
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_anchor_source_early`.
+  - Rewired zero-arg
+    `molecule_residual_fixed_point_uniqueness_direct_source`
+    through the anchor path using that constructor.
+  - Probe checkpoint:
+    the new constructor is ground-axiom-only; zero-arg theorem remains
+    `Molecule.molecule_h_norm`-backed because the anchor source is.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

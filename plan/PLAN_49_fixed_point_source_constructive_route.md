@@ -157,13 +157,16 @@ Last Updated: 2026-03-04
     `molecule_residual_fixed_point_hybrid_class_collapse_source_direct`.
 - PLAN_64 integration checkpoint (2026-03-04):
   - introduced direct-seam anchor-source contracts and zero-arg anchor/cutover
-    aliases:
+  aliases:
     `MoleculeResidualDirectSeamAnchorOfCanonicalSource`,
     `MoleculeResidualDirectSeamAnchorOfRefinedSource`,
     `molecule_residual_direct_seam_anchor_source`,
     `molecule_residual_fixed_point_uniqueness_direct_source_cutover`.
   - probe status unchanged:
     direct-seam zero-arg frontier is still `Molecule.molecule_h_norm`-backed.
+  - updated zero-arg direct-uniqueness routing:
+    `molecule_residual_fixed_point_uniqueness_direct_source` now goes through a
+    declaration-order-safe anchor constructor.
 - Sub-plan linkage:
   - model-level witness bottleneck is tracked explicitly in
     `PLAN_53_fixed_point_model_bottleneck_refactor.md`.

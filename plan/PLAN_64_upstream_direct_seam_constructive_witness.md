@@ -1,7 +1,7 @@
 # PLAN 64 - Upstream Direct-Seam Constructive Witness
 
 Status: ACTIVE
-Progress: [#######---] 78%
+Progress: [########--] 86%
 Scope: Prove one non-`molecule_h_norm` zero-arg constructor for the direct-seam equivalence class identified in PLAN_63, then propagate that cutover through collapse/uniqueness/model-collapse direct seams.
 Acceptance:
 1. At least one anchor theorem in the direct-seam class is non-`molecule_h_norm`:
@@ -40,8 +40,11 @@ Last Updated: 2026-03-04
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`.
 - [ ] Propagate cutover through direct-seam equivalence constructors for the
   early direct seam theorems:
-  - `molecule_residual_fixed_point_hybrid_class_collapse_direct_source`
-  - `molecule_residual_fixed_point_uniqueness_direct_source`.
+  - completed:
+    - `molecule_residual_fixed_point_uniqueness_direct_source`
+      (via `..._of_anchor_source_early`)
+  - remaining:
+    - `molecule_residual_fixed_point_hybrid_class_collapse_direct_source`.
 - [x] Re-run full direct-chain axiom probes and sync PLAN_49/53 notes.
 
 ## Notes
@@ -99,3 +102,12 @@ Last Updated: 2026-03-04
   - reran direct-chain probes (`anchor`, `cutover`, `source_direct` theorems);
   - synced PLAN_49 and PLAN_53 integration notes with current PLAN_64
     anchor/cutover status.
+- Checkpoint (2026-03-04, early direct uniqueness cutover):
+  - added declaration-order-safe constructor:
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_anchor_source_early`.
+  - rewired zero-arg
+    `molecule_residual_fixed_point_uniqueness_direct_source`
+    through this constructor and the anchor source.
+  - probe result:
+    constructor is ground-axiom-only; zero-arg theorem remains
+    `Molecule.molecule_h_norm`-backed because anchor currently is.

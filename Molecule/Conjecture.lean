@@ -3131,12 +3131,24 @@ theorem molecule_residual_fixed_point_uniqueness_source_direct_of_source
   h_source
 
 /--
+Early declaration-order-safe constructor: project direct map-level fixed-point
+uniqueness seam from the PLAN_64 anchor seam.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source_of_anchor_source_early
+    (h_anchor : MoleculeResidualDirectSeamAnchorSource) :
+    MoleculeResidualFixedPointUniquenessDirectSource :=
+  molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_collapse_source
+    (molecule_residual_fixed_point_hybrid_class_collapse_source_direct_of_source
+      (molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_anchor_source
+        h_anchor))
+
+/--
 Current direct map-level fixed-point uniqueness source seam.
 -/
 theorem molecule_residual_fixed_point_uniqueness_direct_source :
     MoleculeResidualFixedPointUniquenessDirectSource :=
-  molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_collapse_source
-    molecule_residual_fixed_point_hybrid_class_collapse_source_direct
+  molecule_residual_fixed_point_uniqueness_direct_source_of_anchor_source_early
+    molecule_residual_direct_seam_anchor_source
 
 /--
 The direct map-level hybrid-class-collapse seam and the direct map-level
@@ -3164,9 +3176,8 @@ seam.
 theorem molecule_residual_fixed_point_uniqueness_direct_source_of_anchor_source
     (h_anchor : MoleculeResidualDirectSeamAnchorSource) :
     MoleculeResidualFixedPointUniquenessDirectSource :=
-  (molecule_residual_fixed_point_hybrid_class_collapse_direct_source_iff_fixed_point_uniqueness_direct_source).1
-    (molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_anchor_source
-      h_anchor)
+  molecule_residual_fixed_point_uniqueness_direct_source_of_anchor_source_early
+    h_anchor
 
 /--
 Current fixed-point uniqueness source theorem (direct legacy route), now
