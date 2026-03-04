@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#####-----] 50% |
+| PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [######----] 60% |
 
 ## Dependency Map
 
@@ -86,8 +86,15 @@ Last Updated: 2026-03-04
     conversion/equivalence theorems around
     `molecule_residual_anchor_witness_zero_arg_source`.
     Canonical-parametric conversion is ground-axiom-only; unconditional reverse
-    conversion still carries `Molecule.molecule_h_norm` through
-    `canonical_fast_fixed_point_data_from_bounds`.
+    conversion still carries `Molecule.molecule_h_norm` through the active
+    canonical-data source.
+  - PLAN_76 step-1 refactor checkpoint:
+    canonical-data routing now goes through
+    `MoleculeResidualCanonicalFastFixedPointDataSource` and current-route
+    consumers were rewired from `canonical_fast_fixed_point_data_from_bounds`
+    to `molecule_residual_canonical_fast_fixed_point_data_source`; source
+    constructors from existence/data assumptions are ground-axiom-only, but the
+    active source theorem remains `Molecule.molecule_h_norm`-backed.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -908,14 +915,20 @@ Last Updated: 2026-03-04
     canonical-parametric bridge/equivalence theorems.
   - Targeted probes confirm the canonical-parametric bridge/equivalence is
     ground-axiom-only.
+  - Step-1 refactor added canonical-data source seam
+    `MoleculeResidualCanonicalFastFixedPointDataSource` and rewired current
+    breakout/top-level canonical-data consumers through
+    `molecule_residual_canonical_fast_fixed_point_data_source`.
   - Remaining PLAN_76 blocker is now explicit:
-    unconditional reverse conversion still uses
-    `canonical_fast_fixed_point_data_from_bounds` and therefore
+    unconditional reverse conversion now uses
+    `molecule_residual_canonical_fast_fixed_point_data_source`, which is
+    currently routed through `molecule_residual_fixed_point_existence_source`
+    and therefore
     `Molecule.molecule_h_norm`.
   - Route status:
     interface/equivalence inheritance [#########-] 90%,
-    new zero-arg source theorem [###-------] 30%,
-    breakout/top-level cutover [#---------] 10%.
+    new zero-arg source theorem [####------] 40%,
+    breakout/top-level cutover [###-------] 30%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

@@ -5395,6 +5395,38 @@ theorem canonical_fast_fixed_point_data_from_bounds :
   canonical_fast_fixed_point_data_of_bounds molecule_residual_bounds
 
 /--
+PLAN_76 source seam for canonical fast fixed-point data.
+-/
+def MoleculeResidualCanonicalFastFixedPointDataSource : Prop :=
+  CanonicalFastFixedPointData
+
+/--
+Build canonical fast fixed-point data from the fixed-point existence source
+seam.
+-/
+theorem molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_point_existence_source
+    (h_exists : MoleculeResidualFixedPointExistenceSource) :
+    MoleculeResidualCanonicalFastFixedPointDataSource :=
+  h_exists
+
+/--
+Build canonical fast fixed-point data from the fixed-point data source seam.
+-/
+theorem molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_point_data_source
+    (h_fixed_data : MoleculeResidualFixedPointDataSource) :
+    MoleculeResidualCanonicalFastFixedPointDataSource :=
+  renormalizable_fixed_exists_of_fixed_point_normalization_data h_fixed_data
+
+/--
+Current canonical-data source routed through the fixed-point existence source
+seam.
+-/
+theorem molecule_residual_canonical_fast_fixed_point_data_source :
+    MoleculeResidualCanonicalFastFixedPointDataSource :=
+  molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_point_existence_source
+    molecule_residual_fixed_point_existence_source
+
+/--
 Under any bounds witness (hence canonical fixed-point existence), hybrid-level
 unique-fixed-point source and map-level uniqueness source are equivalent.
 -/
@@ -5674,7 +5706,7 @@ Current PLAN_69 breakout-source theorem routed through PLAN_70 witness sources.
 theorem molecule_residual_direct_source_breakout_sources_via_model_collapse_direct_witness_sources :
     MoleculeResidualDirectSourceBreakoutSources :=
   molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct_witness_sources
-    canonical_fast_fixed_point_data_from_bounds
+    molecule_residual_canonical_fast_fixed_point_data_source
     molecule_residual_model_collapse_direct_witness_sources
 
 /--
@@ -5846,7 +5878,7 @@ Current PLAN_69 breakout-source theorem routed through PLAN_71 witness sources.
 theorem molecule_residual_direct_source_breakout_sources_via_hybrid_class_collapse_witness_sources :
     MoleculeResidualDirectSourceBreakoutSources :=
   molecule_residual_direct_source_breakout_sources_of_canonical_and_hybrid_class_collapse_witness_sources
-    canonical_fast_fixed_point_data_from_bounds
+    molecule_residual_canonical_fast_fixed_point_data_source
     molecule_residual_hybrid_class_collapse_witness_sources
 
 /--
@@ -5934,7 +5966,7 @@ Current PLAN_74 winning-route source bundle.
 theorem molecule_residual_plan74_winning_route_sources :
     MoleculeResidualPlan74WinningRouteSources :=
   molecule_residual_plan74_winning_route_sources_of_canonical_and_anchor_witness
-    canonical_fast_fixed_point_data_from_bounds
+    molecule_residual_canonical_fast_fixed_point_data_source
     (molecule_residual_direct_seam_anchor_witness_sources_of_direct_seam_anchor_source
       molecule_residual_direct_seam_anchor_source)
 
@@ -6149,7 +6181,7 @@ theorem molecule_residual_anchor_witness_direct_contract_cutover_source_of_zero_
     MoleculeResidualAnchorWitnessDirectContractCutoverSource := by
   exact
     molecule_residual_anchor_witness_direct_contract_cutover_source_of_canonical_and_zero_arg_source
-    canonical_fast_fixed_point_data_from_bounds
+    molecule_residual_canonical_fast_fixed_point_data_source
     h_source
 
 /--
@@ -6218,7 +6250,7 @@ theorem molecule_residual_direct_source_breakout_sources_via_direct_seam_anchor_
     MoleculeResidualDirectSourceBreakoutSources :=
   molecule_residual_direct_source_breakout_sources_of_plan74_winning_route_sources
     (molecule_residual_plan74_winning_route_sources_of_canonical_and_zero_arg_anchor_witness_source
-      canonical_fast_fixed_point_data_from_bounds
+      molecule_residual_canonical_fast_fixed_point_data_source
       molecule_residual_anchor_witness_zero_arg_source)
 
 /--
@@ -6402,7 +6434,7 @@ theorem molecule_hypothesis_pack_of_final_assumptions : MoleculeHypothesisPack :
   molecule_hypothesis_pack_of_partitioned_core
     molecule_core_analytic
     molecule_core_combinatorial_topological
-    canonical_fast_fixed_point_data_from_bounds
+    molecule_residual_canonical_fast_fixed_point_data_source
 
 theorem molecule_hypothesis_pack : MoleculeHypothesisPack :=
   molecule_hypothesis_pack_of_final_assumptions

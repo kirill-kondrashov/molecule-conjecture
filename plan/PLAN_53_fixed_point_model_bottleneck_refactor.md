@@ -199,4 +199,8 @@ Last Updated: 2026-03-04
     `MoleculeResidualAnchorWitnessDirectContractCutoverSource` is now explicit;
     canonical-parametric conversion is ground-axiom-only, while unconditional
     reverse conversion remains `Molecule.molecule_h_norm`-backed via
-    `canonical_fast_fixed_point_data_from_bounds`.
+    `molecule_residual_canonical_fast_fixed_point_data_source`.
+  - PLAN_76 step-1 refactor rewired current-route canonical-data consumers away
+    from `canonical_fast_fixed_point_data_from_bounds` to the new canonical-data
+    source seam; seam constructors from existence/data assumptions are
+    ground-axiom-only.
