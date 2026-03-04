@@ -233,6 +233,15 @@ Last Updated: 2026-03-04
   - Current fixed-point assembly source theorem now routes via explicit
     existence+transfer seam:
     `molecule_residual_fixed_point_assembly_sources_of_exists_and_transfer`.
+  - Added transfer decomposition seams and canonical `V`-bound routing hooks:
+    `FixedPointCriticalValueTransferSource`,
+    `FixedPointVBoundTransferSource`,
+    `fixed_point_local_normalization_transfer_of_critical_and_vbound`,
+    `fixed_point_critical_and_vbound_of_local_normalization_transfer`,
+    `molecule_residual_canonical_vbound_source_of_fixed_point_vbound_transfer`,
+    `fixed_point_vbound_transfer_source_of_fixed_point_transfer_source`.
+  - Targeted probe confirms these transfer decomposition/projection seams are
+    axiom-clean modulo ground axioms.
   - Next target is constructive replacement of:
     `molecule_residual_fixed_point_normalization_ingredients`.
 - `PLAN_53` progress:

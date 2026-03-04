@@ -378,6 +378,44 @@ def FixedPointLocalNormalizationTransfer : Prop :=
     criticalValue f = 0 ∧ f.V ⊆ Metric.ball 0 0.1
 
 /--
+Critical-value component of fixed-point local normalization transfer.
+-/
+def FixedPointCriticalValueTransferSource : Prop :=
+  ∀ f : BMol, Rfast f = f → IsFastRenormalizable f →
+    criticalValue f = 0
+
+/--
+`V`-bound component of fixed-point local normalization transfer.
+-/
+def FixedPointVBoundTransferSource : Prop :=
+  ∀ f : BMol, Rfast f = f → IsFastRenormalizable f →
+    f.V ⊆ Metric.ball 0 0.1
+
+/--
+Assemble fixed-point local normalization transfer from critical-value and
+`V`-bound component sources.
+-/
+theorem fixed_point_local_normalization_transfer_of_critical_and_vbound
+    (h_crit : FixedPointCriticalValueTransferSource)
+    (h_vbound : FixedPointVBoundTransferSource) :
+    FixedPointLocalNormalizationTransfer := by
+  intro f h_fixed h_renorm
+  exact ⟨h_crit f h_fixed h_renorm, h_vbound f h_fixed h_renorm⟩
+
+/--
+Project critical-value and `V`-bound component sources from fixed-point local
+normalization transfer.
+-/
+theorem fixed_point_critical_and_vbound_of_local_normalization_transfer
+    (h_transfer : FixedPointLocalNormalizationTransfer) :
+    FixedPointCriticalValueTransferSource ∧ FixedPointVBoundTransferSource := by
+  refine ⟨?_, ?_⟩
+  · intro f h_fixed h_renorm
+    exact (h_transfer f h_fixed h_renorm).1
+  · intro f h_fixed h_renorm
+    exact (h_transfer f h_fixed h_renorm).2
+
+/--
 Ingredient bundle for constructing fixed-point normalization data:
 - existence of a fast-renormalizable fixed point of `Rfast`, and
 - local normalization transfer on fast-renormalizable fixed points.
@@ -1596,14 +1634,34 @@ theorem molecule_residual_renorm_vbound_source_of_global_vbound_source
   exact h_global_vbound f
 
 /--
+Project canonical fixed-data `V`-bound control from fixed-point `V`-bound
+transfer source.
+-/
+theorem molecule_residual_canonical_vbound_source_of_fixed_point_vbound_transfer
+    (h_vbound : FixedPointVBoundTransferSource) :
+    MoleculeResidualCanonicalVBoundSource := by
+  intro f_star h_fixed h_renorm _h_crit
+  exact h_vbound f_star h_fixed h_renorm
+
+/--
+Project fixed-point `V`-bound transfer source from fixed-point local
+normalization transfer.
+-/
+theorem fixed_point_vbound_transfer_source_of_local_normalization_transfer
+    (h_transfer : FixedPointLocalNormalizationTransfer) :
+    FixedPointVBoundTransferSource :=
+  (fixed_point_critical_and_vbound_of_local_normalization_transfer h_transfer).2
+
+/--
 Project canonical fixed-data `V`-bound control from fixed-point local
 normalization transfer.
 -/
 theorem molecule_residual_canonical_vbound_source_of_fixed_point_local_transfer
     (h_transfer : FixedPointLocalNormalizationTransfer) :
-    MoleculeResidualCanonicalVBoundSource := by
-  intro f_star h_fixed h_renorm _h_crit
-  exact (h_transfer f_star h_fixed h_renorm).2
+    MoleculeResidualCanonicalVBoundSource :=
+  molecule_residual_canonical_vbound_source_of_fixed_point_vbound_transfer
+    (fixed_point_vbound_transfer_source_of_local_normalization_transfer
+      h_transfer)
 
 /--
 PLAN_57 micro-split A: canonical orbit landing control only.
@@ -2157,6 +2215,16 @@ Current fixed-point local-normalization transfer source (legacy global-norm rout
 -/
 def MoleculeResidualFixedPointTransferSource : Prop :=
   FixedPointLocalNormalizationTransfer
+
+/--
+Project fixed-point `V`-bound transfer source from the fixed-point transfer
+source seam.
+-/
+theorem fixed_point_vbound_transfer_source_of_fixed_point_transfer_source
+    (h_transfer : MoleculeResidualFixedPointTransferSource) :
+    FixedPointVBoundTransferSource :=
+  fixed_point_vbound_transfer_source_of_local_normalization_transfer
+    h_transfer
 
 /--
 Project canonical fixed-data `V`-bound control from the fixed-point transfer
