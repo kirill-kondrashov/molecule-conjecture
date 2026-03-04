@@ -6073,6 +6073,36 @@ theorem molecule_residual_anchor_witness_zero_arg_source_iff_direct_seam_anchor_
         h_sources
 
 /--
+PLAN_75 bottleneck certificate:
+the zero-arg anchor-witness source target is equivalent to direct-seam-anchor
+source data.
+-/
+theorem molecule_residual_anchor_witness_zero_arg_source_iff_direct_seam_anchor_source :
+    MoleculeResidualAnchorWitnessZeroArgSource ↔
+      MoleculeResidualDirectSeamAnchorSource := by
+  calc
+    MoleculeResidualAnchorWitnessZeroArgSource ↔
+        MoleculeResidualDirectSeamAnchorSourceWitnessSources :=
+      molecule_residual_anchor_witness_zero_arg_source_iff_direct_seam_anchor_source_witness_sources
+    _ ↔ MoleculeResidualDirectSeamAnchorSource :=
+      molecule_residual_direct_seam_anchor_witness_sources_iff_direct_seam_anchor_source
+
+/--
+PLAN_75 bottleneck certificate:
+the zero-arg anchor-witness source target is equivalent to map-level
+fixed-point uniqueness source data.
+-/
+theorem molecule_residual_anchor_witness_zero_arg_source_iff_fixed_point_uniqueness_source :
+    MoleculeResidualAnchorWitnessZeroArgSource ↔
+      MoleculeResidualFixedPointUniquenessSource := by
+  calc
+    MoleculeResidualAnchorWitnessZeroArgSource ↔
+        MoleculeResidualDirectSeamAnchorSource :=
+      molecule_residual_anchor_witness_zero_arg_source_iff_direct_seam_anchor_source
+    _ ↔ MoleculeResidualFixedPointUniquenessSource :=
+      molecule_residual_direct_seam_anchor_source_iff_fixed_point_uniqueness_source
+
+/--
 Current PLAN_75 zero-arg anchor-witness source theorem.
 -/
 theorem molecule_residual_anchor_witness_zero_arg_source :
