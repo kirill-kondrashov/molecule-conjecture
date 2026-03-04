@@ -625,6 +625,21 @@ def PseudoSiegelAPrioriBounds : Prop := PseudoSiegelAPrioriBoundsStatement
 /--
 Orbit-transport obligation in the Problem 4.3 bounds pipeline.
 -/
+def MoleculeOrbitClauseAt
+    (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ) : Prop :=
+  ∀ (n t : ℕ) (f : BMol),
+    n ≥ 1 →
+    t ∈ ({a n, b n} : Set ℕ) →
+    f ∈ (Rfast^[n]) ⁻¹' U →
+    MapsTo (f.f^[t]) (Rfast^[n] f).U (Rfast^[n] f).V ∧
+    criticalValue f ∈ (Rfast^[n] f).U ∧
+    (f.f^[t] (criticalValue f)) ∈ D ∧
+    (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
+    (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2)
+
+/--
+Global orbit-transport obligation used by legacy theorem interfaces.
+-/
 def MoleculeOrbitClause : Prop :=
   ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
     Rfast f_star = f_star →
@@ -632,15 +647,22 @@ def MoleculeOrbitClause : Prop :=
     IsOpen D → IsOpen U →
     f_star ∈ U →
     criticalValue f_star ∈ D →
-    (∀ (n t : ℕ) (f : BMol),
-      n ≥ 1 →
-      t ∈ ({a n, b n} : Set ℕ) →
-      f ∈ (Rfast^[n]) ⁻¹' U →
-      MapsTo (f.f^[t]) (Rfast^[n] f).U (Rfast^[n] f).V ∧
-      criticalValue f ∈ (Rfast^[n] f).U ∧
-      (f.f^[t] (criticalValue f)) ∈ D ∧
-      (∀ z ∈ (Rfast^[n] f).U, f.f^[t] z = (Rfast^[n] f).f z) ∧
-      (∀ y ∈ (Rfast^[n] f).V, Set.ncard {x ∈ (Rfast^[n] f).U | f.f^[t] x = y} = 2))
+    MoleculeOrbitClauseAt D U a b
+
+/--
+Project a local orbit-clause obligation from the global orbit-clause contract.
+-/
+theorem molecule_orbit_clause_at_of_orbit_clause
+    (h_orbit : MoleculeOrbitClause)
+    (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ)
+    (h_fixed : Rfast f_star = f_star)
+    (h_renorm : IsFastRenormalizable f_star)
+    (h_openD : IsOpen D)
+    (h_openU : IsOpen U)
+    (h_inU : f_star ∈ U)
+    (h_cv : criticalValue f_star ∈ D) :
+    MoleculeOrbitClauseAt D U a b :=
+  h_orbit f_star D U a b h_fixed h_renorm h_openD h_openU h_inU h_cv
 
 /--
 Transport data interface for the Problem 4.3 bounds pipeline.

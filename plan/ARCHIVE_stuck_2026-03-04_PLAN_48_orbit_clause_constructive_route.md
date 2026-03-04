@@ -1,6 +1,6 @@
 # PLAN 48 - Constructive Orbit-Clause Route
 
-Status: ACTIVE
+Status: STUCK (ARCHIVED 2026-03-04)
 Progress: [###-------] 30%
 Scope: Eliminate the `molecule_h_norm` dependency in `molecule_residual_orbit_clause_source` by replacing the current ex-falso body with a theorem-level constructive route.
 Acceptance:
@@ -31,3 +31,5 @@ Last Updated: 2026-03-04
     orbit clause premise and therefore do not provide a non-circular constructor.
   - Current codebase has no existing non-ex-falso constructor for
     `MoleculeResidualOrbitClauseSource`; this is now the focused implementation target.
+  - Archived as STUCK and superseded by
+    `PLAN_50_orbit_clause_local_contract_narrowing.md`.

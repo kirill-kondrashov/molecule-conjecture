@@ -1,10 +1,10 @@
 # PLAN 00 - Molecule Hypothesis Elimination Tracker
 
 Status: ACTIVE
-Progress: [#########-] 94%
+Progress: [#########-] 95%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_48, PLAN_49
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_50
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-04
 
@@ -45,13 +45,13 @@ Last Updated: 2026-03-04
 | PLAN_42 | Post-axiom contract hardening | DONE | [##########] 100% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#####-----] 50% |
-| PLAN_48 | Constructive orbit-clause route | ACTIVE | [###-------] 30% |
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [####------] 45% |
+| PLAN_50 | Orbit-clause local contract narrowing | ACTIVE | [###-------] 30% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_47 (integration) + PLAN_48 (orbit clause track) + PLAN_49 (fixed-point source track), then PLAN_43.
+- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_50 (orbit local-contract track), then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -121,6 +121,9 @@ Last Updated: 2026-03-04
 - Archived STUCK plan:
   - `ARCHIVE_stuck_2026-03-04_PLAN_46_seed_free_ingredient_constructor.md`
     (superseded by PLAN_47).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_48_orbit_clause_constructive_route.md`
+    (superseded by PLAN_50).
 - `PLAN_47` progress:
   - Introduced narrowed residual bounds-assembly source pack in
     `Molecule/Conjecture.lean`:
@@ -136,6 +139,9 @@ Last Updated: 2026-03-04
     `molecule_residual_bounds_assembly_sources_of_fixed_point_and_orbit_sources`.
   - Re-oriented non-ground source assembly to forward constructor form:
     `molecule_residual_non_ground_sources_of_fixed_point_and_orbit_sources`.
+  - Added local orbit-obligation seam in `Molecule/Conjecture.lean`:
+    `MoleculeOrbitClauseAt` and
+    `molecule_orbit_clause_at_of_orbit_clause`.
   - Targeted axiom probe confirms:
     `molecule_residual_bounds_seed_free_of_bounds_assembly_sources` and
     `molecule_residual_bounds_seed_free_of_non_ground_sources` are axiom-clean
@@ -144,13 +150,6 @@ Last Updated: 2026-03-04
   - Residual blocker remains concentrated in constructive replacement of:
     - ingredient source route, and
     - orbit-clause source route.
-- `PLAN_48` progress:
-  - Completed theorem-route inventory for orbit clause:
-    no non-circular constructor currently exists in
-    `Problem4_3*` / `RenormalizationOrbit` / `RenormalizationPullback`;
-    these modules consume orbit-clause assumptions but do not produce them.
-  - Next target is an explicit constructive constructor theorem (or minimal
-    new source assumptions) for `MoleculeResidualOrbitClauseSource`.
 - `PLAN_49` progress:
   - Added fixed-point-only assembly seam and bridge theorems:
     `molecule_residual_fixed_point_assembly_sources_of_non_ground_sources`,
@@ -168,8 +167,15 @@ Last Updated: 2026-03-04
   - Next target is constructive replacement of:
     `molecule_residual_fixed_point_data_source` and
     `molecule_residual_fixed_point_uniqueness_source`.
+- `PLAN_50` progress:
+  - Replaced stalled global-only orbit route with a local-contract narrowing route.
+  - Introduced local seam primitives:
+    `MoleculeOrbitClauseAt` and `molecule_orbit_clause_at_of_orbit_clause`.
+  - Verified local seam axiom profile is ground-only.
+  - Next target is wiring local orbit obligations into residual constructors so
+    `molecule_residual_orbit_clause_source` can be rebuilt non-circularly.
 
 ## Current Critical Blockers
 
 1. Root blocker: `Molecule.molecule_h_norm` remains in the zero-arg theorem path.
-2. Active mitigation: PLAN_47 integration track, PLAN_48 orbit-clause track, PLAN_49 fixed-point source track.
+2. Active mitigation: PLAN_47 integration track, PLAN_49 fixed-point source track, PLAN_50 orbit local-contract track.

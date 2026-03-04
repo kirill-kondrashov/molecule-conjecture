@@ -41,4 +41,4 @@ Last Updated: 2026-03-04
     axiom-clean modulo ground axioms.
   - `molecule_residual_fixed_point_assembly_sources` is currently the fixed-point
     `molecule_h_norm` carrier.
-- This plan runs in parallel with PLAN_48 (orbit clause route).
+- This plan runs in parallel with PLAN_50 (orbit local-contract route).
