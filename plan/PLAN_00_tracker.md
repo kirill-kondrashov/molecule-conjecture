@@ -1,7 +1,7 @@
 # PLAN 00 - Molecule Hypothesis Elimination Tracker
 
 Status: ACTIVE
-Progress: [#########-] 93%
+Progress: [#########-] 94%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
 Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_48, PLAN_49
@@ -44,9 +44,9 @@ Last Updated: 2026-03-04
 | PLAN_41 | Residual bounds elimination | DONE | [##########] 100% |
 | PLAN_42 | Post-axiom contract hardening | DONE | [##########] 100% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
-| PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [####------] 40% |
+| PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#####-----] 50% |
 | PLAN_48 | Constructive orbit-clause route | ACTIVE | [###-------] 30% |
-| PLAN_49 | Constructive fixed-point source route | ACTIVE | [###-------] 35% |
+| PLAN_49 | Constructive fixed-point source route | ACTIVE | [####------] 45% |
 
 ## Dependency Map
 
@@ -134,6 +134,8 @@ Last Updated: 2026-03-04
   - Split fixed-point assembly path from orbit-clause path via:
     `MoleculeResidualFixedPointAssemblySources` and
     `molecule_residual_bounds_assembly_sources_of_fixed_point_and_orbit_sources`.
+  - Re-oriented non-ground source assembly to forward constructor form:
+    `molecule_residual_non_ground_sources_of_fixed_point_and_orbit_sources`.
   - Targeted axiom probe confirms:
     `molecule_residual_bounds_seed_free_of_bounds_assembly_sources` and
     `molecule_residual_bounds_seed_free_of_non_ground_sources` are axiom-clean
@@ -158,6 +160,11 @@ Last Updated: 2026-03-04
   - Completed constructor inventory for fixed-point source route:
     `molecule_residual_fixed_point_data_source` is currently global-norm backed,
     and `molecule_residual_fixed_point_uniqueness_source` is currently ex-falso.
+  - Added forward constructor seam checkpoint:
+    `molecule_residual_non_ground_sources_of_fixed_point_and_orbit_sources`
+    is axiom-clean modulo ground axioms.
+  - Current fixed-point blocker is concentrated at:
+    `molecule_residual_fixed_point_assembly_sources`.
   - Next target is constructive replacement of:
     `molecule_residual_fixed_point_data_source` and
     `molecule_residual_fixed_point_uniqueness_source`.

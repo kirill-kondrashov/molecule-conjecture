@@ -1,7 +1,7 @@
 # PLAN 49 - Constructive Fixed-Point Source Route
 
 Status: ACTIVE
-Progress: [###-------] 35%
+Progress: [####------] 45%
 Scope: Eliminate `molecule_h_norm` from the fixed-point side of the residual source pipeline by replacing the current fixed-data/uniqueness seeds with constructive theorem-level sources.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_data_source` does not include `Molecule.molecule_h_norm`.
@@ -19,6 +19,8 @@ Last Updated: 2026-03-04
 - [x] Verify narrowed fixed-point assembly seam theorems are axiom-clean modulo ground axioms.
 - [x] Inventory current constructors for fixed-point data/uniqueness and isolate
   residual `molecule_h_norm` entry points.
+- [x] Re-orient non-ground source assembly to forward constructor form:
+  - `molecule_residual_non_ground_sources_of_fixed_point_and_orbit_sources`.
 - [ ] Add constructive replacement theorem for `molecule_residual_fixed_point_data_source`.
 - [ ] Add constructive replacement theorem for `molecule_residual_fixed_point_uniqueness_source`.
 - [ ] Rebuild `molecule_residual_non_ground_sources` with constructive fixed-point source theorems.
@@ -34,4 +36,9 @@ Last Updated: 2026-03-04
     `fixed_point_local_normalization_transfer_of_global_norm molecule_h_norm`.
   - `molecule_residual_fixed_point_uniqueness_source` currently routes through
     `molecule_h_unique`, which is `False.elim molecule_h_norm_inconsistent`.
+- New checkpoint (2026-03-04):
+  - `molecule_residual_non_ground_sources_of_fixed_point_and_orbit_sources` is
+    axiom-clean modulo ground axioms.
+  - `molecule_residual_fixed_point_assembly_sources` is currently the fixed-point
+    `molecule_h_norm` carrier.
 - This plan runs in parallel with PLAN_48 (orbit clause route).

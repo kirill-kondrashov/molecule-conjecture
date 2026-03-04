@@ -1804,15 +1804,6 @@ structure MoleculeResidualNonGroundSources where
   orbitClause : MoleculeResidualOrbitClauseSource
 
 /--
-Current bundled non-ground residual sources.
--/
-theorem molecule_residual_non_ground_sources :
-    MoleculeResidualNonGroundSources where
-  fixedData := molecule_residual_fixed_point_data_source
-  fixedUniqueness := molecule_residual_fixed_point_uniqueness_source
-  orbitClause := molecule_residual_orbit_clause_source
-
-/--
 Fixed-point-only slice of the bundled non-ground source pack.
 -/
 structure MoleculeResidualFixedPointAssemblySources where
@@ -1831,9 +1822,28 @@ theorem molecule_residual_fixed_point_assembly_sources_of_non_ground_sources
 Current fixed-point-only assembly source pack.
 -/
 theorem molecule_residual_fixed_point_assembly_sources :
-    MoleculeResidualFixedPointAssemblySources :=
-  molecule_residual_fixed_point_assembly_sources_of_non_ground_sources
-    molecule_residual_non_ground_sources
+    MoleculeResidualFixedPointAssemblySources where
+  fixedData := molecule_residual_fixed_point_data_source
+  fixedUniqueness := molecule_residual_fixed_point_uniqueness_source
+
+/--
+Build bundled non-ground residual sources from fixed-point and orbit-clause
+source packs.
+-/
+theorem molecule_residual_non_ground_sources_of_fixed_point_and_orbit_sources
+    (h_fixed_sources : MoleculeResidualFixedPointAssemblySources)
+    (h_orbit_clause : MoleculeResidualOrbitClauseSource) :
+    MoleculeResidualNonGroundSources :=
+  ⟨h_fixed_sources.fixedData, h_fixed_sources.fixedUniqueness, h_orbit_clause⟩
+
+/--
+Current bundled non-ground residual sources.
+-/
+theorem molecule_residual_non_ground_sources :
+    MoleculeResidualNonGroundSources :=
+  molecule_residual_non_ground_sources_of_fixed_point_and_orbit_sources
+    molecule_residual_fixed_point_assembly_sources
+    molecule_residual_orbit_clause_source
 
 /--
 Build fixed-point normalization ingredients from fixed-point-only assembly
