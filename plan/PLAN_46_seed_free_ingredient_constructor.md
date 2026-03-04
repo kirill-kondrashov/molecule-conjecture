@@ -1,7 +1,7 @@
 # PLAN 46 - Seed-Free Ingredient Constructor
 
 Status: ACTIVE
-Progress: [#########-] 93%
+Progress: [#########-] 94%
 Scope: Replace the body of `molecule_residual_fixed_point_normalization_ingredients` with a seed-free theorem-level construction, so the fixed-data source no longer depends on `molecule_h_norm`.
 Acceptance: `#print axioms Molecule.molecule_residual_fixed_point_normalization_ingredients` does not include `Molecule.molecule_h_norm`, and this removal propagates to `molecule_residual_bounds_seed_free` and `molecule_conjecture_refined`.
 Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/HyperbolicityTheorems.lean`, `plan/PLAN_45_local_fixed_point_normalization_source.md`

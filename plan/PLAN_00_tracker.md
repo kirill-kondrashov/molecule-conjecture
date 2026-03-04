@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 90%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_44, PLAN_45, PLAN_46
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_45, PLAN_46
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-03
 
@@ -44,9 +44,8 @@ Last Updated: 2026-03-03
 | PLAN_41 | Residual bounds elimination | DONE | [##########] 100% |
 | PLAN_42 | Post-axiom contract hardening | ACTIVE | [#########-] 90% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
-| PLAN_44 | Constructive slice witness refactor | STUCK | [#########-] 90% |
 | PLAN_45 | Local fixed-point normalization source | ACTIVE | [#########-] 97% |
-| PLAN_46 | Seed-free ingredient constructor | ACTIVE | [#########-] 93% |
+| PLAN_46 | Seed-free ingredient constructor | ACTIVE | [#########-] 94% |
 
 ## Dependency Map
 
@@ -93,8 +92,9 @@ Last Updated: 2026-03-03
   `renormalizable_fixed_exists_of_fixed_point_normalization_data`.
   `molecule_h_fixed_data` is now routed through the explicit source seam
   `molecule_residual_fixed_point_normalization_source`.
-- Active STUCK plan:
-  - `PLAN_44_constructive_slice_witness_refactor.md` (replaced by PLAN_45).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_44_constructive_slice_witness_refactor.md`
+    (replaced by PLAN_45).
 - `PLAN_45` progress:
   - Added local bounds seam
     `problem_4_3_bounds_established_conjecture_from_fixed_data_and_transport`.
