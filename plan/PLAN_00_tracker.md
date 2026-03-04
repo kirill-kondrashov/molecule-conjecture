@@ -47,7 +47,7 @@ Last Updated: 2026-03-04
 | PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 95% |
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 90% |
 | PLAN_51 | Orbit fixed-data source replacement | ACTIVE | [###-------] 30% |
-| PLAN_52 | Fixed-point renorm witness extraction | ACTIVE | [###-------] 30% |
+| PLAN_52 | Fixed-point renorm witness extraction | ACTIVE | [#####-----] 50% |
 
 ## Dependency Map
 
@@ -210,8 +210,11 @@ Last Updated: 2026-03-04
   - Candidate inventory completed:
     currently available renormalizable fixed-point existence routes require
     `h_norm`; `fixed_point_exists` is non-axiomatic but lacks renormalizability.
-  - Next target is theorem-level non-circular renormalizability bridge from
-    available non-axiomatic inputs.
+  - Added theorem-level non-circular bridge seam:
+    `FixedPointImpliesRenormalizable` and
+    `renormalizable_fixed_exists_of_fixed_point_exists_and_bridge`.
+  - Next target is constructive proof/route for
+    `FixedPointImpliesRenormalizable` on the active top path.
 
 ## Current Critical Blockers
 

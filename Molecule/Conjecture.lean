@@ -506,6 +506,25 @@ theorem renormalizable_fixed_exists_of_global_norm
   exact ⟨f_star, h_renorm, h_fixed⟩
 
 /--
+Bridge contract: every fixed point of `Rfast` is fast-renormalizable.
+This isolates the exact missing ingredient needed to upgrade
+`fixed_point_exists` to a renormalizable fixed-point witness.
+-/
+def FixedPointImpliesRenormalizable : Prop :=
+  ∀ f : BMol, Rfast f = f → IsFastRenormalizable f
+
+/--
+Construct a renormalizable fixed-point witness from:
+- constructive fixed-point existence of `Rfast`, and
+- the fixed-point renormalizability bridge contract.
+-/
+theorem renormalizable_fixed_exists_of_fixed_point_exists_and_bridge
+    (h_bridge : FixedPointImpliesRenormalizable) :
+    ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f := by
+  rcases fixed_point_exists with ⟨f_star, h_fixed, _h_cv⟩
+  exact ⟨f_star, h_bridge f_star h_fixed, h_fixed⟩
+
+/--
 Migration lemma: legacy `h_exists` is exactly the invariant slice-data package.
 -/
 theorem has_invariant_slice_data_of_exists

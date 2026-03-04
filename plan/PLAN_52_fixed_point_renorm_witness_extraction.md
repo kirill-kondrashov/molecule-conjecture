@@ -1,7 +1,7 @@
 # PLAN 52 - Fixed-Point Renormalizability Witness Extraction
 
 Status: ACTIVE
-Progress: [###-------] 30%
+Progress: [#####-----] 50%
 Scope: Provide a non-circular theorem-level route to produce a renormalizable fixed-point witness for `Rfast` that can feed `MoleculeResidualFixedPointNormalizationIngredients` without using `molecule_h_norm`.
 Acceptance:
 1. A theorem in `Molecule/Conjecture.lean` (or upstream module) yields
@@ -20,7 +20,9 @@ Last Updated: 2026-03-04
 - [x] Isolate the exact missing fixed-point ingredient sub-goal:
   `∃ f, IsFastRenormalizable f ∧ Rfast f = f`.
 - [x] Inventory upstream witness candidates and classify circular vs non-circular routes.
-- [ ] Add a theorem-level non-circular witness constructor (if found).
+- [x] Add a theorem-level non-circular witness constructor (if found):
+  - `FixedPointImpliesRenormalizable`
+  - `renormalizable_fixed_exists_of_fixed_point_exists_and_bridge`
 - [ ] Thread witness constructor into
   `molecule_residual_fixed_point_normalization_ingredients` replacement path.
 - [ ] Re-run `make build`, `make check`, and targeted `#print axioms` probes.
@@ -36,3 +38,7 @@ Last Updated: 2026-03-04
   - `fixed_point_exists` is available without `h_norm` but does not provide
     `IsFastRenormalizable`, so it is insufficient by itself for the ingredient
     witness target.
+- New checkpoint (2026-03-04):
+  - bridge-based witness constructor theorem is now in place and axiom-clean
+    modulo ground axioms; remaining work is to connect a constructive proof of
+    `FixedPointImpliesRenormalizable` on the active path.

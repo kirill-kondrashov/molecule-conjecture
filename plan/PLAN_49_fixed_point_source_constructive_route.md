@@ -69,3 +69,5 @@ Last Updated: 2026-03-04
 - Sub-plan linkage:
   - witness extraction bottleneck is tracked explicitly in
     `PLAN_52_fixed_point_renorm_witness_extraction.md`.
+  - bridge seam now exists:
+    `renormalizable_fixed_exists_of_fixed_point_exists_and_bridge`.
