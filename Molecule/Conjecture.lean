@@ -1921,8 +1921,7 @@ Bundled non-ground residual sources currently carrying the final project axiom
 dependency.
 -/
 structure MoleculeResidualNonGroundSources where
-  fixedData : FixedPointNormalizationData
-  fixedTransfer : MoleculeResidualFixedPointTransferSource
+  fixedIngredients : MoleculeResidualFixedPointNormalizationIngredients
   orbitClause : MoleculeResidualOrbitClauseForFixedDataSource
 
 /--
@@ -1938,7 +1937,10 @@ Build fixed-point-only assembly sources from the broader non-ground source pack.
 theorem molecule_residual_fixed_point_assembly_sources_of_non_ground_sources
     (h_sources : MoleculeResidualNonGroundSources) :
     MoleculeResidualFixedPointAssemblySources :=
-  ⟨h_sources.fixedData, h_sources.fixedTransfer⟩
+  ⟨
+    fixed_point_normalization_data_of_ingredients h_sources.fixedIngredients,
+    h_sources.fixedIngredients.2
+  ⟩
 
 /--
 Build fixed-point-only assembly sources from explicit fixed-data and
@@ -1966,8 +1968,12 @@ source packs.
 theorem molecule_residual_non_ground_sources_of_fixed_point_and_orbit_sources
     (h_fixed_sources : MoleculeResidualFixedPointAssemblySources)
     (h_orbit_clause : MoleculeResidualOrbitClauseForFixedDataSource) :
-    MoleculeResidualNonGroundSources :=
-  ⟨h_fixed_sources.fixedData, h_fixed_sources.fixedTransfer, h_orbit_clause⟩
+    MoleculeResidualNonGroundSources := by
+  have h_ingredients : MoleculeResidualFixedPointNormalizationIngredients :=
+    molecule_residual_fixed_point_normalization_ingredients_of_sources
+      (renormalizable_fixed_exists_of_fixed_point_normalization_data h_fixed_sources.fixedData)
+      h_fixed_sources.fixedTransfer
+  exact ⟨h_ingredients, h_orbit_clause⟩
 
 /--
 Current bundled non-ground residual sources.
@@ -2020,9 +2026,7 @@ source pack.
 theorem molecule_residual_bounds_assembly_sources_of_non_ground_sources
     (h_sources : MoleculeResidualNonGroundSources) :
     MoleculeResidualBoundsAssemblySources :=
-  molecule_residual_bounds_assembly_sources_of_fixed_point_and_orbit_sources
-    (molecule_residual_fixed_point_assembly_sources_of_non_ground_sources h_sources)
-    h_sources.orbitClause
+  ⟨h_sources.fixedIngredients, h_sources.orbitClause⟩
 
 /--
 Current narrowed residual bounds-assembly source pack.
