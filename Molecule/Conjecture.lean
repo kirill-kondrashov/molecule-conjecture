@@ -1629,6 +1629,15 @@ theorem molecule_residual_orbit_transport_source :
     molecule_residual_pseudo_siegel_source
     molecule_residual_orbit_clause_source
 
+/--
+Current narrowed fixed-data orbit source, routed via the bundled residual
+orbit-transport source package.
+-/
+theorem molecule_residual_orbit_clause_for_fixed_data_source_via_transport :
+    MoleculeResidualOrbitClauseForFixedDataSource :=
+  molecule_residual_orbit_clause_for_fixed_data_source_of_transport_source
+    molecule_residual_orbit_transport_source
+
 def constant_analytic_chart (f : BMol → BMol) :
     AnalyticChart f (Set.univ : Set BMol) where
   E := SliceSpace

@@ -1,7 +1,7 @@
 # PLAN 54 - Orbit Source Contract Refactor
 
 Status: ACTIVE
-Progress: [######----] 60%
+Progress: [#######---] 70%
 Scope: Replace the stuck direct constructive search (PLAN_51) with a refactor-first route that minimizes active dependence on legacy orbit transport wrappers and concentrates the orbit-side frontier at a single local source theorem.
 Acceptance:
 1. Legacy bounds/helper routes no longer depend on `MoleculeResidualOrbitTransportSource` when a local fixed-data orbit source is sufficient.
@@ -22,7 +22,11 @@ Last Updated: 2026-03-04
   - `molecule_residual_orbit_clause_for_fixed_data_source_of_transport_source`
 - [x] Run targeted `#print axioms` probes for the new orbit-source seam theorem(s).
 - [x] Sync PLAN_47/tracker dependencies and progress after orbit refactor checkpoint.
-- [ ] Route additional legacy wrappers through the new orbit-source composition seams where ordering permits.
+- [x] Route additional legacy wrappers through the new orbit-source composition seams where ordering permits:
+  - `molecule_residual_orbit_clause_for_fixed_data_source_via_transport`.
+- [ ] Decide and implement whether to cut over
+  `molecule_residual_orbit_clause_for_fixed_data_source` to the transport-routed wrapper
+  (if this improves source clarity without harming dependency visibility).
 
 ## Notes
 
