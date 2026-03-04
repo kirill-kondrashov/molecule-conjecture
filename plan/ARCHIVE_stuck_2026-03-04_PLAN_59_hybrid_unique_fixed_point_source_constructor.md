@@ -1,7 +1,7 @@
 # PLAN 59 - Hybrid Unique Fixed-Point Source Constructor
 
-Status: ACTIVE
-Progress: [########--] 78%
+Status: STUCK (ARCHIVED)
+Progress: [##########] 100%
 Scope: Replace the remaining uniqueness bottleneck by constructing a non-`molecule_h_norm` source for hybrid-level uniqueness, then derive map-level fixed-point uniqueness and route downstream orbit-debt composition through that source.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_uniqueness_source` does not include `Molecule.molecule_h_norm`.
@@ -68,3 +68,9 @@ Last Updated: 2026-03-04
 - The remaining blocker is now concentrated at construction of:
   `MoleculeResidualHybridUniqueFixedPointSource` (currently inherited via
   `molecule_residual_fixed_point_hybrid_class_collapse_source_direct`).
+- Final stuck check added on 2026-03-04:
+  - `molecule_residual_fixed_point_hybrid_class_collapse_source_iff_uniqueness_source`
+  - `molecule_residual_hybrid_unique_fixed_point_source_iff_uniqueness_source_of_canonical`
+  - `molecule_residual_hybrid_unique_fixed_point_source_iff_uniqueness_source_of_bounds`
+  These certify the current route is equivalence-bound, satisfying the plan's
+  stuck rule.

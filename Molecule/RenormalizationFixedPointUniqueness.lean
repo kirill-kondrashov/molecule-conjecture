@@ -17,6 +17,26 @@ noncomputable instance : Inhabited HybridClass := ⟨defaultBMol⟩
 def toHybridClass (f : BMol) : HybridClass := f
 
 /--
+Current-model bottleneck: `toHybridClass` is injective because `HybridClass` is
+currently modeled as `BMol`.
+-/
+theorem toHybridClass_injective : Function.Injective toHybridClass := by
+  intro f g hfg
+  exact hfg
+
+/--
+Current-model identity equivalence between hybrid-class equality and map
+equality.
+-/
+theorem toHybridClass_eq_iff (f g : BMol) :
+    toHybridClass f = toHybridClass g ↔ f = g := by
+  constructor
+  · intro hfg
+    exact toHybridClass_injective hfg
+  · intro h
+    simp [h]
+
+/--
 Renormalization operator on hybrid classes.
 This is well-defined because renormalization preserves hybrid equivalence.
 -/
@@ -75,7 +95,7 @@ theorem fixed_points_in_same_class_eq (f g : BMol)
   (_hf : IsFastRenormalizable f) (_hf_fix : Rfast f = f)
   (_hg : IsFastRenormalizable g) (_hg_fix : Rfast g = g)
   (h_eq_class : toHybridClass f = toHybridClass g) :
-  f = g := h_eq_class
+  f = g := (toHybridClass_eq_iff f g).1 h_eq_class
 
 /--
 Theorem: Uniqueness of the Renormalization Fixed Point.

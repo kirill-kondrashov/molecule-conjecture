@@ -2371,6 +2371,16 @@ theorem molecule_residual_fixed_point_hybrid_class_collapse_source_of_uniqueness
   exact congrArg toHybridClass (h_unique f1 f2 ⟨h_fix1, h_renorm1⟩ ⟨h_fix2, h_renorm2⟩)
 
 /--
+The hybrid-class-collapse and map-level uniqueness source seams are equivalent.
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_source_iff_uniqueness_source :
+    MoleculeResidualFixedPointHybridClassCollapseSource ↔
+      MoleculeResidualFixedPointUniquenessSource := by
+  constructor
+  · exact molecule_residual_fixed_point_uniqueness_source_of_hybrid_class_collapse_source
+  · exact molecule_residual_fixed_point_hybrid_class_collapse_source_of_uniqueness_source
+
+/--
 Assemble canonical orbit-at debt source from transport + fixed-data + hybrid
 class collapse source seams.
 -/
@@ -2746,6 +2756,22 @@ theorem molecule_residual_hybrid_unique_fixed_point_source_of_refined_and_unique
       h_unique)
 
 /--
+Under canonical fixed-point existence, hybrid-level unique-fixed-point source
+and map-level uniqueness source are equivalent.
+-/
+theorem molecule_residual_hybrid_unique_fixed_point_source_iff_uniqueness_source_of_canonical
+    (h_canonical : CanonicalFastFixedPointData) :
+    MoleculeResidualHybridUniqueFixedPointSource ↔
+      MoleculeResidualFixedPointUniquenessSource := by
+  constructor
+  · exact molecule_residual_fixed_point_uniqueness_source_of_hybrid_unique_fixed_point_source
+  · intro h_unique
+    exact
+      molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_uniqueness_source
+        h_canonical
+        h_unique
+
+/--
 Assemble residual fixed-point-normalization ingredients from:
 - canonical fixed-point data, and
 - fixed-point local normalization transfer.
@@ -3096,6 +3122,28 @@ theorem molecule_residual_bounds : PseudoSiegelAPrioriBounds :=
 theorem canonical_fast_fixed_point_data_from_bounds :
     CanonicalFastFixedPointData :=
   canonical_fast_fixed_point_data_of_bounds molecule_residual_bounds
+
+/--
+Under any bounds witness (hence canonical fixed-point existence), hybrid-level
+unique-fixed-point source and map-level uniqueness source are equivalent.
+-/
+theorem molecule_residual_hybrid_unique_fixed_point_source_iff_uniqueness_source_of_bounds
+    (h_bounds : PseudoSiegelAPrioriBounds) :
+    MoleculeResidualHybridUniqueFixedPointSource ↔
+      MoleculeResidualFixedPointUniquenessSource :=
+  molecule_residual_hybrid_unique_fixed_point_source_iff_uniqueness_source_of_canonical
+    (canonical_fast_fixed_point_data_of_bounds h_bounds)
+
+/--
+Current-route equivalence certificate:
+with the active bounds source, the hybrid-unique and map-level uniqueness
+source goals are equivalent.
+-/
+theorem molecule_residual_hybrid_unique_fixed_point_source_iff_uniqueness_source :
+    MoleculeResidualHybridUniqueFixedPointSource ↔
+      MoleculeResidualFixedPointUniquenessSource :=
+  molecule_residual_hybrid_unique_fixed_point_source_iff_uniqueness_source_of_bounds
+    molecule_residual_bounds
 
 /--
 Assemble hybrid-class unique fixed-point source from bounds and hybrid-class-
