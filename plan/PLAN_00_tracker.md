@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 99%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_51
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_51, PLAN_52
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-04
 
@@ -47,11 +47,12 @@ Last Updated: 2026-03-04
 | PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 95% |
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 90% |
 | PLAN_51 | Orbit fixed-data source replacement | ACTIVE | [###-------] 30% |
+| PLAN_52 | Fixed-point renorm witness extraction | ACTIVE | [###-------] 30% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_51 (orbit fixed-data source track), then PLAN_43.
+- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_51 (orbit fixed-data source track) + PLAN_52 (witness extraction), then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -203,8 +204,16 @@ Last Updated: 2026-03-04
     constructive fixed-data local source theorem.
   - Next target is constructive replacement of
     `molecule_residual_orbit_clause_for_fixed_data_source`.
+- `PLAN_52` progress:
+  - Opened focused sub-plan for the fixed-point witness bottleneck:
+    constructing `∃ f, IsFastRenormalizable f ∧ Rfast f = f` non-circularly.
+  - Candidate inventory completed:
+    currently available renormalizable fixed-point existence routes require
+    `h_norm`; `fixed_point_exists` is non-axiomatic but lacks renormalizability.
+  - Next target is theorem-level non-circular renormalizability bridge from
+    available non-axiomatic inputs.
 
 ## Current Critical Blockers
 
 1. Root blocker: `Molecule.molecule_h_norm` remains in the zero-arg theorem path.
-2. Active mitigation: PLAN_47 integration track, PLAN_49 fixed-point source track, PLAN_51 orbit fixed-data source track.
+2. Active mitigation: PLAN_47 integration track, PLAN_49 fixed-point source track, PLAN_51 orbit fixed-data source track, PLAN_52 witness extraction track.

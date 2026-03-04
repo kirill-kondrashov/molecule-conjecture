@@ -7,7 +7,7 @@ Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_normalization_ingredients` does not include `Molecule.molecule_h_norm`.
 2. `#print axioms Molecule.molecule_residual_non_ground_sources` no longer carries `Molecule.molecule_h_norm` from the fixed-point side.
 3. `#print axioms Molecule.molecule_conjecture_refined` does not include `Molecule.molecule_h_norm`.
-Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/RenormalizationFixedPointUniqueness.lean`, `plan/PLAN_47_h_norm_elimination_constructive_source_rebuild.md`
+Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/RenormalizationFixedPointUniqueness.lean`, `plan/PLAN_47_h_norm_elimination_constructive_source_rebuild.md`, `plan/PLAN_52_fixed_point_renorm_witness_extraction.md`
 Stuck Rule: STUCK if the only available fixed-point data/uniqueness constructors in current infrastructure require reintroducing a project axiom.
 Last Updated: 2026-03-04
 
@@ -66,3 +66,6 @@ Last Updated: 2026-03-04
     - `molecule_residual_fixed_point_normalization_ingredients`
     - `molecule_residual_orbit_clause_for_fixed_data_source`.
 - This plan runs in parallel with PLAN_51 (orbit fixed-data source route).
+- Sub-plan linkage:
+  - witness extraction bottleneck is tracked explicitly in
+    `PLAN_52_fixed_point_renorm_witness_extraction.md`.
