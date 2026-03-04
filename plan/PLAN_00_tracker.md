@@ -46,7 +46,7 @@ Last Updated: 2026-03-04
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 99% |
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 99% |
-| PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 85% |
+| PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
 
@@ -265,6 +265,10 @@ Last Updated: 2026-03-04
     `fixed_point_transfer_components_of_fixed_data_and_uniqueness_source`,
     `molecule_residual_canonical_vbound_source_of_fixed_data_and_uniqueness_source`,
     `molecule_residual_canonical_orbit_at_debt_source_of_structure_fixed_data_and_uniqueness_source`.
+  - Added transport-wrapped canonical-orbit debt integration seam:
+    `molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_uniqueness_source`,
+    with current routed theorem
+    `molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source`.
   - Targeted probe confirms these integration seams are axiom-clean modulo
     ground axioms.
   - Next target is constructive replacement of:
@@ -295,6 +299,8 @@ Last Updated: 2026-03-04
     `fixed_point_vbound_transfer_source_of_fixed_data_and_unique`,
     `molecule_residual_canonical_vbound_source_of_fixed_data_and_unique`,
     `molecule_residual_canonical_orbit_at_debt_source_of_structure_fixed_data_and_unique`.
+  - Added transport-wrapped integration seam:
+    `molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_uniqueness_source`.
   - Targeted probe confirms these integration seams are axiom-clean modulo
     ground axioms.
   - Next target is constructive replacement of

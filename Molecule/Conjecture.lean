@@ -2342,6 +2342,21 @@ theorem molecule_residual_canonical_orbit_at_debt_source_of_structure_fixed_data
     h_structure h_fixed_data h_unique
 
 /--
+Assemble canonical orbit-at debt source from transport + fixed-data +
+uniqueness source seams.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_uniqueness_source
+    (h_transport : MoleculeResidualOrbitTransportSource)
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_unique : MoleculeResidualFixedPointUniquenessSource) :
+    MoleculeResidualCanonicalOrbitAtDebtSource :=
+  molecule_residual_canonical_orbit_at_debt_source_of_structure_fixed_data_and_uniqueness_source
+    (molecule_residual_canonical_orbit_structure_source_of_transport_source
+      h_transport)
+    h_fixed_data
+    h_unique
+
+/--
 Current fixed-point uniqueness source theorem.
 -/
 theorem molecule_residual_fixed_point_uniqueness_source :
@@ -2385,6 +2400,17 @@ theorem molecule_residual_canonical_orbit_at_debt_source_via_fixed_point_transfe
   molecule_residual_canonical_orbit_at_debt_source_of_structure_and_vbound_source
     molecule_residual_canonical_orbit_structure_source
     molecule_residual_canonical_vbound_source_via_fixed_point_transfer_source
+
+/--
+Current PLAN_57 canonical orbit-at debt source routed via transport +
+fixed-data + uniqueness source seams.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source :
+    MoleculeResidualCanonicalOrbitAtDebtSource :=
+  molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_uniqueness_source
+    molecule_residual_orbit_transport_source
+    molecule_h_fixed_data_direct
+    molecule_residual_fixed_point_uniqueness_source
 
 /--
 Build residual fixed-point data source from explicit existence and transfer

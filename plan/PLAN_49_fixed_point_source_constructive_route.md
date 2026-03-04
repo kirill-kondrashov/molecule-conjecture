@@ -72,6 +72,10 @@ Last Updated: 2026-03-04
     `fixed_point_transfer_components_of_fixed_data_and_uniqueness_source`,
     `molecule_residual_canonical_vbound_source_of_fixed_data_and_uniqueness_source`,
     `molecule_residual_canonical_orbit_at_debt_source_of_structure_fixed_data_and_uniqueness_source`.
+- [x] Add transport-wrapped integration cutover seam:
+  - `molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_uniqueness_source`
+  - current routed theorem:
+    `molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source`.
 - [ ] Add constructive replacement theorem for
   `molecule_residual_fixed_point_normalization_ingredients`.
 - [ ] Rebuild `molecule_residual_non_ground_sources` with constructive
@@ -139,8 +143,11 @@ Last Updated: 2026-03-04
     via current fixed-data/transfer source theorems.
 - New integration checkpoint (2026-03-04):
   - the fixed-data+uniqueness transfer component projections and canonical
-    orbit-debt composition seams listed above are axiom-clean modulo ground
-    axioms.
+  orbit-debt composition seams listed above are axiom-clean modulo ground
+  axioms.
+  - transport-wrapped integration seam above is axiom-clean modulo ground
+    axioms; current routed theorem still carries `Molecule.molecule_h_norm`
+    through current fixed-data/uniqueness/transport sources.
 - This plan runs in parallel with PLAN_57 (orbit minimal theorem-debt extraction route).
 - Sub-plan linkage:
   - model-level witness bottleneck is tracked explicitly in

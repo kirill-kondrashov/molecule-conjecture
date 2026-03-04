@@ -1,7 +1,7 @@
 # PLAN 53 - Fixed-Point Model Bottleneck Refactor
 
 Status: ACTIVE
-Progress: [########--] 85%
+Progress: [########--] 87%
 Scope: Resolve the model-level bottleneck exposed by `no_fixed_point_implies_renormalizable` so the fixed-point ingredient route can be rebuilt without `molecule_h_norm` and without relying on the false bridge contract.
 Acceptance:
 1. The fixed-point ingredient route no longer depends on `FixedPointImpliesRenormalizable`.
@@ -45,6 +45,10 @@ Last Updated: 2026-03-04
   - `fixed_point_vbound_transfer_source_of_fixed_data_and_unique`
   - `molecule_residual_canonical_vbound_source_of_fixed_data_and_unique`
   - `molecule_residual_canonical_orbit_at_debt_source_of_structure_fixed_data_and_unique`.
+- [x] Add transport-wrapped integration seam for canonical orbit debt:
+  - `molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_uniqueness_source`
+  - current routed theorem
+    `molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source`.
 - [ ] Replace `molecule_residual_fixed_point_data_source` with a non-circular
   non-`molecule_h_norm` theorem-level source.
 - [ ] Re-run fixed-point and top-level axiom probes after replacing
@@ -74,4 +78,6 @@ Last Updated: 2026-03-04
     is ground-axiom-only.
 - Integration checkpoint:
   - fixed-data+uniqueness transfer-component projections and canonical
-    orbit-debt composition seams are ground-axiom-only modulo source inputs.
+  orbit-debt composition seams are ground-axiom-only modulo source inputs.
+  - transport-wrapped integration seam is ground-axiom-only modulo source
+    inputs.
