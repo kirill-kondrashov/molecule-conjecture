@@ -1,7 +1,7 @@
 # PLAN 57 - Orbit Minimal Theorem Debt Extraction
 
 Status: ACTIVE
-Progress: [#########-] 91%
+Progress: [#########-] 96%
 Scope: After PLAN_56 decomposition got stuck, isolate one minimal theorem debt
 item whose proof would unlock a non-`molecule_h_norm` constructor for
 `MoleculeResidualOrbitClauseForFixedDataSource`.
@@ -53,8 +53,20 @@ Last Updated: 2026-03-04
   - `molecule_residual_canonical_vbound_source_of_global_vbound_source`
   - current `molecule_residual_canonical_vbound_source` now routes through
     `molecule_residual_global_vbound_source`.
-- [ ] Attack the remaining global `V`-bound source debt target constructively:
-  - replace `molecule_residual_global_vbound_source` with a non-axiomatic
+- [x] Weaken the `V`-bound debt target to renormalizable-point scope and route
+  canonical control through it:
+  - `MoleculeResidualRenormVBoundSource`
+  - `molecule_residual_canonical_vbound_source_of_renorm_vbound_source`
+  - `molecule_residual_renorm_vbound_source_of_global_vbound_source`
+  - current `molecule_residual_canonical_vbound_source` now routes through
+    `molecule_residual_renorm_vbound_source`.
+- [x] Add transfer-based projection bridge to avoid dead-end dependence on
+  stronger `V`-bound formulations:
+  - `molecule_residual_canonical_vbound_source_of_fixed_point_local_transfer`
+  - `molecule_residual_canonical_vbound_source_of_fixed_point_transfer_source`.
+- [ ] Attack the remaining renormalizable-point `V`-bound debt target
+  constructively:
+  - replace `molecule_residual_renorm_vbound_source` with a non-axiomatic
     source route.
 
 ## Notes
@@ -79,4 +91,7 @@ Last Updated: 2026-03-04
     `molecule_residual_canonical_vbound_source`.
   - `molecule_residual_canonical_vbound_source` now carries
     `Molecule.molecule_h_norm` only via
-    `molecule_residual_global_vbound_source`.
+    `molecule_residual_renorm_vbound_source`.
+  - transfer-based projection bridges above are axiom-clean modulo ground
+    axioms, giving a non-dead-end cutover route via fixed-point transfer once
+    the source replacement lands.

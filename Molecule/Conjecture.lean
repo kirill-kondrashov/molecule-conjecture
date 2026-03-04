@@ -1562,19 +1562,48 @@ def MoleculeResidualCanonicalVBoundSource : Prop :=
     f_star.V ⊆ Metric.ball 0 0.1
 
 /--
+Renormalizable-point `V`-bound source seam.
+-/
+def MoleculeResidualRenormVBoundSource : Prop :=
+  ∀ f : BMol,
+    IsFastRenormalizable f →
+    criticalValue f = 0 →
+    f.V ⊆ Metric.ball 0 0.1
+
+/--
 Global `V`-bound source seam, independent of fixed-point assumptions.
 -/
 def MoleculeResidualGlobalVBoundSource : Prop :=
   ∀ f : BMol, f.V ⊆ Metric.ball 0 0.1
 
 /--
-Project canonical fixed-data `V`-bound control from a global `V`-bound source.
+Project canonical fixed-data `V`-bound control from a renormalizable-point
+`V`-bound source.
 -/
-theorem molecule_residual_canonical_vbound_source_of_global_vbound_source
-    (h_global_vbound : MoleculeResidualGlobalVBoundSource) :
+theorem molecule_residual_canonical_vbound_source_of_renorm_vbound_source
+    (h_renorm_vbound : MoleculeResidualRenormVBoundSource) :
     MoleculeResidualCanonicalVBoundSource := by
-  intro f_star _h_fixed _h_renorm _h_crit
-  exact h_global_vbound f_star
+  intro f_star _h_fixed h_renorm h_crit
+  exact h_renorm_vbound f_star h_renorm h_crit
+
+/--
+Project renormalizable-point `V`-bound control from a global `V`-bound source.
+-/
+theorem molecule_residual_renorm_vbound_source_of_global_vbound_source
+    (h_global_vbound : MoleculeResidualGlobalVBoundSource) :
+    MoleculeResidualRenormVBoundSource := by
+  intro f _h_renorm _h_crit
+  exact h_global_vbound f
+
+/--
+Project canonical fixed-data `V`-bound control from fixed-point local
+normalization transfer.
+-/
+theorem molecule_residual_canonical_vbound_source_of_fixed_point_local_transfer
+    (h_transfer : FixedPointLocalNormalizationTransfer) :
+    MoleculeResidualCanonicalVBoundSource := by
+  intro f_star h_fixed h_renorm _h_crit
+  exact (h_transfer f_star h_fixed h_renorm).2
 
 /--
 PLAN_57 micro-split A: canonical orbit landing control only.
@@ -1900,6 +1929,28 @@ theorem molecule_residual_orbit_transport_source :
     molecule_residual_orbit_clause_source
 
 /--
+Project renormalizable-point `V`-bound control from the legacy normalization
+axiom package.
+-/
+theorem molecule_residual_renorm_vbound_source_of_h_norm
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1)) :
+    MoleculeResidualRenormVBoundSource := by
+  intro f _h_renorm _h_crit
+  have hK := h_norm ({f} : Set BMol)
+  exact hK.2.2 f (by simp)
+
+/--
+Current renormalizable-point `V`-bound source.
+-/
+theorem molecule_residual_renorm_vbound_source :
+    MoleculeResidualRenormVBoundSource :=
+  molecule_residual_renorm_vbound_source_of_h_norm molecule_h_norm
+
+/--
 Project global `V`-bound control from the legacy normalization axiom package.
 -/
 theorem molecule_residual_global_vbound_source_of_h_norm
@@ -1925,8 +1976,8 @@ Current canonical fixed-data `V`-bound source.
 -/
 theorem molecule_residual_canonical_vbound_source :
     MoleculeResidualCanonicalVBoundSource :=
-  molecule_residual_canonical_vbound_source_of_global_vbound_source
-    molecule_residual_global_vbound_source
+  molecule_residual_canonical_vbound_source_of_renorm_vbound_source
+    molecule_residual_renorm_vbound_source
 
 /--
 Current canonical orbit structural-source theorem.
@@ -2106,6 +2157,16 @@ Current fixed-point local-normalization transfer source (legacy global-norm rout
 -/
 def MoleculeResidualFixedPointTransferSource : Prop :=
   FixedPointLocalNormalizationTransfer
+
+/--
+Project canonical fixed-data `V`-bound control from the fixed-point transfer
+source seam.
+-/
+theorem molecule_residual_canonical_vbound_source_of_fixed_point_transfer_source
+    (h_transfer : MoleculeResidualFixedPointTransferSource) :
+    MoleculeResidualCanonicalVBoundSource :=
+  molecule_residual_canonical_vbound_source_of_fixed_point_local_transfer
+    h_transfer
 
 /--
 Source seam for fixed-point uniqueness on fast-renormalizable fixed points.
