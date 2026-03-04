@@ -1,7 +1,7 @@
 # PLAN 62 - Upstream Map-Uniqueness Source Replacement
 
 Status: ACTIVE
-Progress: [########--] 82%
+Progress: [#########-] 90%
 Scope: Replace `molecule_residual_fixed_point_uniqueness_source_direct` with a non-`molecule_h_norm` theorem-level constructor from upstream fixed-point tracks, then feed that constructor into PLAN_61 replacement seams.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_uniqueness_source_direct` does not include `Molecule.molecule_h_norm`.
@@ -27,14 +27,16 @@ Last Updated: 2026-03-04
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_fixed_point_uniqueness_direct_source`
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_fixed_point_uniqueness_direct_source`
   - `molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_fixed_point_uniqueness_direct_source`.
-- [ ] Rewire through PLAN_61 seams:
-  - completed:
-    - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`
-    - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source`
-    - `molecule_residual_hybrid_unique_fixed_point_source`
-  - remaining:
-    - `molecule_residual_fixed_point_uniqueness_source_direct`.
-- [ ] Re-run probes and sync PLAN_47/49/53 integration notes.
+- [x] Rewire through PLAN_61 seams:
+  - `molecule_residual_fixed_point_uniqueness_source_direct`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`
+  - `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source`
+  - `molecule_residual_hybrid_unique_fixed_point_source`.
+- [x] Re-run probes and sync PLAN_47/49/53 integration notes.
+- [ ] Replace current upstream constructor for
+  `molecule_residual_fixed_point_uniqueness_direct_source`
+  (`molecule_residual_fixed_point_hybrid_class_collapse_source_direct`) with a
+  non-`molecule_h_norm` theorem-level source.
 
 ## Notes
 
@@ -77,3 +79,9 @@ Last Updated: 2026-03-04
     frontier unchanged; the rewired zero-arg theorems above and
     `molecule_residual_fixed_point_uniqueness_source_direct` still carry
     `Molecule.molecule_h_norm`.
+- Checkpoint (2026-03-04, base direct-source cutover):
+  - rewired `molecule_residual_fixed_point_uniqueness_source_direct` itself to
+    route via `MoleculeResidualFixedPointUniquenessDirectSource`.
+  - current frontier is unchanged (`Molecule.molecule_h_norm` only), now
+    concentrated at:
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_direct`.

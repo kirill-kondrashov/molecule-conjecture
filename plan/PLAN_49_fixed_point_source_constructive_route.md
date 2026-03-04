@@ -150,6 +150,11 @@ Last Updated: 2026-03-04
     through current fixed-data/uniqueness/transport sources.
 - This plan now runs in parallel with PLAN_62 (upstream map-uniqueness source
   replacement) after PLAN_61 was archived as stuck.
+- PLAN_62 integration checkpoint (2026-03-04):
+  - zero-arg map/hybrid uniqueness seams are now routed through
+    `MoleculeResidualFixedPointUniquenessDirectSource`;
+  - residual uniqueness-side blocker is concentrated at
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_direct`.
 - Sub-plan linkage:
   - model-level witness bottleneck is tracked explicitly in
     `PLAN_53_fixed_point_model_bottleneck_refactor.md`.

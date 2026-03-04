@@ -81,3 +81,8 @@ Last Updated: 2026-03-04
   orbit-debt composition seams are ground-axiom-only modulo source inputs.
   - transport-wrapped integration seam is ground-axiom-only modulo source
     inputs.
+- PLAN_62 integration checkpoint (2026-03-04):
+  - zero-arg map/hybrid uniqueness seams are now routed through
+    `MoleculeResidualFixedPointUniquenessDirectSource`;
+  - residual uniqueness-side blocker is concentrated at
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_direct`.
