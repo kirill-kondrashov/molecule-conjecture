@@ -6103,6 +6103,94 @@ theorem molecule_residual_anchor_witness_zero_arg_source_iff_fixed_point_uniquen
       molecule_residual_direct_seam_anchor_source_iff_fixed_point_uniqueness_source
 
 /--
+PLAN_76 candidate interface A:
+zero-arg source for the direct-contract cutover source pack.
+-/
+def MoleculeResidualAnchorWitnessDirectContractCutoverSource : Prop :=
+  MoleculeResidualDirectContractCutoverSources
+
+/--
+Build PLAN_75 zero-arg anchor-witness source from the PLAN_76 direct-contract
+cutover source interface.
+-/
+theorem molecule_residual_anchor_witness_zero_arg_source_of_direct_contract_cutover_source
+    (h_cutover : MoleculeResidualAnchorWitnessDirectContractCutoverSource) :
+    MoleculeResidualAnchorWitnessZeroArgSource := by
+  exact
+    (molecule_residual_anchor_witness_zero_arg_source_iff_direct_seam_anchor_source).2
+      (molecule_residual_direct_seam_anchor_source_of_direct_contract_cutover_sources
+        h_cutover)
+
+/--
+Build the PLAN_76 direct-contract cutover source interface from the PLAN_75
+zero-arg anchor-witness source, given canonical fixed-point data.
+-/
+theorem molecule_residual_anchor_witness_direct_contract_cutover_source_of_canonical_and_zero_arg_source
+    (h_canonical : CanonicalFastFixedPointData)
+    (h_source : MoleculeResidualAnchorWitnessZeroArgSource) :
+    MoleculeResidualAnchorWitnessDirectContractCutoverSource := by
+  have h_anchor : MoleculeResidualDirectSeamAnchorSource :=
+    (molecule_residual_anchor_witness_zero_arg_source_iff_direct_seam_anchor_source).1
+      h_source
+  have h_unique_direct : MoleculeResidualFixedPointUniquenessDirectSource :=
+    molecule_residual_fixed_point_uniqueness_direct_source_of_anchor_source
+      h_anchor
+  exact
+    molecule_residual_direct_contract_cutover_sources_of_canonical_and_direct_of_canonical
+      h_canonical
+      (fun _ => h_unique_direct)
+
+/--
+Build the PLAN_76 direct-contract cutover source interface from the PLAN_75
+zero-arg anchor-witness source.
+-/
+theorem molecule_residual_anchor_witness_direct_contract_cutover_source_of_zero_arg_source
+    (h_source : MoleculeResidualAnchorWitnessZeroArgSource) :
+    MoleculeResidualAnchorWitnessDirectContractCutoverSource := by
+  exact
+    molecule_residual_anchor_witness_direct_contract_cutover_source_of_canonical_and_zero_arg_source
+    canonical_fast_fixed_point_data_from_bounds
+    h_source
+
+/--
+PLAN_76 candidate A certificate (canonical-parametric):
+under a canonical fixed-point witness, the zero-arg anchor-witness source
+target is equivalent to the direct-contract cutover source interface.
+-/
+theorem molecule_residual_anchor_witness_zero_arg_source_iff_direct_contract_cutover_source_of_canonical
+    (h_canonical : CanonicalFastFixedPointData) :
+    MoleculeResidualAnchorWitnessZeroArgSource ↔
+      MoleculeResidualAnchorWitnessDirectContractCutoverSource := by
+  constructor
+  · intro h_source
+    exact
+      molecule_residual_anchor_witness_direct_contract_cutover_source_of_canonical_and_zero_arg_source
+        h_canonical
+        h_source
+  · intro h_cutover
+    exact
+      molecule_residual_anchor_witness_zero_arg_source_of_direct_contract_cutover_source
+        h_cutover
+
+/--
+PLAN_76 candidate A certificate:
+the zero-arg anchor-witness source target is equivalent to the direct-contract
+cutover source interface.
+-/
+theorem molecule_residual_anchor_witness_zero_arg_source_iff_direct_contract_cutover_source :
+    MoleculeResidualAnchorWitnessZeroArgSource ↔
+      MoleculeResidualAnchorWitnessDirectContractCutoverSource := by
+  constructor
+  · intro h_source
+    exact
+      molecule_residual_anchor_witness_direct_contract_cutover_source_of_zero_arg_source
+        h_source
+  · intro h_cutover
+    exact
+      molecule_residual_anchor_witness_zero_arg_source_of_direct_contract_cutover_source
+        h_cutover
+
+/--
 Current PLAN_75 zero-arg anchor-witness source theorem.
 -/
 theorem molecule_residual_anchor_witness_zero_arg_source :

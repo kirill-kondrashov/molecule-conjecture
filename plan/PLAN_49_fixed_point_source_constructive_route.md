@@ -163,6 +163,11 @@ Last Updated: 2026-03-04
   - targeted probes show this cutover remains `Molecule.molecule_h_norm`-backed
     at the zero-arg bundle level while parameterized propagation theorems stay
     ground-axiom-only.
+  - PLAN_76 candidate-A bridge/equivalence around
+    `MoleculeResidualAnchorWitnessDirectContractCutoverSource` is now explicit;
+    canonical-parametric conversion is ground-axiom-only, while unconditional
+    reverse conversion remains `Molecule.molecule_h_norm`-backed via
+    `canonical_fast_fixed_point_data_from_bounds`.
 - This plan now runs in parallel with PLAN_76 (non-h_norm anchor-witness
   bottleneck-break track) after PLAN_75 was archived as STUCK.
 - PLAN_62 archived integration checkpoint (2026-03-04):

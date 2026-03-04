@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [##--------] 20% |
+| PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#####-----] 50% |
 
 ## Dependency Map
 
@@ -81,6 +81,13 @@ Last Updated: 2026-03-04
     equivalence certificates to direct-seam-anchor and uniqueness contracts
     and is now archived as STUCK; active PLAN_76 track targets a non-
     `molecule_h_norm` zero-arg theorem for that source.
+  - PLAN_76 candidate-A checkpoint:
+    added `MoleculeResidualAnchorWitnessDirectContractCutoverSource` with
+    conversion/equivalence theorems around
+    `molecule_residual_anchor_witness_zero_arg_source`.
+    Canonical-parametric conversion is ground-axiom-only; unconditional reverse
+    conversion still carries `Molecule.molecule_h_norm` through
+    `canonical_fast_fixed_point_data_from_bounds`.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -896,9 +903,18 @@ Last Updated: 2026-03-04
   - Opened successor bottleneck-break track after archiving PLAN_75 as STUCK.
   - Active goal is a genuinely new non-`molecule_h_norm` zero-arg source
     theorem for `MoleculeResidualAnchorWitnessZeroArgSource`.
+  - Candidate A added:
+    `MoleculeResidualAnchorWitnessDirectContractCutoverSource`, with
+    canonical-parametric bridge/equivalence theorems.
+  - Targeted probes confirm the canonical-parametric bridge/equivalence is
+    ground-axiom-only.
+  - Remaining PLAN_76 blocker is now explicit:
+    unconditional reverse conversion still uses
+    `canonical_fast_fixed_point_data_from_bounds` and therefore
+    `Molecule.molecule_h_norm`.
   - Route status:
-    interface/equivalence inheritance [########--] 80%,
-    new zero-arg source theorem [#---------] 10%,
+    interface/equivalence inheritance [#########-] 90%,
+    new zero-arg source theorem [###-------] 30%,
     breakout/top-level cutover [#---------] 10%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.

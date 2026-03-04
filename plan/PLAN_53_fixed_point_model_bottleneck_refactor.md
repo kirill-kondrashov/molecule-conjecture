@@ -195,3 +195,8 @@ Last Updated: 2026-03-04
 - PLAN_74/75/76 checkpoint (2026-03-04):
   - active bottleneck is now explicit replacement of `molecule_h_unique`-driven
     anchor proof route without `molecule_h_norm`.
+  - PLAN_76 candidate-A bridge/equivalence around
+    `MoleculeResidualAnchorWitnessDirectContractCutoverSource` is now explicit;
+    canonical-parametric conversion is ground-axiom-only, while unconditional
+    reverse conversion remains `Molecule.molecule_h_norm`-backed via
+    `canonical_fast_fixed_point_data_from_bounds`.
