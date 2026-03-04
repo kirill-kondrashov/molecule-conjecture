@@ -1,6 +1,6 @@
 # PLAN 74 - Non-h_norm molecule_h_unique Replacement
 
-Status: ACTIVE
+Status: STUCK
 Progress: [#####-----] 50%
 Scope: Replace the current `molecule_h_unique`-driven anchor proof route with a non-circular, non-`molecule_h_norm` theorem-level uniqueness witness that can discharge `MoleculeResidualDirectSeamAnchorSource`.
 Acceptance:
@@ -18,6 +18,8 @@ Acceptance:
 Dependencies: `Molecule/Conjecture.lean`, `Molecule/RenormalizationFixedPointUniqueness.lean`, `Molecule/FeigenbaumFixedPoint.lean`, `Molecule/FixedPointExistence.lean`, `plan/ARCHIVE_stuck_2026-03-04_PLAN_73_non_h_norm_anchor_early_witness_replacement.md`, `plan/PLAN_49_fixed_point_source_constructive_route.md`, `plan/PLAN_53_fixed_point_model_bottleneck_refactor.md`
 Stuck Rule: STUCK if every candidate uniqueness/anchor theorem still reduces to `molecule_h_unique` or equivalent `molecule_h_norm`-backed seams.
 Last Updated: 2026-03-04
+
+Superseded By: `plan/PLAN_75_non_h_norm_anchor_witness_source_cutover.md`
 
 ## Work Plan
 
