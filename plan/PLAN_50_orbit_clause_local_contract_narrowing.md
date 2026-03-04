@@ -1,7 +1,7 @@
 # PLAN 50 - Orbit-Clause Local Contract Narrowing
 
 Status: ACTIVE
-Progress: [###-------] 30%
+Progress: [####------] 45%
 Scope: Replace the stalled global orbit-clause elimination route with a local-obligation route by narrowing orbit-clause interfaces around the exact obligations consumed in the residual bounds pipeline.
 Acceptance:
 1. Local orbit-clause seam theorem(s) compile and are wired into Conjecture/Problem4_3 interfaces without regressions.
@@ -17,7 +17,11 @@ Last Updated: 2026-03-04
   - `MoleculeOrbitClauseAt`
   - `molecule_orbit_clause_at_of_orbit_clause`
 - [x] Verify local orbit seam theorems are axiom-clean modulo ground axioms.
-- [ ] Thread local seam through residual-bounds-facing constructors where possible.
+- [x] Thread local seam through residual-bounds-facing constructors where possible.
+  - `molecule_h_orbit_at`
+  - `MoleculeResidualOrbitClauseAtSource`
+  - `molecule_residual_orbit_clause_source_of_local`
+  - `molecule_residual_orbit_clause_source := ..._of_local ...`
 - [ ] Isolate minimal local source contract that is non-circular with bounds construction.
 - [ ] Rebuild `molecule_residual_orbit_clause_source` from the narrowed local contract path.
 - [ ] Re-run `make build`, `make check`, and targeted `#print axioms` probes.
@@ -28,4 +32,7 @@ Last Updated: 2026-03-04
 - Current code status:
   - local seam added in `Molecule/Conjecture.lean`;
   - local seam axiom profile is ground-only (`propext`, `Classical.choice`, `Quot.sound`);
+  - local source constructor theorem (`molecule_residual_orbit_clause_source_of_local`)
+    is ground-only, while the current local source witness
+    (`molecule_residual_orbit_clause_at_source`) remains `molecule_h_norm`-backed;
   - top-level axiom frontier still includes `Molecule.molecule_h_norm`.

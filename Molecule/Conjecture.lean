@@ -1395,10 +1395,25 @@ theorem molecule_h_ps :
   refine ⟨D, subset_rfl, ⟨h_open⟩, ?_, h_crit⟩
   simp [PseudoInvariant]
 
+/--
+Current local orbit-obligation constructor (legacy ex-falso route).
+-/
+theorem molecule_h_orbit_at
+    (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ)
+    (_h_fixed : Rfast f_star = f_star)
+    (_h_renorm : IsFastRenormalizable f_star)
+    (_h_openD : IsOpen D)
+    (_h_openU : IsOpen U)
+    (_h_inU : f_star ∈ U)
+    (_h_cv : criticalValue f_star ∈ D) :
+    MoleculeOrbitClauseAt D U a b := by
+  intro n t f hn ht hf
+  exact False.elim molecule_h_norm_inconsistent
+
 theorem molecule_h_orbit :
   MoleculeOrbitClause := by
-  intro f_star D U a b h_fixed h_renorm h_openD h_openU h_inU h_cv n t f hn ht hf
-  exact False.elim molecule_h_norm_inconsistent
+  intro f_star D U a b h_fixed h_renorm h_openD h_openU h_inU h_cv
+  exact molecule_h_orbit_at f_star D U a b h_fixed h_renorm h_openD h_openU h_inU h_cv
 
 theorem molecule_orbit_only_data : MoleculeOrbitOnlyData where
   h_orbit := molecule_h_orbit
@@ -1433,6 +1448,33 @@ def MoleculeResidualOrbitClauseSource : Prop :=
   MoleculeOrbitClause
 
 /--
+Local orbit-obligation source seam for the orbit-clause component.
+-/
+def MoleculeResidualOrbitClauseAtSource : Prop :=
+  ∀ (f_star : BMol) (D : Set ℂ) (U : Set BMol) (a b : ℕ → ℕ),
+    Rfast f_star = f_star →
+    IsFastRenormalizable f_star →
+    IsOpen D → IsOpen U →
+    f_star ∈ U →
+    criticalValue f_star ∈ D →
+    MoleculeOrbitClauseAt D U a b
+
+/--
+Assemble orbit-clause source from the local orbit-obligation source seam.
+-/
+theorem molecule_residual_orbit_clause_source_of_local
+    (h_orbit_at : MoleculeResidualOrbitClauseAtSource) :
+    MoleculeResidualOrbitClauseSource :=
+  h_orbit_at
+
+/--
+Current local orbit-obligation source (legacy ex-falso route).
+-/
+theorem molecule_residual_orbit_clause_at_source :
+    MoleculeResidualOrbitClauseAtSource :=
+  molecule_h_orbit_at
+
+/--
 Assemble residual orbit-transport source from explicit pseudo-Siegel and
 orbit-clause sources.
 -/
@@ -1455,7 +1497,8 @@ Current orbit-clause source (still the residual `molecule_h_norm` carrier).
 -/
 theorem molecule_residual_orbit_clause_source :
     MoleculeResidualOrbitClauseSource :=
-  molecule_h_orbit
+  molecule_residual_orbit_clause_source_of_local
+    molecule_residual_orbit_clause_at_source
 
 /--
 Current residual orbit-transport source (legacy global-norm/ex-falso route).

@@ -46,7 +46,7 @@ Last Updated: 2026-03-04
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#####-----] 50% |
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [####------] 45% |
-| PLAN_50 | Orbit-clause local contract narrowing | ACTIVE | [###-------] 30% |
+| PLAN_50 | Orbit-clause local contract narrowing | ACTIVE | [####------] 45% |
 
 ## Dependency Map
 
@@ -171,7 +171,12 @@ Last Updated: 2026-03-04
   - Replaced stalled global-only orbit route with a local-contract narrowing route.
   - Introduced local seam primitives:
     `MoleculeOrbitClauseAt` and `molecule_orbit_clause_at_of_orbit_clause`.
-  - Verified local seam axiom profile is ground-only.
+  - Added local-source routing seam:
+    `MoleculeResidualOrbitClauseAtSource`,
+    `molecule_residual_orbit_clause_source_of_local`,
+    and rewired `molecule_residual_orbit_clause_source` through that seam.
+  - Verified local seam and source-constructor theorem axiom profiles are
+    ground-only; the current local witness theorem remains `molecule_h_norm`-backed.
   - Next target is wiring local orbit obligations into residual constructors so
     `molecule_residual_orbit_clause_source` can be rebuilt non-circularly.
 
