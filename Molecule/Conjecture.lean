@@ -2208,7 +2208,8 @@ Current fixed-point existence source (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_existence_source :
     MoleculeResidualFixedPointExistenceSource :=
-  renormalizable_fixed_exists_of_global_norm molecule_h_norm
+  molecule_residual_fixed_point_existence_source_of_bridge
+    molecule_residual_fixed_point_bridge_source
 
 /--
 Current fixed-point local-normalization transfer source (legacy global-norm route).
@@ -2350,8 +2351,8 @@ Current bundled ingredient source theorem (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_normalization_ingredients :
     MoleculeResidualFixedPointNormalizationIngredients :=
-  molecule_residual_fixed_point_normalization_ingredients_of_sources
-    molecule_residual_fixed_point_existence_source
+  molecule_residual_fixed_point_normalization_ingredients_of_bridge_and_transfer
+    molecule_residual_fixed_point_bridge_source
     molecule_residual_fixed_point_transfer_source
 
 /--

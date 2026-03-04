@@ -242,6 +242,18 @@ Last Updated: 2026-03-04
     `fixed_point_vbound_transfer_source_of_fixed_point_transfer_source`.
   - Targeted probe confirms these transfer decomposition/projection seams are
     axiom-clean modulo ground axioms.
+  - Cut over current fixed-point existence/ingredient theorem routing to
+    explicit `bridge + transfer` seam constructors:
+    `molecule_residual_fixed_point_existence_source` now routes via
+    `molecule_residual_fixed_point_existence_source_of_bridge`, and
+    `molecule_residual_fixed_point_normalization_ingredients` now routes via
+    `molecule_residual_fixed_point_normalization_ingredients_of_bridge_and_transfer`.
+  - Targeted probe confirms
+    `molecule_residual_fixed_point_normalization_ingredients_of_bridge_and_transfer`
+    remains axiom-clean modulo ground axioms; current
+    `molecule_residual_fixed_point_normalization_ingredients` and
+    `molecule_residual_non_ground_sources` still carry
+    `Molecule.molecule_h_norm`.
   - Next target is constructive replacement of:
     `molecule_residual_fixed_point_normalization_ingredients`.
 - `PLAN_53` progress:
