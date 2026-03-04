@@ -1,7 +1,7 @@
 # PLAN 49 - Constructive Fixed-Point Source Route
 
 Status: ACTIVE
-Progress: [##--------] 20%
+Progress: [###-------] 35%
 Scope: Eliminate `molecule_h_norm` from the fixed-point side of the residual source pipeline by replacing the current fixed-data/uniqueness seeds with constructive theorem-level sources.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_data_source` does not include `Molecule.molecule_h_norm`.
@@ -17,6 +17,8 @@ Last Updated: 2026-03-04
   - `MoleculeResidualFixedPointAssemblySources`
   - `molecule_residual_fixed_point_normalization_ingredients_of_fixed_point_assembly_sources`
 - [x] Verify narrowed fixed-point assembly seam theorems are axiom-clean modulo ground axioms.
+- [x] Inventory current constructors for fixed-point data/uniqueness and isolate
+  residual `molecule_h_norm` entry points.
 - [ ] Add constructive replacement theorem for `molecule_residual_fixed_point_data_source`.
 - [ ] Add constructive replacement theorem for `molecule_residual_fixed_point_uniqueness_source`.
 - [ ] Rebuild `molecule_residual_non_ground_sources` with constructive fixed-point source theorems.
@@ -25,4 +27,11 @@ Last Updated: 2026-03-04
 ## Notes
 
 - Current fixed-point source route is still global-norm/ex-falso backed.
+- Inventory result (2026-03-04):
+  - `molecule_residual_fixed_point_data_source` currently routes through
+    `molecule_h_fixed_data_direct`, which depends on
+    `renormalizable_fixed_exists_of_global_norm molecule_h_norm` and
+    `fixed_point_local_normalization_transfer_of_global_norm molecule_h_norm`.
+  - `molecule_residual_fixed_point_uniqueness_source` currently routes through
+    `molecule_h_unique`, which is `False.elim molecule_h_norm_inconsistent`.
 - This plan runs in parallel with PLAN_48 (orbit clause route).

@@ -46,7 +46,7 @@ Last Updated: 2026-03-04
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [####------] 40% |
 | PLAN_48 | Constructive orbit-clause route | ACTIVE | [###-------] 30% |
-| PLAN_49 | Constructive fixed-point source route | ACTIVE | [##--------] 20% |
+| PLAN_49 | Constructive fixed-point source route | ACTIVE | [###-------] 35% |
 
 ## Dependency Map
 
@@ -155,6 +155,9 @@ Last Updated: 2026-03-04
     `molecule_residual_fixed_point_normalization_ingredients_of_fixed_point_assembly_sources`.
   - Targeted axiom probe confirms these fixed-point assembly seam theorems are
     axiom-clean modulo ground axioms.
+  - Completed constructor inventory for fixed-point source route:
+    `molecule_residual_fixed_point_data_source` is currently global-norm backed,
+    and `molecule_residual_fixed_point_uniqueness_source` is currently ex-falso.
   - Next target is constructive replacement of:
     `molecule_residual_fixed_point_data_source` and
     `molecule_residual_fixed_point_uniqueness_source`.
