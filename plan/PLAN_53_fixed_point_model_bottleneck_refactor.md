@@ -154,3 +154,5 @@ Last Updated: 2026-03-04
     `molecule_residual_direct_seam_anchor_source_of_direct_source_breakout_sources`.
   - targeted probes confirm the new breakout-source declarations are
     ground-axiom-only.
+  - this yields a non-`molecule_h_norm` direct-source witness theorem under the
+    breakout interface.

@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_69 | Non-h_norm direct-source witness breakout | ACTIVE | [#####-----] 55% |
+| PLAN_69 | Non-h_norm direct-source witness breakout | ACTIVE | [#######---] 75% |
 
 ## Dependency Map
 
@@ -808,6 +808,9 @@ Last Updated: 2026-03-04
     these new breakout-source declarations are ground-axiom-only, while current
     `molecule_residual_fixed_point_uniqueness_direct_source` remains
     `Molecule.molecule_h_norm`-backed.
+  - Non-`molecule_h_norm` witness checkpoint:
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_direct_source_breakout_sources`
+    now provides a direct-source theorem under the breakout interface.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

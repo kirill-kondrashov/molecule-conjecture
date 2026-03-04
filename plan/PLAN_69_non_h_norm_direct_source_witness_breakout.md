@@ -1,7 +1,7 @@
 # PLAN 69 - Non-h_norm Direct-Source Witness Breakout
 
 Status: ACTIVE
-Progress: [#####-----] 55%
+Progress: [#######---] 75%
 Scope: Break out of the direct-source circular path by constructing a non-`molecule_h_norm` theorem for `MoleculeResidualFixedPointUniquenessDirectSource` (or stronger upstream source) that does not route through the current direct-source theorem.
 Acceptance:
 1. `#print axioms` for at least one theorem implementing one of:
@@ -28,7 +28,7 @@ Last Updated: 2026-03-04
   current direct-source contracts.
 - [x] Introduce minimal non-circular source interface for the winning upstream
   candidate.
-- [ ] Implement a non-`molecule_h_norm` witness theorem against that interface
+- [x] Implement a non-`molecule_h_norm` witness theorem against that interface
   and run targeted `#print axioms` probes.
 - [ ] Cut over direct/anchor zero-arg seams via the new witness theorem.
 
@@ -52,6 +52,9 @@ Last Updated: 2026-03-04
     `molecule_residual_fixed_point_uniqueness_direct_source_of_direct_source_breakout_sources`,
     `molecule_residual_direct_seam_anchor_source_of_direct_source_breakout_sources`.
   - targeted probes confirm these new declarations are ground-axiom-only.
+  - this yields a non-`molecule_h_norm` witness theorem for
+    `MoleculeResidualFixedPointUniquenessDirectSource` under the breakout
+    interface.
   - residual blocker is unchanged: current
     `molecule_residual_fixed_point_uniqueness_direct_source` remains
     `Molecule.molecule_h_norm`-backed.
