@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_74 | Non-h_norm molecule_h_unique replacement | ACTIVE | [##--------] 20% |
+| PLAN_74 | Non-h_norm molecule_h_unique replacement | ACTIVE | [#####-----] 50% |
 
 ## Dependency Map
 
@@ -61,6 +61,22 @@ Last Updated: 2026-03-04
 
 - `check_axioms` for `Molecule.molecule_conjecture_refined` currently reports:
   - `Molecule.molecule_h_norm`
+- Verification checkpoint (2026-03-04):
+  - `make build` and `make check` pass.
+  - targeted probes still include `Molecule.molecule_h_norm` in:
+    `molecule_residual_direct_seam_anchor_source`,
+    `molecule_residual_fixed_point_uniqueness_source`,
+    `molecule_residual_fixed_point_hybrid_class_collapse_source`,
+    `molecule_residual_direct_source_breakout_sources_via_direct_seam_anchor_witness_sources`,
+    `molecule_residual_fixed_point_normalization_ingredients`,
+    `molecule_residual_non_ground_sources`,
+    `molecule_residual_bounds_seed_free`,
+    and `molecule_conjecture_refined`.
+  - PLAN_74 route-inventory probes show the selected parameterized witness
+    propagation seams (including
+    `MoleculeResidualPlan74WinningRouteSources`) are ground-axiom-only;
+    current zero-arg PLAN_72/69 alias path is now routed through that bundle;
+    residual blocker remains the non-`molecule_h_norm` witness theorem itself.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.

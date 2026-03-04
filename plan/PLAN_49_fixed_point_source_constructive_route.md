@@ -80,7 +80,7 @@ Last Updated: 2026-03-04
   `molecule_residual_fixed_point_normalization_ingredients`.
 - [ ] Rebuild `molecule_residual_non_ground_sources` with constructive
   fixed-point ingredient source theorem.
-- [ ] Re-run `make build`, `make check`, and targeted `#print axioms` probes.
+- [x] Re-run `make build`, `make check`, and targeted `#print axioms` probes.
 
 ## Notes
 
@@ -148,6 +148,21 @@ Last Updated: 2026-03-04
   - transport-wrapped integration seam above is axiom-clean modulo ground
     axioms; current routed theorem still carries `Molecule.molecule_h_norm`
     through current fixed-data/uniqueness/transport sources.
+- Verification checkpoint (2026-03-04):
+  - `make build` and `make check` pass.
+  - targeted probes confirm:
+    - `molecule_residual_fixed_point_normalization_ingredients` still includes
+      `Molecule.molecule_h_norm`;
+    - `molecule_residual_non_ground_sources` still includes
+      `Molecule.molecule_h_norm`;
+    - top theorem frontier is unchanged (`Molecule.molecule_h_norm` only
+      project axiom).
+- PLAN_74 routing checkpoint (2026-03-04):
+  - current PLAN_72/69 zero-arg alias route is now routed through
+    `MoleculeResidualPlan74WinningRouteSources` in `Molecule/Conjecture.lean`;
+  - targeted probes show this cutover remains `Molecule.molecule_h_norm`-backed
+    at the zero-arg bundle level while parameterized propagation theorems stay
+    ground-axiom-only.
 - This plan now runs in parallel with PLAN_74 (non-h_norm molecule_h_unique
   replacement) after PLAN_73 was archived as stuck.
 - PLAN_62 archived integration checkpoint (2026-03-04):

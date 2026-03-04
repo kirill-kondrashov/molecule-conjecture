@@ -81,7 +81,7 @@ Last Updated: 2026-03-04
   - `molecule_residual_non_ground_sources` now consumes
     `molecule_residual_orbit_clause_for_fixed_data_source`.
 - [ ] Rebuild `molecule_residual_non_ground_sources` from constructive Track A + Track B outputs.
-- [ ] Re-run `make build`, `make check`, and targeted `#print axioms` probes.
+- [x] Re-run `make build`, `make check`, and targeted `#print axioms` probes.
 - [ ] Mark plan DONE only when all acceptance checks pass.
 
 ## Notes
@@ -91,3 +91,11 @@ Last Updated: 2026-03-04
 - Current frontier from targeted axiom probe:
   - `molecule_residual_non_ground_sources` still carries `Molecule.molecule_h_norm`.
   - Downstream narrowed assembly theorems are already axiom-clean under source inputs.
+- Verification checkpoint (2026-03-04):
+  - `make build` and `make check` pass.
+  - `#print axioms` probes confirm:
+    - `molecule_residual_bounds_seed_free_of_bounds_assembly_sources` is ground-axiom-only.
+    - `molecule_residual_bounds_seed_free_of_non_ground_sources` is ground-axiom-only.
+    - `molecule_residual_non_ground_sources`,
+      `molecule_residual_bounds_seed_free`,
+      and `molecule_conjecture_refined` still include `Molecule.molecule_h_norm`.

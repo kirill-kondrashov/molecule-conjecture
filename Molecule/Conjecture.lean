@@ -5888,6 +5888,57 @@ theorem molecule_residual_direct_seam_anchor_witness_sources_iff_direct_seam_anc
         h_anchor
 
 /--
+PLAN_74 winning-route source bundle:
+- canonical fixed-point data for breakout assembly, and
+- direct-seam-anchor witness source data.
+-/
+structure MoleculeResidualPlan74WinningRouteSources : Prop where
+  canonical : CanonicalFastFixedPointData
+  anchorWitness : MoleculeResidualDirectSeamAnchorSourceWitnessSources
+
+/--
+Assemble PLAN_74 winning-route sources from canonical and anchor-witness data.
+-/
+theorem molecule_residual_plan74_winning_route_sources_of_canonical_and_anchor_witness
+    (h_canonical : CanonicalFastFixedPointData)
+    (h_anchor : MoleculeResidualDirectSeamAnchorSourceWitnessSources) :
+    MoleculeResidualPlan74WinningRouteSources :=
+  ⟨h_canonical, h_anchor⟩
+
+/--
+Project map-level hybrid-class-collapse source from PLAN_74 winning-route
+sources.
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_source_of_plan74_winning_route_sources
+    (h_sources : MoleculeResidualPlan74WinningRouteSources) :
+    MoleculeResidualFixedPointHybridClassCollapseSource :=
+  molecule_residual_fixed_point_hybrid_class_collapse_source_direct_of_source
+    (molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_anchor_source
+      (molecule_residual_direct_seam_anchor_source_of_direct_seam_anchor_witness_sources
+        h_sources.anchorWitness))
+
+/--
+Project PLAN_69 breakout sources from PLAN_74 winning-route sources.
+-/
+theorem molecule_residual_direct_source_breakout_sources_of_plan74_winning_route_sources
+    (h_sources : MoleculeResidualPlan74WinningRouteSources) :
+    MoleculeResidualDirectSourceBreakoutSources :=
+  molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct
+    h_sources.canonical
+    (molecule_residual_direct_seam_anchor_source_of_direct_seam_anchor_witness_sources
+      h_sources.anchorWitness)
+
+/--
+Current PLAN_74 winning-route source bundle.
+-/
+theorem molecule_residual_plan74_winning_route_sources :
+    MoleculeResidualPlan74WinningRouteSources :=
+  molecule_residual_plan74_winning_route_sources_of_canonical_and_anchor_witness
+    canonical_fast_fixed_point_data_from_bounds
+    (molecule_residual_direct_seam_anchor_witness_sources_of_direct_seam_anchor_source
+      molecule_residual_direct_seam_anchor_source)
+
+/--
 Assemble PLAN_72 witness sources from map-level uniqueness source data.
 -/
 theorem molecule_residual_direct_seam_anchor_witness_sources_of_uniqueness_source
@@ -5978,17 +6029,15 @@ source theorem.
 -/
 theorem molecule_residual_direct_seam_anchor_source_witness_sources :
     MoleculeResidualDirectSeamAnchorSourceWitnessSources :=
-  molecule_residual_direct_seam_anchor_witness_sources_of_direct_seam_anchor_source
-    molecule_residual_direct_seam_anchor_source
+  molecule_residual_plan74_winning_route_sources.anchorWitness
 
 /--
 Current PLAN_69 breakout-source theorem routed through PLAN_72 witness sources.
 -/
 theorem molecule_residual_direct_source_breakout_sources_via_direct_seam_anchor_witness_sources :
     MoleculeResidualDirectSourceBreakoutSources :=
-  molecule_residual_direct_source_breakout_sources_of_canonical_and_direct_seam_anchor_witness_sources
-    canonical_fast_fixed_point_data_from_bounds
-    molecule_residual_direct_seam_anchor_source_witness_sources
+  molecule_residual_direct_source_breakout_sources_of_plan74_winning_route_sources
+    molecule_residual_plan74_winning_route_sources
 
 /--
 Current PLAN_72 witness-source theorem routed from current map-level uniqueness
