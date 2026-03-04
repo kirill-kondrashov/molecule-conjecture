@@ -1,7 +1,7 @@
 # PLAN 62 - Upstream Map-Uniqueness Source Replacement
 
-Status: ACTIVE
-Progress: [#########-] 94%
+Status: STUCK (ARCHIVED)
+Progress: [##########] 100%
 Scope: Replace `molecule_residual_fixed_point_uniqueness_source_direct` with a non-`molecule_h_norm` theorem-level constructor from upstream fixed-point tracks, then feed that constructor into PLAN_61 replacement seams.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_uniqueness_source_direct` does not include `Molecule.molecule_h_norm`.
@@ -99,3 +99,16 @@ Last Updated: 2026-03-04
     `molecule_residual_fixed_point_hybrid_class_collapse_source_direct_of_source`
     is ground-axiom-only; current direct-source/collapse-source theorems remain
     `Molecule.molecule_h_norm`-backed.
+- Final stuck check (2026-03-04):
+  - available constructors for
+    `MoleculeResidualFixedPointHybridClassCollapseSource` in the current code:
+    1. `molecule_residual_fixed_point_hybrid_class_collapse_direct_source`
+       (depends on `Molecule.molecule_h_norm`);
+    2. `molecule_residual_fixed_point_hybrid_class_collapse_source_of_uniqueness_source`
+       (requires map-level uniqueness source);
+    3. `molecule_residual_fixed_point_hybrid_class_collapse_source_of_hybrid_unique_fixed_point_source`
+       (reduces to the same uniqueness bottleneck under active bounds/canonical
+       route).
+  - no non-circular non-`molecule_h_norm` constructor remains inside PLAN_62
+    seam rewiring scope. Successor work must prove a new upstream collapse/uniqueness
+    theorem-level source (tracked in PLAN_63).

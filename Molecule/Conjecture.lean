@@ -2695,6 +2695,32 @@ theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_sou
     h_class_unique
 
 /--
+Project map-level hybrid-class collapse source from hybrid-class fixed-point
+uniqueness.
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_source_of_hybrid_class_uniqueness_source
+    (h_class_unique : MoleculeResidualHybridClassFixedPointUniquenessSource) :
+    MoleculeResidualFixedPointHybridClassCollapseSource := by
+  intro f1 f2 h_fix1 h_renorm1 h_fix2 h_renorm2
+  exact
+    h_class_unique (toHybridClass f1) (toHybridClass f2)
+      ⟨h_renorm1, by simpa [R_hybrid, toHybridClass] using h_fix1⟩
+      ⟨h_renorm2, by simpa [R_hybrid, toHybridClass] using h_fix2⟩
+
+/--
+Project map-level hybrid-class collapse source from hybrid-class-uniqueness
+model-collapse input.
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_source_of_hybrid_class_uniqueness_model_collapse_source
+    (h_model_collapse : MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource) :
+    MoleculeResidualFixedPointHybridClassCollapseSource :=
+  molecule_residual_fixed_point_hybrid_class_collapse_source_of_hybrid_class_uniqueness_source
+    (molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_model_sources
+      (molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_lifted_sources
+        h_model_collapse
+        molecule_residual_lifted_hybrid_class_fixed_point_lift_source))
+
+/--
 Build uniqueness from hybrid-class collapse using fixed-point rigidity in a
 hybrid class.
 -/
@@ -2972,6 +2998,26 @@ theorem molecule_residual_fixed_point_hybrid_class_collapse_source_direct_of_sou
     (h_source : MoleculeResidualFixedPointHybridClassCollapseDirectSource) :
     MoleculeResidualFixedPointHybridClassCollapseSource :=
   h_source
+
+/--
+Build direct map-level hybrid-class-collapse seam from hybrid-class fixed-point
+uniqueness source assumptions.
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_hybrid_class_uniqueness_source
+    (h_class_unique : MoleculeResidualHybridClassFixedPointUniquenessSource) :
+    MoleculeResidualFixedPointHybridClassCollapseDirectSource :=
+  molecule_residual_fixed_point_hybrid_class_collapse_source_of_hybrid_class_uniqueness_source
+    h_class_unique
+
+/--
+Build direct map-level hybrid-class-collapse seam from hybrid-class-uniqueness
+model-collapse assumptions.
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_hybrid_class_uniqueness_model_collapse_source
+    (h_model_collapse : MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource) :
+    MoleculeResidualFixedPointHybridClassCollapseDirectSource :=
+  molecule_residual_fixed_point_hybrid_class_collapse_source_of_hybrid_class_uniqueness_model_collapse_source
+    h_model_collapse
 
 /--
 Current map-level hybrid-class-collapse source theorem, routed through the
