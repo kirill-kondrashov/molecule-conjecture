@@ -2794,6 +2794,21 @@ theorem residual_fixed_point_existence_of_refined_contract
 
 /--
 Assemble hybrid-class unique fixed-point source from canonical fixed-point data
+and seam-level collapse + lift sources.
+-/
+theorem molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_collapse_and_lift_sources
+    (h_canonical : CanonicalFastFixedPointData)
+    (h_collapse : MoleculeResidualHybridFixedPointCollapseSource)
+    (h_lift : MoleculeResidualHybridClassFixedPointLiftSource) :
+    MoleculeResidualHybridUniqueFixedPointSource :=
+  hybrid_unique_fixed_point_in_of_exists_and_collapse_and_lift
+    currentHybridProjectionSeam
+    h_canonical
+    h_collapse
+    h_lift
+
+/--
+Assemble hybrid-class unique fixed-point source from canonical fixed-point data
 and a hybrid-class fixed-point uniqueness source.
 -/
 theorem molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_uniqueness_source
@@ -2816,16 +2831,12 @@ theorem molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybr
     (h_canonical : CanonicalFastFixedPointData)
     (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
     MoleculeResidualHybridUniqueFixedPointSource := by
-  have h_class_unique :
-      MoleculeResidualHybridClassFixedPointUniquenessSource :=
-    molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_lift_source
+  exact
+    molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_collapse_and_lift_sources
+      h_canonical
       (molecule_residual_hybrid_fixed_point_collapse_source_of_hybrid_class_collapse_source
         h_collapse)
       molecule_residual_hybrid_class_fixed_point_lift_source
-  exact
-    molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_uniqueness_source
-      h_canonical
-      h_class_unique
 
 /--
 Assemble hybrid-class unique fixed-point source from canonical fixed-point data

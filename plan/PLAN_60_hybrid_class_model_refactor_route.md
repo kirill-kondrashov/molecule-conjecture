@@ -55,6 +55,7 @@ Last Updated: 2026-03-04
 - [x] Rewire `Molecule/Conjecture.lean` constructors to consume lift-based
   route:
   - `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_lift_source`
+  - `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_collapse_and_lift_sources`
   - `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_collapse_source`
   - current `molecule_residual_hybrid_class_fixed_point_uniqueness_source`.
 - [x] Introduce direct seam-level collapse source in `Molecule/Conjecture.lean`
