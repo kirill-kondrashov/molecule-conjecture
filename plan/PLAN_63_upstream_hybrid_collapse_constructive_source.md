@@ -1,7 +1,7 @@
 # PLAN 63 - Upstream Hybrid-Collapse Constructive Source
 
 Status: ACTIVE
-Progress: [###-------] 30%
+Progress: [#####-----] 45%
 Scope: Replace `molecule_residual_fixed_point_hybrid_class_collapse_direct_source` with a non-`molecule_h_norm` theorem-level constructor, then propagate that replacement through the already cut-over PLAN_62 seam path.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_fixed_point_hybrid_class_collapse_direct_source` does not include `Molecule.molecule_h_norm`.
@@ -51,4 +51,11 @@ Last Updated: 2026-03-04
     these constructors are ground-axiom-only (`propext`, `Classical.choice`,
     `Quot.sound`); current zero-arg
     `molecule_residual_fixed_point_hybrid_class_collapse_source_direct` remains
+    `Molecule.molecule_h_norm`-backed.
+- Checkpoint (2026-03-04, target equivalence sharpening):
+  - added theorem:
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_iff_hybrid_class_uniqueness_source`.
+  - probe result:
+    this equivalence theorem is ground-axiom-only; both current zero-arg
+    collapse source and zero-arg hybrid-class uniqueness source remain
     `Molecule.molecule_h_norm`-backed.

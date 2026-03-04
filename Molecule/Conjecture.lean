@@ -2898,6 +2898,22 @@ theorem molecule_residual_fixed_point_hybrid_class_collapse_source_iff_uniquenes
   · exact molecule_residual_fixed_point_hybrid_class_collapse_source_of_uniqueness_source
 
 /--
+The map-level hybrid-class-collapse source and hybrid-class fixed-point
+uniqueness source seams are equivalent.
+-/
+theorem molecule_residual_fixed_point_hybrid_class_collapse_source_iff_hybrid_class_uniqueness_source :
+    MoleculeResidualFixedPointHybridClassCollapseSource ↔
+      MoleculeResidualHybridClassFixedPointUniquenessSource := by
+  constructor
+  · intro h_collapse
+    exact
+      molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_lift_source
+        (molecule_residual_hybrid_fixed_point_collapse_source_of_hybrid_class_collapse_source
+          h_collapse)
+        molecule_residual_hybrid_class_fixed_point_lift_source
+  · exact molecule_residual_fixed_point_hybrid_class_collapse_source_of_hybrid_class_uniqueness_source
+
+/--
 Assemble canonical orbit-at debt source from transport + fixed-data + hybrid
 class collapse source seams.
 -/

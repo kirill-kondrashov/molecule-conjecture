@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_63 | Upstream hybrid-collapse constructive source | ACTIVE | [###-------] 30% |
+| PLAN_63 | Upstream hybrid-collapse constructive source | ACTIVE | [#####-----] 45% |
 
 ## Dependency Map
 
@@ -590,6 +590,11 @@ Last Updated: 2026-03-04
   - Probe checkpoint:
     these constructors are ground-axiom-only; current zero-arg direct collapse
     theorem remains `Molecule.molecule_h_norm`-backed.
+  - Added source-level equivalence sharpening theorem:
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_iff_hybrid_class_uniqueness_source`.
+  - Probe checkpoint:
+    this equivalence theorem is ground-axiom-only; current zero-arg collapse
+    and hybrid-class uniqueness sources remain `Molecule.molecule_h_norm`-backed.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
