@@ -161,3 +161,10 @@ Last Updated: 2026-03-04
   - active bottleneck is now upstream replacement of
     `MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource`
     without `molecule_h_norm`.
+  - introduced minimal interface:
+    `MoleculeResidualModelCollapseDirectSourceWitnessSources`.
+  - routed breakout-source assembly through this interface:
+    `molecule_residual_direct_source_breakout_sources_via_model_collapse_direct_witness_sources`.
+  - targeted probes confirm interface-level declarations are ground-axiom-only,
+    while current zero-arg interface witness remains
+    `Molecule.molecule_h_norm`-backed.

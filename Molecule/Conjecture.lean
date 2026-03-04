@@ -4781,6 +4781,74 @@ theorem molecule_residual_direct_source_breakout_sources_iff_model_collapse_dire
         h_model_collapse_direct
 
 /--
+Minimal upstream source interface for PLAN_70:
+explicit witness of the lifted-hybrid collapse seam.
+-/
+structure MoleculeResidualModelCollapseDirectSourceWitnessSources : Prop where
+  liftedHybridCollapse : MoleculeResidualLiftedHybridFixedPointCollapseSource
+
+/--
+Project model-collapse-direct source from PLAN_70 witness sources.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_of_model_collapse_direct_witness_sources
+    (h_sources : MoleculeResidualModelCollapseDirectSourceWitnessSources) :
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource :=
+  h_sources.liftedHybridCollapse
+
+/--
+Assemble PLAN_70 witness sources from model-collapse-direct source data.
+-/
+theorem molecule_residual_model_collapse_direct_witness_sources_of_model_collapse_direct_source
+    (h_model_collapse_direct :
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource) :
+    MoleculeResidualModelCollapseDirectSourceWitnessSources :=
+  ⟨h_model_collapse_direct⟩
+
+/--
+PLAN_70 witness-source interface is equivalent to model-collapse-direct source.
+-/
+theorem molecule_residual_model_collapse_direct_witness_sources_iff_model_collapse_direct_source :
+    MoleculeResidualModelCollapseDirectSourceWitnessSources ↔
+      MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource := by
+  constructor
+  · intro h_sources
+    exact
+      molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_of_model_collapse_direct_witness_sources
+        h_sources
+  · intro h_model_collapse_direct
+    exact
+      molecule_residual_model_collapse_direct_witness_sources_of_model_collapse_direct_source
+        h_model_collapse_direct
+
+/--
+Build PLAN_69 breakout sources from:
+- canonical fixed-point data, and
+- PLAN_70 model-collapse-direct witness sources.
+-/
+theorem molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct_witness_sources
+    (h_canonical : CanonicalFastFixedPointData)
+    (h_sources : MoleculeResidualModelCollapseDirectSourceWitnessSources) :
+    MoleculeResidualDirectSourceBreakoutSources :=
+  molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct
+    h_canonical
+    (molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_of_model_collapse_direct_witness_sources
+      h_sources)
+
+/--
+Build PLAN_69 breakout sources from:
+- refined data, and
+- PLAN_70 model-collapse-direct witness sources.
+-/
+theorem molecule_residual_direct_source_breakout_sources_of_refined_and_model_collapse_direct_witness_sources
+    (h_refined : MoleculeConjectureRefined)
+    (h_sources : MoleculeResidualModelCollapseDirectSourceWitnessSources) :
+    MoleculeResidualDirectSourceBreakoutSources :=
+  molecule_residual_direct_source_breakout_sources_of_refined_and_model_collapse_direct
+    h_refined
+    (molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_of_model_collapse_direct_witness_sources
+      h_sources)
+
+/--
 Under canonical fixed-point existence, hybrid-level unique-fixed-point source
 and map-level uniqueness source are equivalent.
 -/
@@ -5414,15 +5482,31 @@ theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_dir
   molecule_residual_direct_seam_anchor_source
 
 /--
+Current PLAN_70 witness-source theorem routed through the current
+model-collapse-direct source theorem.
+-/
+theorem molecule_residual_model_collapse_direct_witness_sources :
+    MoleculeResidualModelCollapseDirectSourceWitnessSources :=
+  molecule_residual_model_collapse_direct_witness_sources_of_model_collapse_direct_source
+    molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source
+
+/--
+Current PLAN_69 breakout-source theorem routed through PLAN_70 witness sources.
+-/
+theorem molecule_residual_direct_source_breakout_sources_via_model_collapse_direct_witness_sources :
+    MoleculeResidualDirectSourceBreakoutSources :=
+  molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct_witness_sources
+    canonical_fast_fixed_point_data_from_bounds
+    molecule_residual_model_collapse_direct_witness_sources
+
+/--
 Current PLAN_69 breakout-source theorem routed from:
 - current canonical fixed-point data theorem, and
 - current model-collapse-direct source theorem.
 -/
 theorem molecule_residual_direct_source_breakout_sources :
     MoleculeResidualDirectSourceBreakoutSources :=
-  molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct
-    canonical_fast_fixed_point_data_from_bounds
-    molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source
+  molecule_residual_direct_source_breakout_sources_via_model_collapse_direct_witness_sources
 
 /--
 Current anchor source theorem routed through PLAN_69 breakout sources.

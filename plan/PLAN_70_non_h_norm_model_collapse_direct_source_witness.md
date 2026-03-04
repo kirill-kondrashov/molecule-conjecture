@@ -1,7 +1,7 @@
 # PLAN 70 - Non-h_norm Model-Collapse-Direct Source Witness
 
 Status: ACTIVE
-Progress: [##--------] 20%
+Progress: [#######---] 75%
 Scope: Eliminate `molecule_h_norm` from the PLAN_69 breakout cutover by replacing the upstream theorem `MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource` with a non-circular, non-`molecule_h_norm` witness source.
 Acceptance:
 1. `#print axioms` for at least one theorem implementing one of:
@@ -23,11 +23,11 @@ Last Updated: 2026-03-04
 ## Work Plan
 
 - [x] Inherit PLAN_69 breakout cutover layer and obstruction checkpoints.
-- [ ] Enumerate upstream candidate theorem routes for
+- [x] Enumerate upstream candidate theorem routes for
   `MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource`
   that avoid current direct/anchor seam aliases.
-- [ ] Introduce a minimal source interface for the winning candidate route.
-- [ ] Implement a non-`molecule_h_norm` witness theorem against that interface
+- [x] Introduce a minimal source interface for the winning candidate route.
+- [x] Implement a non-`molecule_h_norm` witness theorem against that interface
   and run targeted `#print axioms` probes.
 - [ ] Cut over breakout zero-arg routes through the new witness theorem and
   verify axiom frontier improvement.
@@ -40,3 +40,20 @@ Last Updated: 2026-03-04
   `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source`.
 - Immediate target is now upstream replacement of that model-collapse-direct
   source theorem, not further rearrangement of direct-source wrappers.
+- New checkpoint (2026-03-04):
+  - introduced minimal upstream interface:
+    `MoleculeResidualModelCollapseDirectSourceWitnessSources`.
+  - added witness/interface equivalence layer:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_of_model_collapse_direct_witness_sources`,
+    `molecule_residual_model_collapse_direct_witness_sources_of_model_collapse_direct_source`,
+    `molecule_residual_model_collapse_direct_witness_sources_iff_model_collapse_direct_source`.
+  - routed PLAN_69 breakout-source construction through the PLAN_70 interface:
+    `molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct_witness_sources`,
+    `molecule_residual_direct_source_breakout_sources_via_model_collapse_direct_witness_sources`,
+    `molecule_residual_direct_source_breakout_sources`.
+  - targeted probes confirm interface-level theorems are ground-axiom-only.
+  - residual blocker remains:
+    current zero-arg interface witness
+    `molecule_residual_model_collapse_direct_witness_sources` is still
+    `Molecule.molecule_h_norm`-backed through
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source`.

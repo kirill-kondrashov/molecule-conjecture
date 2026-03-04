@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_70 | Non-h_norm model-collapse-direct source witness | ACTIVE | [##--------] 20% |
+| PLAN_70 | Non-h_norm model-collapse-direct source witness | ACTIVE | [#######---] 75% |
 
 ## Dependency Map
 
@@ -813,6 +813,19 @@ Last Updated: 2026-03-04
   - Active target is now upstream replacement of
     `MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource`
     without `molecule_h_norm`, then breakout cutover.
+  - Introduced minimal upstream interface:
+    `MoleculeResidualModelCollapseDirectSourceWitnessSources`.
+  - Added witness/interface equivalence layer:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_of_model_collapse_direct_witness_sources`,
+    `molecule_residual_model_collapse_direct_witness_sources_of_model_collapse_direct_source`,
+    `molecule_residual_model_collapse_direct_witness_sources_iff_model_collapse_direct_source`.
+  - Routed breakout-source construction through the new interface:
+    `molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct_witness_sources`,
+    `molecule_residual_direct_source_breakout_sources_via_model_collapse_direct_witness_sources`,
+    `molecule_residual_direct_source_breakout_sources`.
+  - Probe checkpoint:
+    interface-level theorems are ground-axiom-only; current zero-arg interface
+    witness remains `Molecule.molecule_h_norm`-backed.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
