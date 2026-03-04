@@ -1,6 +1,6 @@
 # PLAN 52 - Fixed-Point Renormalizability Witness Extraction
 
-Status: ACTIVE
+Status: STUCK (ARCHIVED 2026-03-04)
 Progress: [#######---] 70%
 Scope: Provide a non-circular theorem-level route to produce a renormalizable fixed-point witness for `Rfast` that can feed `MoleculeResidualFixedPointNormalizationIngredients` without using `molecule_h_norm`.
 Acceptance:
@@ -45,3 +45,7 @@ Last Updated: 2026-03-04
   - `molecule_residual_fixed_point_existence_source` and
     `molecule_residual_fixed_point_normalization_ingredients` are now routed
     through explicit `bridge + transfer` seams.
+  - Stuck reason: the new feasibility gate theorem
+    `no_fixed_point_implies_renormalizable` shows
+    `FixedPointImpliesRenormalizable` is false in the current model.
+    Continued work moved to `PLAN_53_fixed_point_model_bottleneck_refactor.md`.

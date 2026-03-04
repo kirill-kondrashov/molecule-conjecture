@@ -514,6 +514,18 @@ def FixedPointImpliesRenormalizable : Prop :=
   ∀ f : BMol, Rfast f = f → IsFastRenormalizable f
 
 /--
+Feasibility gate: in the current model this bridge contract is false, because
+`defaultBMol` is a fixed point of `Rfast` but is not fast-renormalizable.
+-/
+theorem no_fixed_point_implies_renormalizable :
+    ¬ FixedPointImpliesRenormalizable := by
+  intro h_bridge
+  have h_fixed_default : Rfast defaultBMol = defaultBMol := by
+    rw [Rfast]
+    simp [defaultBMol_not_renormalizable]
+  exact defaultBMol_not_renormalizable (h_bridge defaultBMol h_fixed_default)
+
+/--
 Global normalization implies the fixed-point renormalizability bridge contract.
 -/
 theorem fixed_point_implies_renormalizable_of_global_norm
@@ -1789,6 +1801,19 @@ theorem molecule_residual_fixed_point_normalization_ingredients_of_sources
 
 /--
 Construct fixed-point ingredients from:
+- fixed-point normalization data source, and
+- fixed-point local-normalization transfer source.
+-/
+theorem molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer
+    (h_fixed_data : MoleculeResidualFixedPointDataSource)
+    (h_transfer : MoleculeResidualFixedPointTransferSource) :
+    MoleculeResidualFixedPointNormalizationIngredients :=
+  molecule_residual_fixed_point_normalization_ingredients_of_sources
+    (renormalizable_fixed_exists_of_fixed_point_normalization_data h_fixed_data)
+    h_transfer
+
+/--
+Construct fixed-point ingredients from:
 - fixed-point renormalizability bridge source, and
 - fixed-point local-normalization transfer source.
 -/
@@ -1805,8 +1830,8 @@ Current bundled ingredient source theorem (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_normalization_ingredients :
     MoleculeResidualFixedPointNormalizationIngredients :=
-  molecule_residual_fixed_point_normalization_ingredients_of_bridge_and_transfer
-    molecule_residual_fixed_point_bridge_source
+  molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer
+    molecule_residual_fixed_point_data_source
     molecule_residual_fixed_point_transfer_source
 
 /--
