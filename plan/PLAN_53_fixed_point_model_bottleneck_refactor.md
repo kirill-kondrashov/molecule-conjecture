@@ -204,3 +204,7 @@ Last Updated: 2026-03-04
     from `canonical_fast_fixed_point_data_from_bounds` to the new canonical-data
     source seam; seam constructors from existence/data assumptions are
     ground-axiom-only.
+  - PLAN_76 step-2 refactor added canonical-parametric breakout constructor:
+    `molecule_residual_direct_source_breakout_sources_of_canonical_and_zero_arg_anchor_witness_source`,
+    which is ground-axiom-only in targeted probes; current zero-arg breakout
+    alias remains `Molecule.molecule_h_norm`-backed.

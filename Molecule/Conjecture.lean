@@ -6246,12 +6246,23 @@ theorem molecule_residual_plan74_winning_route_sources_of_canonical_and_zero_arg
 /--
 Current PLAN_69 breakout-source theorem routed through PLAN_72 witness sources.
 -/
-theorem molecule_residual_direct_source_breakout_sources_via_direct_seam_anchor_witness_sources :
+theorem molecule_residual_direct_source_breakout_sources_of_canonical_and_zero_arg_anchor_witness_source
+    (h_canonical : MoleculeResidualCanonicalFastFixedPointDataSource)
+    (h_source : MoleculeResidualAnchorWitnessZeroArgSource) :
     MoleculeResidualDirectSourceBreakoutSources :=
   molecule_residual_direct_source_breakout_sources_of_plan74_winning_route_sources
     (molecule_residual_plan74_winning_route_sources_of_canonical_and_zero_arg_anchor_witness_source
-      molecule_residual_canonical_fast_fixed_point_data_source
-      molecule_residual_anchor_witness_zero_arg_source)
+      h_canonical
+      h_source)
+
+/--
+Current PLAN_69 breakout-source theorem routed through PLAN_72 witness sources.
+-/
+theorem molecule_residual_direct_source_breakout_sources_via_direct_seam_anchor_witness_sources :
+    MoleculeResidualDirectSourceBreakoutSources :=
+  molecule_residual_direct_source_breakout_sources_of_canonical_and_zero_arg_anchor_witness_source
+    molecule_residual_canonical_fast_fixed_point_data_source
+    molecule_residual_anchor_witness_zero_arg_source
 
 /--
 Current PLAN_72 witness-source theorem routed from current map-level uniqueness

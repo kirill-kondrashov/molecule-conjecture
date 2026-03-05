@@ -49,7 +49,7 @@ Last Updated: 2026-03-04
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [######----] 60% |
+| PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#######---] 70% |
 
 ## Dependency Map
 
@@ -95,6 +95,12 @@ Last Updated: 2026-03-04
     to `molecule_residual_canonical_fast_fixed_point_data_source`; source
     constructors from existence/data assumptions are ground-axiom-only, but the
     active source theorem remains `Molecule.molecule_h_norm`-backed.
+  - PLAN_76 step-2 refactor checkpoint:
+    added canonical-parametric breakout constructor
+    `molecule_residual_direct_source_breakout_sources_of_canonical_and_zero_arg_anchor_witness_source`
+    and routed the current breakout alias through it.
+    Targeted probes show the constructor is ground-axiom-only, while the
+    zero-arg breakout alias remains `Molecule.molecule_h_norm`-backed.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -925,10 +931,13 @@ Last Updated: 2026-03-04
     currently routed through `molecule_residual_fixed_point_existence_source`
     and therefore
     `Molecule.molecule_h_norm`.
+  - Added canonical-parametric breakout constructor:
+    `molecule_residual_direct_source_breakout_sources_of_canonical_and_zero_arg_anchor_witness_source`,
+    and rerouted the current breakout alias through this seam.
   - Route status:
     interface/equivalence inheritance [#########-] 90%,
-    new zero-arg source theorem [####------] 40%,
-    breakout/top-level cutover [###-------] 30%.
+    new zero-arg source theorem [#####-----] 50%,
+    breakout/top-level cutover [####------] 40%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
