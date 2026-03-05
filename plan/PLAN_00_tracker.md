@@ -49,7 +49,7 @@ Last Updated: 2026-03-05
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [########--] 80% |
+| PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 85% |
 
 ## Dependency Map
 
@@ -108,6 +108,13 @@ Last Updated: 2026-03-05
     `molecule_residual_anchor_witness_direct_contract_cutover_source`.
     Targeted probes confirm this explicit cutover, with the residual
     `Molecule.molecule_h_norm` dependency unchanged.
+  - PLAN_76 step-4 refactor checkpoint:
+    added source-level constructors from canonical-data source + direct-
+    uniqueness source into cutover/zero-arg routes, and rebased the current
+    canonical-data source on fixed-point data source.
+    Targeted probes show these source-level constructors are ground-axiom-only,
+    while current zero-arg/breakout aliases remain `Molecule.molecule_h_norm`-
+    backed.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -944,10 +951,13 @@ Last Updated: 2026-03-05
   - Current zero-arg theorem is now routed through the PLAN_76 cutover-source
     seam via
     `molecule_residual_anchor_witness_direct_contract_cutover_source`.
+  - Added source-level constructors from canonical-data + direct-uniqueness
+    sources into cutover/zero-arg routes; these constructors are
+    ground-axiom-only in targeted probes.
   - Route status:
     interface/equivalence inheritance [#########-] 90%,
-    new zero-arg source theorem [######----] 60%,
-    breakout/top-level cutover [#####-----] 50%.
+    new zero-arg source theorem [#######---] 70%,
+    breakout/top-level cutover [######----] 60%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

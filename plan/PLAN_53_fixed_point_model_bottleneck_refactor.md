@@ -214,3 +214,8 @@ Last Updated: 2026-03-05
     `molecule_residual_anchor_witness_direct_contract_cutover_source`;
     targeted probes show the route is explicit but still
     `Molecule.molecule_h_norm`-backed.
+  - PLAN_76 step-4 refactor added source-level constructors from canonical-data
+    source + direct-uniqueness source into cutover/zero-arg routes, and rebased
+    current canonical-data source onto fixed-point data source; these
+    constructors are ground-axiom-only, while current zero-arg/breakout aliases
+    remain `Molecule.molecule_h_norm`-backed.

@@ -1,7 +1,7 @@
 # PLAN 76 - Non-h_norm Anchor Witness Bottleneck Break
 
 Status: ACTIVE
-Progress: [########--] 80%
+Progress: [#########-] 85%
 Scope: Break the PLAN_75 equivalence bottleneck by introducing a genuinely new zero-arg source theorem for `MoleculeResidualAnchorWitnessZeroArgSource` that does not depend on `Molecule.molecule_h_norm`, then propagate that cutover through breakout and top-level paths.
 Acceptance:
 1. `#print axioms` for the active zero-arg source theorem implementing
@@ -37,7 +37,13 @@ Last Updated: 2026-03-05
 - [x] Route the current zero-arg theorem
   `molecule_residual_anchor_witness_zero_arg_source` through the PLAN_76
   cutover-source seam.
+- [x] Add source-level constructors from:
+  - `MoleculeResidualCanonicalFastFixedPointDataSource`
+  - `MoleculeResidualFixedPointUniquenessDirectSource`
+  into both cutover-source and zero-arg source theorems.
 - [ ] Replace `molecule_residual_canonical_fast_fixed_point_data_source` with a
+  non-`molecule_h_norm` theorem-level source.
+- [ ] Replace `molecule_residual_fixed_point_uniqueness_direct_source` with a
   non-`molecule_h_norm` theorem-level source.
 - [ ] Replace `molecule_residual_anchor_witness_zero_arg_source` with a
   non-`molecule_h_norm` zero-arg theorem using the now-explicit canonical-
@@ -48,8 +54,8 @@ Last Updated: 2026-03-05
 | Route | Current State | Progress |
 |---|---|---|
 | PLAN_75 interface/equivalence inheritance | Complete and archived; zero-arg target interface and bottleneck equivalences are explicit and ground-axiom-only. | [#########-] 90% |
-| New non-`molecule_h_norm` zero-arg source theorem | Candidate A implemented (`MoleculeResidualAnchorWitnessDirectContractCutoverSource`) with ground-axiom-only canonical-parametric conversion/equivalence; current zero-arg theorem is now routed through the PLAN_76 cutover-source seam but remains `Molecule.molecule_h_norm`-backed. | [######----] 60% |
-| Breakout/top-level cutover via new theorem | Added canonical-parametric breakout constructor (`molecule_residual_direct_source_breakout_sources_of_canonical_and_zero_arg_anchor_witness_source`) and routed current alias through it; current zero-arg alias remains `Molecule.molecule_h_norm`-backed. | [#####-----] 50% |
+| New non-`molecule_h_norm` zero-arg source theorem | Candidate A implemented (`MoleculeResidualAnchorWitnessDirectContractCutoverSource`) with ground-axiom-only canonical-parametric conversion/equivalence; source-level constructors from canonical+direct-uniqueness into cutover/zero-arg routes are now explicit and ground-axiom-only, while the current zero-arg theorem remains `Molecule.molecule_h_norm`-backed. | [#######---] 70% |
+| Breakout/top-level cutover via new theorem | Added canonical-parametric breakout constructor (`molecule_residual_direct_source_breakout_sources_of_canonical_and_zero_arg_anchor_witness_source`) and routed current alias through it; route constructor is ground-axiom-only but current zero-arg alias remains `Molecule.molecule_h_norm`-backed. | [######----] 60% |
 
 ## Notes
 
@@ -104,5 +110,16 @@ Last Updated: 2026-03-05
       carries `Molecule.molecule_h_norm`.
     - `molecule_residual_direct_source_breakout_sources_of_canonical_and_zero_arg_anchor_witness_source`
       is ground-axiom-only.
+- New checkpoint (2026-03-05, step-4 attempt):
+  - Added source-level constructors:
+    `molecule_residual_anchor_witness_direct_contract_cutover_source_of_canonical_and_uniqueness_direct_source`,
+    `molecule_residual_anchor_witness_zero_arg_source_of_canonical_and_uniqueness_direct_source`.
+  - Rebased current canonical-data source onto fixed-point data source:
+    `molecule_residual_canonical_fast_fixed_point_data_source` now routes via
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_point_data_source`.
+  - Targeted probes:
+    - both new source-level constructors are ground-axiom-only;
+    - current canonical source, cutover source, zero-arg source, and breakout
+      alias still carry `Molecule.molecule_h_norm`.
 - Immediate milestone for PLAN_76 is to land one candidate theorem with a
   strictly improved axiom signature at the zero-arg source seam.
