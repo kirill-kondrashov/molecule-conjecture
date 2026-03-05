@@ -6142,6 +6142,15 @@ def MoleculeResidualAnchorWitnessDirectContractCutoverSource : Prop :=
   MoleculeResidualDirectContractCutoverSources
 
 /--
+PLAN_76 source bundle:
+- canonical fixed-point data source, and
+- map-level direct-uniqueness source.
+-/
+structure MoleculeResidualAnchorWitnessZeroArgSources : Prop where
+  canonical : MoleculeResidualCanonicalFastFixedPointDataSource
+  uniquenessDirect : MoleculeResidualFixedPointUniquenessDirectSource
+
+/--
 Build PLAN_75 zero-arg anchor-witness source from the PLAN_76 direct-contract
 cutover source interface.
 -/
@@ -6259,14 +6268,33 @@ theorem molecule_residual_anchor_witness_zero_arg_source_of_canonical_and_unique
       h_unique_direct)
 
 /--
+Build PLAN_75 zero-arg anchor-witness source from the PLAN_76 source bundle.
+-/
+theorem molecule_residual_anchor_witness_zero_arg_source_of_zero_arg_sources
+    (h_sources : MoleculeResidualAnchorWitnessZeroArgSources) :
+    MoleculeResidualAnchorWitnessZeroArgSource :=
+  molecule_residual_anchor_witness_zero_arg_source_of_canonical_and_uniqueness_direct_source
+    h_sources.canonical
+    h_sources.uniquenessDirect
+
+/--
+Current PLAN_76 source bundle feeding the zero-arg anchor-witness source route.
+-/
+theorem molecule_residual_anchor_witness_zero_arg_sources :
+    MoleculeResidualAnchorWitnessZeroArgSources :=
+  ⟨
+    molecule_residual_canonical_fast_fixed_point_data_source,
+    molecule_residual_fixed_point_uniqueness_direct_source
+  ⟩
+
+/--
 Current PLAN_75 zero-arg anchor-witness source theorem, routed through the
 PLAN_76 direct-contract cutover source seam.
 -/
 theorem molecule_residual_anchor_witness_zero_arg_source :
     MoleculeResidualAnchorWitnessZeroArgSource :=
-  molecule_residual_anchor_witness_zero_arg_source_of_canonical_and_uniqueness_direct_source
-    molecule_residual_canonical_fast_fixed_point_data_source
-    molecule_residual_fixed_point_uniqueness_direct_source
+  molecule_residual_anchor_witness_zero_arg_source_of_zero_arg_sources
+    molecule_residual_anchor_witness_zero_arg_sources
 
 /--
 Build PLAN_74 winning-route bundle from canonical fixed-point data and PLAN_75
@@ -6294,13 +6322,22 @@ theorem molecule_residual_direct_source_breakout_sources_of_canonical_and_zero_a
       h_source)
 
 /--
+Build PLAN_69 breakout source from the PLAN_76 source bundle.
+-/
+theorem molecule_residual_direct_source_breakout_sources_of_zero_arg_sources
+    (h_sources : MoleculeResidualAnchorWitnessZeroArgSources) :
+    MoleculeResidualDirectSourceBreakoutSources :=
+  molecule_residual_direct_source_breakout_sources_of_canonical_and_zero_arg_anchor_witness_source
+    h_sources.canonical
+    (molecule_residual_anchor_witness_zero_arg_source_of_zero_arg_sources h_sources)
+
+/--
 Current PLAN_69 breakout-source theorem routed through PLAN_72 witness sources.
 -/
 theorem molecule_residual_direct_source_breakout_sources_via_direct_seam_anchor_witness_sources :
     MoleculeResidualDirectSourceBreakoutSources :=
-  molecule_residual_direct_source_breakout_sources_of_canonical_and_zero_arg_anchor_witness_source
-    molecule_residual_canonical_fast_fixed_point_data_source
-    molecule_residual_anchor_witness_zero_arg_source
+  molecule_residual_direct_source_breakout_sources_of_zero_arg_sources
+    molecule_residual_anchor_witness_zero_arg_sources
 
 /--
 Current PLAN_72 witness-source theorem routed from current map-level uniqueness

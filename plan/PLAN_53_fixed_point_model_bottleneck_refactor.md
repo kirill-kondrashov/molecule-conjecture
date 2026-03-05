@@ -219,3 +219,7 @@ Last Updated: 2026-03-05
     current canonical-data source onto fixed-point data source; these
     constructors are ground-axiom-only, while current zero-arg/breakout aliases
     remain `Molecule.molecule_h_norm`-backed.
+  - PLAN_76 step-5 refactor added source bundle
+    `MoleculeResidualAnchorWitnessZeroArgSources` plus bundle-level zero-arg/
+    breakout constructors; these constructors are ground-axiom-only, while the
+    current bundle theorem remains `Molecule.molecule_h_norm`-backed.
