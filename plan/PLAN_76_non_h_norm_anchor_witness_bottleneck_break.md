@@ -43,6 +43,9 @@ Last Updated: 2026-03-05
   into both cutover-source and zero-arg source theorems.
 - [x] Introduce a dedicated PLAN_76 source bundle for the zero-arg route and
   route current zero-arg + breakout aliases through that bundle.
+- [x] Introduce explicit cutover-ingredients seam
+  (`canonical source` + `uniqueness-direct source`) with an `iff` certificate
+  to the cutover-source seam, and route current cutover through it.
 - [ ] Replace `molecule_residual_canonical_fast_fixed_point_data_source` with a
   non-`molecule_h_norm` theorem-level source.
 - [ ] Replace `molecule_residual_fixed_point_uniqueness_direct_source` with a
@@ -144,5 +147,17 @@ Last Updated: 2026-03-05
     both cutover-source constructors are ground-axiom-only; current cutover,
     bundle, zero-arg, and breakout aliases remain `Molecule.molecule_h_norm`-
     backed.
+- New checkpoint (2026-03-05, step-7 attempt):
+  - Added cutover-ingredients seam:
+    `MoleculeResidualAnchorWitnessCutoverIngredients`.
+  - Added constructors/equivalence:
+    `molecule_residual_anchor_witness_cutover_ingredients_of_direct_contract_cutover_source`,
+    `molecule_residual_anchor_witness_direct_contract_cutover_source_of_cutover_ingredients`,
+    `molecule_residual_anchor_witness_cutover_ingredients_iff_direct_contract_cutover_source`.
+  - Routed current cutover theorem through current cutover-ingredients theorem:
+    `molecule_residual_anchor_witness_cutover_ingredients`.
+  - Targeted probes:
+    the new constructors/equivalence are ground-axiom-only; current
+    cutover-ingredients theorem remains `Molecule.molecule_h_norm`-backed.
 - Immediate milestone for PLAN_76 is to land one candidate theorem with a
   strictly improved axiom signature at the zero-arg source seam.

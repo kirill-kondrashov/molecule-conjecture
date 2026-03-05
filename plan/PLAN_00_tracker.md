@@ -126,6 +126,13 @@ Last Updated: 2026-03-05
     Targeted probes show these constructors are ground-axiom-only, while
     current cutover/bundle/zero-arg/breakout aliases remain
     `Molecule.molecule_h_norm`-backed.
+  - PLAN_76 step-7 refactor checkpoint:
+    added explicit cutover-ingredients seam with an `iff` certificate to the
+    cutover-source seam, and routed current cutover theorem through current
+    cutover-ingredients theorem.
+    Targeted probes show the new constructors/equivalence are ground-axiom-
+    only, while current cutover-ingredients theorem remains
+    `Molecule.molecule_h_norm`-backed.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.

@@ -6142,6 +6142,15 @@ def MoleculeResidualAnchorWitnessDirectContractCutoverSource : Prop :=
   MoleculeResidualDirectContractCutoverSources
 
 /--
+PLAN_76 cutover-ingredients seam:
+- canonical fixed-point data source, and
+- map-level direct-uniqueness source.
+-/
+def MoleculeResidualAnchorWitnessCutoverIngredients : Prop :=
+  MoleculeResidualCanonicalFastFixedPointDataSource ∧
+    MoleculeResidualFixedPointUniquenessDirectSource
+
+/--
 PLAN_76 source bundle:
 - canonical fixed-point data source, and
 - map-level direct-uniqueness source.
@@ -6245,13 +6254,60 @@ theorem molecule_residual_anchor_witness_direct_contract_cutover_source_of_canon
     (fun _ => h_unique_direct)
 
 /--
+Project PLAN_76 cutover ingredients from the PLAN_76 direct-contract cutover
+source.
+-/
+theorem molecule_residual_anchor_witness_cutover_ingredients_of_direct_contract_cutover_source
+    (h_cutover : MoleculeResidualAnchorWitnessDirectContractCutoverSource) :
+    MoleculeResidualAnchorWitnessCutoverIngredients :=
+  ⟨h_cutover.canonicalData, h_cutover.directOfCanonical h_cutover.canonicalData⟩
+
+/--
+Build the PLAN_76 direct-contract cutover source from PLAN_76 cutover
+ingredients.
+-/
+theorem molecule_residual_anchor_witness_direct_contract_cutover_source_of_cutover_ingredients
+    (h_ingredients : MoleculeResidualAnchorWitnessCutoverIngredients) :
+    MoleculeResidualAnchorWitnessDirectContractCutoverSource :=
+  molecule_residual_anchor_witness_direct_contract_cutover_source_of_canonical_and_uniqueness_direct_source
+    h_ingredients.1
+    h_ingredients.2
+
+/--
+PLAN_76 cutover certificate:
+the cutover-ingredients seam is equivalent to the direct-contract cutover
+source.
+-/
+theorem molecule_residual_anchor_witness_cutover_ingredients_iff_direct_contract_cutover_source :
+    MoleculeResidualAnchorWitnessCutoverIngredients ↔
+      MoleculeResidualAnchorWitnessDirectContractCutoverSource := by
+  constructor
+  · intro h_ingredients
+    exact
+      molecule_residual_anchor_witness_direct_contract_cutover_source_of_cutover_ingredients
+        h_ingredients
+  · intro h_cutover
+    exact
+      molecule_residual_anchor_witness_cutover_ingredients_of_direct_contract_cutover_source
+        h_cutover
+
+/--
+Current PLAN_76 cutover-ingredients theorem.
+-/
+theorem molecule_residual_anchor_witness_cutover_ingredients :
+    MoleculeResidualAnchorWitnessCutoverIngredients :=
+  ⟨
+    molecule_residual_canonical_fast_fixed_point_data_source,
+    molecule_residual_fixed_point_uniqueness_direct_source
+  ⟩
+
+/--
 Current PLAN_75 zero-arg anchor-witness cutover-source theorem.
 -/
 theorem molecule_residual_anchor_witness_direct_contract_cutover_source :
     MoleculeResidualAnchorWitnessDirectContractCutoverSource :=
-  molecule_residual_anchor_witness_direct_contract_cutover_source_of_canonical_and_uniqueness_direct_source
-    molecule_residual_canonical_fast_fixed_point_data_source
-    molecule_residual_fixed_point_uniqueness_direct_source
+  molecule_residual_anchor_witness_direct_contract_cutover_source_of_cutover_ingredients
+    molecule_residual_anchor_witness_cutover_ingredients
 
 /--
 Build the PLAN_75 zero-arg anchor-witness source from:

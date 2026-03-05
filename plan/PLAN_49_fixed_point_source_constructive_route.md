@@ -195,6 +195,11 @@ Last Updated: 2026-03-05
     breakout aliases, with current bundle/breakout aliases routed through the
     cutover-source route; constructors are ground-axiom-only, while current
     aliases remain `Molecule.molecule_h_norm`-backed.
+  - PLAN_76 step-7 refactor added explicit cutover-ingredients seam with an
+    `iff` certificate to the cutover-source seam and routed current cutover
+    theorem through it; new constructors/equivalence are ground-axiom-only,
+    while current cutover-ingredients theorem remains
+    `Molecule.molecule_h_norm`-backed.
 - This plan now runs in parallel with PLAN_76 (non-h_norm anchor-witness
   bottleneck-break track) after PLAN_75 was archived as STUCK.
 - PLAN_62 archived integration checkpoint (2026-03-04):
