@@ -6225,10 +6225,20 @@ theorem molecule_residual_anchor_witness_zero_arg_source_iff_direct_contract_cut
 /--
 Current PLAN_75 zero-arg anchor-witness source theorem.
 -/
+theorem molecule_residual_anchor_witness_direct_contract_cutover_source :
+    MoleculeResidualAnchorWitnessDirectContractCutoverSource :=
+  molecule_residual_direct_contract_cutover_sources_of_canonical_and_direct_of_canonical
+    molecule_residual_canonical_fast_fixed_point_data_source
+    (fun _ => molecule_residual_fixed_point_uniqueness_direct_source)
+
+/--
+Current PLAN_75 zero-arg anchor-witness source theorem, routed through the
+PLAN_76 direct-contract cutover source seam.
+-/
 theorem molecule_residual_anchor_witness_zero_arg_source :
     MoleculeResidualAnchorWitnessZeroArgSource :=
-  molecule_residual_anchor_witness_zero_arg_source_of_direct_seam_anchor_source_witness_sources
-    molecule_residual_direct_seam_anchor_source_witness_sources
+  molecule_residual_anchor_witness_zero_arg_source_of_direct_contract_cutover_source
+    molecule_residual_anchor_witness_direct_contract_cutover_source
 
 /--
 Build PLAN_74 winning-route bundle from canonical fixed-point data and PLAN_75
