@@ -223,3 +223,7 @@ Last Updated: 2026-03-05
     `MoleculeResidualAnchorWitnessZeroArgSources` plus bundle-level zero-arg/
     breakout constructors; these constructors are ground-axiom-only, while the
     current bundle theorem remains `Molecule.molecule_h_norm`-backed.
+  - PLAN_76 step-6 refactor added cutover-source constructors into bundle and
+    breakout aliases, with current bundle/breakout aliases routed through the
+    cutover-source route; constructors are ground-axiom-only, while current
+    aliases remain `Molecule.molecule_h_norm`-backed.

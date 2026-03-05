@@ -120,6 +120,12 @@ Last Updated: 2026-03-05
     routed current zero-arg/breakout aliases through bundle-level constructors.
     Targeted probes show bundle constructors are ground-axiom-only, while the
     current bundle theorem remains `Molecule.molecule_h_norm`-backed.
+  - PLAN_76 step-6 refactor checkpoint:
+    added cutover-source constructors into bundle and breakout aliases, and
+    routed current bundle/breakout through the cutover-source route.
+    Targeted probes show these constructors are ground-axiom-only, while
+    current cutover/bundle/zero-arg/breakout aliases remain
+    `Molecule.molecule_h_norm`-backed.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -962,10 +968,12 @@ Last Updated: 2026-03-05
   - Added PLAN_76 source bundle
     `MoleculeResidualAnchorWitnessZeroArgSources` and bundle-level zero-arg/
     breakout constructors, with current aliases routed through this bundle.
+  - Added cutover-source constructors into bundle/breakout aliases and routed
+    current bundle/breakout aliases through the cutover-source route.
   - Route status:
     interface/equivalence inheritance [#########-] 90%,
-    new zero-arg source theorem [########--] 80%,
-    breakout/top-level cutover [#######---] 70%.
+    new zero-arg source theorem [#########-] 90%,
+    breakout/top-level cutover [########--] 80%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
