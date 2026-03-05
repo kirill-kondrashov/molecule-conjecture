@@ -49,7 +49,7 @@ Last Updated: 2026-03-05
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 90% |
+| PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 91% |
 
 ## Dependency Map
 
@@ -133,6 +133,13 @@ Last Updated: 2026-03-05
     Targeted probes show the new constructors/equivalence are ground-axiom-
     only, while current cutover-ingredients theorem remains
     `Molecule.molecule_h_norm`-backed.
+  - PLAN_76 step-8 refactor checkpoint:
+    added source-bundle/cutover-ingredients projections + equivalence, and
+    rerouted current source-bundle and breakout aliases through the
+    source-bundle route seeded by current cutover-ingredients theorem.
+    Targeted probes show these new seam constructors/equivalence are
+    ground-axiom-only, while current source-bundle/zero-arg/breakout/top-level
+    aliases remain `Molecule.molecule_h_norm`-backed.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -977,10 +984,12 @@ Last Updated: 2026-03-05
     breakout constructors, with current aliases routed through this bundle.
   - Added cutover-source constructors into bundle/breakout aliases and routed
     current bundle/breakout aliases through the cutover-source route.
+  - Added source-bundle/cutover-ingredients projections + equivalence, and
+    rerouted current source-bundle + breakout aliases through this seam.
   - Route status:
     interface/equivalence inheritance [#########-] 90%,
-    new zero-arg source theorem [#########-] 90%,
-    breakout/top-level cutover [########--] 80%.
+    new zero-arg source theorem [#########-] 91%,
+    breakout/top-level cutover [########--] 82%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

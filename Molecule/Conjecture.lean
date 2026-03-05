@@ -6345,12 +6345,45 @@ theorem molecule_residual_anchor_witness_zero_arg_sources_of_direct_contract_cut
   ⟩
 
 /--
+Project the PLAN_76 source bundle from PLAN_76 cutover ingredients.
+-/
+theorem molecule_residual_anchor_witness_zero_arg_sources_of_cutover_ingredients
+    (h_ingredients : MoleculeResidualAnchorWitnessCutoverIngredients) :
+    MoleculeResidualAnchorWitnessZeroArgSources :=
+  ⟨h_ingredients.1, h_ingredients.2⟩
+
+/--
+Project PLAN_76 cutover ingredients from the PLAN_76 source bundle.
+-/
+theorem molecule_residual_anchor_witness_cutover_ingredients_of_zero_arg_sources
+    (h_sources : MoleculeResidualAnchorWitnessZeroArgSources) :
+    MoleculeResidualAnchorWitnessCutoverIngredients :=
+  ⟨h_sources.canonical, h_sources.uniquenessDirect⟩
+
+/--
+PLAN_76 bundle certificate:
+the source-bundle seam is equivalent to the cutover-ingredients seam.
+-/
+theorem molecule_residual_anchor_witness_zero_arg_sources_iff_cutover_ingredients :
+    MoleculeResidualAnchorWitnessZeroArgSources ↔
+      MoleculeResidualAnchorWitnessCutoverIngredients := by
+  constructor
+  · intro h_sources
+    exact
+      molecule_residual_anchor_witness_cutover_ingredients_of_zero_arg_sources
+        h_sources
+  · intro h_ingredients
+    exact
+      molecule_residual_anchor_witness_zero_arg_sources_of_cutover_ingredients
+        h_ingredients
+
+/--
 Current PLAN_76 source bundle feeding the zero-arg anchor-witness source route.
 -/
 theorem molecule_residual_anchor_witness_zero_arg_sources :
     MoleculeResidualAnchorWitnessZeroArgSources :=
-  molecule_residual_anchor_witness_zero_arg_sources_of_direct_contract_cutover_source
-    molecule_residual_anchor_witness_direct_contract_cutover_source
+  molecule_residual_anchor_witness_zero_arg_sources_of_cutover_ingredients
+    molecule_residual_anchor_witness_cutover_ingredients
 
 /--
 Current PLAN_75 zero-arg anchor-witness source theorem, routed through the
@@ -6412,8 +6445,8 @@ Current PLAN_69 breakout-source theorem routed through PLAN_72 witness sources.
 -/
 theorem molecule_residual_direct_source_breakout_sources_via_direct_seam_anchor_witness_sources :
     MoleculeResidualDirectSourceBreakoutSources :=
-  molecule_residual_direct_source_breakout_sources_of_direct_contract_cutover_source
-    molecule_residual_anchor_witness_direct_contract_cutover_source
+  molecule_residual_direct_source_breakout_sources_of_zero_arg_sources
+    molecule_residual_anchor_witness_zero_arg_sources
 
 /--
 Current PLAN_72 witness-source theorem routed from current map-level uniqueness

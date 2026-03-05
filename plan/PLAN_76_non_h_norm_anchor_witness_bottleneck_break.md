@@ -1,7 +1,7 @@
 # PLAN 76 - Non-h_norm Anchor Witness Bottleneck Break
 
 Status: ACTIVE
-Progress: [#########-] 90%
+Progress: [#########-] 91%
 Scope: Break the PLAN_75 equivalence bottleneck by introducing a genuinely new zero-arg source theorem for `MoleculeResidualAnchorWitnessZeroArgSource` that does not depend on `Molecule.molecule_h_norm`, then propagate that cutover through breakout and top-level paths.
 Acceptance:
 1. `#print axioms` for the active zero-arg source theorem implementing
@@ -46,6 +46,8 @@ Last Updated: 2026-03-05
 - [x] Introduce explicit cutover-ingredients seam
   (`canonical source` + `uniqueness-direct source`) with an `iff` certificate
   to the cutover-source seam, and route current cutover through it.
+- [x] Add explicit source-bundle <-> cutover-ingredients equivalence, and
+  route current source-bundle/breakout aliases through that seam.
 - [ ] Replace `molecule_residual_canonical_fast_fixed_point_data_source` with a
   non-`molecule_h_norm` theorem-level source.
 - [ ] Replace `molecule_residual_fixed_point_uniqueness_direct_source` with a
@@ -59,8 +61,8 @@ Last Updated: 2026-03-05
 | Route | Current State | Progress |
 |---|---|---|
 | PLAN_75 interface/equivalence inheritance | Complete and archived; zero-arg target interface and bottleneck equivalences are explicit and ground-axiom-only. | [#########-] 90% |
-| New non-`molecule_h_norm` zero-arg source theorem | Candidate A implemented (`MoleculeResidualAnchorWitnessDirectContractCutoverSource`) with ground-axiom-only canonical-parametric conversion/equivalence; source-level and bundle-level constructors are explicit and ground-axiom-only, and current bundle theorem is now routed from cutover-source, but remains `Molecule.molecule_h_norm`-backed. | [#########-] 90% |
-| Breakout/top-level cutover via new theorem | Added canonical-parametric breakout constructor, bundle-level breakout constructor (`molecule_residual_direct_source_breakout_sources_of_zero_arg_sources`), and direct cutover-source breakout constructor (`molecule_residual_direct_source_breakout_sources_of_direct_contract_cutover_source`); current alias now routes through cutover-source, still `Molecule.molecule_h_norm`-backed. | [########--] 80% |
+| New non-`molecule_h_norm` zero-arg source theorem | Candidate A implemented (`MoleculeResidualAnchorWitnessDirectContractCutoverSource`) with ground-axiom-only canonical-parametric conversion/equivalence; source-level and bundle-level constructors are explicit and ground-axiom-only, and current bundle theorem now routes through cutover-ingredients, but remains `Molecule.molecule_h_norm`-backed. | [#########-] 91% |
+| Breakout/top-level cutover via new theorem | Added canonical-parametric breakout constructor, bundle-level breakout constructor (`molecule_residual_direct_source_breakout_sources_of_zero_arg_sources`), and direct cutover-source breakout constructor (`molecule_residual_direct_source_breakout_sources_of_direct_contract_cutover_source`); current alias now routes via current source-bundle theorem, still `Molecule.molecule_h_norm`-backed. | [########--] 82% |
 
 ## Notes
 
@@ -159,5 +161,20 @@ Last Updated: 2026-03-05
   - Targeted probes:
     the new constructors/equivalence are ground-axiom-only; current
     cutover-ingredients theorem remains `Molecule.molecule_h_norm`-backed.
+- New checkpoint (2026-03-05, step-8 attempt):
+  - Added source-bundle/cutover-ingredients seam projections and equivalence:
+    `molecule_residual_anchor_witness_zero_arg_sources_of_cutover_ingredients`,
+    `molecule_residual_anchor_witness_cutover_ingredients_of_zero_arg_sources`,
+    `molecule_residual_anchor_witness_zero_arg_sources_iff_cutover_ingredients`.
+  - Routed current source-bundle theorem
+    `molecule_residual_anchor_witness_zero_arg_sources` through current
+    cutover-ingredients theorem.
+  - Routed current breakout alias
+    `molecule_residual_direct_source_breakout_sources_via_direct_seam_anchor_witness_sources`
+    through current source-bundle theorem.
+  - Targeted probes:
+    new bundle/ingredients constructors and equivalence are ground-axiom-only;
+    current source-bundle, zero-arg, breakout, and top-level aliases remain
+    `Molecule.molecule_h_norm`-backed.
 - Immediate milestone for PLAN_76 is to land one candidate theorem with a
   strictly improved axiom signature at the zero-arg source seam.
