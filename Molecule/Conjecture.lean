@@ -3346,11 +3346,57 @@ theorem molecule_residual_fixed_point_transfer_source_of_fixed_data_and_unique
     h_unique
 
 /--
+PLAN_77 source pack for fixed-point transfer routed from explicit fixed-data
+and uniqueness inputs.
+-/
+structure MoleculeResidualFixedPointTransferModelSources where
+  fixedData : FixedPointNormalizationData
+  unique : MoleculeResidualFixedPointUniquenessSource
+
+/--
+Build PLAN_77 fixed-point transfer model sources from explicit fixed-data and
+uniqueness inputs.
+-/
+def molecule_residual_fixed_point_transfer_model_sources_of_fixed_data_and_unique
+    (h_fixed_data : FixedPointNormalizationData)
+    (h_unique : MoleculeResidualFixedPointUniquenessSource) :
+    MoleculeResidualFixedPointTransferModelSources :=
+  ⟨h_fixed_data, h_unique⟩
+
+/--
+Build fixed-point transfer source from PLAN_77 transfer model sources.
+-/
+theorem molecule_residual_fixed_point_transfer_source_of_model_sources
+    (h_sources : MoleculeResidualFixedPointTransferModelSources) :
+    MoleculeResidualFixedPointTransferSource :=
+  molecule_residual_fixed_point_transfer_source_of_fixed_data_and_unique
+    h_sources.fixedData
+    h_sources.unique
+
+/--
+Current PLAN_77 fixed-point transfer model sources theorem.
+-/
+def molecule_residual_fixed_point_transfer_model_sources :
+    MoleculeResidualFixedPointTransferModelSources :=
+  molecule_residual_fixed_point_transfer_model_sources_of_fixed_data_and_unique
+    molecule_h_fixed_data_direct
+    molecule_residual_fixed_point_uniqueness_source_direct
+
+/--
+Current fixed-point transfer source routed through PLAN_77 transfer model
+sources.
+-/
+theorem molecule_residual_fixed_point_transfer_source_via_model_sources :
+    MoleculeResidualFixedPointTransferSource :=
+  molecule_residual_fixed_point_transfer_source_of_model_sources
+    molecule_residual_fixed_point_transfer_model_sources
+
+/--
 Current fixed-point local-normalization transfer source theorem.
 -/
 theorem molecule_residual_fixed_point_transfer_source :
     MoleculeResidualFixedPointTransferSource :=
-  fixed_point_local_normalization_transfer_of_global_norm molecule_h_norm
+  molecule_residual_fixed_point_transfer_source_via_model_sources
 
 /--
 Current canonical fixed-data `V`-bound source routed via fixed-point transfer
@@ -3414,13 +3460,57 @@ theorem molecule_residual_fixed_point_data_source_of_sources
     h_transfer
 
 /--
+PLAN_77 source pack for fixed-point data routed from explicit existence and
+transfer inputs.
+-/
+structure MoleculeResidualFixedPointDataModelSources where
+  existence : MoleculeResidualFixedPointExistenceSource
+  transfer : MoleculeResidualFixedPointTransferSource
+
+/--
+Build PLAN_77 fixed-point data model sources from explicit existence and
+transfer inputs.
+-/
+def molecule_residual_fixed_point_data_model_sources_of_sources
+    (h_exists : MoleculeResidualFixedPointExistenceSource)
+    (h_transfer : MoleculeResidualFixedPointTransferSource) :
+    MoleculeResidualFixedPointDataModelSources :=
+  ⟨h_exists, h_transfer⟩
+
+/--
+Build fixed-point data source from PLAN_77 data model sources.
+-/
+theorem molecule_residual_fixed_point_data_source_of_model_sources
+    (h_sources : MoleculeResidualFixedPointDataModelSources) :
+    MoleculeResidualFixedPointDataSource :=
+  molecule_residual_fixed_point_data_source_of_sources
+    h_sources.existence
+    h_sources.transfer
+
+/--
+Current PLAN_77 fixed-point data model sources theorem.
+-/
+def molecule_residual_fixed_point_data_model_sources :
+    MoleculeResidualFixedPointDataModelSources :=
+  molecule_residual_fixed_point_data_model_sources_of_sources
+    molecule_residual_fixed_point_existence_source
+    molecule_residual_fixed_point_transfer_source
+
+/--
+Current residual fixed-point data source routed through PLAN_77 data model
+sources.
+-/
+theorem molecule_residual_fixed_point_data_source_via_model_sources :
+    MoleculeResidualFixedPointDataSource :=
+  molecule_residual_fixed_point_data_source_of_model_sources
+    molecule_residual_fixed_point_data_model_sources
+
+/--
 Current residual fixed-point data source (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_data_source :
     MoleculeResidualFixedPointDataSource :=
-  molecule_residual_fixed_point_data_source_of_sources
-    molecule_residual_fixed_point_existence_source
-    molecule_residual_fixed_point_transfer_source
+  molecule_residual_fixed_point_data_source_via_model_sources
 
 /--
 Assemble residual fixed-point-normalization ingredients from explicit existence

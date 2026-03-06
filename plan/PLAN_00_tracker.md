@@ -50,7 +50,7 @@ Last Updated: 2026-03-06
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
 | PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 92% |
-| PLAN_77 | Upstream model change for non-h_norm fixed-point sources | ACTIVE | [######----] 60% |
+| PLAN_77 | Upstream model change for non-h_norm fixed-point sources | ACTIVE | [#######---] 70% |
 
 ## Dependency Map
 
@@ -183,6 +183,16 @@ Last Updated: 2026-03-06
     through the upstream existence seam. Targeted probes show the constructor
     seam is ground-axiom-only, while active canonical/PLAN_76/top-level routes
     remain `Molecule.molecule_h_norm`-backed.
+  - PLAN_77 step-6 checkpoint:
+    added explicit transfer/data model-source seams
+    (`MoleculeResidualFixedPointTransferModelSources`,
+    `MoleculeResidualFixedPointDataModelSources`) and rerouted current
+    `molecule_residual_fixed_point_transfer_source` and
+    `molecule_residual_fixed_point_data_source` through those seams.
+    Targeted probes show the new constructors are ground-axiom-only, while the
+    remaining `Molecule.molecule_h_norm` frontier is now explicit on both the
+    uniqueness-side model-collapse value and the transfer/data-side source
+    values.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -1065,14 +1075,20 @@ Last Updated: 2026-03-06
     seam where declaration order permits.
   - Rerouted active canonical fixed-point data source through the upstream
     existence seam.
+  - Added explicit transfer/data model-source seams and rerouted current
+    transfer/data theorems through them:
+    `MoleculeResidualFixedPointTransferModelSources`,
+    `MoleculeResidualFixedPointDataModelSources`,
+    `molecule_residual_fixed_point_transfer_source_via_model_sources`,
+    `molecule_residual_fixed_point_data_source_via_model_sources`.
   - Targeted probes show these new constructors are ground-axiom-only; active
-    existence/uniqueness/canonical/top-level routes remain
+    existence/uniqueness/transfer/data/canonical/top-level routes remain
     `Molecule.molecule_h_norm`-backed.
   - Route status:
     obstruction inventory [###-------] 30%,
     existence-source replacement [####------] 40%,
     uniqueness-source replacement [###-------] 30%,
-    canonical-source replacement [##--------] 20%,
+    canonical/transfer-source replacement [###-------] 30%,
     PLAN_76 downstream readiness [########--] 80%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
