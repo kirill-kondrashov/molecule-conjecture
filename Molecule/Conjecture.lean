@@ -6303,6 +6303,45 @@ theorem molecule_residual_fixed_point_uniqueness_direct_source_via_model_sources
     molecule_residual_fixed_point_uniqueness_direct_model_sources
 
 /--
+Candidate PLAN_77 local-domain transfer source pack routed through the current
+local-witness pack and the model-sources direct-uniqueness seam.
+-/
+def molecule_residual_fixed_point_transfer_on_sources_via_local_witness_and_model_source_direct_uniqueness :
+    MoleculeResidualFixedPointTransferOnSources :=
+  molecule_residual_fixed_point_transfer_on_sources_of_local_witness_sources_and_uniqueness_source
+    molecule_residual_fixed_point_local_witness_sources
+    (molecule_residual_fixed_point_uniqueness_source_direct_of_source
+      molecule_residual_fixed_point_uniqueness_direct_source_via_model_sources)
+
+/--
+Candidate PLAN_77 fixed-point transfer source routed through local witness +
+model-sources direct uniqueness.
+-/
+theorem molecule_residual_fixed_point_transfer_source_via_local_witness_and_model_source_direct_uniqueness :
+    MoleculeResidualFixedPointTransferSource :=
+  molecule_residual_fixed_point_transfer_source_of_on_sources
+    molecule_residual_fixed_point_transfer_on_sources_via_local_witness_and_model_source_direct_uniqueness
+
+/--
+Candidate PLAN_77 fixed-point data source routed through existence + local
+witness + model-sources direct uniqueness.
+-/
+theorem molecule_residual_fixed_point_data_source_via_local_witness_and_model_source_direct_uniqueness :
+    MoleculeResidualFixedPointDataSource :=
+  molecule_residual_fixed_point_data_source_of_existence_and_transfer_on_sources
+    molecule_residual_fixed_point_existence_source
+    molecule_residual_fixed_point_transfer_on_sources_via_local_witness_and_model_source_direct_uniqueness
+
+/--
+Candidate PLAN_77 canonical fixed-point data source routed through the local
+witness + model-sources direct-uniqueness transfer/data path.
+-/
+theorem molecule_residual_canonical_fast_fixed_point_data_source_via_local_witness_and_model_source_direct_uniqueness :
+    MoleculeResidualCanonicalFastFixedPointDataSource :=
+  molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_point_data_source
+    molecule_residual_fixed_point_data_source_via_local_witness_and_model_source_direct_uniqueness
+
+/--
 Current hybrid-class unique fixed-point source theorem.
 -/
 theorem molecule_residual_hybrid_unique_fixed_point_source :

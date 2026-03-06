@@ -85,9 +85,9 @@ Last Updated: 2026-03-06
 |---|---|---|
 | Upstream model-obstruction inventory | Core contradictions and dependency hotspots are explicit and linked to source theorems. | [###-------] 30% |
 | Existence-source upstream replacement | Added restricted bridge-on source seam and existence constructor (`molecule_residual_fixed_point_existence_source_of_bridge_on`), then rerouted active `molecule_residual_fixed_point_existence_source` via bridge-on path; constructor seams are ground-axiom-only, active route is still `molecule_h_norm`-backed via current fixed-point data source. | [####------] 40% |
-| Local-domain transfer/data replacement | Active transfer/data theorems now route through an explicit local normalized-witness pack, then an invariant-set local-domain transfer source, with canonical `V`-bound/orbit debt consuming transfer-component seams. Constructor seams are ground-axiom-only, but the current local-domain witness/source values still inherit `molecule_h_norm`. | [######----] 60% |
+| Local-domain transfer/data replacement | Active transfer/data theorems now route through an explicit local normalized-witness pack, then an invariant-set local-domain transfer source, with a candidate route that also consumes the model-sources direct-uniqueness seam. Constructor seams are ground-axiom-only, but the current local-domain witness/source values still inherit `molecule_h_norm`. | [######----] 60% |
 | Lifted-seam model-collapse witness | Model-sources-based direct-uniqueness seam is in place and PLAN_76/downstream uniqueness consumers are cut over to it; remaining blocker is the current model-collapse value feeding that seam. | [##--------] 20% |
-| Canonical-first partial bypass | Canonical fast fixed-point data already routes through existence, and canonical `V`-bound/orbit debt now route through transfer-component seams; this lowers transfer-side debt visibility but does not yet remove the active upstream source values. | [###-------] 30% |
+| Canonical-first partial bypass | Canonical fast fixed-point data already routes through existence, canonical `V`-bound/orbit debt route through transfer-component seams, and there is now a candidate canonical route consuming the local-witness + model-sources direct-uniqueness path. This lowers transfer-side debt visibility but does not yet remove the active upstream source values. | [####------] 40% |
 | Model-restriction fallback inventory | Full-domain bridge/global-normalization obstruction is explicit; no restricted-model redesign has been implemented yet. | [#---------] 10% |
 | PLAN_76 downstream cutover readiness | PLAN_76 routing seams are mature; cutover-ingredients and downstream uniqueness consumers now consume model-sources-based direct uniqueness, and the active canonical source now consumes the upstream existence seam. Remaining blockers are the current uniqueness-side model-collapse value and transfer/data-side source values. | [########--] 80% |
 
@@ -232,3 +232,14 @@ Last Updated: 2026-03-06
     new local-witness constructors are ground-axiom-only; current local-
     witness/local-domain transfer/data routes remain `Molecule.molecule_h_norm`-
     backed.
+- New checkpoint (2026-03-06, step-10 attempt):
+  - Added candidate local-witness + model-source-direct-uniqueness transfer/data
+    route:
+    `molecule_residual_fixed_point_transfer_on_sources_via_local_witness_and_model_source_direct_uniqueness`,
+    `molecule_residual_fixed_point_transfer_source_via_local_witness_and_model_source_direct_uniqueness`,
+    `molecule_residual_fixed_point_data_source_via_local_witness_and_model_source_direct_uniqueness`,
+    `molecule_residual_canonical_fast_fixed_point_data_source_via_local_witness_and_model_source_direct_uniqueness`.
+  - Targeted probes:
+    candidate route still remains `Molecule.molecule_h_norm`-backed, but no
+    longer uses the legacy direct-uniqueness theorem on that branch; the
+    remaining blocker is concentrated in the current local-witness value.

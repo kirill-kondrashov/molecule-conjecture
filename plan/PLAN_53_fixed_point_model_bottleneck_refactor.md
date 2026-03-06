@@ -112,6 +112,13 @@ Last Updated: 2026-03-06
   - targeted probes show the new constructors are ground-axiom-only, while the
     active frontier remains `Molecule.molecule_h_norm`-backed through the
     current local-witness/current-uniqueness values.
+- New candidate-route checkpoint (2026-03-06):
+  - added a candidate local-witness + model-sources-direct-uniqueness
+    transfer/data/canonical route;
+  - targeted probes show this candidate still remains
+    `Molecule.molecule_h_norm`-backed, but it removes the legacy direct-
+    uniqueness theorem from that branch and leaves the blocker concentrated in
+    the current local-witness value.
 - PLAN_62 archived integration checkpoint (2026-03-04):
   - zero-arg map/hybrid uniqueness seams are now routed through
     `MoleculeResidualFixedPointUniquenessDirectSource`;

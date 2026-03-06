@@ -214,6 +214,11 @@ Last Updated: 2026-03-06
     the new constructors are ground-axiom-only; the active frontier remains
     `Molecule.molecule_h_norm`-backed through current local-witness/current-
     uniqueness values and the uniqueness-side model-collapse value.
+  - PLAN_77 step-10 checkpoint:
+    added candidate transfer/data/canonical route consuming the local-witness
+    pack together with the model-sources direct-uniqueness seam. Targeted
+    probes show the candidate route is still `Molecule.molecule_h_norm`-backed,
+    but no longer uses the legacy direct-uniqueness theorem on that branch.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -1116,6 +1121,10 @@ Last Updated: 2026-03-06
     transfer pack through it:
     `MoleculeResidualFixedPointLocalWitnessSources`,
     `molecule_residual_fixed_point_transfer_on_sources_via_local_witness_sources`.
+  - Added candidate local-witness + model-source-direct-uniqueness route:
+    `molecule_residual_fixed_point_transfer_source_via_local_witness_and_model_source_direct_uniqueness`,
+    `molecule_residual_fixed_point_data_source_via_local_witness_and_model_source_direct_uniqueness`,
+    `molecule_residual_canonical_fast_fixed_point_data_source_via_local_witness_and_model_source_direct_uniqueness`.
   - Targeted probes show these new constructors are ground-axiom-only; active
     existence/uniqueness/transfer/data/canonical/top-level routes remain
     `Molecule.molecule_h_norm`-backed.
@@ -1123,7 +1132,7 @@ Last Updated: 2026-03-06
     obstruction inventory [###-------] 30%,
     local-domain transfer/data replacement [######----] 60%,
     lifted-seam model-collapse witness [##--------] 20%,
-    canonical-first partial bypass [###-------] 30%,
+    canonical-first partial bypass [####------] 40%,
     model-restriction fallback inventory [#---------] 10%,
     PLAN_76 downstream readiness [########--] 80%.
 - `PLAN_54` progress:
