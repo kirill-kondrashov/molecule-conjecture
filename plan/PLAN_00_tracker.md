@@ -6,7 +6,7 @@ Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
 Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
-Last Updated: 2026-03-05
+Last Updated: 2026-03-06
 
 ## Plan Matrix
 
@@ -49,7 +49,7 @@ Last Updated: 2026-03-05
 | PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
-| PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 91% |
+| PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 92% |
 
 ## Dependency Map
 
@@ -140,6 +140,12 @@ Last Updated: 2026-03-05
     Targeted probes show these new seam constructors/equivalence are
     ground-axiom-only, while current source-bundle/zero-arg/breakout/top-level
     aliases remain `Molecule.molecule_h_norm`-backed.
+  - PLAN_76 step-9 refactor checkpoint:
+    added breakout->zero-arg constructor + canonical-parametric breakout
+    equivalence certificate, plus a breakout-routed candidate zero-arg theorem.
+    Targeted probes show the new constructor/equivalence are ground-axiom-only,
+    while the candidate zero-arg theorem and current top-level routes remain
+    `Molecule.molecule_h_norm`-backed.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -986,10 +992,12 @@ Last Updated: 2026-03-05
     current bundle/breakout aliases through the cutover-source route.
   - Added source-bundle/cutover-ingredients projections + equivalence, and
     rerouted current source-bundle + breakout aliases through this seam.
+  - Added breakout->zero-arg constructor + canonical-parametric breakout
+    equivalence certificate, plus breakout-routed candidate zero-arg theorem.
   - Route status:
     interface/equivalence inheritance [#########-] 90%,
-    new zero-arg source theorem [#########-] 91%,
-    breakout/top-level cutover [########--] 82%.
+    new zero-arg source theorem [#########-] 92%,
+    breakout/top-level cutover [########--] 84%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

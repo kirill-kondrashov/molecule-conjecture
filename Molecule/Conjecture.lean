@@ -6420,6 +6420,46 @@ theorem molecule_residual_direct_source_breakout_sources_of_canonical_and_zero_a
       h_source)
 
 /--
+Build PLAN_75 zero-arg anchor-witness source from PLAN_69 direct-source
+breakout source data.
+-/
+theorem molecule_residual_anchor_witness_zero_arg_source_of_direct_source_breakout_sources
+    (h_breakout : MoleculeResidualDirectSourceBreakoutSources) :
+    MoleculeResidualAnchorWitnessZeroArgSource := by
+  exact
+    (molecule_residual_anchor_witness_zero_arg_source_iff_direct_seam_anchor_source).2
+      (molecule_residual_direct_seam_anchor_source_of_direct_source_breakout_sources
+        h_breakout)
+
+/--
+Canonical-parametric breakout certificate:
+under canonical fixed-point data, PLAN_75 zero-arg source and PLAN_69 breakout
+source are equivalent.
+-/
+theorem molecule_residual_anchor_witness_zero_arg_source_iff_direct_source_breakout_sources_of_canonical
+    (h_canonical : MoleculeResidualCanonicalFastFixedPointDataSource) :
+    MoleculeResidualAnchorWitnessZeroArgSource ↔
+      MoleculeResidualDirectSourceBreakoutSources := by
+  constructor
+  · intro h_source
+    exact
+      molecule_residual_direct_source_breakout_sources_of_canonical_and_zero_arg_anchor_witness_source
+        h_canonical
+        h_source
+  · intro h_breakout
+    exact
+      molecule_residual_anchor_witness_zero_arg_source_of_direct_source_breakout_sources
+        h_breakout
+
+/--
+Candidate breakout-routed zero-arg theorem for PLAN_76.
+-/
+theorem molecule_residual_anchor_witness_zero_arg_source_via_direct_source_breakout_sources :
+    MoleculeResidualAnchorWitnessZeroArgSource :=
+  molecule_residual_anchor_witness_zero_arg_source_of_direct_source_breakout_sources
+    molecule_residual_direct_source_breakout_sources
+
+/--
 Build PLAN_69 breakout source from the PLAN_76 source bundle.
 -/
 theorem molecule_residual_direct_source_breakout_sources_of_zero_arg_sources
