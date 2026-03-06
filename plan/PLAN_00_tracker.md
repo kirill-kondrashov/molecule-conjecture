@@ -46,7 +46,7 @@ Last Updated: 2026-03-06
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 99% |
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 99% |
-| PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 87% |
+| PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 88% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
 | PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 92% |
@@ -55,7 +55,7 @@ Last Updated: 2026-03-06
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_76 (anchor-witness bottleneck break) + PLAN_77 (upstream model-change track), then PLAN_43.
+- Current queue is PLAN_77 local-domain transfer/data subtrack + PLAN_53 (model bottleneck refactor) + PLAN_77 lifted-seam uniqueness subtrack + PLAN_76 (anchor-witness bottleneck break) + PLAN_47/49 integration, then PLAN_43. Model-restriction redesign remains fallback-only.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -193,6 +193,13 @@ Last Updated: 2026-03-06
     remaining `Molecule.molecule_h_norm` frontier is now explicit on both the
     uniqueness-side model-collapse value and the transfer/data-side source
     values.
+  - PLAN_77 step-7 checkpoint:
+    added transfer-component seam
+    `MoleculeResidualFixedPointTransferComponentSources` and rerouted current
+    canonical `V`-bound/orbit-debt aliases through its constructors.
+    Targeted probes show the new constructors are ground-axiom-only; the
+    active frontier remains `Molecule.molecule_h_norm`-backed through the
+    current transfer source value and the uniqueness-side model-collapse value.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -1081,14 +1088,20 @@ Last Updated: 2026-03-06
     `MoleculeResidualFixedPointDataModelSources`,
     `molecule_residual_fixed_point_transfer_source_via_model_sources`,
     `molecule_residual_fixed_point_data_source_via_model_sources`.
+  - Added transfer-component seam and routed canonical `V`-bound/orbit-debt
+    aliases through it:
+    `MoleculeResidualFixedPointTransferComponentSources`,
+    `molecule_residual_canonical_vbound_source_via_fixed_point_transfer_component_sources`,
+    `molecule_residual_canonical_orbit_at_debt_source_via_fixed_point_transfer_component_sources`.
   - Targeted probes show these new constructors are ground-axiom-only; active
     existence/uniqueness/transfer/data/canonical/top-level routes remain
     `Molecule.molecule_h_norm`-backed.
   - Route status:
     obstruction inventory [###-------] 30%,
-    existence-source replacement [####------] 40%,
-    uniqueness-source replacement [###-------] 30%,
-    canonical/transfer-source replacement [###-------] 30%,
+    local-domain transfer/data replacement [####------] 40%,
+    lifted-seam model-collapse witness [##--------] 20%,
+    canonical-first partial bypass [###-------] 30%,
+    model-restriction fallback inventory [#---------] 10%,
     PLAN_76 downstream readiness [########--] 80%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.

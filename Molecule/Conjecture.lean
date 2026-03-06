@@ -2381,6 +2381,57 @@ theorem fixed_point_vbound_transfer_source_of_fixed_point_transfer_source
     h_transfer
 
 /--
+PLAN_77 source pack splitting fixed-point local transfer into critical-value
+and `V`-bound components.
+-/
+structure MoleculeResidualFixedPointTransferComponentSources where
+  crit : FixedPointCriticalValueTransferSource
+  vbound : FixedPointVBoundTransferSource
+
+/--
+Build PLAN_77 transfer-component sources from the fixed-point transfer seam.
+-/
+def molecule_residual_fixed_point_transfer_component_sources_of_fixed_point_transfer_source
+    (h_transfer : MoleculeResidualFixedPointTransferSource) :
+    MoleculeResidualFixedPointTransferComponentSources :=
+  let h_components :=
+    fixed_point_critical_and_vbound_of_local_normalization_transfer h_transfer
+  ⟨h_components.1, h_components.2⟩
+
+/--
+Build fixed-point transfer source from PLAN_77 transfer-component sources.
+-/
+theorem molecule_residual_fixed_point_transfer_source_of_component_sources
+    (h_sources : MoleculeResidualFixedPointTransferComponentSources) :
+    MoleculeResidualFixedPointTransferSource :=
+  fixed_point_local_normalization_transfer_of_critical_and_vbound
+    h_sources.crit
+    h_sources.vbound
+
+/--
+Build canonical fixed-data `V`-bound control from PLAN_77 transfer-component
+sources.
+-/
+theorem molecule_residual_canonical_vbound_source_of_transfer_component_sources
+    (h_sources : MoleculeResidualFixedPointTransferComponentSources) :
+    MoleculeResidualCanonicalVBoundSource :=
+  molecule_residual_canonical_vbound_source_of_fixed_point_vbound_transfer
+    h_sources.vbound
+
+/--
+Build canonical orbit-at debt source from structure plus PLAN_77
+transfer-component sources.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_of_structure_and_transfer_component_sources
+    (h_structure : MoleculeResidualCanonicalOrbitStructureSource)
+    (h_sources : MoleculeResidualFixedPointTransferComponentSources) :
+    MoleculeResidualCanonicalOrbitAtDebtSource :=
+  molecule_residual_canonical_orbit_at_debt_source_of_structure_and_vbound_source
+    h_structure
+    (molecule_residual_canonical_vbound_source_of_transfer_component_sources
+      h_sources)
+
+/--
 Project canonical fixed-data `V`-bound control from the fixed-point transfer
 source seam.
 -/
@@ -3402,10 +3453,37 @@ theorem molecule_residual_fixed_point_transfer_source :
 Current canonical fixed-data `V`-bound source routed via fixed-point transfer
 source seam.
 -/
+def molecule_residual_fixed_point_transfer_component_sources :
+    MoleculeResidualFixedPointTransferComponentSources :=
+  molecule_residual_fixed_point_transfer_component_sources_of_fixed_point_transfer_source
+    molecule_residual_fixed_point_transfer_source
+
+/--
+Current canonical fixed-data `V`-bound source routed via PLAN_77 transfer-
+component sources.
+-/
+theorem molecule_residual_canonical_vbound_source_via_fixed_point_transfer_component_sources :
+    MoleculeResidualCanonicalVBoundSource :=
+  molecule_residual_canonical_vbound_source_of_transfer_component_sources
+    molecule_residual_fixed_point_transfer_component_sources
+
+/--
+Current canonical fixed-data `V`-bound source routed via fixed-point transfer
+source seam.
+-/
 theorem molecule_residual_canonical_vbound_source_via_fixed_point_transfer_source :
     MoleculeResidualCanonicalVBoundSource :=
-  molecule_residual_canonical_vbound_source_of_fixed_point_transfer_source
-    molecule_residual_fixed_point_transfer_source
+  molecule_residual_canonical_vbound_source_via_fixed_point_transfer_component_sources
+
+/--
+Current PLAN_57 canonical orbit-at debt source routed via PLAN_77 transfer-
+component sources.
+-/
+theorem molecule_residual_canonical_orbit_at_debt_source_via_fixed_point_transfer_component_sources :
+    MoleculeResidualCanonicalOrbitAtDebtSource :=
+  molecule_residual_canonical_orbit_at_debt_source_of_structure_and_transfer_component_sources
+    molecule_residual_canonical_orbit_structure_source
+    molecule_residual_fixed_point_transfer_component_sources
 
 /--
 Current PLAN_57 canonical orbit-at debt source routed via fixed-point transfer
@@ -3413,9 +3491,7 @@ source seam.
 -/
 theorem molecule_residual_canonical_orbit_at_debt_source_via_fixed_point_transfer_source :
     MoleculeResidualCanonicalOrbitAtDebtSource :=
-  molecule_residual_canonical_orbit_at_debt_source_of_structure_and_vbound_source
-    molecule_residual_canonical_orbit_structure_source
-    molecule_residual_canonical_vbound_source_via_fixed_point_transfer_source
+  molecule_residual_canonical_orbit_at_debt_source_via_fixed_point_transfer_component_sources
 
 /--
 Current PLAN_57 canonical orbit-at debt source routed via transport +
