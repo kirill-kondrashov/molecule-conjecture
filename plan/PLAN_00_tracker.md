@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 99%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-06
 
@@ -50,11 +50,12 @@ Last Updated: 2026-03-06
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
 | PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 92% |
+| PLAN_77 | Upstream model change for non-h_norm fixed-point sources | ACTIVE | [###-------] 30% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_76 (anchor-witness bottleneck break), then PLAN_43.
+- Current queue is PLAN_47 (integration) + PLAN_49 (fixed-point source track) + PLAN_53 (model bottleneck refactor) + PLAN_76 (anchor-witness bottleneck break) + PLAN_77 (upstream model-change track), then PLAN_43.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -146,6 +147,24 @@ Last Updated: 2026-03-06
     Targeted probes show the new constructor/equivalence are ground-axiom-only,
     while the candidate zero-arg theorem and current top-level routes remain
     `Molecule.molecule_h_norm`-backed.
+  - PLAN_77 opened as an upstream model-change track to replace the current
+    full-domain bridge/global-normalization bottlenecks with restricted-domain
+    fixed-point existence/uniqueness contracts that can feed PLAN_76 without
+    `Molecule.molecule_h_norm`.
+  - PLAN_77 step-1 checkpoint:
+    added restricted bridge/witness source seams
+    (`FixedPointImpliesRenormalizableOn`,
+    `MoleculeResidualFixedPointBridgeOnSource`) and source-level existence
+    constructors; targeted probes show these are ground-axiom-only.
+    Current active existence/uniqueness/canonical and top-level routes remain
+    `Molecule.molecule_h_norm`-backed.
+  - PLAN_77 step-2 checkpoint:
+    rerouted `molecule_residual_fixed_point_existence_source` through the
+    restricted bridge-on seam via
+    `molecule_residual_fixed_point_existence_source_via_bridge_on`.
+    Targeted probes show the data-parametric bridge-on constructor is
+    ground-axiom-only, while the active bridge-on source and existence theorem
+    remain `Molecule.molecule_h_norm`-backed.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -998,6 +1017,36 @@ Last Updated: 2026-03-06
     interface/equivalence inheritance [#########-] 90%,
     new zero-arg source theorem [#########-] 92%,
     breakout/top-level cutover [########--] 84%.
+- `PLAN_77` progress:
+  - Opened upstream model-change track to target non-`molecule_h_norm`
+    fixed-point existence/uniqueness sources.
+  - Consolidated obstruction inventory:
+    `no_fixed_point_implies_renormalizable`,
+    `global_normalization_contract_inconsistent`,
+    `molecule_h_norm_inconsistent`.
+  - Declared replacement targets:
+    `molecule_residual_fixed_point_existence_source`,
+    `molecule_residual_fixed_point_uniqueness_direct_source`,
+    `molecule_residual_canonical_fast_fixed_point_data_source`.
+  - Added restricted bridge/witness source seams and source-level existence
+    constructors:
+    `FixedPointImpliesRenormalizableOn`,
+    `renormalizable_fixed_exists_of_fixed_point_exists_in_and_bridge_on`,
+    `MoleculeResidualFixedPointBridgeOnSource`,
+    `molecule_residual_fixed_point_existence_source_of_bridge_on`.
+  - Added bridge-on source constructor from fixed-point data source and rerouted
+    active existence theorem through bridge-on:
+    `molecule_residual_fixed_point_bridge_on_source_of_fixed_point_data_source`,
+    `molecule_residual_fixed_point_existence_source_via_bridge_on`,
+    `molecule_residual_fixed_point_existence_source`.
+  - Targeted probes show these new constructors are ground-axiom-only; active
+    existence/uniqueness/canonical/top-level routes remain
+    `Molecule.molecule_h_norm`-backed.
+  - Route status:
+    obstruction inventory [###-------] 30%,
+    existence-source replacement [###-------] 30%,
+    uniqueness-source replacement [#---------] 10%,
+    PLAN_76 downstream readiness [#####-----] 50%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
@@ -1084,4 +1133,4 @@ Last Updated: 2026-03-06
 ## Current Critical Blockers
 
 1. Root blocker: `Molecule.molecule_h_norm` remains in the zero-arg theorem path.
-2. Active mitigation: PLAN_47 integration track, PLAN_49 fixed-point source track, PLAN_53 model bottleneck track, PLAN_76 anchor-witness bottleneck-break track.
+2. Active mitigation: PLAN_47 integration track, PLAN_49 fixed-point source track, PLAN_53 model bottleneck track, PLAN_76 anchor-witness bottleneck-break track, PLAN_77 upstream model-change track.

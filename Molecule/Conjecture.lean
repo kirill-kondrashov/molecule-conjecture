@@ -581,6 +581,26 @@ def FixedPointImpliesRenormalizable : Prop :=
   ∀ f : BMol, Rfast f = f → IsFastRenormalizable f
 
 /--
+Restricted bridge contract on a designated set `K`:
+every fixed point of `Rfast` in `K` is fast-renormalizable.
+-/
+def FixedPointImpliesRenormalizableOn (K : Set BMol) : Prop :=
+  ∀ f : BMol, f ∈ K → Rfast f = f → IsFastRenormalizable f
+
+/--
+Construct a renormalizable fixed-point witness from:
+- a fixed-point witness in a designated set `K`, and
+- a restricted bridge contract on `K`.
+-/
+theorem renormalizable_fixed_exists_of_fixed_point_exists_in_and_bridge_on
+    {K : Set BMol}
+    (h_fixed_in : ∃ f : BMol, f ∈ K ∧ Rfast f = f)
+    (h_bridge_on : FixedPointImpliesRenormalizableOn K) :
+    ∃ f : BMol, f ∈ K ∧ IsFastRenormalizable f ∧ Rfast f = f := by
+  rcases h_fixed_in with ⟨f_star, hfK, h_fixed⟩
+  exact ⟨f_star, hfK, h_bridge_on f_star hfK h_fixed, h_fixed⟩
+
+/--
 Feasibility gate: in the current model this bridge contract is false, because
 `defaultBMol` is a fixed point of `Rfast` but is not fast-renormalizable.
 -/
@@ -604,6 +624,16 @@ theorem fixed_point_implies_renormalizable_of_global_norm
     FixedPointImpliesRenormalizable := by
   intro f _h_fixed
   exact (h_norm ({f} : Set BMol)).1 f (by simp)
+
+/--
+Localized normalization on `K` implies the restricted bridge contract on `K`.
+-/
+theorem fixed_point_implies_renormalizable_on_of_normalization_on
+    {K : Set BMol}
+    (h_norm_on : NormalizationOn K) :
+    FixedPointImpliesRenormalizableOn K := by
+  intro f hfK _h_fixed
+  exact h_norm_on.1 f hfK
 
 /--
 Construct a renormalizable fixed-point witness from:
@@ -2248,6 +2278,15 @@ def MoleculeResidualFixedPointBridgeSource : Prop :=
   FixedPointImpliesRenormalizable
 
 /--
+Source seam for a restricted fixed-point renormalizability bridge on a
+designated domain.
+-/
+def MoleculeResidualFixedPointBridgeOnSource : Prop :=
+  ∃ K : Set BMol,
+    (∃ f : BMol, f ∈ K ∧ Rfast f = f) ∧
+      FixedPointImpliesRenormalizableOn K
+
+/--
 Current fixed-point renormalizability bridge source theorem
 (legacy global-normalization route).
 -/
@@ -2264,12 +2303,66 @@ theorem molecule_residual_fixed_point_existence_source_of_bridge
   renormalizable_fixed_exists_of_fixed_point_exists_and_bridge h_bridge
 
 /--
+Construct fixed-point existence source from a restricted bridge-on source.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_bridge_on
+    (h_bridge_on : MoleculeResidualFixedPointBridgeOnSource) :
+    MoleculeResidualFixedPointExistenceSource := by
+  rcases h_bridge_on with ⟨K, h_fixed_in, h_bridge_on_K⟩
+  rcases renormalizable_fixed_exists_of_fixed_point_exists_in_and_bridge_on
+      h_fixed_in
+      h_bridge_on_K with
+    ⟨f_star, _hf_domain, h_renorm, h_fixed⟩
+  exact ⟨f_star, h_renorm, h_fixed⟩
+
+/--
+Assemble a restricted bridge-on source from:
+- a fixed-point witness in a designated domain, and
+- localized normalization on that domain.
+-/
+theorem molecule_residual_fixed_point_bridge_on_source_of_fixed_point_and_normalization_on
+    {K : Set BMol}
+    (h_fixed_in : ∃ f : BMol, f ∈ K ∧ Rfast f = f)
+    (h_norm_on : NormalizationOn K) :
+    MoleculeResidualFixedPointBridgeOnSource :=
+  ⟨K, h_fixed_in, fixed_point_implies_renormalizable_on_of_normalization_on h_norm_on⟩
+
+/--
+Build a restricted bridge-on source from fixed-point normalization data.
+-/
+theorem molecule_residual_fixed_point_bridge_on_source_of_fixed_point_data_source
+    (h_fixed_data : MoleculeResidualFixedPointDataSource) :
+    MoleculeResidualFixedPointBridgeOnSource := by
+  have h_exists : MoleculeResidualFixedPointExistenceSource :=
+    renormalizable_fixed_exists_of_fixed_point_normalization_data h_fixed_data
+  rcases h_exists with ⟨f_star, h_renorm, h_fixed⟩
+  refine ⟨{f : BMol | Rfast f = f ∧ IsFastRenormalizable f}, ?_, ?_⟩
+  · exact ⟨f_star, by simp [h_fixed, h_renorm], h_fixed⟩
+  · intro f hf_domain _h_fixed
+    exact hf_domain.2
+
+/--
+Current restricted bridge-on source theorem routed from fixed-point data.
+-/
+theorem molecule_residual_fixed_point_bridge_on_source :
+    MoleculeResidualFixedPointBridgeOnSource :=
+  molecule_residual_fixed_point_bridge_on_source_of_fixed_point_data_source
+    molecule_h_fixed_data_direct
+
+/--
+Current fixed-point existence source routed via the restricted bridge-on seam.
+-/
+theorem molecule_residual_fixed_point_existence_source_via_bridge_on :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_bridge_on
+    molecule_residual_fixed_point_bridge_on_source
+
+/--
 Current fixed-point existence source (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_existence_source :
     MoleculeResidualFixedPointExistenceSource :=
-  renormalizable_fixed_exists_of_fixed_point_normalization_data
-    molecule_h_fixed_data_direct
+  molecule_residual_fixed_point_existence_source_via_bridge_on
 
 /--
 Current fixed-point local-normalization transfer source (legacy global-norm route).
