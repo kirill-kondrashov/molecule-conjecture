@@ -105,6 +105,13 @@ Last Updated: 2026-03-06
   - targeted probes show the new constructors are ground-axiom-only, while the
     active frontier remains `Molecule.molecule_h_norm`-backed through the
     current local-domain source values.
+- New local-witness checkpoint (2026-03-06):
+  - added explicit local normalized-witness source pack:
+    `MoleculeResidualFixedPointLocalWitnessSources`;
+  - rerouted current local-domain transfer pack through the local-witness route;
+  - targeted probes show the new constructors are ground-axiom-only, while the
+    active frontier remains `Molecule.molecule_h_norm`-backed through the
+    current local-witness/current-uniqueness values.
 - PLAN_62 archived integration checkpoint (2026-03-04):
   - zero-arg map/hybrid uniqueness seams are now routed through
     `MoleculeResidualFixedPointUniquenessDirectSource`;

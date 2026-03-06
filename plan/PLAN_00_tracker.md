@@ -46,11 +46,11 @@ Last Updated: 2026-03-06
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
 | PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 99% |
 | PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 99% |
-| PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [########--] 88% |
+| PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [#########-] 89% |
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
 | PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 92% |
-| PLAN_77 | Upstream model change for non-h_norm fixed-point sources | ACTIVE | [#######---] 70% |
+| PLAN_77 | Upstream model change for non-h_norm fixed-point sources | ACTIVE | [########--] 75% |
 
 ## Dependency Map
 
@@ -207,6 +207,13 @@ Last Updated: 2026-03-06
     constructors are ground-axiom-only; the active frontier remains
     `Molecule.molecule_h_norm`-backed through current local-domain transfer
     source values and the uniqueness-side model-collapse value.
+  - PLAN_77 step-9 checkpoint:
+    added local normalized-witness seam
+    `MoleculeResidualFixedPointLocalWitnessSources` and rerouted current
+    local-domain transfer pack through that witness route. Targeted probes show
+    the new constructors are ground-axiom-only; the active frontier remains
+    `Molecule.molecule_h_norm`-backed through current local-witness/current-
+    uniqueness values and the uniqueness-side model-collapse value.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -1105,12 +1112,16 @@ Last Updated: 2026-03-06
     `MoleculeResidualFixedPointTransferOnSources`,
     `molecule_residual_fixed_point_transfer_source_via_on_sources`,
     `molecule_residual_fixed_point_data_source_via_transfer_on_sources`.
+  - Added local normalized-witness seam and routed current local-domain
+    transfer pack through it:
+    `MoleculeResidualFixedPointLocalWitnessSources`,
+    `molecule_residual_fixed_point_transfer_on_sources_via_local_witness_sources`.
   - Targeted probes show these new constructors are ground-axiom-only; active
     existence/uniqueness/transfer/data/canonical/top-level routes remain
     `Molecule.molecule_h_norm`-backed.
   - Route status:
     obstruction inventory [###-------] 30%,
-    local-domain transfer/data replacement [#####-----] 50%,
+    local-domain transfer/data replacement [######----] 60%,
     lifted-seam model-collapse witness [##--------] 20%,
     canonical-first partial bypass [###-------] 30%,
     model-restriction fallback inventory [#---------] 10%,

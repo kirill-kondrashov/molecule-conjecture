@@ -2392,6 +2392,84 @@ structure MoleculeResidualFixedPointTransferOnSources where
   normalization : NormalizationOn K
 
 /--
+PLAN_77 source pack for one normalized fast-renormalizable fixed-point witness.
+-/
+structure MoleculeResidualFixedPointLocalWitnessSources where
+  f_star : BMol
+  fixed : Rfast f_star = f_star
+  renorm : IsFastRenormalizable f_star
+  crit : criticalValue f_star = 0
+  vbound : f_star.V ⊆ Metric.ball 0 0.1
+
+/--
+Build fixed-point normalization data from the PLAN_77 local-witness source
+pack.
+-/
+theorem fixed_point_normalization_data_of_local_witness_sources
+    (h_sources : MoleculeResidualFixedPointLocalWitnessSources) :
+    FixedPointNormalizationData :=
+  ⟨h_sources.f_star, h_sources.fixed, h_sources.renorm, h_sources.crit, h_sources.vbound⟩
+
+/--
+Build the PLAN_77 local-witness source pack from fixed-point normalization
+data.
+-/
+def molecule_residual_fixed_point_local_witness_sources_of_fixed_data
+    (h_fixed_data : FixedPointNormalizationData) :
+    MoleculeResidualFixedPointLocalWitnessSources := by
+  classical
+  let f_star : BMol := Classical.choose h_fixed_data
+  have h_fixed_data_spec :
+      Rfast f_star = f_star ∧
+      IsFastRenormalizable f_star ∧
+      criticalValue f_star = 0 ∧
+      f_star.V ⊆ Metric.ball 0 0.1 :=
+    Classical.choose_spec h_fixed_data
+  exact
+    ⟨
+      f_star,
+      h_fixed_data_spec.1,
+      h_fixed_data_spec.2.1,
+      h_fixed_data_spec.2.2.1,
+      h_fixed_data_spec.2.2.2
+    ⟩
+
+/--
+Build PLAN_77 local-domain transfer sources from one normalized fixed-point
+witness plus uniqueness.
+-/
+def molecule_residual_fixed_point_transfer_on_sources_of_local_witness_sources_and_uniqueness_source
+    (h_witness : MoleculeResidualFixedPointLocalWitnessSources)
+    (h_unique :
+      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
+    MoleculeResidualFixedPointTransferOnSources := by
+  refine
+    ⟨
+      {h_witness.f_star},
+      ?_,
+      ?_
+    ⟩
+  · intro f h_fixed h_renorm
+    have h_eq :
+        f = h_witness.f_star :=
+      h_unique f h_witness.f_star
+        ⟨h_fixed, h_renorm⟩
+        ⟨h_witness.fixed, h_witness.renorm⟩
+    simp [h_eq]
+  · constructor
+    · intro f hf
+      have h_eq : f = h_witness.f_star := by simpa using hf
+      simpa [h_eq] using h_witness.renorm
+    · constructor
+      · intro f hf
+        have h_eq : f = h_witness.f_star := by simpa using hf
+        simpa [h_eq] using h_witness.crit
+      · intro f hf
+        have h_eq : f = h_witness.f_star := by simpa using hf
+        simpa [h_eq] using h_witness.vbound
+
+/--
 Build fixed-point transfer from the PLAN_77 local-domain transfer source pack.
 -/
 theorem molecule_residual_fixed_point_transfer_source_of_on_sources
@@ -3517,12 +3595,29 @@ def molecule_residual_fixed_point_transfer_on_sources_of_model_sources
     h_sources.unique
 
 /--
+Current PLAN_77 local-witness source pack.
+-/
+def molecule_residual_fixed_point_local_witness_sources :
+    MoleculeResidualFixedPointLocalWitnessSources :=
+  molecule_residual_fixed_point_local_witness_sources_of_fixed_data
+    molecule_h_fixed_data_direct
+
+/--
+Current PLAN_77 local-domain transfer source pack routed via the local-witness
+source pack.
+-/
+def molecule_residual_fixed_point_transfer_on_sources_via_local_witness_sources :
+    MoleculeResidualFixedPointTransferOnSources :=
+  molecule_residual_fixed_point_transfer_on_sources_of_local_witness_sources_and_uniqueness_source
+    molecule_residual_fixed_point_local_witness_sources
+    molecule_residual_fixed_point_uniqueness_source_direct
+
+/--
 Current PLAN_77 local-domain transfer source pack.
 -/
 def molecule_residual_fixed_point_transfer_on_sources :
     MoleculeResidualFixedPointTransferOnSources :=
-  molecule_residual_fixed_point_transfer_on_sources_of_model_sources
-    molecule_residual_fixed_point_transfer_model_sources
+  molecule_residual_fixed_point_transfer_on_sources_via_local_witness_sources
 
 /--
 Current fixed-point transfer source routed through PLAN_77 local-domain
