@@ -50,7 +50,7 @@ Last Updated: 2026-03-06
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
 | PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 92% |
-| PLAN_77 | Upstream model change for non-h_norm fixed-point sources | ACTIVE | [###-------] 30% |
+| PLAN_77 | Upstream model change for non-h_norm fixed-point sources | ACTIVE | [####------] 40% |
 
 ## Dependency Map
 
@@ -165,6 +165,13 @@ Last Updated: 2026-03-06
     Targeted probes show the data-parametric bridge-on constructor is
     ground-axiom-only, while the active bridge-on source and existence theorem
     remain `Molecule.molecule_h_norm`-backed.
+  - PLAN_77 step-3 checkpoint:
+    added model-sources-based direct-uniqueness seam and rerouted PLAN_76
+    cutover-ingredients through
+    `molecule_residual_fixed_point_uniqueness_direct_source_via_model_sources`.
+    Targeted probes show source-level model-sources constructors are
+    ground-axiom-only, while current model-source values and active uniqueness/
+    top-level routes remain `Molecule.molecule_h_norm`-backed.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -1039,14 +1046,17 @@ Last Updated: 2026-03-06
     `molecule_residual_fixed_point_bridge_on_source_of_fixed_point_data_source`,
     `molecule_residual_fixed_point_existence_source_via_bridge_on`,
     `molecule_residual_fixed_point_existence_source`.
+  - Added model-sources-based direct-uniqueness seam and routed PLAN_76
+    cutover-ingredient consumers through
+    `molecule_residual_fixed_point_uniqueness_direct_source_via_model_sources`.
   - Targeted probes show these new constructors are ground-axiom-only; active
     existence/uniqueness/canonical/top-level routes remain
     `Molecule.molecule_h_norm`-backed.
   - Route status:
     obstruction inventory [###-------] 30%,
     existence-source replacement [###-------] 30%,
-    uniqueness-source replacement [#---------] 10%,
-    PLAN_76 downstream readiness [#####-----] 50%.
+    uniqueness-source replacement [##--------] 20%,
+    PLAN_76 downstream readiness [######----] 60%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

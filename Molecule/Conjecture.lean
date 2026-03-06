@@ -5878,6 +5878,50 @@ theorem molecule_residual_hybrid_class_fixed_point_uniqueness_source :
     molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources
 
 /--
+PLAN_77 source seam for map-level direct fixed-point uniqueness routed through
+hybrid-class-uniqueness model sources.
+-/
+abbrev MoleculeResidualFixedPointUniquenessDirectModelSources :=
+  MoleculeResidualHybridClassFixedPointUniquenessModelSources
+
+/--
+Build PLAN_77 direct-uniqueness model sources from hybrid-class-uniqueness
+model sources.
+-/
+def molecule_residual_fixed_point_uniqueness_direct_model_sources_of_hybrid_class_uniqueness_model_sources
+    (h_model_sources : MoleculeResidualHybridClassFixedPointUniquenessModelSources) :
+    MoleculeResidualFixedPointUniquenessDirectModelSources :=
+  h_model_sources
+
+/--
+Build map-level direct fixed-point uniqueness source from PLAN_77 direct-
+uniqueness model sources.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source_of_model_sources
+    (h_model_sources : MoleculeResidualFixedPointUniquenessDirectModelSources) :
+    MoleculeResidualFixedPointUniquenessDirectSource :=
+  molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_uniqueness_source
+    (molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_model_sources
+      h_model_sources)
+
+/--
+Current PLAN_77 direct-uniqueness model sources theorem.
+-/
+def molecule_residual_fixed_point_uniqueness_direct_model_sources :
+    MoleculeResidualFixedPointUniquenessDirectModelSources :=
+  molecule_residual_fixed_point_uniqueness_direct_model_sources_of_hybrid_class_uniqueness_model_sources
+    molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources
+
+/--
+Current map-level direct fixed-point uniqueness source theorem routed via
+PLAN_77 model sources.
+-/
+theorem molecule_residual_fixed_point_uniqueness_direct_source_via_model_sources :
+    MoleculeResidualFixedPointUniquenessDirectSource :=
+  molecule_residual_fixed_point_uniqueness_direct_source_of_model_sources
+    molecule_residual_fixed_point_uniqueness_direct_model_sources
+
+/--
 Current hybrid-class unique fixed-point source theorem.
 -/
 theorem molecule_residual_hybrid_unique_fixed_point_source :
@@ -6391,7 +6435,7 @@ theorem molecule_residual_anchor_witness_cutover_ingredients :
     MoleculeResidualAnchorWitnessCutoverIngredients :=
   ⟨
     molecule_residual_canonical_fast_fixed_point_data_source,
-    molecule_residual_fixed_point_uniqueness_direct_source
+    molecule_residual_fixed_point_uniqueness_direct_source_via_model_sources
   ⟩
 
 /--
