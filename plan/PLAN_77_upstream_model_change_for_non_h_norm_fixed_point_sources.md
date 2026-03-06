@@ -55,8 +55,10 @@ Last Updated: 2026-03-06
 - [x] Split the transfer route into critical-value/`V`-bound component seams
   and route current canonical `V`-bound/orbit-debt aliases through that local
   transfer component layer.
-- [ ] Attempt local-domain replacement of the current transfer/data source
-  values using invariant-set transfer/component witnesses.
+- [x] Make the invariant-set local-domain transfer route explicit and rebase
+  current transfer/data theorems through it.
+- [ ] Replace the current local-domain transfer/data source values with
+  non-`molecule_h_norm` witnesses.
 - [ ] Rebuild `molecule_residual_fixed_point_uniqueness_direct_source` from
   non-circular hybrid collapse/lift uniqueness seams.
 - [ ] Keep canonical-first partial bypass available while transfer-side work is
@@ -83,7 +85,7 @@ Last Updated: 2026-03-06
 |---|---|---|
 | Upstream model-obstruction inventory | Core contradictions and dependency hotspots are explicit and linked to source theorems. | [###-------] 30% |
 | Existence-source upstream replacement | Added restricted bridge-on source seam and existence constructor (`molecule_residual_fixed_point_existence_source_of_bridge_on`), then rerouted active `molecule_residual_fixed_point_existence_source` via bridge-on path; constructor seams are ground-axiom-only, active route is still `molecule_h_norm`-backed via current fixed-point data source. | [####------] 40% |
-| Local-domain transfer/data replacement | Active transfer/data theorems now route through explicit PLAN_77 model-source packs, and canonical `V`-bound/orbit debt now route through transfer-component seams; constructor seams are ground-axiom-only, but the current transfer/data source values still inherit `molecule_h_norm`. | [####------] 40% |
+| Local-domain transfer/data replacement | Active transfer/data theorems now route through invariant-set local-domain transfer sources, with canonical `V`-bound/orbit debt consuming transfer-component seams. Constructor seams are ground-axiom-only, but the current local-domain source values still inherit `molecule_h_norm`. | [#####-----] 50% |
 | Lifted-seam model-collapse witness | Model-sources-based direct-uniqueness seam is in place and PLAN_76/downstream uniqueness consumers are cut over to it; remaining blocker is the current model-collapse value feeding that seam. | [##--------] 20% |
 | Canonical-first partial bypass | Canonical fast fixed-point data already routes through existence, and canonical `V`-bound/orbit debt now route through transfer-component seams; this lowers transfer-side debt visibility but does not yet remove the active upstream source values. | [###-------] 30% |
 | Model-restriction fallback inventory | Full-domain bridge/global-normalization obstruction is explicit; no restricted-model redesign has been implemented yet. | [#---------] 10% |
@@ -199,3 +201,18 @@ Last Updated: 2026-03-06
     new transfer-component constructors are ground-axiom-only; current
     transfer-component and canonical aliases remain `Molecule.molecule_h_norm`-
     backed through the current transfer source value.
+- New checkpoint (2026-03-06, step-8 attempt):
+  - Added PLAN_77 invariant-set local-domain transfer seam:
+    `MoleculeResidualFixedPointTransferOnSources`.
+  - Added source-level constructors:
+    `molecule_residual_fixed_point_transfer_source_of_on_sources`,
+    `molecule_residual_fixed_point_data_source_of_existence_and_transfer_on_sources`.
+  - Added current local-domain source pack and routed current transfer/data
+    theorems through it:
+    `molecule_residual_fixed_point_transfer_on_sources`,
+    `molecule_residual_fixed_point_transfer_source_via_on_sources`,
+    `molecule_residual_fixed_point_data_source_via_transfer_on_sources`.
+  - Targeted probes:
+    new local-domain transfer/data constructors are ground-axiom-only; current
+    local-domain transfer/data routes remain `Molecule.molecule_h_norm`-backed
+    through the current transfer model-source values.

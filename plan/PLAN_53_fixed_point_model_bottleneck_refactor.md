@@ -52,6 +52,8 @@ Last Updated: 2026-03-06
 - [x] Split the fixed-point transfer route into critical-value/`V`-bound
   component seams and reroute current canonical `V`-bound/orbit-debt aliases
   through that local-transfer layer.
+- [x] Rebase current transfer/data theorems through an explicit invariant-set
+  local-domain transfer source pack.
 - [ ] Replace `molecule_residual_fixed_point_data_source` with a non-circular
   non-`molecule_h_norm` theorem-level source.
 - [ ] Re-run fixed-point and top-level axiom probes after replacing
@@ -96,6 +98,13 @@ Last Updated: 2026-03-06
   - targeted probes show new constructors are ground-axiom-only, while the
     active transfer/data/canonical frontier remains `Molecule.molecule_h_norm`-
     backed through current source values.
+- New invariant-set checkpoint (2026-03-06):
+  - added explicit local-domain transfer source pack:
+    `MoleculeResidualFixedPointTransferOnSources`;
+  - rerouted current transfer/data theorems through the local-domain route;
+  - targeted probes show the new constructors are ground-axiom-only, while the
+    active frontier remains `Molecule.molecule_h_norm`-backed through the
+    current local-domain source values.
 - PLAN_62 archived integration checkpoint (2026-03-04):
   - zero-arg map/hybrid uniqueness seams are now routed through
     `MoleculeResidualFixedPointUniquenessDirectSource`;

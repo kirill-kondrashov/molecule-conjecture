@@ -200,6 +200,13 @@ Last Updated: 2026-03-06
     Targeted probes show the new constructors are ground-axiom-only; the
     active frontier remains `Molecule.molecule_h_norm`-backed through the
     current transfer source value and the uniqueness-side model-collapse value.
+  - PLAN_77 step-8 checkpoint:
+    added invariant-set local-domain transfer seam
+    `MoleculeResidualFixedPointTransferOnSources` and rerouted current
+    transfer/data theorems through it. Targeted probes show the new
+    constructors are ground-axiom-only; the active frontier remains
+    `Molecule.molecule_h_norm`-backed through current local-domain transfer
+    source values and the uniqueness-side model-collapse value.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -1093,12 +1100,17 @@ Last Updated: 2026-03-06
     `MoleculeResidualFixedPointTransferComponentSources`,
     `molecule_residual_canonical_vbound_source_via_fixed_point_transfer_component_sources`,
     `molecule_residual_canonical_orbit_at_debt_source_via_fixed_point_transfer_component_sources`.
+  - Added invariant-set local-domain transfer seam and routed current
+    transfer/data theorems through it:
+    `MoleculeResidualFixedPointTransferOnSources`,
+    `molecule_residual_fixed_point_transfer_source_via_on_sources`,
+    `molecule_residual_fixed_point_data_source_via_transfer_on_sources`.
   - Targeted probes show these new constructors are ground-axiom-only; active
     existence/uniqueness/transfer/data/canonical/top-level routes remain
     `Molecule.molecule_h_norm`-backed.
   - Route status:
     obstruction inventory [###-------] 30%,
-    local-domain transfer/data replacement [####------] 40%,
+    local-domain transfer/data replacement [#####-----] 50%,
     lifted-seam model-collapse witness [##--------] 20%,
     canonical-first partial bypass [###-------] 30%,
     model-restriction fallback inventory [#---------] 10%,
