@@ -50,7 +50,7 @@ Last Updated: 2026-03-06
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
 | PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 92% |
-| PLAN_77 | Upstream model change for non-h_norm fixed-point sources | ACTIVE | [####------] 40% |
+| PLAN_77 | Upstream model change for non-h_norm fixed-point sources | ACTIVE | [######----] 60% |
 
 ## Dependency Map
 
@@ -172,6 +172,17 @@ Last Updated: 2026-03-06
     Targeted probes show source-level model-sources constructors are
     ground-axiom-only, while current model-source values and active uniqueness/
     top-level routes remain `Molecule.molecule_h_norm`-backed.
+  - PLAN_77 step-4 checkpoint:
+    rerouted later uniqueness consumers (`molecule_residual_hybrid_unique_fixed_point_source`,
+    then `molecule_residual_fixed_point_uniqueness_source`) through the
+    model-source direct-uniqueness seam. Targeted probes show the routing is
+    correct but the active frontier remains `Molecule.molecule_h_norm`-backed
+    via the current model-source value.
+  - PLAN_77 step-5 checkpoint:
+    rerouted `molecule_residual_canonical_fast_fixed_point_data_source`
+    through the upstream existence seam. Targeted probes show the constructor
+    seam is ground-axiom-only, while active canonical/PLAN_76/top-level routes
+    remain `Molecule.molecule_h_norm`-backed.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -1049,14 +1060,20 @@ Last Updated: 2026-03-06
   - Added model-sources-based direct-uniqueness seam and routed PLAN_76
     cutover-ingredient consumers through
     `molecule_residual_fixed_point_uniqueness_direct_source_via_model_sources`.
+  - Rerouted later uniqueness consumers (`hybrid_unique`,
+    `fixed_point_uniqueness_source`) through the model-source direct-uniqueness
+    seam where declaration order permits.
+  - Rerouted active canonical fixed-point data source through the upstream
+    existence seam.
   - Targeted probes show these new constructors are ground-axiom-only; active
     existence/uniqueness/canonical/top-level routes remain
     `Molecule.molecule_h_norm`-backed.
   - Route status:
     obstruction inventory [###-------] 30%,
-    existence-source replacement [###-------] 30%,
-    uniqueness-source replacement [##--------] 20%,
-    PLAN_76 downstream readiness [######----] 60%.
+    existence-source replacement [####------] 40%,
+    uniqueness-source replacement [###-------] 30%,
+    canonical-source replacement [##--------] 20%,
+    PLAN_76 downstream readiness [########--] 80%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

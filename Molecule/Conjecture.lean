@@ -5516,8 +5516,8 @@ seam.
 -/
 theorem molecule_residual_canonical_fast_fixed_point_data_source :
     MoleculeResidualCanonicalFastFixedPointDataSource :=
-  molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_point_data_source
-    molecule_residual_fixed_point_data_source
+  molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_point_existence_source
+    molecule_residual_fixed_point_existence_source
 
 /--
 Under any bounds witness (hence canonical fixed-point existence), hybrid-level
@@ -5928,7 +5928,7 @@ theorem molecule_residual_hybrid_unique_fixed_point_source :
     MoleculeResidualHybridUniqueFixedPointSource :=
   molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_fixed_point_uniqueness_direct_source
     molecule_residual_bounds
-    molecule_residual_fixed_point_uniqueness_direct_source
+    molecule_residual_fixed_point_uniqueness_direct_source_via_model_sources
 
 /--
 Current model-collapse source routed from current hybrid-unique source.

@@ -1,7 +1,7 @@
 # PLAN 77 - Upstream Model Change For Non-h_norm Fixed-Point Sources
 
 Status: ACTIVE
-Progress: [####------] 40%
+Progress: [######----] 60%
 Scope: Replace the model-level global-normalization and full-domain bridge
 bottlenecks with upstream local-domain contracts that can feed non-
 `molecule_h_norm` fixed-point existence/uniqueness source theorems.
@@ -44,6 +44,11 @@ Last Updated: 2026-03-06
   upstream witness/bridge route.
 - [x] Add a model-sources-based direct-uniqueness seam and route PLAN_76
   cutover-ingredient consumers through it.
+- [x] Route downstream uniqueness consumers (`hybrid_unique`,
+  `fixed_point_uniqueness_source`) through the model-source direct-uniqueness
+  seam where declaration order permits.
+- [x] Route the active canonical fixed-point data source through the upstream
+  existence seam.
 - [ ] Rebuild `molecule_residual_fixed_point_uniqueness_direct_source` from
   non-circular hybrid collapse/lift uniqueness seams.
 - [ ] Rebuild `molecule_residual_canonical_fast_fixed_point_data_source` from
@@ -57,9 +62,10 @@ Last Updated: 2026-03-06
 | Route | Current State | Progress |
 |---|---|---|
 | Upstream model-obstruction inventory | Core contradictions and dependency hotspots are explicit and linked to source theorems. | [###-------] 30% |
-| Existence-source upstream replacement | Added restricted bridge-on source seam and existence constructor (`molecule_residual_fixed_point_existence_source_of_bridge_on`), then rerouted active `molecule_residual_fixed_point_existence_source` via bridge-on path; constructor seams are ground-axiom-only, active route is still `molecule_h_norm`-backed via current fixed-point data source. | [###-------] 30% |
-| Uniqueness-source upstream replacement | Added model-sources-based direct-uniqueness seam (`molecule_residual_fixed_point_uniqueness_direct_source_of_model_sources`) and routed PLAN_76 cutover-ingredients through `molecule_residual_fixed_point_uniqueness_direct_source_via_model_sources`; seam constructors are ground-axiom-only, current model-source value remains `molecule_h_norm`-backed. | [##--------] 20% |
-| PLAN_76 downstream cutover readiness | PLAN_76 routing seams are mature; cutover-ingredients now consume model-sources-based direct uniqueness, still waiting for upstream non-`molecule_h_norm` source values. | [######----] 60% |
+| Existence-source upstream replacement | Added restricted bridge-on source seam and existence constructor (`molecule_residual_fixed_point_existence_source_of_bridge_on`), then rerouted active `molecule_residual_fixed_point_existence_source` via bridge-on path; constructor seams are ground-axiom-only, active route is still `molecule_h_norm`-backed via current fixed-point data source. | [####------] 40% |
+| Uniqueness-source upstream replacement | Added model-sources-based direct-uniqueness seam (`molecule_residual_fixed_point_uniqueness_direct_source_of_model_sources`) and routed PLAN_76 cutover-ingredients plus later uniqueness consumers through `molecule_residual_fixed_point_uniqueness_direct_source_via_model_sources`; seam constructors are ground-axiom-only, current model-source value remains `molecule_h_norm`-backed. | [###-------] 30% |
+| Canonical-source upstream replacement | Active `molecule_residual_canonical_fast_fixed_point_data_source` now routes through `molecule_residual_fixed_point_existence_source`; constructor seam is ground-axiom-only, active canonical source still inherits `molecule_h_norm` from the current existence theorem. | [##--------] 20% |
+| PLAN_76 downstream cutover readiness | PLAN_76 routing seams are mature; cutover-ingredients and downstream uniqueness consumers now consume model-sources-based direct uniqueness, and the active canonical source now consumes the upstream existence seam. Remaining blocker is the current upstream source values. | [########--] 80% |
 
 ## Notes
 
@@ -119,3 +125,21 @@ Last Updated: 2026-03-06
     source-level model-sources constructors are ground-axiom-only; current
     model-sources value, routed direct-uniqueness theorem, cutover-ingredients
     theorem, and top-level routes remain `Molecule.molecule_h_norm`-backed.
+- New checkpoint (2026-03-06, step-4 attempt):
+  - Rerouted later uniqueness consumers through model-source direct-uniqueness:
+    `molecule_residual_hybrid_unique_fixed_point_source`,
+    and therefore `molecule_residual_fixed_point_uniqueness_source`.
+  - Targeted probes:
+    source-level model-sources constructors remain ground-axiom-only; routed
+    `hybrid_unique`, `fixed_point_uniqueness_source`, PLAN_76 cutover, and
+    top-level routes still remain `Molecule.molecule_h_norm`-backed via the
+    current model-source value.
+- New checkpoint (2026-03-06, step-5 attempt):
+  - Rebased active canonical source
+    `molecule_residual_canonical_fast_fixed_point_data_source` onto
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_point_existence_source`
+    fed by `molecule_residual_fixed_point_existence_source`.
+  - Targeted probes:
+    the existence-to-canonical constructor remains ground-axiom-only; active
+    canonical source, PLAN_76 cutover, zero-arg, and top-level routes remain
+    `Molecule.molecule_h_norm`-backed.
