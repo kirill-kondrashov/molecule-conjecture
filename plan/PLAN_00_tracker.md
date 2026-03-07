@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 99%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77, PLAN_78, PLAN_79, PLAN_80, PLAN_81
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77, PLAN_78, PLAN_79, PLAN_80, PLAN_81, PLAN_82
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-07
 
@@ -54,12 +54,13 @@ Last Updated: 2026-03-07
 | PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [######----] 65% |
 | PLAN_79 | Invariant-domain fixed-point source | STUCK | [#######---] 70% |
 | PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [####------] 40% |
-| PLAN_81 | Single-reference fixed-point data witness | ACTIVE | [#---------] 10% |
+| PLAN_81 | Single-reference fixed-point data witness | ACTIVE | [######----] 60% |
+| PLAN_82 | Canonical fast fixed-point data witness | ACTIVE | [#---------] 10% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_81 single-reference fixed-data witness + PLAN_80 fixed-point-data-source track + PLAN_78 concrete local-witness theorem + PLAN_53 (model bottleneck refactor) + PLAN_76 (anchor-witness bottleneck break) + PLAN_47/49 integration. PLAN_79 and PLAN_77 are now STUCK history/handoff; model-restriction redesign remains fallback-only.
+- Current queue is PLAN_82 canonical fast fixed-point data witness + PLAN_81 single-reference fixed-data witness + PLAN_80 fixed-point-data-source track + PLAN_78 concrete local-witness theorem + PLAN_53 (model bottleneck refactor) + PLAN_76 (anchor-witness bottleneck break) + PLAN_47/49 integration. PLAN_79 and PLAN_77 are now STUCK history/handoff; model-restriction redesign remains fallback-only.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -302,6 +303,36 @@ Last Updated: 2026-03-07
     Active search now targets a direct single-reference witness or a split
     witness through `fixed_exists + transfer`, rather than more route
     reshuffling.
+  - PLAN_81 step-2 checkpoint:
+    identified the smallest live fallback source package as
+    `MoleculeResidualFixedPointNormalizationIngredients`, equivalently
+    existence + transfer;
+    added explicit fallback route theorems from current existence + transfer to
+    current data/local-witness candidates.
+  - PLAN_81 step-3 checkpoint:
+    added named current split carriers
+    `molecule_residual_fixed_point_existence_source_via_fixed_data_direct` and
+    `molecule_residual_fixed_point_transfer_source_via_fixed_data_and_uniqueness_direct`,
+    so the two halves of the fallback route are explicit theorem targets.
+  - PLAN_81 step-4 checkpoint:
+    rerouted the active current existence/transfer theorems to those split
+    carriers;
+    targeted probes show both remain `Molecule.molecule_h_norm`-backed;
+    the next preferred attack is the existence half first because it has fewer
+    dependencies than the transfer half.
+  - PLAN_81 step-5 checkpoint:
+    rerouted the active current data and ingredient theorems through the split
+    existence+transfer frontier;
+    targeted probes show the active data/ingredient/existence/transfer path is
+    now fully split and still `Molecule.molecule_h_norm`-backed.
+  - PLAN_81 step-6 checkpoint:
+    reduced the existence half to canonical fast fixed-point data via
+    `molecule_residual_fixed_point_existence_source_iff_canonical_fast_fixed_point_data_source`;
+    targeted probes show this equivalence is ground-axiom-only.
+  - PLAN_82 step-1 checkpoint:
+    opened a focused existence-side plan on
+    `MoleculeResidualCanonicalFastFixedPointDataSource`, which is now the
+    smallest live target for the existence half.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -1261,6 +1292,7 @@ Last Updated: 2026-03-07
     through the fixed-data carrier.
   - Inventory confirms the existing fixed-data constructors are clean; the
     blocker is now producing their inputs without `molecule_h_norm`.
+  - Added explicit split fallback route through current existence + transfer.
   - Route status:
     minimal blocker exposure [######----] 60%,
     legacy branch closure [##########] 100%,
@@ -1269,10 +1301,26 @@ Last Updated: 2026-03-07
   - Opened a concrete proof-target plan for one non-`molecule_h_norm`
     `FixedPointNormalizationData` witness.
   - This is the new missing-theorem track underneath PLAN_80.
+  - Identified the smallest live fallback package as ingredients /
+    existence+transfer and added explicit candidate routes through it.
+  - Added named current existence-side and transfer-side split carriers.
+  - Cut over the active current existence/transfer theorems to those split
+    carriers.
+  - Cut over the active current data/ingredient theorems to the same split
+    frontier.
+  - Reduced the existence half further to canonical fast fixed-point data.
   - Route status:
-    target exposure [###-------] 30%,
-    constructor readiness [#####-----] 50%,
-    upstream witness search [#---------] 10%.
+    target exposure [#######---] 70%,
+    constructor readiness [######----] 60%,
+    upstream witness search [#####-----] 50%.
+- `PLAN_82` progress:
+  - Opened a focused canonical-witness track for the existence half.
+  - Ground-axiom-only equivalence is in place between the existence split
+    target and canonical fast fixed-point data.
+  - Route status:
+    target exposure [#####-----] 50%,
+    downstream leverage [######----] 60%,
+    witness search [#---------] 10%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

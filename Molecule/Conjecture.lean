@@ -2579,11 +2579,28 @@ theorem molecule_residual_fixed_point_existence_source_via_bridge_on :
     molecule_residual_fixed_point_bridge_on_source
 
 /--
+Minimal current fixed-point existence carrier for PLAN_81.
+-/
+theorem molecule_residual_fixed_point_existence_source_via_fixed_data_source
+    (h_fixed_data : MoleculeResidualFixedPointDataSource) :
+    MoleculeResidualFixedPointExistenceSource :=
+  renormalizable_fixed_exists_of_fixed_point_normalization_data h_fixed_data
+
+/--
+Current fixed-point existence source routed directly through the fixed-data
+carrier.
+-/
+theorem molecule_residual_fixed_point_existence_source_via_fixed_data_direct :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_via_fixed_data_source
+    molecule_residual_fixed_point_data_source_via_fixed_data_direct
+
+/--
 Current fixed-point existence source (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_existence_source :
     MoleculeResidualFixedPointExistenceSource :=
-  molecule_residual_fixed_point_existence_source_via_bridge_on
+  molecule_residual_fixed_point_existence_source_via_fixed_data_direct
 
 /--
 Current fixed-point local-normalization transfer source (legacy global-norm route).
@@ -4094,11 +4111,21 @@ theorem molecule_residual_fixed_point_transfer_source_via_model_sources :
   molecule_residual_fixed_point_transfer_source_via_on_sources
 
 /--
+Current fixed-point transfer source routed directly through fixed data and the
+current direct uniqueness source.
+-/
+theorem molecule_residual_fixed_point_transfer_source_via_fixed_data_and_uniqueness_direct :
+    MoleculeResidualFixedPointTransferSource :=
+  molecule_residual_fixed_point_transfer_source_of_fixed_data_and_unique
+    molecule_residual_fixed_point_data_source_via_fixed_data_direct
+    molecule_residual_fixed_point_uniqueness_source_direct
+
+/--
 Current fixed-point local-normalization transfer source theorem.
 -/
 theorem molecule_residual_fixed_point_transfer_source :
     MoleculeResidualFixedPointTransferSource :=
-  molecule_residual_fixed_point_transfer_source_via_model_sources
+  molecule_residual_fixed_point_transfer_source_via_fixed_data_and_uniqueness_direct
 
 /--
 Current canonical fixed-data `V`-bound source routed via fixed-point transfer
@@ -4258,7 +4285,38 @@ Current residual fixed-point data source (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_data_source :
     MoleculeResidualFixedPointDataSource :=
-  molecule_residual_fixed_point_data_source_via_fixed_data_direct
+  molecule_residual_fixed_point_data_source_of_sources
+    molecule_residual_fixed_point_existence_source
+    molecule_residual_fixed_point_transfer_source
+
+/--
+Fallback split-witness route for PLAN_81:
+assemble fixed-point normalization ingredients from the current existence and
+transfer sources.
+-/
+theorem molecule_residual_fixed_point_normalization_ingredients_via_existence_and_transfer :
+    MoleculeResidualFixedPointNormalizationIngredients :=
+  ⟨
+    molecule_residual_fixed_point_existence_source,
+    molecule_residual_fixed_point_transfer_source
+  ⟩
+
+/--
+Fallback split-witness route for PLAN_81:
+reconstruct fixed-point data from the current existence and transfer sources.
+-/
+theorem molecule_residual_fixed_point_data_source_via_existence_and_transfer :
+    MoleculeResidualFixedPointDataSource :=
+  fixed_point_normalization_data_of_ingredients
+    molecule_residual_fixed_point_normalization_ingredients_via_existence_and_transfer
+
+/--
+Fallback split-witness route for PLAN_81 into the local-witness theorem.
+-/
+def molecule_residual_fixed_point_local_witness_on_sources_via_existence_and_transfer :
+    MoleculeResidualFixedPointLocalWitnessOnSources :=
+  molecule_residual_fixed_point_local_witness_on_sources_via_fixed_data_source
+    molecule_residual_fixed_point_data_source_via_existence_and_transfer
 
 /--
 Assemble residual fixed-point-normalization ingredients from explicit existence
@@ -4301,8 +4359,8 @@ Current bundled ingredient source theorem (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_normalization_ingredients :
     MoleculeResidualFixedPointNormalizationIngredients :=
-  molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer
-    molecule_h_fixed_data_direct
+  molecule_residual_fixed_point_normalization_ingredients_of_sources
+    molecule_residual_fixed_point_existence_source
     molecule_residual_fixed_point_transfer_source
 
 /--
@@ -6339,6 +6397,25 @@ theorem molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_point_
     (h_exists : MoleculeResidualFixedPointExistenceSource) :
     MoleculeResidualCanonicalFastFixedPointDataSource :=
   h_exists
+
+/--
+Recover fixed-point existence from canonical fast fixed-point data.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_canonical_fast_fixed_point_data_source
+    (h_canonical : MoleculeResidualCanonicalFastFixedPointDataSource) :
+    MoleculeResidualFixedPointExistenceSource :=
+  h_canonical
+
+/--
+The existence-side split target is definitionally equivalent to canonical fast
+fixed-point data.
+-/
+theorem molecule_residual_fixed_point_existence_source_iff_canonical_fast_fixed_point_data_source :
+    MoleculeResidualFixedPointExistenceSource ↔
+      MoleculeResidualCanonicalFastFixedPointDataSource := by
+  constructor
+  · exact molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_point_existence_source
+  · exact molecule_residual_fixed_point_existence_source_of_canonical_fast_fixed_point_data_source
 
 /--
 Build canonical fast fixed-point data from the fixed-point data source seam.

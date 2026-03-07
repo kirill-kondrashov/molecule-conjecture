@@ -20,6 +20,7 @@ Dependencies: `Molecule/Conjecture.lean`,
 `plan/PLAN_78_non_h_norm_local_witness_on_sources_theorem.md`,
 `plan/PLAN_79_invariant_domain_fixed_point_source.md`,
 `plan/PLAN_81_single_reference_fixed_point_data_witness.md`,
+`plan/PLAN_82_canonical_fast_fixed_point_data_witness.md`,
 `plan/PLAN_53_fixed_point_model_bottleneck_refactor.md`
 Stuck Rule: STUCK if every candidate fixed-point-normalization-data proof still
 factors through global normalization, the dead legacy
@@ -84,3 +85,31 @@ Last Updated: 2026-03-07
   - the remaining task is to produce one of the constructor inputs without
     passing through `molecule_h_fixed_data_direct` or the dead legacy
     `InvariantSliceDataWithNormalization` seam.
+- Step-3 fallback checkpoint (2026-03-07):
+  - added explicit split fallback route through current existence + transfer:
+    `molecule_residual_fixed_point_normalization_ingredients_via_existence_and_transfer`,
+    `molecule_residual_fixed_point_data_source_via_existence_and_transfer`;
+  - this identifies the smallest live fallback package for PLAN_81 without
+    changing the current direct fixed-data carrier theorem.
+- Step-4 split-carrier checkpoint (2026-03-07):
+  - added named current split carriers:
+    `molecule_residual_fixed_point_existence_source_via_fixed_data_direct`,
+    `molecule_residual_fixed_point_transfer_source_via_fixed_data_and_uniqueness_direct`;
+  - this isolates the current existence-side and transfer-side theorem carriers
+    for the PLAN_81 fallback route.
+- Step-5 active-cutover checkpoint (2026-03-07):
+  - rerouted current `molecule_residual_fixed_point_existence_source` and
+    `molecule_residual_fixed_point_transfer_source` through the direct split
+    carriers;
+  - this makes the PLAN_81 split fallback the active frontier, not just a
+    candidate side route.
+- Step-6 data-frontier checkpoint (2026-03-07):
+  - rerouted current `molecule_residual_fixed_point_data_source` and
+    `molecule_residual_fixed_point_normalization_ingredients` through the split
+    existence+transfer frontier;
+  - this completes the active cutover from bundled fixed-data current routes to
+    the split frontier.
+- Step-7 existence reduction checkpoint (2026-03-07):
+  - reduced the existence half to canonical fast fixed-point data via
+    `molecule_residual_fixed_point_existence_source_iff_canonical_fast_fixed_point_data_source`;
+  - active existence-side continuation now moves to `PLAN_82`.

@@ -84,6 +84,18 @@ Current axiom frontier:
 - What is missing is a non-`molecule_h_norm` producer for one of those
   constructor inputs, ideally a direct single-reference witness of
   `FixedPointNormalizationData`.
+- Fallback live route: replace the pair
+  `MoleculeResidualFixedPointExistenceSource` +
+  `MoleculeResidualFixedPointTransferSource`, then rebuild fixed-point data from
+  `fixed_point_normalization_data_of_fixed_exists_and_transfer`.
+- The current split carriers are now explicit:
+  `molecule_residual_fixed_point_existence_source_via_fixed_data_direct` and
+  `molecule_residual_fixed_point_transfer_source_via_fixed_data_and_uniqueness_direct`.
+- Preferred next attack: the existence half first, because it has fewer
+  dependencies than the transfer half.
+- The existence half is now reduced further:
+  `MoleculeResidualFixedPointExistenceSource` is ground-axiom-only equivalent to
+  `MoleculeResidualCanonicalFastFixedPointDataSource`.
 
 Implementation notes (important for interpretation):
 
