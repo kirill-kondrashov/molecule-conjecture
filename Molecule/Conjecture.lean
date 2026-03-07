@@ -690,16 +690,22 @@ def MoleculeResidualInvariantSliceFixedPointSource : Prop :=
   ∃ K : Set BMol, ∃ f : BMol, f ∈ K ∧ Rfast f = f
 
 /--
-Project a fixed-point-in-domain witness from invariant slice-data alone.
-This uses the existing Schauder-style invariant compact-set theorem and does
-not require normalization assumptions.
+Project a fixed-point-in-domain witness from explicit invariant slice-data
+fields. This uses the existing Schauder-style invariant compact-set theorem and
+does not require normalization assumptions.
 -/
-theorem molecule_residual_invariant_slice_fixed_point_source_of_invariant_slice_data_source
-    (h_data : MoleculeResidualInvariantSliceDataSource) :
-    MoleculeResidualInvariantSliceFixedPointSource := by
-  rcases h_data with
-    ⟨K, f_ref, P, hP_comp, hP_conv, h_maps, hK_def, h_surj, h_fin, h_inj, h_cont,
-      h_nonempty, h_mem⟩
+theorem invariant_slice_fixed_point_in_of_sources
+    {K : Set BMol} {f_ref : BMol} {P : Set SliceSpace}
+    (_hP_comp : IsCompact P)
+    (hP_conv : Convex ℝ P)
+    (h_maps : MapsTo (slice_operator f_ref) P P)
+    (hK_def : K = {f | slice_chart f_ref f ∈ P})
+    (h_surj : SurjOn (slice_chart f_ref) K P)
+    (h_fin : K.Finite)
+    (h_inj : InjOn (slice_chart f_ref) K)
+    (h_cont : ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K))
+    (h_nonempty : K.Nonempty) :
+    ∃ f : BMol, f ∈ K ∧ Rfast f = f := by
   have hK_image : (slice_chart f_ref) '' K = P := by
     exact slice_chart_image_eq_polydisk_of_surj f_ref P K hK_def h_surj
   have hK_compact : IsCompact K := by
@@ -733,6 +739,28 @@ theorem molecule_residual_invariant_slice_fixed_point_source_of_invariant_slice_
       hK_convex
       h_inj
       h_cont with
+    ⟨f, hfK, h_fixed⟩
+  exact ⟨f, hfK, h_fixed⟩
+
+/--
+Project a fixed-point-in-domain witness from invariant slice-data alone.
+-/
+theorem molecule_residual_invariant_slice_fixed_point_source_of_invariant_slice_data_source
+    (h_data : MoleculeResidualInvariantSliceDataSource) :
+    MoleculeResidualInvariantSliceFixedPointSource := by
+  rcases h_data with
+    ⟨K, f_ref, P, hP_comp, hP_conv, h_maps, hK_def, h_surj, h_fin, h_inj, h_cont,
+      h_nonempty, _h_mem⟩
+  rcases invariant_slice_fixed_point_in_of_sources
+      hP_comp
+      hP_conv
+      h_maps
+      hK_def
+      h_surj
+      h_fin
+      h_inj
+      h_cont
+      h_nonempty with
     ⟨f, hfK, h_fixed⟩
   exact ⟨K, f, hfK, h_fixed⟩
 
@@ -2426,39 +2454,16 @@ theorem molecule_residual_fixed_point_bridge_on_source_of_invariant_slice_data_w
   rcases h_data with
     ⟨K, f_ref, P, hP_comp, hP_conv, h_maps, hK_def, h_surj, h_fin, h_inj, h_cont,
       h_nonempty, h_mem, h_norm⟩
-  have hK_image : (slice_chart f_ref) '' K = P := by
-    exact slice_chart_image_eq_polydisk_of_surj f_ref P K hK_def h_surj
-  have hK_compact : IsCompact K := by
-    exact slice_pullback_compact_of_finite K h_fin
-  have hK_convex : Convex ℝ ((slice_chart f_ref) '' K) := by
-    simpa [hK_image] using hP_conv
-  have hK_maps : MapsTo Rfast K K := by
-    intro f hfK
-    have hfP : slice_chart f_ref f ∈ P := by
-      have : f ∈ {g | slice_chart f_ref g ∈ P} := by
-        simpa [hK_def] using hfK
-      exact this
-    have hP_image : slice_operator f_ref (slice_chart f_ref f) ∈ P := h_maps hfP
-    have h_conj' :=
-      slice_conjugacy f_ref
-        (by
-          intro x hx
-          simp [slice_operator, slice_chart])
-        f
-        (by simp [slice_domain])
-    simpa [hK_def, h_conj'] using hP_image
-  rcases fixed_point_in_invariant_compact_set
-      K
-      f_ref
-      hK_compact
-      hK_maps
-      h_nonempty
-      (by
-        intro x hx
-        simp [slice_operator, slice_chart])
-      hK_convex
+  rcases invariant_slice_fixed_point_in_of_sources
+      hP_comp
+      hP_conv
+      h_maps
+      hK_def
+      h_surj
+      h_fin
       h_inj
-      h_cont with
+      h_cont
+      h_nonempty with
     ⟨f, hfK, h_fixed⟩
   exact
     molecule_residual_fixed_point_bridge_on_source_of_fixed_point_and_normalization_on
@@ -2730,12 +2735,64 @@ theorem molecule_residual_fixed_point_data_source_of_invariant_slice_data_with_n
 Project the concrete local-domain witness target from an invariant normalized
 domain.
 -/
+def molecule_residual_fixed_point_local_witness_on_sources_of_fixed_point_in_and_normalization_on
+    {K : Set BMol}
+    (h_fixed_in : ∃ f : BMol, f ∈ K ∧ Rfast f = f)
+    (h_norm_on : NormalizationOn K) :
+    MoleculeResidualFixedPointLocalWitnessOnSources :=
+  ⟨K, h_fixed_in, h_norm_on⟩
+
+/--
+Project the concrete local-domain witness target from an invariant normalized
+domain using the invariant-slice fixed-point theorem directly.
+-/
+theorem invariant_slice_local_witness_ingredients_of_with_normalization
+    (h_data : MoleculeResidualInvariantSliceDataWithNormalizationSource) :
+    ∃ K : Set BMol, (∃ f : BMol, f ∈ K ∧ Rfast f = f) ∧ NormalizationOn K := by
+  rcases h_data with
+    ⟨K, f_ref, P, hP_comp, hP_conv, h_maps, hK_def, h_surj, h_fin, h_inj, h_cont,
+      h_nonempty, h_mem, h_norm⟩
+  have h_fixed_in : ∃ f : BMol, f ∈ K ∧ Rfast f = f := by
+    exact invariant_slice_fixed_point_in_of_sources
+      hP_comp
+      hP_conv
+      h_maps
+      hK_def
+      h_surj
+      h_fin
+      h_inj
+      h_cont
+      h_nonempty
+  exact ⟨K, h_fixed_in, h_norm⟩
+
+/--
+Project the concrete local-domain witness target from an invariant normalized
+domain using the invariant-slice fixed-point theorem directly.
+-/
+def molecule_residual_fixed_point_local_witness_on_sources_of_invariant_slice_data_with_normalization_source_via_invariant_slice_fixed_point
+    (h_data : MoleculeResidualInvariantSliceDataWithNormalizationSource) :
+    MoleculeResidualFixedPointLocalWitnessOnSources := by
+  classical
+  let K : Set BMol :=
+    Classical.choose (invariant_slice_local_witness_ingredients_of_with_normalization h_data)
+  have hK_spec :
+      (∃ f : BMol, f ∈ K ∧ Rfast f = f) ∧ NormalizationOn K :=
+    Classical.choose_spec
+      (invariant_slice_local_witness_ingredients_of_with_normalization h_data)
+  exact
+    molecule_residual_fixed_point_local_witness_on_sources_of_fixed_point_in_and_normalization_on
+      hK_spec.1
+      hK_spec.2
+
+/--
+Project the concrete local-domain witness target from an invariant normalized
+domain.
+-/
 def molecule_residual_fixed_point_local_witness_on_sources_of_invariant_slice_data_with_normalization_source
     (h_data : MoleculeResidualInvariantSliceDataWithNormalizationSource) :
     MoleculeResidualFixedPointLocalWitnessOnSources :=
-  molecule_residual_fixed_point_local_witness_on_sources_of_fixed_data
-    (molecule_residual_fixed_point_data_source_of_invariant_slice_data_with_normalization_source
-      h_data)
+  molecule_residual_fixed_point_local_witness_on_sources_of_invariant_slice_data_with_normalization_source_via_invariant_slice_fixed_point
+    h_data
 
 /--
 Project the concrete local-domain witness target from the refined invariant

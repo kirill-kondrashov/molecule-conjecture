@@ -51,8 +51,8 @@ Last Updated: 2026-03-07
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
 | PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 92% |
 | PLAN_77 | Upstream model change for non-h_norm fixed-point sources | STUCK | [########--] 80% |
-| PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [#####-----] 50% |
-| PLAN_79 | Invariant-domain fixed-point source | ACTIVE | [#####-----] 50% |
+| PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [######----] 60% |
+| PLAN_79 | Invariant-domain fixed-point source | ACTIVE | [######----] 60% |
 
 ## Dependency Map
 
@@ -258,6 +258,12 @@ Last Updated: 2026-03-07
     -> bridge-on/existence source theorems, all ground-axiom-only. The
     remaining transfer-side blocker is now specifically the lack of a
     non-`molecule_h_norm` producer for normalized invariant slice-data.
+  - PLAN_79 step-5 normalization-split checkpoint:
+    factored the reusable invariant-slice fixed-point theorem and direct
+    local-witness ingredient theorem from normalized invariant slice-data.
+    Targeted probes show the new helper/local-witness route is
+    ground-axiom-only; the blocker remains the missing normalized-source
+    producer.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -1192,7 +1198,7 @@ Last Updated: 2026-03-07
   - Route status:
     concrete target exposure [####------] 40%,
     transfer-branch cutover readiness [#####-----] 50%,
-    proof-source search [####------] 40%.
+    proof-source search [#####-----] 50%.
 - `PLAN_79` progress:
   - Opened invariant-domain source track under `PLAN_78`.
   - Added direct route from `InvariantSliceDataWithNormalization` to:
@@ -1202,10 +1208,12 @@ Last Updated: 2026-03-07
     through it.
   - Added invariant-slice-data -> fixed-point-in-domain and normalized-package
     -> bridge-on/existence routes.
+  - Added direct local-witness ingredient split from normalized invariant
+    slice-data.
   - Route status:
-    source seam exposure [#######---] 70%,
-    local-witness derivation [######----] 60%,
-    source producer search [##--------] 20%.
+    source seam exposure [########--] 80%,
+    local-witness derivation [#######---] 70%,
+    source producer search [###-------] 30%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

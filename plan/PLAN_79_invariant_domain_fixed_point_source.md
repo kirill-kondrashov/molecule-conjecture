@@ -1,7 +1,7 @@
 # PLAN 79 - Invariant-Domain Fixed-Point Source
 
 Status: ACTIVE
-Progress: [#####-----] 50%
+Progress: [######----] 60%
 Scope: Turn the invariant-domain route into an explicit upstream source for
 `molecule_residual_fixed_point_local_witness_on_sources`, using
 `InvariantSliceDataWithNormalization` rather than the current
@@ -43,9 +43,9 @@ Last Updated: 2026-03-07
 
 | Route | Current State | Progress |
 |---|---|---|
-| Source seam exposure | The invariant-domain package now has dedicated residual source targets for invariant slice-data, fixed-point-in-domain, bridge-on, and refined fixed-point packs. | [#######---] 70% |
-| Local-witness derivation | The source-to-data theorem, the refined fixed-point pack, and the local-witness constructor are implemented and probe ground-axiom-only. | [######----] 60% |
-| Source producer search | Fixed-point-in-`K` is now solved cleanly from invariant slice-data; the remaining gap is a non-`molecule_h_norm` producer for normalized invariant slice-data. | [##--------] 20% |
+| Source seam exposure | The invariant-domain package now has dedicated residual source targets for invariant slice-data, fixed-point-in-domain, bridge-on, refined fixed-point packs, and direct local-witness ingredients. | [########--] 80% |
+| Local-witness derivation | The source-to-data theorem, the refined fixed-point pack, and the direct local-witness ingredient theorem are implemented and probe ground-axiom-only. | [#######---] 70% |
+| Source producer search | Fixed-point-in-`K` is solved cleanly from invariant slice-data; the remaining gap is specifically a non-`molecule_h_norm` producer for normalized invariant slice-data. | [###-------] 30% |
 
 ## Notes
 
@@ -104,6 +104,18 @@ Last Updated: 2026-03-07
     from invariant slice-data-with-normalization is ground-axiom-only.
   - The remaining blocker is narrower: producing normalized invariant
     slice-data without `Molecule.molecule_h_norm`.
+- Normalization-split checkpoint (2026-03-07, step-5):
+  - factored the reusable theorem
+    `invariant_slice_fixed_point_in_of_sources`;
+  - added proposition-level local-witness ingredients theorem
+    `invariant_slice_local_witness_ingredients_of_with_normalization`;
+  - rerouted the normalized-package local-witness constructor through that
+    fixed-point-plus-normalization split;
+  - `make build` passed;
+  - `make check` passed;
+  - targeted probes show the new helper, ingredient theorem, and direct
+    local-witness route from normalized invariant slice-data are
+    ground-axiom-only.
 - Expected next candidates:
   - a constructive producer based on localized invariant slice-data plus a
     fixed-point-in-domain witness;

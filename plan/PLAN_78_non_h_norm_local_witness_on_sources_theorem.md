@@ -1,7 +1,7 @@
 # PLAN 78 - Non-h_norm Local Witness-On-Sources Theorem
 
 Status: ACTIVE
-Progress: [#####-----] 50%
+Progress: [######----] 60%
 Scope: Replace the current transfer-branch local witness root with one
 concrete non-`molecule_h_norm` theorem:
 `molecule_residual_fixed_point_local_witness_on_sources`.
@@ -50,7 +50,7 @@ Last Updated: 2026-03-07
 |---|---|---|
 | Concrete target exposure | The concrete local-domain witness target is explicit in `Molecule/Conjecture.lean` and current local-witness routing now goes through it. | [####------] 40% |
 | Transfer-branch cutover readiness | `molecule_residual_fixed_point_local_witness_sources` and `molecule_residual_fixed_point_transfer_source_via_on_sources` already consume the concrete target theorem, so a replacement there will propagate immediately. | [#####-----] 50% |
-| Proof-source search | `PLAN_79` now isolates invariant slice-data, fixed-point-in-domain, bridge-on, and refined fixed-point source seams; current local-witness routing uses the refined pack, but no non-`molecule_h_norm` normalized-source producer exists yet. | [####------] 40% |
+| Proof-source search | `PLAN_79` now isolates invariant slice-data, fixed-point-in-domain, bridge-on, refined fixed-point, and direct local-witness ingredient seams; current local-witness routing uses the refined pack, but no non-`molecule_h_norm` normalized-source producer exists yet. | [#####-----] 50% |
 
 ## Notes
 
@@ -108,3 +108,10 @@ Last Updated: 2026-03-07
   - Targeted probes show these new theorems are ground-axiom-only. This
     settles the fixed-point-in-`K` part; the remaining unsolved ingredient is a
     non-`molecule_h_norm` producer of normalized invariant slice-data.
+  - Added direct local-witness ingredient split:
+    `invariant_slice_fixed_point_in_of_sources`,
+    `invariant_slice_local_witness_ingredients_of_with_normalization`,
+    `molecule_residual_fixed_point_local_witness_on_sources_of_invariant_slice_data_with_normalization_source_via_invariant_slice_fixed_point`.
+  - Targeted probes show the new helper and direct local-witness route are
+    ground-axiom-only. The remaining unsolved ingredient is unchanged:
+    a non-`molecule_h_norm` producer of normalized invariant slice-data.
