@@ -98,7 +98,7 @@ Current axiom frontier:
   `MoleculeResidualCanonicalFastFixedPointDataSource`.
 - The current canonical theorem is now routed through the smaller pair:
   `MoleculeResidualFixedPointIngredientsSource`,
-  `MoleculeResidualOrbitClauseSource`,
+  `MoleculeResidualOrbitClauseAtSource`,
   and `MoleculeResidualFixedPointTransferSource`.
 
 Implementation notes (important for interpretation):

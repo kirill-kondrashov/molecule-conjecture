@@ -1,7 +1,7 @@
 # PLAN 82 - Canonical Fast Fixed-Point Data Witness
 
 Status: ACTIVE
-Progress: [########--] 80%
+Progress: [#########-] 90%
 Scope: Replace the current `Molecule.molecule_h_norm`-backed canonical
 fixed-point source with a non-`molecule_h_norm` theorem producing
 `MoleculeResidualCanonicalFastFixedPointDataSource`.
@@ -33,9 +33,9 @@ Last Updated: 2026-03-07
 
 | Route | Current State | Progress |
 |---|---|---|
-| Target exposure | The existence half is now formally reduced to `MoleculeResidualCanonicalFastFixedPointDataSource`, and the current canonical theorem is rerouted through fixed-point ingredients, orbit-clause source, and the transfer source. | [##########] 100% |
-| Downstream leverage | The active canonical route now shares the transfer branch explicitly and no longer hides the transport/structure wrappers. | [#########-] 90% |
-| Witness search | The live upstream package is now split as `MoleculeResidualFixedPointIngredientsSource` + `MoleculeResidualOrbitClauseSource` + `MoleculeResidualFixedPointTransferSource`; no non-`molecule_h_norm` witness for that combination is known yet. | [#######---] 70% |
+| Target exposure | The existence half is now formally reduced to `MoleculeResidualCanonicalFastFixedPointDataSource`, and the current canonical theorem is rerouted through fixed-point ingredients, local orbit-at source, and the transfer source. | [##########] 100% |
+| Downstream leverage | The active canonical route now shares the transfer branch explicitly and no longer hides orbit-clause transport wrappers. | [#########-] 90% |
+| Witness search | The live upstream package is now split as `MoleculeResidualFixedPointIngredientsSource` + `MoleculeResidualOrbitClauseAtSource` + `MoleculeResidualFixedPointTransferSource`; no non-`molecule_h_norm` witness for that combination is known yet. | [########--] 80% |
 
 ## Notes
 
@@ -135,3 +135,18 @@ Last Updated: 2026-03-07
     `molecule_residual_fixed_point_transfer_source`;
   - this removes the transport and orbit-structure wrappers from the active
     canonical frontier; the exact current carriers are now named directly.
+- Step-9 local-orbit+transfer checkpoint (2026-03-07):
+  - added
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_ingredients_orbit_clause_at_and_transfer`
+    and
+    `molecule_residual_canonical_fast_fixed_point_data_source_via_ingredients_orbit_clause_at_and_transfer`;
+  - rerouted current
+    `molecule_residual_canonical_fast_fixed_point_data_source`
+    through
+    `molecule_residual_fixed_point_ingredients_source`,
+    `molecule_residual_orbit_clause_at_source`,
+    and
+    `molecule_residual_fixed_point_transfer_source`;
+  - this removes the broad orbit-clause wrapper from the active canonical
+    frontier; the exact current carriers are now the local orbit-at source,
+    ingredients, and transfer.
