@@ -6518,6 +6518,20 @@ theorem molecule_residual_canonical_fast_fixed_point_data_source_of_ingredients_
     h_transfer
 
 /--
+Build canonical fast fixed-point data directly from fixed-point existence, the
+local orbit-at source, and the transfer source.
+-/
+theorem molecule_residual_canonical_fast_fixed_point_data_source_of_existence_orbit_clause_at_and_transfer
+    (h_exists : MoleculeResidualFixedPointExistenceSource)
+    (h_orbit_at : MoleculeResidualOrbitClauseAtSource)
+    (h_transfer : MoleculeResidualFixedPointTransferSource) :
+    MoleculeResidualCanonicalFastFixedPointDataSource :=
+  molecule_residual_canonical_fast_fixed_point_data_source_of_ingredients_orbit_clause_at_and_transfer
+    (molecule_residual_fixed_point_ingredients_source_of_sources h_exists h_transfer)
+    h_orbit_at
+    h_transfer
+
+/--
 Current-route canonical-data source exposed through fixed-point ingredients and
 the broad orbit-clause source.
 -/
@@ -6581,6 +6595,17 @@ theorem molecule_residual_canonical_fast_fixed_point_data_source_via_ingredients
     molecule_residual_fixed_point_transfer_source
 
 /--
+Current-route canonical-data source exposed through fixed-point existence, the
+local orbit-at source, and the transfer source.
+-/
+theorem molecule_residual_canonical_fast_fixed_point_data_source_via_existence_orbit_clause_at_and_transfer :
+    MoleculeResidualCanonicalFastFixedPointDataSource :=
+  molecule_residual_canonical_fast_fixed_point_data_source_of_existence_orbit_clause_at_and_transfer
+    molecule_residual_fixed_point_existence_source
+    molecule_residual_orbit_clause_at_source
+    molecule_residual_fixed_point_transfer_source
+
+/--
 Build canonical fast fixed-point data from the fixed-point existence source
 seam.
 -/
@@ -6622,7 +6647,7 @@ seam.
 -/
 theorem molecule_residual_canonical_fast_fixed_point_data_source :
     MoleculeResidualCanonicalFastFixedPointDataSource :=
-  molecule_residual_canonical_fast_fixed_point_data_source_via_ingredients_orbit_clause_at_and_transfer
+  molecule_residual_canonical_fast_fixed_point_data_source_via_existence_orbit_clause_at_and_transfer
 
 /--
 Under any bounds witness (hence canonical fixed-point existence), hybrid-level
