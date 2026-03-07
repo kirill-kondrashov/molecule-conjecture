@@ -1,7 +1,7 @@
 # PLAN 82 - Canonical Fast Fixed-Point Data Witness
 
 Status: ACTIVE
-Progress: [#####-----] 50%
+Progress: [######----] 60%
 Scope: Replace the current `Molecule.molecule_h_norm`-backed canonical
 fixed-point source with a non-`molecule_h_norm` theorem producing
 `MoleculeResidualCanonicalFastFixedPointDataSource`.
@@ -33,9 +33,9 @@ Last Updated: 2026-03-07
 
 | Route | Current State | Progress |
 |---|---|---|
-| Target exposure | The existence half is now formally reduced to `MoleculeResidualCanonicalFastFixedPointDataSource`, and the current canonical theorem is rerouted through fixed-point ingredients plus the local orbit-at source. | [#########-] 90% |
-| Downstream leverage | A canonical witness would also feed downstream uniqueness/anchor routes already consuming canonical data. | [######----] 60% |
-| Witness search | The live upstream package is now explicit as the pair `MoleculeResidualFixedPointIngredientsSource` + `MoleculeResidualOrbitClauseAtSource`; no non-`molecule_h_norm` witness for that pair is known yet. | [####------] 40% |
+| Target exposure | The existence half is now formally reduced to `MoleculeResidualCanonicalFastFixedPointDataSource`, and the current canonical theorem is rerouted through fixed-point ingredients plus the fixed-data canonical orbit debt source. | [##########] 100% |
+| Downstream leverage | The active canonical route now consumes the transfer-routed orbit-debt alias, so canonical work shares the transfer branch explicitly. | [#######---] 70% |
+| Witness search | The live upstream package is now split as `MoleculeResidualFixedPointIngredientsSource` together with the transfer-routed orbit-debt alias; no non-`molecule_h_norm` witness for that combination is known yet. | [#####-----] 50% |
 
 ## Notes
 
@@ -85,3 +85,25 @@ Last Updated: 2026-03-07
   - this shows the broad orbit-clause wrapper is no longer part of the active
     canonical frontier; the live blocker is now the smaller pair of ingredient
     and local orbit-at carriers.
+- Step-5 canonical-orbit frontier checkpoint (2026-03-07):
+  - added
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_ingredients_and_canonical_orbit_at_debt_source`
+    and
+    `molecule_residual_canonical_fast_fixed_point_data_source_via_ingredients_and_canonical_orbit_at_debt_source`;
+  - rerouted current
+    `molecule_residual_canonical_fast_fixed_point_data_source`
+    through
+    `molecule_residual_fixed_point_ingredients_source`
+    and
+    `molecule_residual_canonical_orbit_at_debt_source`;
+  - this removes the stronger local orbit-at wrapper from the active canonical
+    frontier; the remaining existence-side blockers are now the current
+    ingredient carrier and the current fixed-data canonical orbit debt source.
+- Step-6 transfer-shared orbit checkpoint (2026-03-07):
+  - rerouted
+    `molecule_residual_canonical_fast_fixed_point_data_source_via_ingredients_and_canonical_orbit_at_debt_source`
+    through
+    `molecule_residual_canonical_orbit_at_debt_source_via_fixed_point_transfer_source`;
+  - this means the active canonical route now shares the transfer branch
+    explicitly on the orbit side, without needing to move the earlier current
+    debt declarations.

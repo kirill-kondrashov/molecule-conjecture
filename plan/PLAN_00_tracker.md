@@ -55,7 +55,7 @@ Last Updated: 2026-03-07
 | PLAN_79 | Invariant-domain fixed-point source | STUCK | [#######---] 70% |
 | PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [####------] 40% |
 | PLAN_81 | Single-reference fixed-point data witness | ACTIVE | [######----] 60% |
-| PLAN_82 | Canonical fast fixed-point data witness | ACTIVE | [#####-----] 50% |
+| PLAN_82 | Canonical fast fixed-point data witness | ACTIVE | [######----] 60% |
 
 ## Dependency Map
 
@@ -360,6 +360,21 @@ Last Updated: 2026-03-07
     this exposes the existence-side blocker as the pair
     `molecule_residual_fixed_point_ingredients_source` +
     `molecule_residual_orbit_clause_at_source`.
+  - PLAN_82 step-5 checkpoint:
+    added canonical-source constructors from
+    `MoleculeResidualFixedPointIngredientsSource` and
+    `MoleculeResidualCanonicalOrbitAtDebtSource`;
+    rerouted the active current canonical theorem through those two current
+    carriers, removing the stronger local orbit-at wrapper from the active
+    frontier;
+    this exposes the existence-side blocker as the pair
+    `molecule_residual_fixed_point_ingredients_source` +
+    `molecule_residual_canonical_orbit_at_debt_source`.
+  - PLAN_82 step-6 checkpoint:
+    rerouted the active canonical source alias through
+    `molecule_residual_canonical_orbit_at_debt_source_via_fixed_point_transfer_source`;
+    the canonical route now shares the transfer carrier explicitly on the
+    orbit side without moving the earlier current debt declarations.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -1350,10 +1365,14 @@ Last Updated: 2026-03-07
     the broad orbit-clause source.
   - Reduced the current canonical theorem again to fixed-point ingredients plus
     the local orbit-at source.
+  - Reduced the current canonical theorem again to fixed-point ingredients plus
+    the fixed-data canonical orbit debt source.
+  - Rerouted the current orbit-debt side of that canonical route through the
+    transfer branch.
   - Route status:
-    target exposure [#########-] 90%,
-    downstream leverage [######----] 60%,
-    witness search [####------] 40%.
+    target exposure [##########] 100%,
+    downstream leverage [#######---] 70%,
+    witness search [#####-----] 50%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
