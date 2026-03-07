@@ -50,7 +50,7 @@ Last Updated: 2026-03-06
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
 | PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 92% |
-| PLAN_77 | Upstream model change for non-h_norm fixed-point sources | ACTIVE | [########--] 75% |
+| PLAN_77 | Upstream model change for non-h_norm fixed-point sources | ACTIVE | [########--] 80% |
 
 ## Dependency Map
 
@@ -219,6 +219,11 @@ Last Updated: 2026-03-06
     pack together with the model-sources direct-uniqueness seam. Targeted
     probes show the candidate route is still `Molecule.molecule_h_norm`-backed,
     but no longer uses the legacy direct-uniqueness theorem on that branch.
+  - PLAN_77 step-11 checkpoint:
+    added candidate model-collapse/breakout/model-sources chain consuming the
+    model-sources direct-uniqueness seam. Targeted probes show the candidate
+    route is still `Molecule.molecule_h_norm`-backed, but no longer depends on
+    the older direct-source branch on that uniqueness-side candidate path.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -1125,13 +1130,18 @@ Last Updated: 2026-03-06
     `molecule_residual_fixed_point_transfer_source_via_local_witness_and_model_source_direct_uniqueness`,
     `molecule_residual_fixed_point_data_source_via_local_witness_and_model_source_direct_uniqueness`,
     `molecule_residual_canonical_fast_fixed_point_data_source_via_local_witness_and_model_source_direct_uniqueness`.
+  - Added candidate model-collapse/breakout/model-sources chain through the
+    model-sources direct-uniqueness seam:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_via_model_source_direct_uniqueness`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_via_model_source_direct_uniqueness`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_via_model_source_direct_uniqueness`.
   - Targeted probes show these new constructors are ground-axiom-only; active
     existence/uniqueness/transfer/data/canonical/top-level routes remain
     `Molecule.molecule_h_norm`-backed.
   - Route status:
     obstruction inventory [###-------] 30%,
     local-domain transfer/data replacement [######----] 60%,
-    lifted-seam model-collapse witness [##--------] 20%,
+    lifted-seam model-collapse witness [###-------] 30%,
     canonical-first partial bypass [####------] 40%,
     model-restriction fallback inventory [#---------] 10%,
     PLAN_76 downstream readiness [########--] 80%.

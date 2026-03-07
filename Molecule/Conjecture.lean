@@ -6303,6 +6303,61 @@ theorem molecule_residual_fixed_point_uniqueness_direct_source_via_model_sources
     molecule_residual_fixed_point_uniqueness_direct_model_sources
 
 /--
+Candidate PLAN_77 direct model-collapse seam routed through the model-sources
+direct-uniqueness theorem.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_via_model_source_direct_uniqueness :
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseDirectSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_of_fixed_point_uniqueness_direct_source
+    molecule_residual_fixed_point_uniqueness_direct_source_via_model_sources
+
+/--
+Candidate PLAN_77 model-collapse-direct witness sources routed through the
+model-sources direct-uniqueness theorem.
+-/
+theorem molecule_residual_model_collapse_direct_witness_sources_via_model_source_direct_uniqueness :
+    MoleculeResidualModelCollapseDirectSourceWitnessSources :=
+  molecule_residual_model_collapse_direct_witness_sources_of_model_collapse_direct_source
+    molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_via_model_source_direct_uniqueness
+
+/--
+Candidate PLAN_77 breakout sources routed through the model-sources
+direct-uniqueness theorem.
+-/
+theorem molecule_residual_direct_source_breakout_sources_via_model_source_direct_uniqueness :
+    MoleculeResidualDirectSourceBreakoutSources :=
+  molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct_witness_sources
+    molecule_residual_canonical_fast_fixed_point_data_source
+    molecule_residual_model_collapse_direct_witness_sources_via_model_source_direct_uniqueness
+
+/--
+Candidate PLAN_77 model-collapse source routed through the model-sources
+direct-uniqueness theorem.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_via_model_source_direct_uniqueness :
+    MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_source
+    molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_via_model_source_direct_uniqueness
+
+/--
+Candidate PLAN_77 hybrid-class-uniqueness model sources routed through the
+model-sources direct-uniqueness theorem.
+-/
+def molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_via_model_source_direct_uniqueness :
+    MoleculeResidualHybridClassFixedPointUniquenessModelSources :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_model_collapse_source
+    molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_via_model_source_direct_uniqueness
+
+/--
+Candidate PLAN_77 hybrid-class fixed-point uniqueness source routed through
+the model-sources direct-uniqueness theorem.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_uniqueness_source_via_model_source_direct_uniqueness :
+    MoleculeResidualHybridClassFixedPointUniquenessSource :=
+  molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_model_sources
+    molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_via_model_source_direct_uniqueness
+
+/--
 Candidate PLAN_77 local-domain transfer source pack routed through the current
 local-witness pack and the model-sources direct-uniqueness seam.
 -/

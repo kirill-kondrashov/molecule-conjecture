@@ -1,7 +1,7 @@
 # PLAN 77 - Upstream Model Change For Non-h_norm Fixed-Point Sources
 
 Status: ACTIVE
-Progress: [########--] 75%
+Progress: [########--] 80%
 Scope: Replace the model-level global-normalization and full-domain bridge
 bottlenecks with upstream local-domain contracts that can feed non-
 `molecule_h_norm` fixed-point existence/uniqueness source theorems.
@@ -86,7 +86,7 @@ Last Updated: 2026-03-06
 | Upstream model-obstruction inventory | Core contradictions and dependency hotspots are explicit and linked to source theorems. | [###-------] 30% |
 | Existence-source upstream replacement | Added restricted bridge-on source seam and existence constructor (`molecule_residual_fixed_point_existence_source_of_bridge_on`), then rerouted active `molecule_residual_fixed_point_existence_source` via bridge-on path; constructor seams are ground-axiom-only, active route is still `molecule_h_norm`-backed via current fixed-point data source. | [####------] 40% |
 | Local-domain transfer/data replacement | Active transfer/data theorems now route through an explicit local normalized-witness pack, then an invariant-set local-domain transfer source, with a candidate route that also consumes the model-sources direct-uniqueness seam. Constructor seams are ground-axiom-only, but the current local-domain witness/source values still inherit `molecule_h_norm`. | [######----] 60% |
-| Lifted-seam model-collapse witness | Model-sources-based direct-uniqueness seam is in place and PLAN_76/downstream uniqueness consumers are cut over to it; remaining blocker is the current model-collapse value feeding that seam. | [##--------] 20% |
+| Lifted-seam model-collapse witness | Model-sources-based direct-uniqueness seam is in place and PLAN_76/downstream uniqueness consumers are cut over to it; there is now a candidate model-collapse/breakout/model-sources chain through that seam. Remaining blocker is the current model-source value feeding it. | [###-------] 30% |
 | Canonical-first partial bypass | Canonical fast fixed-point data already routes through existence, canonical `V`-bound/orbit debt route through transfer-component seams, and there is now a candidate canonical route consuming the local-witness + model-sources direct-uniqueness path. This lowers transfer-side debt visibility but does not yet remove the active upstream source values. | [####------] 40% |
 | Model-restriction fallback inventory | Full-domain bridge/global-normalization obstruction is explicit; no restricted-model redesign has been implemented yet. | [#---------] 10% |
 | PLAN_76 downstream cutover readiness | PLAN_76 routing seams are mature; cutover-ingredients and downstream uniqueness consumers now consume model-sources-based direct uniqueness, and the active canonical source now consumes the upstream existence seam. Remaining blockers are the current uniqueness-side model-collapse value and transfer/data-side source values. | [########--] 80% |
@@ -243,3 +243,17 @@ Last Updated: 2026-03-06
     candidate route still remains `Molecule.molecule_h_norm`-backed, but no
     longer uses the legacy direct-uniqueness theorem on that branch; the
     remaining blocker is concentrated in the current local-witness value.
+- New checkpoint (2026-03-06, step-11 attempt):
+  - Added candidate model-collapse/breakout/model-sources chain through the
+    model-sources direct-uniqueness seam:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source_via_model_source_direct_uniqueness`,
+    `molecule_residual_model_collapse_direct_witness_sources_via_model_source_direct_uniqueness`,
+    `molecule_residual_direct_source_breakout_sources_via_model_source_direct_uniqueness`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_via_model_source_direct_uniqueness`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_via_model_source_direct_uniqueness`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_via_model_source_direct_uniqueness`.
+  - Targeted probes:
+    candidate route still remains `Molecule.molecule_h_norm`-backed, but no
+    longer depends on the older direct-source branch on that uniqueness-side
+    candidate path; the remaining blocker is concentrated in the current
+    model-source value.
