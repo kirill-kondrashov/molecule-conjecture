@@ -96,13 +96,17 @@ Current axiom frontier:
 - The existence half is now reduced further:
   `MoleculeResidualFixedPointExistenceSource` is ground-axiom-only equivalent to
   `MoleculeResidualCanonicalFastFixedPointDataSource`.
+- The current canonical theorem is now routed through the smaller pair:
+  `MoleculeResidualFixedPointIngredientsSource` +
+  `MoleculeResidualOrbitClauseAtSource`.
 
 Implementation notes (important for interpretation):
 
 - `SliceSpace` is currently instantiated as `ℂ`.
 - `slice_chart` and `slice_operator` are currently placeholder constant maps
   (stubbed Banach-slice model).
-- `PseudoSiegelAPrioriBounds` is currently a placeholder contract (`True`) in
+- `PseudoSiegelAPrioriBounds` is now defined through the explicit
+  `PseudoSiegelAPrioriBoundsStatement` contract in
   `Molecule/Conjecture.lean`.
 - `IsHyperbolic1DUnstable` and `Has1DUnstableDirection` were realigned to weaker
   witness-style predicates compatible with the current scaffold.

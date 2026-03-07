@@ -1,7 +1,7 @@
 # PLAN 82 - Canonical Fast Fixed-Point Data Witness
 
 Status: ACTIVE
-Progress: [#---------] 10%
+Progress: [#####-----] 50%
 Scope: Replace the current `Molecule.molecule_h_norm`-backed canonical
 fixed-point source with a non-`molecule_h_norm` theorem producing
 `MoleculeResidualCanonicalFastFixedPointDataSource`.
@@ -24,7 +24,7 @@ Last Updated: 2026-03-07
 
 - [x] Verify that canonical fast fixed-point data is equivalent to the
   existence-side split target.
-- [ ] Identify the smallest live source package that could imply canonical fast
+- [x] Identify the smallest live source package that could imply canonical fast
   fixed-point data directly.
 - [ ] Attempt a non-`molecule_h_norm` canonical witness theorem.
 - [ ] Re-run `make build`, `make check`, and targeted `#print axioms` probes.
@@ -33,9 +33,9 @@ Last Updated: 2026-03-07
 
 | Route | Current State | Progress |
 |---|---|---|
-| Target exposure | The existence half is now formally reduced to `MoleculeResidualCanonicalFastFixedPointDataSource`. | [#####-----] 50% |
+| Target exposure | The existence half is now formally reduced to `MoleculeResidualCanonicalFastFixedPointDataSource`, and the current canonical theorem is rerouted through fixed-point ingredients plus the local orbit-at source. | [#########-] 90% |
 | Downstream leverage | A canonical witness would also feed downstream uniqueness/anchor routes already consuming canonical data. | [######----] 60% |
-| Witness search | No non-`molecule_h_norm` canonical witness source is known yet. | [#---------] 10% |
+| Witness search | The live upstream package is now explicit as the pair `MoleculeResidualFixedPointIngredientsSource` + `MoleculeResidualOrbitClauseAtSource`; no non-`molecule_h_norm` witness for that pair is known yet. | [####------] 40% |
 
 ## Notes
 
@@ -44,3 +44,44 @@ Last Updated: 2026-03-07
   `molecule_residual_fixed_point_existence_source_iff_canonical_fast_fixed_point_data_source`.
 - The current canonical source theorem is still `Molecule.molecule_h_norm`-
   backed.
+- Step-2 bounds-package checkpoint (2026-03-07):
+  - added
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_bounds`,
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_bounds_assembly_sources`,
+    and
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_non_ground_sources`;
+  - rerouted current
+    `molecule_residual_canonical_fast_fixed_point_data_source`
+    through `molecule_residual_bounds_assembly_sources`;
+  - this identifies the current smallest live upstream package for PLAN_82 as
+    `MoleculeResidualBoundsAssemblySources`;
+  - the remaining gap is no longer generic canonical existence, but a
+    non-`molecule_h_norm` producer for that bounds-assembly package.
+- Step-3 frontier split checkpoint (2026-03-07):
+  - added
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_ingredients_and_orbit_clause_source`
+    and
+    `molecule_residual_canonical_fast_fixed_point_data_source_via_ingredients_and_orbit_clause_source`;
+  - rerouted current
+    `molecule_residual_canonical_fast_fixed_point_data_source`
+    through
+    `molecule_residual_fixed_point_ingredients_source`
+    and
+    `molecule_residual_orbit_clause_source`;
+  - targeted probes should now show the existence-side canonical blocker as the
+    pair of current ingredient and orbit-clause carriers, rather than the
+    coarser bounds-assembly package.
+- Step-4 local-orbit frontier checkpoint (2026-03-07):
+  - added
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_ingredients_and_orbit_clause_at_source`
+    and
+    `molecule_residual_canonical_fast_fixed_point_data_source_via_ingredients_and_orbit_clause_at_source`;
+  - rerouted current
+    `molecule_residual_canonical_fast_fixed_point_data_source`
+    through
+    `molecule_residual_fixed_point_ingredients_source`
+    and
+    `molecule_residual_orbit_clause_at_source`;
+  - this shows the broad orbit-clause wrapper is no longer part of the active
+    canonical frontier; the live blocker is now the smaller pair of ingredient
+    and local orbit-at carriers.
