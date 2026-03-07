@@ -1,7 +1,7 @@
 # PLAN 82 - Canonical Fast Fixed-Point Data Witness
 
 Status: ACTIVE
-Progress: [######----] 60%
+Progress: [#######---] 70%
 Scope: Replace the current `Molecule.molecule_h_norm`-backed canonical
 fixed-point source with a non-`molecule_h_norm` theorem producing
 `MoleculeResidualCanonicalFastFixedPointDataSource`.
@@ -33,9 +33,9 @@ Last Updated: 2026-03-07
 
 | Route | Current State | Progress |
 |---|---|---|
-| Target exposure | The existence half is now formally reduced to `MoleculeResidualCanonicalFastFixedPointDataSource`, and the current canonical theorem is rerouted through fixed-point ingredients plus the fixed-data canonical orbit debt source. | [##########] 100% |
-| Downstream leverage | The active canonical route now consumes the transfer-routed orbit-debt alias, so canonical work shares the transfer branch explicitly. | [#######---] 70% |
-| Witness search | The live upstream package is now split as `MoleculeResidualFixedPointIngredientsSource` together with the transfer-routed orbit-debt alias; no non-`molecule_h_norm` witness for that combination is known yet. | [#####-----] 50% |
+| Target exposure | The existence half is now formally reduced to `MoleculeResidualCanonicalFastFixedPointDataSource`, and the current canonical theorem is rerouted through fixed-point ingredients, canonical orbit structure, and the transfer source. | [##########] 100% |
+| Downstream leverage | The active canonical route now shares the transfer branch explicitly and no longer hides the orbit-debt wrapper. | [########--] 80% |
+| Witness search | The live upstream package is now split as `MoleculeResidualFixedPointIngredientsSource` + `MoleculeResidualCanonicalOrbitStructureSource` + `MoleculeResidualFixedPointTransferSource`; no non-`molecule_h_norm` witness for that combination is known yet. | [######----] 60% |
 
 ## Notes
 
@@ -107,3 +107,17 @@ Last Updated: 2026-03-07
   - this means the active canonical route now shares the transfer branch
     explicitly on the orbit side, without needing to move the earlier current
     debt declarations.
+- Step-7 structure-and-transfer frontier checkpoint (2026-03-07):
+  - added
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_ingredients_structure_and_transfer`
+    and
+    `molecule_residual_canonical_fast_fixed_point_data_source_via_ingredients_structure_and_transfer`;
+  - rerouted current
+    `molecule_residual_canonical_fast_fixed_point_data_source`
+    through
+    `molecule_residual_fixed_point_ingredients_source`,
+    `molecule_residual_canonical_orbit_structure_source`,
+    and
+    `molecule_residual_fixed_point_transfer_source`;
+  - this removes the transfer-routed orbit-debt wrapper from the active
+    canonical frontier and exposes the exact current carriers directly.

@@ -6471,6 +6471,22 @@ theorem molecule_residual_canonical_fast_fixed_point_data_source_of_ingredients_
       h_orbit_fixed_data)
 
 /--
+Build canonical fast fixed-point data directly from fixed-point ingredients,
+canonical orbit structure, and the transfer source.
+-/
+theorem molecule_residual_canonical_fast_fixed_point_data_source_of_ingredients_structure_and_transfer
+    (h_ingredients : MoleculeResidualFixedPointIngredientsSource)
+    (h_structure : MoleculeResidualCanonicalOrbitStructureSource)
+    (h_transfer : MoleculeResidualFixedPointTransferSource) :
+    MoleculeResidualCanonicalFastFixedPointDataSource :=
+  molecule_residual_canonical_fast_fixed_point_data_source_of_ingredients_and_canonical_orbit_at_debt_source
+    h_ingredients
+    (molecule_residual_canonical_orbit_at_debt_source_of_structure_and_transfer_component_sources
+      h_structure
+      (molecule_residual_fixed_point_transfer_component_sources_of_fixed_point_transfer_source
+        h_transfer))
+
+/--
 Current-route canonical-data source exposed through fixed-point ingredients and
 the broad orbit-clause source.
 -/
@@ -6499,6 +6515,17 @@ theorem molecule_residual_canonical_fast_fixed_point_data_source_via_ingredients
   molecule_residual_canonical_fast_fixed_point_data_source_of_ingredients_and_canonical_orbit_at_debt_source
     molecule_residual_fixed_point_ingredients_source
     molecule_residual_canonical_orbit_at_debt_source_via_fixed_point_transfer_source
+
+/--
+Current-route canonical-data source exposed through fixed-point ingredients,
+canonical orbit structure, and the transfer source.
+-/
+theorem molecule_residual_canonical_fast_fixed_point_data_source_via_ingredients_structure_and_transfer :
+    MoleculeResidualCanonicalFastFixedPointDataSource :=
+  molecule_residual_canonical_fast_fixed_point_data_source_of_ingredients_structure_and_transfer
+    molecule_residual_fixed_point_ingredients_source
+    molecule_residual_canonical_orbit_structure_source
+    molecule_residual_fixed_point_transfer_source
 
 /--
 Build canonical fast fixed-point data from the fixed-point existence source
@@ -6542,7 +6569,7 @@ seam.
 -/
 theorem molecule_residual_canonical_fast_fixed_point_data_source :
     MoleculeResidualCanonicalFastFixedPointDataSource :=
-  molecule_residual_canonical_fast_fixed_point_data_source_via_ingredients_and_canonical_orbit_at_debt_source
+  molecule_residual_canonical_fast_fixed_point_data_source_via_ingredients_structure_and_transfer
 
 /--
 Under any bounds witness (hence canonical fixed-point existence), hybrid-level

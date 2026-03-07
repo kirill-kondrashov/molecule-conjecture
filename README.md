@@ -97,11 +97,9 @@ Current axiom frontier:
   `MoleculeResidualFixedPointExistenceSource` is ground-axiom-only equivalent to
   `MoleculeResidualCanonicalFastFixedPointDataSource`.
 - The current canonical theorem is now routed through the smaller pair:
-  `MoleculeResidualFixedPointIngredientsSource` +
-  `MoleculeResidualCanonicalOrbitAtDebtSource`.
-- On the orbit side, the current debt source is now itself routed through the
-  transfer-routed debt alias, so the canonical path shares
-  `MoleculeResidualFixedPointTransferSource` explicitly on that branch.
+  `MoleculeResidualFixedPointIngredientsSource` together with the orbit-side
+  pair `MoleculeResidualCanonicalOrbitStructureSource` +
+  `MoleculeResidualFixedPointTransferSource`.
 
 Implementation notes (important for interpretation):
 
