@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 99%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77, PLAN_78
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77, PLAN_78, PLAN_79
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-07
 
@@ -51,12 +51,13 @@ Last Updated: 2026-03-07
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
 | PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 92% |
 | PLAN_77 | Upstream model change for non-h_norm fixed-point sources | STUCK | [########--] 80% |
-| PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [##--------] 20% |
+| PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [#####-----] 50% |
+| PLAN_79 | Invariant-domain fixed-point source | ACTIVE | [#####-----] 50% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_78 concrete local-witness theorem + PLAN_53 (model bottleneck refactor) + PLAN_76 (anchor-witness bottleneck break) + PLAN_47/49 integration. PLAN_77 is now STUCK history/handoff; model-restriction redesign remains fallback-only.
+- Current queue is PLAN_79 invariant-domain fixed-point source + PLAN_78 concrete local-witness theorem + PLAN_53 (model bottleneck refactor) + PLAN_76 (anchor-witness bottleneck break) + PLAN_47/49 integration. PLAN_77 is now STUCK history/handoff; model-restriction redesign remains fallback-only.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -236,6 +237,27 @@ Last Updated: 2026-03-07
     constructors are ground-axiom-only, while the current target theorem and
     `molecule_residual_fixed_point_transfer_source_via_on_sources` remain
     `Molecule.molecule_h_norm`-backed.
+  - PLAN_79 step-1 checkpoint:
+    isolated the invariant-domain route behind a dedicated source seam for
+    `InvariantSliceDataWithNormalization`, and added direct invariant-domain
+    source theorems to fixed-point data and the local-witness target. This
+    narrows the remaining transfer-side blocker to finding a producer for that
+    invariant-domain source seam.
+    Targeted probes show the new invariant-domain route is ground-axiom-only.
+  - PLAN_79 step-2 inventory:
+    the only current producer of `InvariantSliceDataWithNormalization` remains
+    `invariant_slice_data_with_normalization_of_global`, so the new seam is
+    clean but still lacks a non-`molecule_h_norm` source.
+  - PLAN_79 step-3 refined-route checkpoint:
+    added `MoleculeResidualRefinedInvariantFixedPointSources` plus a
+    ground-axiom-only constructor from fixed-point data and a projection to
+    `molecule_residual_fixed_point_local_witness_on_sources`; the current
+    local-witness theorem is now routed through that refined source pack.
+  - PLAN_79 step-4 invariant-fixed-point checkpoint:
+    added invariant-slice-data -> fixed-point-in-domain and normalized-package
+    -> bridge-on/existence source theorems, all ground-axiom-only. The
+    remaining transfer-side blocker is now specifically the lack of a
+    non-`molecule_h_norm` producer for normalized invariant slice-data.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -1170,7 +1192,20 @@ Last Updated: 2026-03-07
   - Route status:
     concrete target exposure [####------] 40%,
     transfer-branch cutover readiness [#####-----] 50%,
-    proof-source search [#---------] 10%.
+    proof-source search [####------] 40%.
+- `PLAN_79` progress:
+  - Opened invariant-domain source track under `PLAN_78`.
+  - Added direct route from `InvariantSliceDataWithNormalization` to:
+    `MoleculeResidualFixedPointDataSource`,
+    `MoleculeResidualFixedPointLocalWitnessOnSources`.
+  - Added refined fixed-point pack and routed the current local-witness theorem
+    through it.
+  - Added invariant-slice-data -> fixed-point-in-domain and normalized-package
+    -> bridge-on/existence routes.
+  - Route status:
+    source seam exposure [#######---] 70%,
+    local-witness derivation [######----] 60%,
+    source producer search [##--------] 20%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
@@ -1257,4 +1292,4 @@ Last Updated: 2026-03-07
 ## Current Critical Blockers
 
 1. Root blocker: `Molecule.molecule_h_norm` remains in the zero-arg theorem path.
-2. Active mitigation: PLAN_78 concrete local-witness theorem track, PLAN_53 model bottleneck track, PLAN_76 anchor-witness bottleneck-break track, PLAN_47/49 integration tracks. PLAN_77 remains STUCK history/handoff.
+2. Active mitigation: PLAN_79 invariant-domain source track, PLAN_78 concrete local-witness theorem track, PLAN_53 model bottleneck track, PLAN_76 anchor-witness bottleneck-break track, PLAN_47/49 integration tracks. PLAN_77 remains STUCK history/handoff.

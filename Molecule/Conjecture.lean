@@ -678,6 +678,76 @@ theorem has_invariant_slice_data_of_exists
     HasInvariantSliceData := h_exists
 
 /--
+Source seam for invariant slice-data without normalization.
+-/
+def MoleculeResidualInvariantSliceDataSource : Prop :=
+  HasInvariantSliceData
+
+/--
+Source seam for a fixed point living in a designated invariant slice domain.
+-/
+def MoleculeResidualInvariantSliceFixedPointSource : Prop :=
+  ∃ K : Set BMol, ∃ f : BMol, f ∈ K ∧ Rfast f = f
+
+/--
+Project a fixed-point-in-domain witness from invariant slice-data alone.
+This uses the existing Schauder-style invariant compact-set theorem and does
+not require normalization assumptions.
+-/
+theorem molecule_residual_invariant_slice_fixed_point_source_of_invariant_slice_data_source
+    (h_data : MoleculeResidualInvariantSliceDataSource) :
+    MoleculeResidualInvariantSliceFixedPointSource := by
+  rcases h_data with
+    ⟨K, f_ref, P, hP_comp, hP_conv, h_maps, hK_def, h_surj, h_fin, h_inj, h_cont,
+      h_nonempty, h_mem⟩
+  have hK_image : (slice_chart f_ref) '' K = P := by
+    exact slice_chart_image_eq_polydisk_of_surj f_ref P K hK_def h_surj
+  have hK_compact : IsCompact K := by
+    exact slice_pullback_compact_of_finite K h_fin
+  have hK_convex : Convex ℝ ((slice_chart f_ref) '' K) := by
+    simpa [hK_image] using hP_conv
+  have hK_maps : MapsTo Rfast K K := by
+    intro f hfK
+    have hfP : slice_chart f_ref f ∈ P := by
+      have : f ∈ {g | slice_chart f_ref g ∈ P} := by
+        simpa [hK_def] using hfK
+      exact this
+    have hP_image : slice_operator f_ref (slice_chart f_ref f) ∈ P := h_maps hfP
+    have h_conj' :=
+      slice_conjugacy f_ref
+        (by
+          intro x hx
+          simp [slice_operator, slice_chart])
+        f
+        (by simp [slice_domain])
+    simpa [hK_def, h_conj'] using hP_image
+  rcases fixed_point_in_invariant_compact_set
+      K
+      f_ref
+      hK_compact
+      hK_maps
+      h_nonempty
+      (by
+        intro x hx
+        simp [slice_operator, slice_chart])
+      hK_convex
+      h_inj
+      h_cont with
+    ⟨f, hfK, h_fixed⟩
+  exact ⟨K, f, hfK, h_fixed⟩
+
+/--
+Forget normalization from the localized invariant-domain package.
+-/
+theorem molecule_residual_invariant_slice_data_source_of_with_normalization
+    (h_data : InvariantSliceDataWithNormalization) :
+    MoleculeResidualInvariantSliceDataSource := by
+  rcases h_data with
+    ⟨K, f_ref, P, hP_comp, hP_conv, h_maps, hK_def, h_surj, h_fin, h_inj, h_cont,
+      h_nonempty, h_mem, _h_norm⟩
+  exact ⟨K, f_ref, P, hP_comp, hP_conv, h_maps, hK_def, h_surj, h_fin, h_inj, h_cont, h_nonempty, h_mem⟩
+
+/--
 Package invariant slice data with localized normalization on the same `K`.
 This is a compatibility bridge used while migrating away from global `h_norm`.
 -/
@@ -2263,6 +2333,12 @@ def MoleculeResidualFixedPointDataSource : Prop :=
   FixedPointNormalizationData
 
 /--
+Source seam for an invariant normalized domain carrying the fixed-point route.
+-/
+def MoleculeResidualInvariantSliceDataWithNormalizationSource : Prop :=
+  InvariantSliceDataWithNormalization
+
+/--
 Explicit replacement seam for residual fixed-point normalization data.
 The PLAN_45 cutover target is to replace this source theorem with a seed-free
 construction.
@@ -2339,6 +2415,66 @@ theorem molecule_residual_fixed_point_bridge_on_source_of_fixed_point_and_normal
     (h_norm_on : NormalizationOn K) :
     MoleculeResidualFixedPointBridgeOnSource :=
   ⟨K, h_fixed_in, fixed_point_implies_renormalizable_on_of_normalization_on h_norm_on⟩
+
+/--
+Build a restricted bridge-on source directly from invariant slice-data paired
+with normalization on the same domain.
+-/
+theorem molecule_residual_fixed_point_bridge_on_source_of_invariant_slice_data_with_normalization_source
+    (h_data : MoleculeResidualInvariantSliceDataWithNormalizationSource) :
+    MoleculeResidualFixedPointBridgeOnSource := by
+  rcases h_data with
+    ⟨K, f_ref, P, hP_comp, hP_conv, h_maps, hK_def, h_surj, h_fin, h_inj, h_cont,
+      h_nonempty, h_mem, h_norm⟩
+  have hK_image : (slice_chart f_ref) '' K = P := by
+    exact slice_chart_image_eq_polydisk_of_surj f_ref P K hK_def h_surj
+  have hK_compact : IsCompact K := by
+    exact slice_pullback_compact_of_finite K h_fin
+  have hK_convex : Convex ℝ ((slice_chart f_ref) '' K) := by
+    simpa [hK_image] using hP_conv
+  have hK_maps : MapsTo Rfast K K := by
+    intro f hfK
+    have hfP : slice_chart f_ref f ∈ P := by
+      have : f ∈ {g | slice_chart f_ref g ∈ P} := by
+        simpa [hK_def] using hfK
+      exact this
+    have hP_image : slice_operator f_ref (slice_chart f_ref f) ∈ P := h_maps hfP
+    have h_conj' :=
+      slice_conjugacy f_ref
+        (by
+          intro x hx
+          simp [slice_operator, slice_chart])
+        f
+        (by simp [slice_domain])
+    simpa [hK_def, h_conj'] using hP_image
+  rcases fixed_point_in_invariant_compact_set
+      K
+      f_ref
+      hK_compact
+      hK_maps
+      h_nonempty
+      (by
+        intro x hx
+        simp [slice_operator, slice_chart])
+      hK_convex
+      h_inj
+      h_cont with
+    ⟨f, hfK, h_fixed⟩
+  exact
+    molecule_residual_fixed_point_bridge_on_source_of_fixed_point_and_normalization_on
+      ⟨f, hfK, h_fixed⟩
+      h_norm
+
+/--
+Build renormalizable fixed-point existence directly from the invariant
+slice-data-with-normalization package.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_invariant_slice_data_with_normalization_source
+    (h_data : MoleculeResidualInvariantSliceDataWithNormalizationSource) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_bridge_on
+    (molecule_residual_fixed_point_bridge_on_source_of_invariant_slice_data_with_normalization_source
+      h_data)
 
 /--
 Build a restricted bridge-on source from fixed-point normalization data.
@@ -2490,6 +2626,129 @@ def molecule_residual_fixed_point_local_witness_on_sources_of_fixed_data
       · intro f hf
         have h_eq : f = h_witness.f_star := by simpa using hf
         simpa [h_eq] using h_witness.vbound
+
+/--
+Refined-chart invariant slice-data pack whose designated reference map is
+already known to be an `Rfast` fixed point.
+-/
+structure MoleculeResidualRefinedInvariantFixedPointSources where
+  K : Set BMol
+  f_ref : BMol
+  P : Set SliceSpace
+  compact : IsCompact P
+  convex : Convex ℝ P
+  maps : MapsTo (slice_operator f_ref) P P
+  kdef : K = {f | slice_chart_refined f_ref f ∈ P}
+  surj : SurjOn (slice_chart_refined f_ref) K P
+  finite : K.Finite
+  inj : InjOn (slice_chart_refined f_ref) K
+  cont : ContinuousOn (slice_operator f_ref) ((slice_chart_refined f_ref) '' K)
+  nonempty : K.Nonempty
+  mem : f_ref ∈ K
+  normalization : NormalizationOn K
+  fixed : Rfast f_ref = f_ref
+
+/--
+Build the refined invariant fixed-point source pack from fixed-point
+normalization data.
+-/
+def molecule_residual_refined_invariant_fixed_point_sources_of_fixed_data
+    (h_fixed_data : FixedPointNormalizationData) :
+    MoleculeResidualRefinedInvariantFixedPointSources := by
+  classical
+  let f_star : BMol := Classical.choose h_fixed_data
+  have h_fixed_data_spec :
+      Rfast f_star = f_star ∧
+      IsFastRenormalizable f_star ∧
+      criticalValue f_star = 0 ∧
+      f_star.V ⊆ Metric.ball 0 0.1 :=
+    Classical.choose_spec h_fixed_data
+  let K : Set BMol := {f_star}
+  let P : Set SliceSpace := {(0 : SliceSpace)}
+  have h_normK : NormalizationOn K := by
+    constructor
+    · intro f hf
+      have h_eq : f = f_star := by simpa [K] using hf
+      simpa [h_eq] using h_fixed_data_spec.2.1
+    constructor
+    · intro f hf
+      have h_eq : f = f_star := by simpa [K] using hf
+      simpa [h_eq] using h_fixed_data_spec.2.2.1
+    · intro f hf
+      have h_eq : f = f_star := by simpa [K] using hf
+      simpa [h_eq] using h_fixed_data_spec.2.2.2
+  refine
+    ⟨
+      K,
+      f_star,
+      P,
+      ?_,
+      ?_,
+      ?_,
+      ?_,
+      ?_,
+      ?_,
+      ?_,
+      ?_,
+      ?_,
+      ?_,
+      h_normK,
+      h_fixed_data_spec.1
+    ⟩
+  · simp [P]
+  · simp [P]
+  · intro x hx
+    simp [P, slice_operator] at hx ⊢
+  · ext f
+    simp [K, P, slice_chart_refined]
+  · intro y hy
+    refine ⟨f_star, by simp [K], ?_⟩
+    have hy0 : y = 0 := by
+      simp [P] at hy
+      exact hy
+    simp [slice_chart_refined, hy0]
+  · simp [K]
+  · intro x hx y hy hxy
+    simp [K] at hx hy
+    simp [hx, hy]
+  · simpa [slice_operator] using
+      (continuousOn_const :
+        ContinuousOn (fun _ : SliceSpace => (0 : SliceSpace))
+          ((slice_chart_refined f_star) '' K))
+  · simp [K]
+  · simp [K]
+
+/--
+Project fixed-point normalization data from an invariant normalized domain.
+-/
+theorem molecule_residual_fixed_point_data_source_of_invariant_slice_data_with_normalization_source
+    (h_data : MoleculeResidualInvariantSliceDataWithNormalizationSource) :
+    MoleculeResidualFixedPointDataSource :=
+  fixed_point_normalization_data_of_invariant_slice_data h_data
+
+/--
+Project the concrete local-domain witness target from an invariant normalized
+domain.
+-/
+def molecule_residual_fixed_point_local_witness_on_sources_of_invariant_slice_data_with_normalization_source
+    (h_data : MoleculeResidualInvariantSliceDataWithNormalizationSource) :
+    MoleculeResidualFixedPointLocalWitnessOnSources :=
+  molecule_residual_fixed_point_local_witness_on_sources_of_fixed_data
+    (molecule_residual_fixed_point_data_source_of_invariant_slice_data_with_normalization_source
+      h_data)
+
+/--
+Project the concrete local-domain witness target from the refined invariant
+fixed-point source pack.
+-/
+def molecule_residual_fixed_point_local_witness_on_sources_of_refined_invariant_fixed_point_sources
+    (h_sources : MoleculeResidualRefinedInvariantFixedPointSources) :
+    MoleculeResidualFixedPointLocalWitnessOnSources :=
+  ⟨
+    h_sources.K,
+    ⟨h_sources.f_ref, h_sources.mem, h_sources.fixed⟩,
+    h_sources.normalization
+  ⟩
 
 /--
 Build PLAN_77 local-domain transfer sources from one normalized fixed-point
@@ -3656,8 +3915,9 @@ Current PLAN_77 local-witness source pack.
 -/
 def molecule_residual_fixed_point_local_witness_on_sources :
     MoleculeResidualFixedPointLocalWitnessOnSources :=
-  molecule_residual_fixed_point_local_witness_on_sources_of_fixed_data
-    molecule_h_fixed_data_direct
+  molecule_residual_fixed_point_local_witness_on_sources_of_refined_invariant_fixed_point_sources
+    (molecule_residual_refined_invariant_fixed_point_sources_of_fixed_data
+      molecule_h_fixed_data_direct)
 
 /--
 Current PLAN_77 local-witness source pack.

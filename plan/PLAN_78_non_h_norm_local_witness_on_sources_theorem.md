@@ -1,7 +1,7 @@
 # PLAN 78 - Non-h_norm Local Witness-On-Sources Theorem
 
 Status: ACTIVE
-Progress: [##--------] 20%
+Progress: [#####-----] 50%
 Scope: Replace the current transfer-branch local witness root with one
 concrete non-`molecule_h_norm` theorem:
 `molecule_residual_fixed_point_local_witness_on_sources`.
@@ -15,6 +15,7 @@ Acceptance:
 4. `make build` and `make check` pass.
 Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`,
 `Molecule/BanachSlice.lean`,
+`plan/PLAN_79_invariant_domain_fixed_point_source.md`,
 `plan/PLAN_53_fixed_point_model_bottleneck_refactor.md`,
 `plan/PLAN_77_upstream_model_change_for_non_h_norm_fixed_point_sources.md`
 Stuck Rule: STUCK if every candidate proof of
@@ -35,6 +36,8 @@ Last Updated: 2026-03-07
   imply:
   - existence of a fixed point in some `K`
   - `NormalizationOn K`
+- [x] Expose the invariant-domain route as a dedicated subplan:
+  `PLAN_79_invariant_domain_fixed_point_source.md`.
 - [ ] Attempt a theorem from localized normalization data plus a fixed-point-in-
   `K` witness.
 - [ ] Attempt a theorem from refined-chart invariant slice-data with
@@ -47,7 +50,7 @@ Last Updated: 2026-03-07
 |---|---|---|
 | Concrete target exposure | The concrete local-domain witness target is explicit in `Molecule/Conjecture.lean` and current local-witness routing now goes through it. | [####------] 40% |
 | Transfer-branch cutover readiness | `molecule_residual_fixed_point_local_witness_sources` and `molecule_residual_fixed_point_transfer_source_via_on_sources` already consume the concrete target theorem, so a replacement there will propagate immediately. | [#####-----] 50% |
-| Proof-source search | No non-`molecule_h_norm` theorem has been found yet for the concrete target. | [#---------] 10% |
+| Proof-source search | `PLAN_79` now isolates invariant slice-data, fixed-point-in-domain, bridge-on, and refined fixed-point source seams; current local-witness routing uses the refined pack, but no non-`molecule_h_norm` normalized-source producer exists yet. | [####------] 40% |
 
 ## Notes
 
@@ -73,3 +76,35 @@ Last Updated: 2026-03-07
     theorem `molecule_residual_fixed_point_transfer_source_via_on_sources`
     remain `Molecule.molecule_h_norm`-backed until a new witness proof is
     found.
+- New checkpoint (2026-03-07, step-2 invariant-domain split):
+  - Opened `PLAN_79_invariant_domain_fixed_point_source.md`.
+  - PLAN_79 isolates the invariant-domain route behind an explicit source seam
+    for `InvariantSliceDataWithNormalization`.
+  - The next immediate proof target is no longer the whole transfer branch; it
+    is a producer for that invariant-domain source seam.
+  - First PLAN_79 implementation added:
+    `MoleculeResidualInvariantSliceDataWithNormalizationSource`,
+    `molecule_residual_fixed_point_data_source_of_invariant_slice_data_with_normalization_source`,
+    `molecule_residual_fixed_point_local_witness_on_sources_of_invariant_slice_data_with_normalization_source`.
+  - Targeted probes show the new invariant-domain projections are
+    ground-axiom-only; the current concrete target theorem remains
+    `Molecule.molecule_h_norm`-backed because no active source producer exists
+    yet for the invariant-domain seam.
+  - Second PLAN_79 implementation added:
+    `MoleculeResidualRefinedInvariantFixedPointSources`,
+    `molecule_residual_refined_invariant_fixed_point_sources_of_fixed_data`,
+    `molecule_residual_fixed_point_local_witness_on_sources_of_refined_invariant_fixed_point_sources`.
+  - Current
+    `molecule_residual_fixed_point_local_witness_on_sources`
+    is now routed through that refined fixed-point pack.
+  - Targeted probes show the new refined-pack route is ground-axiom-only
+    upstream, while the current theorem remains `Molecule.molecule_h_norm`-
+    backed through `molecule_h_fixed_data_direct`.
+  - Added invariant-slice-data fixed-point route:
+    `molecule_residual_invariant_slice_fixed_point_source_of_invariant_slice_data_source`.
+  - Added normalized-package bridge/existence route:
+    `molecule_residual_fixed_point_bridge_on_source_of_invariant_slice_data_with_normalization_source`,
+    `molecule_residual_fixed_point_existence_source_of_invariant_slice_data_with_normalization_source`.
+  - Targeted probes show these new theorems are ground-axiom-only. This
+    settles the fixed-point-in-`K` part; the remaining unsolved ingredient is a
+    non-`molecule_h_norm` producer of normalized invariant slice-data.
