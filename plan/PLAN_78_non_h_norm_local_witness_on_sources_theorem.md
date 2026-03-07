@@ -1,7 +1,7 @@
 # PLAN 78 - Non-h_norm Local Witness-On-Sources Theorem
 
 Status: ACTIVE
-Progress: [######----] 60%
+Progress: [######----] 65%
 Scope: Replace the current transfer-branch local witness root with one
 concrete non-`molecule_h_norm` theorem:
 `molecule_residual_fixed_point_local_witness_on_sources`.
@@ -16,6 +16,8 @@ Acceptance:
 Dependencies: `Molecule/Conjecture.lean`, `Molecule/Problem4_3.lean`,
 `Molecule/BanachSlice.lean`,
 `plan/PLAN_79_invariant_domain_fixed_point_source.md`,
+`plan/PLAN_80_non_h_norm_fixed_point_data_source.md`,
+`plan/PLAN_81_single_reference_fixed_point_data_witness.md`,
 `plan/PLAN_53_fixed_point_model_bottleneck_refactor.md`,
 `plan/PLAN_77_upstream_model_change_for_non_h_norm_fixed_point_sources.md`
 Stuck Rule: STUCK if every candidate proof of
@@ -38,19 +40,22 @@ Last Updated: 2026-03-07
   - `NormalizationOn K`
 - [x] Expose the invariant-domain route as a dedicated subplan:
   `PLAN_79_invariant_domain_fixed_point_source.md`.
-- [ ] Attempt a theorem from localized normalization data plus a fixed-point-in-
-  `K` witness.
-- [ ] Attempt a theorem from refined-chart invariant slice-data with
-  normalization, if that package can be shown to contain an `Rfast` fixed point.
+- [x] Certify whether the legacy
+  `InvariantSliceDataWithNormalization` branch is live or dead under the
+  current scaffold.
+- [x] Reduce the current local-witness route to its minimal live blocker:
+  `molecule_h_fixed_data_direct`.
+- [ ] Attempt a direct replacement of `MoleculeResidualFixedPointDataSource`
+  through `PLAN_80`.
 - [ ] Re-run `make build`, `make check`, and targeted `#print axioms` probes.
 
 ## Route Progress
 
 | Route | Current State | Progress |
 |---|---|---|
-| Concrete target exposure | The concrete local-domain witness target is explicit in `Molecule/Conjecture.lean` and current local-witness routing now goes through it. | [####------] 40% |
+| Concrete target exposure | The concrete local-domain witness target is explicit in `Molecule/Conjecture.lean` and current local-witness routing now goes through its minimal fixed-data input. | [#####-----] 50% |
 | Transfer-branch cutover readiness | `molecule_residual_fixed_point_local_witness_sources` and `molecule_residual_fixed_point_transfer_source_via_on_sources` already consume the concrete target theorem, so a replacement there will propagate immediately. | [#####-----] 50% |
-| Proof-source search | `PLAN_79` now isolates invariant slice-data, fixed-point-in-domain, bridge-on, refined fixed-point, and direct local-witness ingredient seams; current local-witness routing uses the refined pack, but no non-`molecule_h_norm` normalized-source producer exists yet. | [#####-----] 50% |
+| Proof-source search | `PLAN_79` closed the legacy normalized invariant-slice-data branch as a dead end; the live search is now `PLAN_80`, targeting a non-`molecule_h_norm` `FixedPointNormalizationData` source. | [######----] 60% |
 
 ## Notes
 
@@ -115,3 +120,12 @@ Last Updated: 2026-03-07
   - Targeted probes show the new helper and direct local-witness route are
     ground-axiom-only. The remaining unsolved ingredient is unchanged:
     a non-`molecule_h_norm` producer of normalized invariant slice-data.
+  - Added dead-end certificate for the legacy normalized seam:
+    `no_molecule_residual_invariant_slice_data_with_normalization_source`.
+  - Rerouted current
+    `molecule_residual_fixed_point_local_witness_on_sources`
+    directly through
+    `molecule_residual_fixed_point_local_witness_on_sources_via_fixed_data_source`.
+  - Active continuation therefore moves to `PLAN_80`: replace
+    `molecule_h_fixed_data_direct` itself rather than continue on the dead
+    legacy invariant-domain branch.

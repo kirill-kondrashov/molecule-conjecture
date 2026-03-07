@@ -6,13 +6,14 @@
 
 **Current Status:** This repository is in active development.
 
-- `Molecule.molecule_conjecture_refined` is zero-argument and currently has no
-  project-specific axiom symbols in its proof path.
-- A stronger paired export now exists:
-  `Molecule.molecule_conjecture_refined_with_canonical_fixed_point`.
-  Its zero-argument form is explicit about a remaining project contract axiom
-  (`Molecule.molecule_residual_assumptions`) that supplies canonical fixed-point
-  data.
+- `Molecule.molecule_conjecture_refined` is zero-argument and currently has
+  one remaining project-specific axiom symbol in its proof path:
+  `Molecule.molecule_h_norm`.
+- The legacy `InvariantSliceDataWithNormalization` route is now certified as a
+  dead end in the current scaffold.
+- The active live blocker is
+  `Molecule.molecule_residual_fixed_point_data_source`, which is still routed
+  through `molecule_h_fixed_data_direct`.
 
 Several core contracts are still placeholder/relaxed, so this is not yet a faithful
 formalization of the full mathematical conjecture from the literature.
@@ -49,9 +50,11 @@ renormalization operator `Rfast`, a compact operator on the horseshoe
 - `CombinatoriallyAssociated Rfast_HMol R_target`
 - `∃ N, IsConjugateToShift R_target N`
 
-The refined theorem path above no longer depends on project-local axiom symbols.
-However, this was achieved by contract realignments that made some interfaces
-substantially weaker than their intended mathematical meaning.
+The refined theorem path above is reduced to one remaining project-local axiom
+symbol: `Molecule.molecule_h_norm`. Most structural routing around that axiom is
+now explicit, and one legacy upstream branch has been closed as inconsistent in
+the current model. What remains is an upstream witness-construction problem,
+not another routing problem.
 
 There is now an explicit canonical fixed-point contract:
 
@@ -65,6 +68,22 @@ So the canonical fixed-point route is contract-explicit at pack level (no hidden
 derivation through `molecule_h_norm`/`molecule_local_fixed_seed`), while the
 zero-argument canonical export still depends on the current residual contract axiom
 `Molecule.molecule_residual_assumptions`.
+
+Current axiom frontier:
+
+- `check_axioms Molecule.molecule_conjecture_refined` currently reports
+  `propext`, `Quot.sound`, `Classical.choice`, and `Molecule.molecule_h_norm`.
+- The old normalized invariant-slice-data seam is formally closed by
+  `no_molecule_residual_invariant_slice_data_with_normalization_source`.
+- The remaining live transfer-side blocker is
+  `molecule_residual_fixed_point_data_source`.
+- Ground-axiom-only constructors already exist for:
+  - `fixed_point_normalization_data_of_fixed_exists_and_transfer`
+  - `fixed_point_normalization_data_of_ingredients`
+  - `fixed_point_normalization_data_of_invariant_slice_data`
+- What is missing is a non-`molecule_h_norm` producer for one of those
+  constructor inputs, ideally a direct single-reference witness of
+  `FixedPointNormalizationData`.
 
 Implementation notes (important for interpretation):
 
@@ -85,16 +104,18 @@ Implementation notes (important for interpretation):
   zero-argument strengthened export currently uses
   `Molecule.molecule_residual_assumptions` as its explicit contract source.
 
-In practice: the refined theorem is kernel-checked and project-axiom-clean, while
-the canonical fixed-point strengthened export is kernel-checked but explicitly
-assumption-bearing via residual contract data. Current contracts are still too weak to
-claim equivalence with the full Dudko Molecule-Conjecture statement.
+In practice: the refined theorem is kernel-checked and reduced to one residual
+project-local axiom, while the canonical fixed-point strengthened export is
+kernel-checked but explicitly assumption-bearing via residual contract data.
+Current contracts are still too weak to claim equivalence with the full Dudko
+Molecule-Conjecture statement.
 
 > [!NOTE]
 >
-> Next step: harden the contracts back toward mathematically faithful definitions
-> while keeping `check_axioms` clean for
-> `Molecule.molecule_conjecture_refined` (no project-local axiom symbols).
+> Next step: replace the current `molecule_h_fixed_data_direct` carrier with a
+> non-`molecule_h_norm` witness theorem for `FixedPointNormalizationData`, then
+> reroute `molecule_residual_fixed_point_data_source` and downstream local-
+> witness/transfer theorems through it.
 
 ## Verification
 
@@ -113,4 +134,5 @@ All axioms used:
 - propext
 - Quot.sound
 - Classical.choice
+- Molecule.molecule_h_norm
 ```

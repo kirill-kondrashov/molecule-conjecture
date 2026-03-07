@@ -295,6 +295,58 @@ theorem has_invariant_slice_data_forces_univ_finite
   simpa [hK_univ] using h_fin
 
 /--
+With the current legacy scaffold (`slice_chart` is constant), any witness of
+`InvariantSliceDataWithNormalization` collapses to global normalization.
+-/
+theorem invariant_slice_data_with_normalization_implies_global_normalization_contract
+    (h_data : InvariantSliceDataWithNormalization) :
+    ∀ K : Set BMol,
+      (∀ f ∈ K, IsFastRenormalizable f) ∧
+      (∀ f ∈ K, criticalValue f = 0) ∧
+      (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1) := by
+  rcases h_data with
+    ⟨K0, f_ref, P, hP_comp, hP_conv, h_maps, hK_def, h_surj, h_fin, h_inj, h_cont,
+      h_nonempty, h_mem, h_normK⟩
+  have h_zero_in_P : (0 : SliceSpace) ∈ P := by
+    have h_ref_in_chart_preimage : f_ref ∈ {f : BMol | slice_chart f_ref f ∈ P} := by
+      simpa [hK_def] using h_mem
+    simpa [slice_chart] using h_ref_in_chart_preimage
+  have hK_univ : K0 = Set.univ := by
+    ext f
+    constructor
+    · intro _hf
+      trivial
+    · intro _hf
+      have hf_in_chart_preimage : f ∈ {g : BMol | slice_chart f_ref g ∈ P} := by
+        simpa [slice_chart] using h_zero_in_P
+      simpa [hK_def] using hf_in_chart_preimage
+  have h_norm_univ : NormalizationOn Set.univ := by
+    simpa [hK_univ] using h_normK
+  intro K
+  constructor
+  · intro f hfK
+    exact h_norm_univ.1 f (by simp)
+  · constructor
+    · intro f hfK
+      exact h_norm_univ.2.1 f (by simp)
+    · intro f hfK
+      exact h_norm_univ.2.2 f (by simp)
+
+/--
+Dead-end certificate: the legacy invariant-slice-data-with-normalization shape
+is inconsistent in the current model because it implies the inconsistent global
+normalization contract.
+-/
+theorem no_invariant_slice_data_with_normalization :
+    ¬ InvariantSliceDataWithNormalization := by
+  intro h_data
+  let h_norm :=
+    invariant_slice_data_with_normalization_implies_global_normalization_contract h_data
+  have hrenorm : IsFastRenormalizable defaultBMol := by
+    exact (h_norm {defaultBMol}).1 defaultBMol (by simp)
+  exact defaultBMol_not_renormalizable hrenorm
+
+/--
 Migration lemma: the legacy global normalization contract implies
 the local invariant normalization package.
 -/
@@ -2361,10 +2413,25 @@ def MoleculeResidualFixedPointDataSource : Prop :=
   FixedPointNormalizationData
 
 /--
+Minimal current residual fixed-point data source carrier.
+-/
+theorem molecule_residual_fixed_point_data_source_via_fixed_data_direct :
+    MoleculeResidualFixedPointDataSource :=
+  molecule_h_fixed_data_direct
+
+/--
 Source seam for an invariant normalized domain carrying the fixed-point route.
 -/
 def MoleculeResidualInvariantSliceDataWithNormalizationSource : Prop :=
   InvariantSliceDataWithNormalization
+
+/--
+Dead-end certificate for the legacy normalized invariant-slice-data seam.
+Any source for this seam would contradict the current model.
+-/
+theorem no_molecule_residual_invariant_slice_data_with_normalization_source :
+    ¬ MoleculeResidualInvariantSliceDataWithNormalizationSource :=
+  no_invariant_slice_data_with_normalization
 
 /--
 Explicit replacement seam for residual fixed-point normalization data.
@@ -3970,11 +4037,19 @@ def molecule_residual_fixed_point_transfer_on_sources_of_model_sources
 /--
 Current PLAN_77 local-witness source pack.
 -/
+def molecule_residual_fixed_point_local_witness_on_sources_via_fixed_data_source
+    (h_fixed_data : MoleculeResidualFixedPointDataSource) :
+    MoleculeResidualFixedPointLocalWitnessOnSources :=
+  molecule_residual_fixed_point_local_witness_on_sources_of_fixed_data
+    h_fixed_data
+
+/--
+Current PLAN_77 local-witness source pack.
+-/
 def molecule_residual_fixed_point_local_witness_on_sources :
     MoleculeResidualFixedPointLocalWitnessOnSources :=
-  molecule_residual_fixed_point_local_witness_on_sources_of_refined_invariant_fixed_point_sources
-    (molecule_residual_refined_invariant_fixed_point_sources_of_fixed_data
-      molecule_h_fixed_data_direct)
+  molecule_residual_fixed_point_local_witness_on_sources_via_fixed_data_source
+    molecule_residual_fixed_point_data_source_via_fixed_data_direct
 
 /--
 Current PLAN_77 local-witness source pack.
@@ -4183,7 +4258,7 @@ Current residual fixed-point data source (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_data_source :
     MoleculeResidualFixedPointDataSource :=
-  molecule_residual_fixed_point_data_source_via_model_sources
+  molecule_residual_fixed_point_data_source_via_fixed_data_direct
 
 /--
 Assemble residual fixed-point-normalization ingredients from explicit existence

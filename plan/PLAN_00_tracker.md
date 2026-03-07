@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 99%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77, PLAN_78, PLAN_79
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77, PLAN_78, PLAN_79, PLAN_80, PLAN_81
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-07
 
@@ -51,13 +51,15 @@ Last Updated: 2026-03-07
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
 | PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 92% |
 | PLAN_77 | Upstream model change for non-h_norm fixed-point sources | STUCK | [########--] 80% |
-| PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [######----] 60% |
-| PLAN_79 | Invariant-domain fixed-point source | ACTIVE | [######----] 60% |
+| PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [######----] 65% |
+| PLAN_79 | Invariant-domain fixed-point source | STUCK | [#######---] 70% |
+| PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [####------] 40% |
+| PLAN_81 | Single-reference fixed-point data witness | ACTIVE | [#---------] 10% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_79 invariant-domain fixed-point source + PLAN_78 concrete local-witness theorem + PLAN_53 (model bottleneck refactor) + PLAN_76 (anchor-witness bottleneck break) + PLAN_47/49 integration. PLAN_77 is now STUCK history/handoff; model-restriction redesign remains fallback-only.
+- Current queue is PLAN_81 single-reference fixed-data witness + PLAN_80 fixed-point-data-source track + PLAN_78 concrete local-witness theorem + PLAN_53 (model bottleneck refactor) + PLAN_76 (anchor-witness bottleneck break) + PLAN_47/49 integration. PLAN_79 and PLAN_77 are now STUCK history/handoff; model-restriction redesign remains fallback-only.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -264,6 +266,42 @@ Last Updated: 2026-03-07
     Targeted probes show the new helper/local-witness route is
     ground-axiom-only; the blocker remains the missing normalized-source
     producer.
+  - PLAN_79 step-6 dead-end checkpoint:
+    added
+    `invariant_slice_data_with_normalization_implies_global_normalization_contract`,
+    `no_invariant_slice_data_with_normalization`, and
+    `no_molecule_residual_invariant_slice_data_with_normalization_source`;
+    targeted probes show these are ground-axiom-only, certifying the legacy
+    normalized invariant-slice-data branch as a dead end in the current model.
+  - PLAN_80 step-1 checkpoint:
+    added
+    `molecule_residual_fixed_point_data_source_via_fixed_data_direct`;
+    rerouted current
+    `molecule_residual_fixed_point_data_source`
+    through that direct fixed-data carrier;
+    rerouted current
+    `molecule_residual_fixed_point_local_witness_on_sources`
+    directly through
+    `molecule_residual_fixed_point_local_witness_on_sources_via_fixed_data_source`;
+    this makes the current fixed-point data source theorem, still backed by
+    `molecule_h_fixed_data_direct`, the exact remaining live transfer-side
+    blocker.
+  - PLAN_80 step-2 inventory checkpoint:
+    verified that the constructors
+    `fixed_point_normalization_data_of_fixed_exists_and_transfer`,
+    `fixed_point_normalization_data_of_ingredients`,
+    `fixed_point_normalization_data_of_invariant_slice_data`, and
+    `molecule_residual_fixed_point_data_source_of_invariant_slice_data_with_normalization_source`
+    are all ground-axiom-only.
+    This shows the live route is not dead; the missing piece is an upstream
+    producer for one of their inputs that avoids both
+    `molecule_h_fixed_data_direct` and the dead legacy normalized seam.
+  - PLAN_81 step-1 checkpoint:
+    opened a concrete proof-target plan for the exact missing theorem:
+    one non-`molecule_h_norm` witness of `FixedPointNormalizationData`.
+    Active search now targets a direct single-reference witness or a split
+    witness through `fixed_exists + transfer`, rather than more route
+    reshuffling.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -1196,9 +1234,9 @@ Last Updated: 2026-03-07
     `molecule_residual_fixed_point_local_witness_on_sources`,
     `molecule_residual_fixed_point_local_witness_sources`.
   - Route status:
-    concrete target exposure [####------] 40%,
+    concrete target exposure [#####-----] 50%,
     transfer-branch cutover readiness [#####-----] 50%,
-    proof-source search [#####-----] 50%.
+    proof-source search [######----] 60%.
 - `PLAN_79` progress:
   - Opened invariant-domain source track under `PLAN_78`.
   - Added direct route from `InvariantSliceDataWithNormalization` to:
@@ -1210,10 +1248,31 @@ Last Updated: 2026-03-07
     -> bridge-on/existence routes.
   - Added direct local-witness ingredient split from normalized invariant
     slice-data.
+  - Added dead-end certificate proving the legacy normalized invariant-slice-
+    data seam is inconsistent in the current model.
   - Route status:
     source seam exposure [########--] 80%,
     local-witness derivation [#######---] 70%,
-    source producer search [###-------] 30%.
+    source producer search [##########] 100% dead.
+- `PLAN_80` progress:
+  - Opened the direct fixed-point-data replacement track after closing the
+    legacy normalized invariant-domain branch.
+  - Current fixed-point-data and local-witness theorems now route directly
+    through the fixed-data carrier.
+  - Inventory confirms the existing fixed-data constructors are clean; the
+    blocker is now producing their inputs without `molecule_h_norm`.
+  - Route status:
+    minimal blocker exposure [######----] 60%,
+    legacy branch closure [##########] 100%,
+    live source search [##--------] 20%.
+- `PLAN_81` progress:
+  - Opened a concrete proof-target plan for one non-`molecule_h_norm`
+    `FixedPointNormalizationData` witness.
+  - This is the new missing-theorem track underneath PLAN_80.
+  - Route status:
+    target exposure [###-------] 30%,
+    constructor readiness [#####-----] 50%,
+    upstream witness search [#---------] 10%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
@@ -1300,4 +1359,4 @@ Last Updated: 2026-03-07
 ## Current Critical Blockers
 
 1. Root blocker: `Molecule.molecule_h_norm` remains in the zero-arg theorem path.
-2. Active mitigation: PLAN_79 invariant-domain source track, PLAN_78 concrete local-witness theorem track, PLAN_53 model bottleneck track, PLAN_76 anchor-witness bottleneck-break track, PLAN_47/49 integration tracks. PLAN_77 remains STUCK history/handoff.
+2. Active mitigation: PLAN_81 single-reference fixed-data witness track, PLAN_80 fixed-point-data-source track, PLAN_78 concrete local-witness theorem track, PLAN_53 model bottleneck track, PLAN_76 anchor-witness bottleneck-break track, PLAN_47/49 integration tracks. PLAN_79 and PLAN_77 remain STUCK history/handoff.
