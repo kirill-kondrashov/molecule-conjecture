@@ -55,7 +55,7 @@ Last Updated: 2026-03-07
 | PLAN_79 | Invariant-domain fixed-point source | STUCK | [#######---] 70% |
 | PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [####------] 40% |
 | PLAN_81 | Single-reference fixed-point data witness | ACTIVE | [######----] 60% |
-| PLAN_82 | Canonical fast fixed-point data witness | ACTIVE | [#######---] 70% |
+| PLAN_82 | Canonical fast fixed-point data witness | ACTIVE | [########--] 80% |
 
 ## Dependency Map
 
@@ -383,6 +383,14 @@ Last Updated: 2026-03-07
     rerouted the active current canonical theorem through those three current
     carriers, removing the transfer-routed orbit-debt wrapper from the active
     frontier.
+  - PLAN_82 step-8 checkpoint:
+    added canonical-source constructors from
+    `MoleculeResidualFixedPointIngredientsSource`,
+    `MoleculeResidualOrbitClauseSource`, and
+    `MoleculeResidualFixedPointTransferSource`;
+    rerouted the active current canonical theorem through those three current
+    carriers, removing the transport and orbit-structure wrappers from the
+    active frontier.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -1379,10 +1387,12 @@ Last Updated: 2026-03-07
     transfer branch.
   - Exposed the active canonical route directly as ingredients + orbit
     structure + transfer.
+  - Exposed the active canonical route directly as ingredients + orbit clause +
+    transfer.
   - Route status:
     target exposure [##########] 100%,
-    downstream leverage [########--] 80%,
-    witness search [######----] 60%.
+    downstream leverage [#########-] 90%,
+    witness search [#######---] 70%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
