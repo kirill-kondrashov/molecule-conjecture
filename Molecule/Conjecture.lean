@@ -2402,6 +2402,35 @@ structure MoleculeResidualFixedPointLocalWitnessSources where
   vbound : f_star.V ⊆ Metric.ball 0 0.1
 
 /--
+Concrete local-domain witness target: a normalized domain carrying at least
+one fixed point of `Rfast`.
+-/
+structure MoleculeResidualFixedPointLocalWitnessOnSources where
+  K : Set BMol
+  fixed : ∃ f : BMol, f ∈ K ∧ Rfast f = f
+  normalization : NormalizationOn K
+
+/--
+Build the local normalized-witness source pack from the concrete local-domain
+witness target.
+-/
+def molecule_residual_fixed_point_local_witness_sources_of_on_sources
+    (h_sources : MoleculeResidualFixedPointLocalWitnessOnSources) :
+    MoleculeResidualFixedPointLocalWitnessSources := by
+  classical
+  let f_star : BMol := Classical.choose h_sources.fixed
+  have h_fixed_spec : f_star ∈ h_sources.K ∧ Rfast f_star = f_star :=
+    Classical.choose_spec h_sources.fixed
+  exact
+    ⟨
+      f_star,
+      h_fixed_spec.2,
+      h_sources.normalization.1 f_star h_fixed_spec.1,
+      h_sources.normalization.2.1 f_star h_fixed_spec.1,
+      h_sources.normalization.2.2 f_star h_fixed_spec.1
+    ⟩
+
+/--
 Build fixed-point normalization data from the PLAN_77 local-witness source
 pack.
 -/
@@ -2433,6 +2462,34 @@ def molecule_residual_fixed_point_local_witness_sources_of_fixed_data
       h_fixed_data_spec.2.2.1,
       h_fixed_data_spec.2.2.2
     ⟩
+
+/--
+Build the concrete local-domain witness target from fixed-point normalization
+data.
+-/
+def molecule_residual_fixed_point_local_witness_on_sources_of_fixed_data
+    (h_fixed_data : FixedPointNormalizationData) :
+    MoleculeResidualFixedPointLocalWitnessOnSources := by
+  let h_witness :=
+    molecule_residual_fixed_point_local_witness_sources_of_fixed_data h_fixed_data
+  refine
+    ⟨
+      {h_witness.f_star},
+      ?_,
+      ?_
+    ⟩
+  · exact ⟨h_witness.f_star, by simp, h_witness.fixed⟩
+  · constructor
+    · intro f hf
+      have h_eq : f = h_witness.f_star := by simpa using hf
+      simpa [h_eq] using h_witness.renorm
+    · constructor
+      · intro f hf
+        have h_eq : f = h_witness.f_star := by simpa using hf
+        simpa [h_eq] using h_witness.crit
+      · intro f hf
+        have h_eq : f = h_witness.f_star := by simpa using hf
+        simpa [h_eq] using h_witness.vbound
 
 /--
 Build PLAN_77 local-domain transfer sources from one normalized fixed-point
@@ -3597,10 +3654,18 @@ def molecule_residual_fixed_point_transfer_on_sources_of_model_sources
 /--
 Current PLAN_77 local-witness source pack.
 -/
+def molecule_residual_fixed_point_local_witness_on_sources :
+    MoleculeResidualFixedPointLocalWitnessOnSources :=
+  molecule_residual_fixed_point_local_witness_on_sources_of_fixed_data
+    molecule_h_fixed_data_direct
+
+/--
+Current PLAN_77 local-witness source pack.
+-/
 def molecule_residual_fixed_point_local_witness_sources :
     MoleculeResidualFixedPointLocalWitnessSources :=
-  molecule_residual_fixed_point_local_witness_sources_of_fixed_data
-    molecule_h_fixed_data_direct
+  molecule_residual_fixed_point_local_witness_sources_of_on_sources
+    molecule_residual_fixed_point_local_witness_on_sources
 
 /--
 Current PLAN_77 local-domain transfer source pack routed via the local-witness

@@ -4,9 +4,9 @@ Status: ACTIVE
 Progress: [#########-] 99%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77, PLAN_78
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
-Last Updated: 2026-03-06
+Last Updated: 2026-03-07
 
 ## Plan Matrix
 
@@ -50,12 +50,13 @@ Last Updated: 2026-03-06
 | PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
 | PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 92% |
-| PLAN_77 | Upstream model change for non-h_norm fixed-point sources | ACTIVE | [########--] 80% |
+| PLAN_77 | Upstream model change for non-h_norm fixed-point sources | STUCK | [########--] 80% |
+| PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [##--------] 20% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_77 local-domain transfer/data subtrack + PLAN_53 (model bottleneck refactor) + PLAN_77 lifted-seam uniqueness subtrack + PLAN_76 (anchor-witness bottleneck break) + PLAN_47/49 integration, then PLAN_43. Model-restriction redesign remains fallback-only.
+- Current queue is PLAN_78 concrete local-witness theorem + PLAN_53 (model bottleneck refactor) + PLAN_76 (anchor-witness bottleneck break) + PLAN_47/49 integration. PLAN_77 is now STUCK history/handoff; model-restriction redesign remains fallback-only.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -224,6 +225,17 @@ Last Updated: 2026-03-06
     model-sources direct-uniqueness seam. Targeted probes show the candidate
     route is still `Molecule.molecule_h_norm`-backed, but no longer depends on
     the older direct-source branch on that uniqueness-side candidate path.
+  - PLAN_77 handoff checkpoint (2026-03-07):
+    seam-only decomposition is now considered saturated; active continuation
+    moved to PLAN_78 targeting the concrete theorem
+    `molecule_residual_fixed_point_local_witness_on_sources`.
+  - PLAN_78 step-1 checkpoint:
+    introduced the concrete theorem target
+    `molecule_residual_fixed_point_local_witness_on_sources` and rebased
+    current local-witness routing through it. Targeted probes show the new
+    constructors are ground-axiom-only, while the current target theorem and
+    `molecule_residual_fixed_point_transfer_source_via_on_sources` remain
+    `Molecule.molecule_h_norm`-backed.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -1138,6 +1150,8 @@ Last Updated: 2026-03-06
   - Targeted probes show these new constructors are ground-axiom-only; active
     existence/uniqueness/transfer/data/canonical/top-level routes remain
     `Molecule.molecule_h_norm`-backed.
+  - PLAN_77 is now STUCK as a seam-only umbrella plan; active continuation
+    moved to `PLAN_78`.
   - Route status:
     obstruction inventory [###-------] 30%,
     local-domain transfer/data replacement [######----] 60%,
@@ -1145,6 +1159,18 @@ Last Updated: 2026-03-06
     canonical-first partial bypass [####------] 40%,
     model-restriction fallback inventory [#---------] 10%,
     PLAN_76 downstream readiness [########--] 80%.
+- `PLAN_78` progress:
+  - Opened concrete witness-theorem track targeting
+    `molecule_residual_fixed_point_local_witness_on_sources`.
+  - Added explicit concrete target theorem and current-route rebasing:
+    `MoleculeResidualFixedPointLocalWitnessOnSources`,
+    `molecule_residual_fixed_point_local_witness_sources_of_on_sources`,
+    `molecule_residual_fixed_point_local_witness_on_sources`,
+    `molecule_residual_fixed_point_local_witness_sources`.
+  - Route status:
+    concrete target exposure [####------] 40%,
+    transfer-branch cutover readiness [#####-----] 50%,
+    proof-source search [#---------] 10%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
@@ -1231,4 +1257,4 @@ Last Updated: 2026-03-06
 ## Current Critical Blockers
 
 1. Root blocker: `Molecule.molecule_h_norm` remains in the zero-arg theorem path.
-2. Active mitigation: PLAN_47 integration track, PLAN_49 fixed-point source track, PLAN_53 model bottleneck track, PLAN_76 anchor-witness bottleneck-break track, PLAN_77 upstream model-change track.
+2. Active mitigation: PLAN_78 concrete local-witness theorem track, PLAN_53 model bottleneck track, PLAN_76 anchor-witness bottleneck-break track, PLAN_47/49 integration tracks. PLAN_77 remains STUCK history/handoff.

@@ -1,6 +1,6 @@
 # PLAN 77 - Upstream Model Change For Non-h_norm Fixed-Point Sources
 
-Status: ACTIVE
+Status: STUCK
 Progress: [########--] 80%
 Scope: Replace the model-level global-normalization and full-domain bridge
 bottlenecks with upstream local-domain contracts that can feed non-
@@ -24,7 +24,18 @@ Dependencies: `Molecule/Rfast.lean`, `Molecule/Conjecture.lean`,
 `plan/PLAN_76_non_h_norm_anchor_witness_bottleneck_break.md`
 Stuck Rule: STUCK if every upstream candidate still requires either
 `Molecule.molecule_h_norm` or full-domain `FixedPointImpliesRenormalizable`.
-Last Updated: 2026-03-06
+Last Updated: 2026-03-07
+
+## Handoff
+
+- Seam-only decomposition on both transfer-side and uniqueness-side branches is
+  now effectively saturated.
+- Active continuation moved to
+  `PLAN_78_non_h_norm_local_witness_on_sources_theorem.md`, targeting one
+  concrete theorem:
+  `molecule_residual_fixed_point_local_witness_on_sources`.
+- Any further work under PLAN_77 should only record new proof-target handoffs
+  or explicit obstruction results, not more equivalent route expansions.
 
 ## Work Plan
 
