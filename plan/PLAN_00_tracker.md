@@ -53,7 +53,7 @@ Last Updated: 2026-03-07
 | PLAN_77 | Upstream model change for non-h_norm fixed-point sources | STUCK | [########--] 80% |
 | PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [######----] 65% |
 | PLAN_79 | Invariant-domain fixed-point source | STUCK | [#######---] 70% |
-| PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [####------] 40% |
+| PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [#####-----] 45% |
 | PLAN_81 | Single-reference fixed-point data witness | ACTIVE | [######----] 60% |
 | PLAN_82 | Canonical fast fixed-point data witness | ACTIVE | [#########-] 95% |
 
@@ -415,6 +415,20 @@ Last Updated: 2026-03-07
     rerouted the active current canonical theorem through those three current
     carriers, removing the remaining existence/transfer wrappers from the
     active frontier.
+  - PLAN_82 step-12 checkpoint:
+    added a concrete active alias through the exact theorem carriers
+    `molecule_residual_fixed_point_data_source_via_fixed_data_direct`,
+    `molecule_residual_orbit_clause_at_source`, and
+    `molecule_residual_fixed_point_uniqueness_source_direct`;
+    targeted probes show these are now the exact remaining theorem blockers on
+    the canonical branch.
+  - PLAN_82 step-12 checkpoint:
+    added a concrete active alias through the exact theorem carriers
+    `molecule_residual_fixed_point_data_source_via_fixed_data_direct`,
+    `molecule_residual_orbit_clause_at_source`, and
+    `molecule_residual_fixed_point_uniqueness_source_direct`;
+    targeted probes show these are now the exact remaining theorem blockers on
+    the canonical branch.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -1372,11 +1386,14 @@ Last Updated: 2026-03-07
     legacy normalized invariant-domain branch.
   - Current fixed-point-data and local-witness theorems now route directly
     through the fixed-data carrier.
+  - Split the direct fixed-data carrier into exact theorem blockers:
+    direct renormalizable fixed-point existence and direct local
+    normalization transfer.
   - Inventory confirms the existing fixed-data constructors are clean; the
     blocker is now producing their inputs without `molecule_h_norm`.
   - Added explicit split fallback route through current existence + transfer.
   - Route status:
-    minimal blocker exposure [######----] 60%,
+    minimal blocker exposure [#######---] 70%,
     legacy branch closure [##########] 100%,
     live source search [##--------] 20%.
 - `PLAN_81` progress:
@@ -1419,6 +1436,8 @@ Last Updated: 2026-03-07
     transfer.
   - Exposed the active canonical route directly as fixed data + local orbit-at +
     uniqueness.
+  - Exposed the active canonical route directly through the exact current
+    theorem carriers on that frontier.
   - Route status:
     target exposure [##########] 100%,
     downstream leverage [#########-] 90%,

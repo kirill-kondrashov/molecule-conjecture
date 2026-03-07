@@ -100,6 +100,13 @@ Current axiom frontier:
   `MoleculeResidualFixedPointDataSource`,
   `MoleculeResidualOrbitClauseAtSource`,
   and `MoleculeResidualFixedPointUniquenessSource`.
+- Concretely, the active theorem carriers on that branch are now:
+  `molecule_residual_fixed_point_data_source_via_fixed_data_direct`,
+  `molecule_residual_orbit_clause_at_source`,
+  and `molecule_residual_fixed_point_uniqueness_source_direct`.
+- Under the fixed-data branch itself, the current carrier now splits into:
+  `molecule_residual_fixed_exists_via_global_norm_direct` and
+  `molecule_residual_fixed_point_local_normalization_transfer_via_global_norm_direct`.
 
 Implementation notes (important for interpretation):
 

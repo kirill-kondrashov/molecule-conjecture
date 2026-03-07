@@ -1,7 +1,7 @@
 # PLAN 80 - Non-h_norm Fixed-Point Data Source
 
 Status: ACTIVE
-Progress: [####------] 40%
+Progress: [#####-----] 45%
 Scope: Replace the current `molecule_h_fixed_data_direct` carrier with one
 concrete non-`molecule_h_norm` theorem-level source for
 `MoleculeResidualFixedPointDataSource`, then feed
@@ -45,7 +45,7 @@ Last Updated: 2026-03-07
 
 | Route | Current State | Progress |
 |---|---|---|
-| Minimal blocker exposure | The current `molecule_residual_fixed_point_data_source` theorem and the downstream local-witness theorem now both route through the direct fixed-data carrier, so the exact remaining transfer-side blocker is explicit. | [######----] 60% |
+| Minimal blocker exposure | The current `molecule_residual_fixed_point_data_source` theorem and the downstream local-witness theorem now both route through the direct fixed-data carrier, and that carrier is now split into direct fixed-exists + local-transfer theorems. | [#######---] 70% |
 | Legacy branch closure | `no_molecule_residual_invariant_slice_data_with_normalization_source` proves the old normalized invariant-slice-data seam is inconsistent in the current model. | [##########] 100% |
 | Live source search | Ground-axiom-only constructors exist from ingredients, fixed-exists+transfer, and invariant-slice-data; the missing piece is now a live producer for one of those inputs that does not pass through the dead legacy normalized seam. | [##--------] 20% |
 
@@ -113,3 +113,15 @@ Last Updated: 2026-03-07
   - reduced the existence half to canonical fast fixed-point data via
     `molecule_residual_fixed_point_existence_source_iff_canonical_fast_fixed_point_data_source`;
   - active existence-side continuation now moves to `PLAN_82`.
+- Step-8 fixed-data split checkpoint (2026-03-07):
+  - added
+    `molecule_residual_fixed_exists_via_global_norm_direct`,
+    `molecule_residual_fixed_point_local_normalization_transfer_via_global_norm_direct`,
+    and
+    `molecule_residual_fixed_point_data_source_via_fixed_exists_and_transfer_direct`;
+  - rerouted
+    `molecule_residual_fixed_point_data_source_via_fixed_data_direct`
+    through those two direct theorem carriers;
+  - targeted probes show the fixed-data branch is still
+    `Molecule.molecule_h_norm`-backed, but its exact blocker pair is now
+    explicit.

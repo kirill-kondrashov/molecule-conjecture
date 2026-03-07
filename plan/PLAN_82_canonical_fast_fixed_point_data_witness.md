@@ -180,3 +180,26 @@ Last Updated: 2026-03-07
   - this removes the remaining existence/transfer wrappers from the active
     canonical frontier and ties PLAN_82 directly to the PLAN_80/81 fixed-data
     witness search plus the uniqueness frontier.
+- Step-12 exact-theorem frontier checkpoint (2026-03-07):
+  - added
+    `molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_direct_orbit_clause_at_and_uniqueness_direct`;
+  - rerouted the active fixed-data/local-orbit/uniqueness alias through the
+    exact theorem carriers
+    `molecule_residual_fixed_point_data_source_via_fixed_data_direct`,
+    `molecule_residual_orbit_clause_at_source`,
+    and
+    `molecule_residual_fixed_point_uniqueness_source_direct`;
+  - targeted probes show these are now the exact theorem blockers for the
+    canonical branch.
+- Step-12 concrete-carrier checkpoint (2026-03-07):
+  - added
+    `molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_direct_orbit_clause_at_and_uniqueness_direct`;
+  - rerouted the active fixed-data/local-orbit/uniqueness alias through the
+    exact current theorem carriers:
+    `molecule_residual_fixed_point_data_source_via_fixed_data_direct`,
+    `molecule_residual_orbit_clause_at_source`,
+    and
+    `molecule_residual_fixed_point_uniqueness_source_direct`;
+  - targeted probes show this is now the exact concrete blocker set for
+    PLAN_82; further progress requires improving one of those three theorems,
+    not more canonical-route rewiring.

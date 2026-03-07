@@ -2407,6 +2407,32 @@ theorem molecule_h_fixed_data_direct : FixedPointNormalizationData :=
     (fixed_point_local_normalization_transfer_of_global_norm molecule_h_norm)
 
 /--
+Current direct renormalizable fixed-point existence carrier underneath the
+fixed-data route.
+-/
+theorem molecule_residual_fixed_exists_via_global_norm_direct :
+    ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f :=
+  renormalizable_fixed_exists_of_global_norm molecule_h_norm
+
+/--
+Current direct local-normalization transfer carrier underneath the fixed-data
+route.
+-/
+theorem molecule_residual_fixed_point_local_normalization_transfer_via_global_norm_direct :
+    FixedPointLocalNormalizationTransfer :=
+  fixed_point_local_normalization_transfer_of_global_norm molecule_h_norm
+
+/--
+Current fixed-data carrier exposed directly through the underlying fixed-point
+existence and local-transfer theorems.
+-/
+theorem molecule_residual_fixed_point_data_source_via_fixed_exists_and_transfer_direct :
+    FixedPointNormalizationData :=
+  fixed_point_normalization_data_of_fixed_exists_and_transfer
+    molecule_residual_fixed_exists_via_global_norm_direct
+    molecule_residual_fixed_point_local_normalization_transfer_via_global_norm_direct
+
+/--
 Source seam for residual fixed-point normalization data.
 -/
 def MoleculeResidualFixedPointDataSource : Prop :=
@@ -2417,7 +2443,7 @@ Minimal current residual fixed-point data source carrier.
 -/
 theorem molecule_residual_fixed_point_data_source_via_fixed_data_direct :
     MoleculeResidualFixedPointDataSource :=
-  molecule_h_fixed_data_direct
+  molecule_residual_fixed_point_data_source_via_fixed_exists_and_transfer_direct
 
 /--
 Source seam for an invariant normalized domain carrying the fixed-point route.
@@ -6548,6 +6574,17 @@ theorem molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_data_o
       h_unique)
 
 /--
+Current-route canonical-data source exposed through the direct fixed-data
+carrier, the local orbit-at source, and the direct uniqueness source.
+-/
+theorem molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_direct_orbit_clause_at_and_uniqueness_direct :
+    MoleculeResidualCanonicalFastFixedPointDataSource :=
+  molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_data_orbit_clause_at_and_uniqueness
+    molecule_residual_fixed_point_data_source_via_fixed_data_direct
+    molecule_residual_orbit_clause_at_source
+    molecule_residual_fixed_point_uniqueness_source_direct
+
+/--
 Current-route canonical-data source exposed through fixed-point ingredients and
 the broad orbit-clause source.
 -/
@@ -6627,10 +6664,7 @@ data, the local orbit-at source, and uniqueness.
 -/
 theorem molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_orbit_clause_at_and_uniqueness :
     MoleculeResidualCanonicalFastFixedPointDataSource :=
-  molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_data_orbit_clause_at_and_uniqueness
-    molecule_residual_fixed_point_data_source_via_fixed_data_direct
-    molecule_residual_orbit_clause_at_source
-    molecule_residual_fixed_point_uniqueness_source_direct
+  molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_direct_orbit_clause_at_and_uniqueness_direct
 
 /--
 Build canonical fast fixed-point data from the fixed-point existence source
