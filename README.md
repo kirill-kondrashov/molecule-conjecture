@@ -96,10 +96,10 @@ Current axiom frontier:
 - The existence half is now reduced further:
   `MoleculeResidualFixedPointExistenceSource` is ground-axiom-only equivalent to
   `MoleculeResidualCanonicalFastFixedPointDataSource`.
-- The current canonical theorem is now routed through the smaller pair:
-  `MoleculeResidualFixedPointExistenceSource`,
+- The current canonical theorem is now routed through the smaller triple:
+  `MoleculeResidualFixedPointDataSource`,
   `MoleculeResidualOrbitClauseAtSource`,
-  and `MoleculeResidualFixedPointTransferSource`.
+  and `MoleculeResidualFixedPointUniquenessSource`.
 
 Implementation notes (important for interpretation):
 

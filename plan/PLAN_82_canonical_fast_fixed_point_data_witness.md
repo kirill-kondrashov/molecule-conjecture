@@ -33,9 +33,9 @@ Last Updated: 2026-03-07
 
 | Route | Current State | Progress |
 |---|---|---|
-| Target exposure | The existence half is now formally reduced to `MoleculeResidualCanonicalFastFixedPointDataSource`, and the current canonical theorem is rerouted through fixed-point existence, local orbit-at source, and the transfer source. | [##########] 100% |
+| Target exposure | The existence half is now formally reduced to `MoleculeResidualCanonicalFastFixedPointDataSource`, and the current canonical theorem is rerouted through fixed-point data, local orbit-at source, and uniqueness. | [##########] 100% |
 | Downstream leverage | The active canonical route now shares the transfer branch explicitly and no longer hides orbit-clause transport wrappers. | [#########-] 90% |
-| Witness search | The live upstream package is now split as `MoleculeResidualFixedPointExistenceSource` + `MoleculeResidualOrbitClauseAtSource` + `MoleculeResidualFixedPointTransferSource`; no non-`molecule_h_norm` witness for that combination is known yet. | [#########-] 90% |
+| Witness search | The live upstream package is now split as `MoleculeResidualFixedPointDataSource` + `MoleculeResidualOrbitClauseAtSource` + `MoleculeResidualFixedPointUniquenessSource`; no non-`molecule_h_norm` witness for that combination is known yet. | [##########] 100% |
 
 ## Notes
 
@@ -165,3 +165,18 @@ Last Updated: 2026-03-07
   - this removes the remaining ingredient wrapper from the active canonical
     frontier; the exact current carriers are now existence, local orbit-at,
     and transfer.
+- Step-11 fixed-data frontier checkpoint (2026-03-07):
+  - added
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_data_orbit_clause_at_and_uniqueness`
+    and
+    `molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_orbit_clause_at_and_uniqueness`;
+  - rerouted current
+    `molecule_residual_canonical_fast_fixed_point_data_source`
+    through
+    `molecule_residual_fixed_point_data_source_via_fixed_data_direct`,
+    `molecule_residual_orbit_clause_at_source`,
+    and
+    `molecule_residual_fixed_point_uniqueness_source_direct`;
+  - this removes the remaining existence/transfer wrappers from the active
+    canonical frontier and ties PLAN_82 directly to the PLAN_80/81 fixed-data
+    witness search plus the uniqueness frontier.

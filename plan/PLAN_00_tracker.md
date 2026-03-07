@@ -407,6 +407,14 @@ Last Updated: 2026-03-07
     rerouted the active current canonical theorem through those three current
     carriers, removing the remaining ingredient wrapper from the active
     frontier.
+  - PLAN_82 step-11 checkpoint:
+    added canonical-source constructors from
+    `MoleculeResidualFixedPointDataSource`,
+    `MoleculeResidualOrbitClauseAtSource`, and
+    `MoleculeResidualFixedPointUniquenessSource`;
+    rerouted the active current canonical theorem through those three current
+    carriers, removing the remaining existence/transfer wrappers from the
+    active frontier.
 - The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
   `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
   this stronger contract.
@@ -1409,10 +1417,12 @@ Last Updated: 2026-03-07
     orbit-at + transfer.
   - Exposed the active canonical route directly as existence + local orbit-at +
     transfer.
+  - Exposed the active canonical route directly as fixed data + local orbit-at +
+    uniqueness.
   - Route status:
     target exposure [##########] 100%,
     downstream leverage [#########-] 90%,
-    witness search [#########-] 90%.
+    witness search [##########] 100%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:

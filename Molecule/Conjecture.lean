@@ -6532,6 +6532,22 @@ theorem molecule_residual_canonical_fast_fixed_point_data_source_of_existence_or
     h_transfer
 
 /--
+Build canonical fast fixed-point data directly from fixed-point normalization
+data, the local orbit-at source, and uniqueness.
+-/
+theorem molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_data_orbit_clause_at_and_uniqueness
+    (h_fixed_data : MoleculeResidualFixedPointDataSource)
+    (h_orbit_at : MoleculeResidualOrbitClauseAtSource)
+    (h_unique : MoleculeResidualFixedPointUniquenessSource) :
+    MoleculeResidualCanonicalFastFixedPointDataSource :=
+  molecule_residual_canonical_fast_fixed_point_data_source_of_existence_orbit_clause_at_and_transfer
+    (molecule_residual_fixed_point_existence_source_via_fixed_data_source h_fixed_data)
+    h_orbit_at
+    (molecule_residual_fixed_point_transfer_source_of_fixed_data_and_unique
+      h_fixed_data
+      h_unique)
+
+/--
 Current-route canonical-data source exposed through fixed-point ingredients and
 the broad orbit-clause source.
 -/
@@ -6606,6 +6622,17 @@ theorem molecule_residual_canonical_fast_fixed_point_data_source_via_existence_o
     molecule_residual_fixed_point_transfer_source
 
 /--
+Current-route canonical-data source exposed through fixed-point normalization
+data, the local orbit-at source, and uniqueness.
+-/
+theorem molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_orbit_clause_at_and_uniqueness :
+    MoleculeResidualCanonicalFastFixedPointDataSource :=
+  molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_data_orbit_clause_at_and_uniqueness
+    molecule_residual_fixed_point_data_source_via_fixed_data_direct
+    molecule_residual_orbit_clause_at_source
+    molecule_residual_fixed_point_uniqueness_source_direct
+
+/--
 Build canonical fast fixed-point data from the fixed-point existence source
 seam.
 -/
@@ -6647,7 +6674,7 @@ seam.
 -/
 theorem molecule_residual_canonical_fast_fixed_point_data_source :
     MoleculeResidualCanonicalFastFixedPointDataSource :=
-  molecule_residual_canonical_fast_fixed_point_data_source_via_existence_orbit_clause_at_and_transfer
+  molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_orbit_clause_at_and_uniqueness
 
 /--
 Under any bounds witness (hence canonical fixed-point existence), hybrid-level
