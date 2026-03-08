@@ -1,7 +1,7 @@
 # PLAN 78 - Non-h_norm Local Witness-On-Sources Theorem
 
 Status: ACTIVE
-Progress: [########--] 80%
+Progress: [#########-] 90%
 Scope: Replace the current transfer-branch local witness root with one
 concrete non-`molecule_h_norm` theorem:
 `molecule_residual_fixed_point_local_witness_on_sources`.
@@ -53,8 +53,8 @@ Last Updated: 2026-03-07
 
 | Route | Current State | Progress |
 |---|---|---|
-| Concrete target exposure | The concrete local-domain witness target is explicit in `Molecule/Conjecture.lean` and current local-witness routing now goes directly through the exact three non-ground fixed-point component carriers instead of the fixed-data wrapper. | [#########-] 90% |
-| Transfer-branch cutover readiness | `molecule_residual_fixed_point_local_witness_sources` and `molecule_residual_fixed_point_transfer_source_via_on_sources` now consume the direct component-transfer local-witness route, so a replacement there will propagate immediately. | [########--] 80% |
+| Concrete target exposure | The concrete local-domain witness target is explicit in `Molecule/Conjecture.lean` and current local-witness routing now goes directly through the exact shared witness pair: renormalizability + `V`-bound. | [##########] 100% |
+| Transfer-branch cutover readiness | `molecule_residual_fixed_point_transfer_source_via_on_sources` now routes directly through the critical-value and `V`-bound transfer carriers, while `molecule_residual_fixed_point_local_witness_sources` routes through the renorm+`V`-bound witness pair. | [##########] 100% |
 | Proof-source search | `PLAN_79` closed the legacy normalized invariant-slice-data branch as a dead end; the live search is now `PLAN_80`, targeting a non-`molecule_h_norm` `FixedPointNormalizationData` source. | [######----] 60% |
 
 ## Notes
@@ -160,3 +160,29 @@ Last Updated: 2026-03-07
     `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`;
   - targeted probes show the downstream local-witness theorems are now aligned
     with the exact fixed-point frontier.
+- New checkpoint (2026-03-08, witness-pair shrink):
+  - added
+    `fixed_point_normalization_data_of_fixed_point_exists_and_renorm_and_vbound`,
+    `molecule_residual_fixed_point_local_witness_sources_of_fixed_point_exists_and_renorm_and_vbound`,
+    and
+    `molecule_residual_fixed_point_local_witness_on_sources_of_fixed_point_exists_and_renorm_and_vbound`;
+  - rerouted current local-witness theorems through the exact shared witness
+    pair:
+    `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`
+    and
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`;
+  - this removes the critical-value carrier from the active local-witness
+    frontier.
+- New checkpoint (2026-03-08, direct on-sources cutover):
+  - added
+    `molecule_residual_fixed_point_transfer_on_sources_of_component_transfers`
+    and
+    `molecule_residual_fixed_point_transfer_on_sources_via_component_transfers_direct`;
+  - rerouted current
+    `molecule_residual_fixed_point_transfer_on_sources`
+    directly through
+    `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`
+    and
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`;
+  - this removes the local-witness and uniqueness wrappers from the active
+    `...via_on_sources` route.

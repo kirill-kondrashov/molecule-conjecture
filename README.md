@@ -11,9 +11,9 @@
   `Molecule.molecule_h_norm`.
 - The legacy `InvariantSliceDataWithNormalization` route is now certified as a
   dead end in the current scaffold.
-- The active live blocker is
-  `Molecule.molecule_residual_fixed_point_data_source`, which is still routed
-  through `molecule_h_fixed_data_direct`.
+- The active live frontier is now explicit after expansion of the current
+  theorem bodies: a small set of direct fixed-point carriers plus one
+  canonical orbit carrier.
 
 Several core contracts are still placeholder/relaxed, so this is not yet a faithful
 formalization of the full mathematical conjecture from the literature.
@@ -75,48 +75,52 @@ Current axiom frontier:
   `propext`, `Quot.sound`, `Classical.choice`, and `Molecule.molecule_h_norm`.
 - The old normalized invariant-slice-data seam is formally closed by
   `no_molecule_residual_invariant_slice_data_with_normalization_source`.
-- The remaining live transfer-side blocker is
-  `molecule_residual_fixed_point_data_source`.
 - Ground-axiom-only constructors already exist for:
   - `fixed_point_normalization_data_of_fixed_exists_and_transfer`
   - `fixed_point_normalization_data_of_ingredients`
   - `fixed_point_normalization_data_of_invariant_slice_data`
-- What is missing is a non-`molecule_h_norm` producer for one of those
-  constructor inputs, ideally a direct single-reference witness of
-  `FixedPointNormalizationData`.
-- Fallback live route: replace the pair
-  `MoleculeResidualFixedPointExistenceSource` +
-  `MoleculeResidualFixedPointTransferSource`, then rebuild fixed-point data from
-  `fixed_point_normalization_data_of_fixed_exists_and_transfer`.
-- The current split carriers are now explicit:
-  `molecule_residual_fixed_point_existence_source_via_fixed_data_direct` and
-  `molecule_residual_fixed_point_transfer_source_via_fixed_data_and_uniqueness_direct`.
-- Preferred next attack: the existence half first, because it has fewer
-  dependencies than the transfer half.
-- The existence half is now reduced further:
-  `MoleculeResidualFixedPointExistenceSource` is ground-axiom-only equivalent to
-  `MoleculeResidualCanonicalFastFixedPointDataSource`.
-- The current existence theorem is now routed through:
-  ground `fixed_point_exists` plus
-  `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`.
-- The current transfer theorem is now routed directly through:
-  `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`
-  and
-  `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
-- The current local-witness theorem is now routed directly through:
-  `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`,
-  `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`,
-  and
-  `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
-- The current canonical theorem is now routed directly through those same
-  three carriers, plus `molecule_residual_orbit_clause_at_source`.
-- Concretely, the remaining non-ground fixed-point debt is:
-  `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`,
-  `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`,
-  and
-  `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
-- The only additional canonical-side debt beyond those three is:
-  `molecule_residual_orbit_clause_at_source`.
+- After expanding the current theorem bodies, the remaining missing statements
+  are best expressed directly in mathematical notation.
+
+Shared witness-side frontier:
+```text
+(R)  forall f : BMol,
+       Rfast f = f -> IsFastRenormalizable f
+
+(V)  forall f : BMol,
+       Rfast f = f -> IsFastRenormalizable f ->
+       f.V subset Metric.ball 0 0.1
+```
+
+Transfer-only additional frontier:
+```text
+(C)  forall f : BMol,
+       Rfast f = f -> IsFastRenormalizable f ->
+       criticalValue f = 0
+```
+
+Canonical-only additional frontier:
+```text
+(O)  forall (f_star : BMol) (D : Set Complex) (U : Set BMol)
+            (a b : Nat -> Nat),
+       Rfast f_star = f_star ->
+       IsFastRenormalizable f_star ->
+       IsOpen D -> IsOpen U ->
+       f_star in U ->
+       criticalValue f_star in D ->
+       MoleculeOrbitClauseAt D U a b
+```
+
+- The ground theorem
+  `fixed_point_exists : exists f : BMol, Rfast f = f /\ criticalValue f = 0`
+  is already available without `Molecule.molecule_h_norm`.
+- So, after expanding definitions, what is exactly missing is:
+  - for the existence branch: prove `(R)`;
+  - for the data/local-witness branch: prove `(R)` and `(V)`;
+  - for the transfer / `...via_on_sources` branch: prove `(C)` and `(V)`;
+  - for the canonical branch: prove `(R)`, `(V)`, and `(O)`.
+- Equivalently, a full elimination of `Molecule.molecule_h_norm` now reduces to
+  replacing those direct frontier contracts with non-axiomatic proofs.
 
 Implementation notes (important for interpretation):
 

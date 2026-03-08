@@ -1,7 +1,7 @@
 # PLAN 80 - Non-h_norm Fixed-Point Data Source
 
 Status: ACTIVE
-Progress: [#######---] 70%
+Progress: [#########-] 85%
 Scope: Replace the current `molecule_h_fixed_data_direct` carrier with one
 concrete non-`molecule_h_norm` theorem-level source for
 `MoleculeResidualFixedPointDataSource`, then feed
@@ -45,7 +45,7 @@ Last Updated: 2026-03-07
 
 | Route | Current State | Progress |
 |---|---|---|
-| Minimal blocker exposure | The current `molecule_residual_fixed_point_data_source`, existence, transfer, and downstream local-witness theorems now route through the exact direct frontier: ground `fixed_point_exists` plus exact renormalizability/critical-value/`V`-bound blockers. | [##########] 100% |
+| Minimal blocker exposure | The current `molecule_residual_fixed_point_data_source`, existence, transfer, and downstream local-witness theorems now route through the exact direct frontier. The shared witness-side debt is reduced to renormalizability + `V`-bound; the transfer-only additional debt is critical-value transfer. | [##########] 100% |
 | Legacy branch closure | `no_molecule_residual_invariant_slice_data_with_normalization_source` proves the old normalized invariant-slice-data seam is inconsistent in the current model. | [##########] 100% |
 | Live source search | Ground-axiom-only constructors exist from ingredients, fixed-exists+transfer, and invariant-slice-data; the missing piece is now a live producer for one of those inputs that does not pass through the dead legacy normalized seam. | [##--------] 20% |
 
@@ -201,3 +201,31 @@ Last Updated: 2026-03-07
     fixed-point theorem plus the direct renormalizability carrier;
   - rerouted current transfer and local-witness theorems to consume those
     exact direct component carriers.
+- Step-14 witness-pair shrink (2026-03-08):
+  - added
+    `fixed_point_normalization_data_of_fixed_point_exists_and_renorm_and_vbound`;
+  - rerouted current
+    `molecule_residual_fixed_point_data_source_via_fixed_exists_and_transfer_direct`
+    through the shared witness-side pair:
+    `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`
+    and
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`;
+  - rerouted current local-witness and canonical witness-side routes through
+    that same pair;
+  - result: `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`
+    is no longer part of the shared witness frontier and remains only on the
+    transfer side.
+- Step-15 direct on-sources shrink (2026-03-08):
+  - added
+    `molecule_residual_fixed_point_transfer_on_sources_of_component_transfers`
+    and
+    `molecule_residual_fixed_point_transfer_on_sources_via_component_transfers_direct`;
+  - rerouted current
+    `molecule_residual_fixed_point_transfer_on_sources`
+    directly through
+    `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`
+    and
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`;
+  - this removes the local-witness and uniqueness wrappers from the active
+    `...via_on_sources` branch, leaving the exact transfer-side frontier as
+    the pair `(critical-value transfer, V-bound transfer)`.

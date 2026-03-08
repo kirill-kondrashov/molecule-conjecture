@@ -51,9 +51,9 @@ Last Updated: 2026-03-07
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
 | PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 92% |
 | PLAN_77 | Upstream model change for non-h_norm fixed-point sources | STUCK | [########--] 80% |
-| PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [########--] 80% |
+| PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [#########-] 90% |
 | PLAN_79 | Invariant-domain fixed-point source | STUCK | [#######---] 70% |
-| PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [#######---] 70% |
+| PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [#########-] 85% |
 | PLAN_81 | Single-reference fixed-point data witness | ACTIVE | [######----] 60% |
 | PLAN_82 | Canonical fast fixed-point data witness | ACTIVE | [#########-] 95% |
 
@@ -405,16 +405,51 @@ Last Updated: 2026-03-07
     `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`,
     and
     `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
+  - PLAN_80 step-14 checkpoint:
+    added
+    `fixed_point_normalization_data_of_fixed_point_exists_and_renorm_and_vbound`;
+    rerouted the active witness-side routes so the shared frontier is now:
+    `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`
+    and
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`;
+    `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`
+    remains only on the transfer side.
   - PLAN_78 direct-component checkpoint:
     rerouted current local-witness theorems through those exact three direct
     component carriers, removing the remaining primitive-ingredient wrapper
     from the active local-witness branch.
+  - PLAN_78 witness-pair checkpoint:
+    rerouted current local-witness theorems through the smaller shared witness
+    pair:
+    `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`
+    and
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
+  - PLAN_78 direct on-sources checkpoint:
+    rerouted current
+    `molecule_residual_fixed_point_transfer_on_sources`
+    directly through
+    `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`
+    and
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`,
+    removing the local-witness and uniqueness wrappers from the active
+    `...via_on_sources` branch.
   - PLAN_82 step-15 checkpoint:
     rerouted the active canonical theorem through the same exact direct
     fixed-point carrier triple, plus
     `molecule_residual_orbit_clause_at_source`;
     this leaves a single additional canonical-side obligation beyond the
     shared fixed-point frontier.
+  - PLAN_82 step-16 checkpoint:
+    rerouted the active canonical theorem through the smaller shared witness
+    pair plus
+    `molecule_residual_orbit_clause_at_source`,
+    removing the critical-value carrier from the canonical-side frontier.
+  - PLAN_80 step-15 checkpoint:
+    rerouted the active `...via_on_sources` branch through the exact transfer
+    component pair:
+    `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`
+    and
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
   - PLAN_82 step-1 checkpoint:
     opened a focused existence-side plan on
     `MoleculeResidualCanonicalFastFixedPointDataSource`, which is now the

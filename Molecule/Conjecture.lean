@@ -539,6 +539,28 @@ theorem fixed_point_normalization_data_of_fixed_point_exists_and_component_trans
   ⟩
 
 /--
+Build fixed-point normalization data directly from:
+- the ground fixed-point existence theorem,
+- renormalizability of fixed points, and
+- the `V`-bound transfer component.
+
+The critical-value condition comes for free from `fixed_point_exists`.
+-/
+theorem fixed_point_normalization_data_of_fixed_point_exists_and_renorm_and_vbound
+    (h_renorm : ∀ f : BMol, Rfast f = f → IsFastRenormalizable f)
+    (h_vbound : FixedPointVBoundTransferSource) :
+    FixedPointNormalizationData := by
+  rcases fixed_point_exists with ⟨f_star, h_fixed, h_crit⟩
+  have h_renorm_star : IsFastRenormalizable f_star := h_renorm f_star h_fixed
+  exact ⟨
+    f_star,
+    h_fixed,
+    h_renorm_star,
+    h_crit,
+    h_vbound f_star h_fixed h_renorm_star
+  ⟩
+
+/--
 Build bundled residual fixed-point-normalization ingredients from:
 - the ground fixed-point existence theorem,
 - renormalizability of fixed points, and
@@ -2543,9 +2565,8 @@ existence and local-transfer theorems.
 -/
 theorem molecule_residual_fixed_point_data_source_via_fixed_exists_and_transfer_direct :
     FixedPointNormalizationData :=
-  fixed_point_normalization_data_of_fixed_point_exists_and_component_transfers
+  fixed_point_normalization_data_of_fixed_point_exists_and_renorm_and_vbound
     molecule_residual_fixed_point_renormalizable_via_global_norm_direct
-    molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct
     molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct
 
 /--
@@ -2884,6 +2905,20 @@ def molecule_residual_fixed_point_local_witness_sources_of_fixed_point_exists_an
       h_vbound)
 
 /--
+Build the PLAN_77 local-witness source pack directly from the ground
+fixed-point theorem, renormalizability of fixed points, and the `V`-bound
+transfer component.
+-/
+def molecule_residual_fixed_point_local_witness_sources_of_fixed_point_exists_and_renorm_and_vbound
+    (h_renorm : ∀ f : BMol, Rfast f = f → IsFastRenormalizable f)
+    (h_vbound : FixedPointVBoundTransferSource) :
+    MoleculeResidualFixedPointLocalWitnessSources :=
+  molecule_residual_fixed_point_local_witness_sources_of_fixed_data
+    (fixed_point_normalization_data_of_fixed_point_exists_and_renorm_and_vbound
+      h_renorm
+      h_vbound)
+
+/--
 Build the concrete local-domain witness target directly from bundled primitive
 fixed-point ingredients.
 -/
@@ -2907,6 +2942,20 @@ def molecule_residual_fixed_point_local_witness_on_sources_of_fixed_point_exists
     (fixed_point_normalization_data_of_fixed_point_exists_and_component_transfers
       h_renorm
       h_crit
+      h_vbound)
+
+/--
+Build the concrete local-domain witness target directly from the ground
+fixed-point theorem, renormalizability of fixed points, and the `V`-bound
+transfer component.
+-/
+def molecule_residual_fixed_point_local_witness_on_sources_of_fixed_point_exists_and_renorm_and_vbound
+    (h_renorm : ∀ f : BMol, Rfast f = f → IsFastRenormalizable f)
+    (h_vbound : FixedPointVBoundTransferSource) :
+    MoleculeResidualFixedPointLocalWitnessOnSources :=
+  molecule_residual_fixed_point_local_witness_on_sources_of_fixed_data
+    (fixed_point_normalization_data_of_fixed_point_exists_and_renorm_and_vbound
+      h_renorm
       h_vbound)
 
 /--
@@ -4245,6 +4294,32 @@ def molecule_residual_fixed_point_transfer_on_sources_of_model_sources
     h_sources.unique
 
 /--
+Build PLAN_77 local-domain transfer sources directly from the critical-value
+and `V`-bound transfer components by taking `K` to be the set of fixed
+renormalizable maps.
+-/
+def molecule_residual_fixed_point_transfer_on_sources_of_component_transfers
+    (h_crit : FixedPointCriticalValueTransferSource)
+    (h_vbound : FixedPointVBoundTransferSource) :
+    MoleculeResidualFixedPointTransferOnSources := by
+  refine
+    ⟨
+      {f : BMol | Rfast f = f ∧ IsFastRenormalizable f},
+      ?_,
+      ?_
+    ⟩
+  · intro f h_fixed h_renorm
+    exact ⟨h_fixed, h_renorm⟩
+  · constructor
+    · intro f hf
+      exact hf.2
+    · constructor
+      · intro f hf
+        exact h_crit f hf.1 hf.2
+      · intro f hf
+        exact h_vbound f hf.1 hf.2
+
+/--
 Current PLAN_77 local-witness source pack.
 -/
 def molecule_residual_fixed_point_local_witness_on_sources_via_fixed_data_source
@@ -4270,9 +4345,8 @@ fixed-point theorem and the direct renormalizability / critical-value /
 -/
 def molecule_residual_fixed_point_local_witness_on_sources_via_fixed_point_exists_and_component_transfers_direct :
     MoleculeResidualFixedPointLocalWitnessOnSources :=
-  molecule_residual_fixed_point_local_witness_on_sources_of_fixed_point_exists_and_component_transfers
+  molecule_residual_fixed_point_local_witness_on_sources_of_fixed_point_exists_and_renorm_and_vbound
     molecule_residual_fixed_point_renormalizable_via_global_norm_direct
-    molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct
     molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct
 
 /--
@@ -4287,9 +4361,8 @@ Current PLAN_77 local-witness source pack.
 -/
 def molecule_residual_fixed_point_local_witness_sources :
     MoleculeResidualFixedPointLocalWitnessSources :=
-  molecule_residual_fixed_point_local_witness_sources_of_fixed_point_exists_and_component_transfers
+  molecule_residual_fixed_point_local_witness_sources_of_fixed_point_exists_and_renorm_and_vbound
     molecule_residual_fixed_point_renormalizable_via_global_norm_direct
-    molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct
     molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct
 
 /--
@@ -4303,11 +4376,21 @@ def molecule_residual_fixed_point_transfer_on_sources_via_local_witness_sources 
     molecule_residual_fixed_point_uniqueness_source_direct
 
 /--
+Current PLAN_77 local-domain transfer source pack routed directly through the
+critical-value and `V`-bound component carriers.
+-/
+def molecule_residual_fixed_point_transfer_on_sources_via_component_transfers_direct :
+    MoleculeResidualFixedPointTransferOnSources :=
+  molecule_residual_fixed_point_transfer_on_sources_of_component_transfers
+    molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct
+    molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct
+
+/--
 Current PLAN_77 local-domain transfer source pack.
 -/
 def molecule_residual_fixed_point_transfer_on_sources :
     MoleculeResidualFixedPointTransferOnSources :=
-  molecule_residual_fixed_point_transfer_on_sources_via_local_witness_sources
+  molecule_residual_fixed_point_transfer_on_sources_via_component_transfers_direct
 
 /--
 Current fixed-point transfer source routed through PLAN_77 local-domain
@@ -6799,12 +6882,13 @@ ingredient carrier and the local orbit-at source.
 -/
 theorem molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_direct_orbit_clause_at_and_uniqueness_direct :
     MoleculeResidualCanonicalFastFixedPointDataSource :=
-  molecule_residual_canonical_fast_fixed_point_data_source_of_ingredients_and_orbit_clause_at_source
-    (residual_fixed_point_normalization_ingredients_of_fixed_point_exists_and_component_transfers
-      molecule_residual_fixed_point_renormalizable_via_global_norm_direct
-      molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct
-      molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct)
-    molecule_residual_orbit_clause_at_source
+  molecule_residual_canonical_fast_fixed_point_data_source_of_bounds
+    (molecule_residual_bounds_from_fixed_data_and_local_orbit_source
+      (fixed_point_normalization_data_of_fixed_point_exists_and_renorm_and_vbound
+        molecule_residual_fixed_point_renormalizable_via_global_norm_direct
+        molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct)
+      (molecule_residual_orbit_clause_for_fixed_data_source_of_local
+        molecule_residual_orbit_clause_at_source))
 
 /--
 Current-route canonical-data source exposed through fixed-point ingredients and
