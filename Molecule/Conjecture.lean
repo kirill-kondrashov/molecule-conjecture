@@ -2412,7 +2412,45 @@ fixed-data route.
 -/
 theorem molecule_residual_fixed_exists_via_global_norm_direct :
     ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f :=
-  renormalizable_fixed_exists_of_global_norm molecule_h_norm
+  by
+    rcases fixed_point_exists with ⟨f_star, h_fixed, _h_cv⟩
+    have h_renorm : IsFastRenormalizable f_star :=
+      (molecule_h_norm ({f_star} : Set BMol)).1 f_star (by simp)
+    exact ⟨f_star, h_renorm, h_fixed⟩
+
+/--
+Current direct renormalizability carrier for fixed points underneath the
+fixed-data route.
+-/
+theorem molecule_residual_fixed_point_renormalizable_via_global_norm_direct :
+    ∀ f : BMol, Rfast f = f → IsFastRenormalizable f := by
+  intro f _h_fixed
+  exact (molecule_h_norm ({f} : Set BMol)).1 f (by simp)
+
+/--
+Current direct fixed-point existence carrier split through the ground
+fixed-point theorem and the direct renormalizability carrier.
+-/
+theorem molecule_residual_fixed_exists_via_fixed_point_exists_and_renorm_direct :
+    ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f := by
+  rcases fixed_point_exists with ⟨f_star, h_fixed, _h_cv⟩
+  exact ⟨f_star, molecule_residual_fixed_point_renormalizable_via_global_norm_direct f_star h_fixed, h_fixed⟩
+
+/--
+Current direct critical-value transfer carrier underneath the fixed-data route.
+-/
+theorem molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct :
+    FixedPointCriticalValueTransferSource := by
+  intro f _h_fixed _h_renorm
+  exact (normalization_at_point_of_global molecule_h_norm).1
+
+/--
+Current direct `V`-bound transfer carrier underneath the fixed-data route.
+-/
+theorem molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct :
+    FixedPointVBoundTransferSource := by
+  intro f _h_fixed _h_renorm
+  exact (normalization_at_point_of_global molecule_h_norm).2
 
 /--
 Current direct local-normalization transfer carrier underneath the fixed-data
@@ -2420,7 +2458,9 @@ route.
 -/
 theorem molecule_residual_fixed_point_local_normalization_transfer_via_global_norm_direct :
     FixedPointLocalNormalizationTransfer :=
-  fixed_point_local_normalization_transfer_of_global_norm molecule_h_norm
+  fixed_point_local_normalization_transfer_of_critical_and_vbound
+    molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct
+    molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct
 
 /--
 Current fixed-data carrier exposed directly through the underlying fixed-point
@@ -6577,12 +6617,27 @@ theorem molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_data_o
 Current-route canonical-data source exposed through the direct fixed-data
 carrier, the local orbit-at source, and the direct uniqueness source.
 -/
-theorem molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_direct_orbit_clause_at_and_uniqueness_direct :
+theorem molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_data_orbit_clause_at_and_uniqueness_direct
+    (h_fixed_data : MoleculeResidualFixedPointDataSource)
+    (h_orbit_at : MoleculeResidualOrbitClauseAtSource)
+    (h_unique_direct : MoleculeResidualFixedPointUniquenessDirectSource) :
     MoleculeResidualCanonicalFastFixedPointDataSource :=
   molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_data_orbit_clause_at_and_uniqueness
+    h_fixed_data
+    h_orbit_at
+    (molecule_residual_fixed_point_uniqueness_source_direct_of_source
+      h_unique_direct)
+
+/--
+Current-route canonical-data source exposed through the direct fixed-data
+carrier, the local orbit-at source, and the direct uniqueness source.
+-/
+theorem molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_direct_orbit_clause_at_and_uniqueness_direct :
+    MoleculeResidualCanonicalFastFixedPointDataSource :=
+  molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_data_orbit_clause_at_and_uniqueness_direct
     molecule_residual_fixed_point_data_source_via_fixed_data_direct
     molecule_residual_orbit_clause_at_source
-    molecule_residual_fixed_point_uniqueness_source_direct
+    molecule_residual_fixed_point_uniqueness_direct_source
 
 /--
 Current-route canonical-data source exposed through fixed-point ingredients and

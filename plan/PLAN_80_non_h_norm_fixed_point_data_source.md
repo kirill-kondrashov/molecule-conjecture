@@ -1,7 +1,7 @@
 # PLAN 80 - Non-h_norm Fixed-Point Data Source
 
 Status: ACTIVE
-Progress: [#####-----] 45%
+Progress: [#####-----] 50%
 Scope: Replace the current `molecule_h_fixed_data_direct` carrier with one
 concrete non-`molecule_h_norm` theorem-level source for
 `MoleculeResidualFixedPointDataSource`, then feed
@@ -45,7 +45,7 @@ Last Updated: 2026-03-07
 
 | Route | Current State | Progress |
 |---|---|---|
-| Minimal blocker exposure | The current `molecule_residual_fixed_point_data_source` theorem and the downstream local-witness theorem now both route through the direct fixed-data carrier, and that carrier is now split into direct fixed-exists + local-transfer theorems. | [#######---] 70% |
+| Minimal blocker exposure | The current `molecule_residual_fixed_point_data_source` theorem and the downstream local-witness theorem now both route through the direct fixed-data carrier, and that carrier is now split into ground fixed-point existence plus exact renormalizability/critical-value/`V`-bound blockers. | [########--] 80% |
 | Legacy branch closure | `no_molecule_residual_invariant_slice_data_with_normalization_source` proves the old normalized invariant-slice-data seam is inconsistent in the current model. | [##########] 100% |
 | Live source search | Ground-axiom-only constructors exist from ingredients, fixed-exists+transfer, and invariant-slice-data; the missing piece is now a live producer for one of those inputs that does not pass through the dead legacy normalized seam. | [##--------] 20% |
 
@@ -125,3 +125,23 @@ Last Updated: 2026-03-07
   - targeted probes show the fixed-data branch is still
     `Molecule.molecule_h_norm`-backed, but its exact blocker pair is now
     explicit.
+- Step-9 fixed-data primitive checkpoint (2026-03-07):
+  - added
+    `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`,
+    `molecule_residual_fixed_exists_via_fixed_point_exists_and_renorm_direct`,
+    `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`,
+    and
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`;
+  - rerouted
+    `molecule_residual_fixed_exists_via_global_norm_direct`
+    through ground `fixed_point_exists` plus the direct renormalizability
+    carrier;
+  - rerouted
+    `molecule_residual_fixed_point_local_normalization_transfer_via_global_norm_direct`
+    through direct critical-value and `V`-bound carriers;
+  - targeted probes show `fixed_point_exists` is ground-axiom-only, so the
+    remaining fixed-data debt is now concentrated in:
+    `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`,
+    `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`,
+    and
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.

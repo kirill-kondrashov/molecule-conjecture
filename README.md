@@ -107,6 +107,13 @@ Current axiom frontier:
 - Under the fixed-data branch itself, the current carrier now splits into:
   `molecule_residual_fixed_exists_via_global_norm_direct` and
   `molecule_residual_fixed_point_local_normalization_transfer_via_global_norm_direct`.
+- More sharply:
+  `fixed_point_exists` is already ground-axiom-only, so the remaining
+  fixed-data debt is concentrated in
+  `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`,
+  `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`,
+  and
+  `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
 
 Implementation notes (important for interpretation):
 

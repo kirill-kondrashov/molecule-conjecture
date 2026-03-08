@@ -53,7 +53,7 @@ Last Updated: 2026-03-07
 | PLAN_77 | Upstream model change for non-h_norm fixed-point sources | STUCK | [########--] 80% |
 | PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [######----] 65% |
 | PLAN_79 | Invariant-domain fixed-point source | STUCK | [#######---] 70% |
-| PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [#####-----] 45% |
+| PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [#####-----] 50% |
 | PLAN_81 | Single-reference fixed-point data witness | ACTIVE | [######----] 60% |
 | PLAN_82 | Canonical fast fixed-point data witness | ACTIVE | [#########-] 95% |
 
@@ -1389,11 +1389,14 @@ Last Updated: 2026-03-07
   - Split the direct fixed-data carrier into exact theorem blockers:
     direct renormalizable fixed-point existence and direct local
     normalization transfer.
+  - Split those further into primitive direct blockers:
+    ground `fixed_point_exists`, direct renormalizability, direct
+    critical-value transfer, and direct `V`-bound transfer.
   - Inventory confirms the existing fixed-data constructors are clean; the
     blocker is now producing their inputs without `molecule_h_norm`.
   - Added explicit split fallback route through current existence + transfer.
   - Route status:
-    minimal blocker exposure [#######---] 70%,
+    minimal blocker exposure [########--] 80%,
     legacy branch closure [##########] 100%,
     live source search [##--------] 20%.
 - `PLAN_81` progress:
