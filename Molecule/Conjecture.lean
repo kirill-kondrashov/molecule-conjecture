@@ -723,6 +723,35 @@ theorem renormalizable_fixed_exists_of_global_norm
   exact ⟨f_star, h_renorm, h_fixed⟩
 
 /--
+The designated fixed point chosen by the ground theorem `fixed_point_exists`.
+-/
+noncomputable def selected_fixed_point : BMol :=
+  Classical.choose fixed_point_exists
+
+/--
+Specification of the designated fixed point chosen by `fixed_point_exists`.
+-/
+theorem selected_fixed_point_spec :
+    Rfast selected_fixed_point = selected_fixed_point ∧
+      criticalValue selected_fixed_point = 0 :=
+  Classical.choose_spec fixed_point_exists
+
+/--
+The designated selected point is indeed fixed by `Rfast`.
+-/
+theorem selected_fixed_point_fixed :
+    Rfast selected_fixed_point = selected_fixed_point :=
+  selected_fixed_point_spec.1
+
+/--
+The hybrid class of the designated selected point is fixed by `R_hybrid`.
+-/
+theorem selected_fixed_point_hybrid_fixed :
+    R_hybrid (toHybridClass selected_fixed_point) =
+      toHybridClass selected_fixed_point := by
+  simpa [R_hybrid, toHybridClass] using selected_fixed_point_fixed
+
+/--
 Bridge contract: every fixed point of `Rfast` is fast-renormalizable.
 This isolates the exact missing ingredient needed to upgrade
 `fixed_point_exists` to a renormalizable fixed-point witness.
@@ -749,6 +778,179 @@ theorem renormalizable_fixed_exists_of_fixed_point_exists_in_and_bridge_on
     ∃ f : BMol, f ∈ K ∧ IsFastRenormalizable f ∧ Rfast f = f := by
   rcases h_fixed_in with ⟨f_star, hfK, h_fixed⟩
   exact ⟨f_star, hfK, h_bridge_on f_star hfK h_fixed, h_fixed⟩
+
+/--
+Singleton-domain bridge constructor: if the designated point is
+fast-renormalizable, then the localized bridge contract holds on its singleton.
+-/
+theorem fixed_point_implies_renormalizable_on_singleton_of_renorm
+    {f_star : BMol}
+    (h_renorm : IsFastRenormalizable f_star) :
+    FixedPointImpliesRenormalizableOn ({f_star} : Set BMol) := by
+  intro f hfK _h_fixed
+  have hf_eq : f = f_star := by simpa using hfK
+  simpa [hf_eq] using h_renorm
+
+/--
+On a singleton domain, the localized bridge contract is equivalent to
+renormalizability of the designated fixed point, provided that point is
+actually fixed by `Rfast`.
+-/
+theorem fixed_point_implies_renormalizable_on_singleton_iff
+    {f_star : BMol}
+    (h_fixed : Rfast f_star = f_star) :
+    FixedPointImpliesRenormalizableOn ({f_star} : Set BMol) ↔
+      IsFastRenormalizable f_star := by
+  constructor
+  · intro h_bridge
+    exact h_bridge f_star (by simp) h_fixed
+  · intro h_renorm
+    exact fixed_point_implies_renormalizable_on_singleton_of_renorm h_renorm
+
+/--
+Exact one-point renormalizability source exposed by PLAN_83.
+This is the current live theorem target on the existence side.
+-/
+def MoleculeResidualSelectedFixedPointRenormalizableSource : Prop :=
+  IsFastRenormalizable selected_fixed_point
+
+/--
+The singleton bridge contract at the designated selected point is exactly the
+same data as renormalizability of that point.
+-/
+theorem molecule_residual_selected_fixed_point_bridge_iff :
+    FixedPointImpliesRenormalizableOn ({selected_fixed_point} : Set BMol) ↔
+      MoleculeResidualSelectedFixedPointRenormalizableSource :=
+  fixed_point_implies_renormalizable_on_singleton_iff selected_fixed_point_fixed
+
+/--
+Exact identification source for PLAN_83:
+every renormalizable fixed point of `Rfast` must coincide with the designated
+selected fixed point from `fixed_point_exists`.
+-/
+def MoleculeResidualSelectedFixedPointIdentificationSource : Prop :=
+  ∀ g : BMol, IsFastRenormalizable g → Rfast g = g → selected_fixed_point = g
+
+/--
+Stronger exact identification source for PLAN_83:
+every fixed point of `Rfast` must coincide with the designated selected fixed
+point from `fixed_point_exists`.
+-/
+def MoleculeResidualSelectedFixedPointFixedIdentificationSource : Prop :=
+  ∀ g : BMol, Rfast g = g → selected_fixed_point = g
+
+/--
+Sharper class-level identification source for PLAN_83:
+every fixed point of `R_hybrid` must coincide with the hybrid class of the
+designated selected fixed point from `fixed_point_exists`.
+-/
+def MoleculeResidualSelectedHybridClassFixedIdentificationSource : Prop :=
+  ∀ c : HybridClass, R_hybrid c = c → toHybridClass selected_fixed_point = c
+
+/--
+Exact hybrid-class fixed-point uniqueness source for PLAN_83:
+all fixed points of `R_hybrid` coincide, without a renormalizability side
+condition.
+-/
+def MoleculeResidualHybridClassFixedPointExactUniquenessSource : Prop :=
+  ∀ c1 c2 : HybridClass, R_hybrid c1 = c1 → R_hybrid c2 = c2 → c1 = c2
+
+/--
+Rejected reduction target for PLAN_83:
+every fixed point of `R_hybrid` is fast-renormalizable.
+In the current identity-model seam this is exactly the false full-domain bridge
+`FixedPointImpliesRenormalizable`.
+-/
+def MoleculeResidualHybridClassFixedPointRenormalizableSource : Prop :=
+  ∀ c : HybridClass, R_hybrid c = c → IsFastRenormalizable c
+
+/--
+The stronger fixed-point-only identification source implies the
+renormalizable-fixed-point identification source.
+-/
+theorem molecule_residual_selected_fixed_point_identification_of_fixed_identification
+    (h_ident_fixed : MoleculeResidualSelectedFixedPointFixedIdentificationSource) :
+    MoleculeResidualSelectedFixedPointIdentificationSource := by
+  intro g _h_renorm h_fix
+  exact h_ident_fixed g h_fix
+
+/--
+Hybrid-class fixed-point identification collapses to map-level fixed-point
+identification in the current identity-model seam.
+-/
+theorem molecule_residual_selected_fixed_point_fixed_identification_of_hybrid_class_fixed_identification
+    (h_ident_class : MoleculeResidualSelectedHybridClassFixedIdentificationSource) :
+    MoleculeResidualSelectedFixedPointFixedIdentificationSource := by
+  intro g h_fix
+  have h_class_fix : R_hybrid (toHybridClass g) = toHybridClass g := by
+    simpa [R_hybrid, toHybridClass] using h_fix
+  have h_class_eq :
+      toHybridClass selected_fixed_point = toHybridClass g :=
+    h_ident_class (toHybridClass g) h_class_fix
+  exact toHybridClass_injective h_class_eq
+
+/--
+Exact hybrid-class fixed-point uniqueness implies the selected-class
+identification target.
+-/
+theorem molecule_residual_selected_hybrid_class_fixed_identification_of_exact_uniqueness
+    (h_unique_exact : MoleculeResidualHybridClassFixedPointExactUniquenessSource) :
+    MoleculeResidualSelectedHybridClassFixedIdentificationSource := by
+  intro c h_fix
+  exact h_unique_exact (toHybridClass selected_fixed_point) c
+    selected_fixed_point_hybrid_fixed h_fix
+
+/--
+Selected-class identification already implies exact hybrid-class fixed-point
+uniqueness, because the selected hybrid class is itself fixed.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_exact_uniqueness_of_selected_hybrid_class_fixed_identification
+    (h_ident_class : MoleculeResidualSelectedHybridClassFixedIdentificationSource) :
+    MoleculeResidualHybridClassFixedPointExactUniquenessSource := by
+  intro c1 c2 h_fix1 h_fix2
+  have h1 : toHybridClass selected_fixed_point = c1 := h_ident_class c1 h_fix1
+  have h2 : toHybridClass selected_fixed_point = c2 := h_ident_class c2 h_fix2
+  exact h1.symm.trans h2
+
+/--
+The selected-class identification source and exact hybrid-class fixed-point
+uniqueness are equivalent formulations of the same PLAN_83 frontier.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_exact_uniqueness_iff_selected_hybrid_class_fixed_identification :
+    MoleculeResidualHybridClassFixedPointExactUniquenessSource ↔
+      MoleculeResidualSelectedHybridClassFixedIdentificationSource := by
+  constructor
+  · exact molecule_residual_selected_hybrid_class_fixed_identification_of_exact_uniqueness
+  · exact molecule_residual_hybrid_class_fixed_point_exact_uniqueness_of_selected_hybrid_class_fixed_identification
+
+/--
+In the current identity-model seam, renormalizability of all fixed hybrid
+classes is equivalent to the false full-domain fixed-point renormalizability
+bridge.
+-/
+theorem molecule_residual_hybrid_class_fixed_point_renormalizable_source_iff_fixed_point_implies_renormalizable :
+    MoleculeResidualHybridClassFixedPointRenormalizableSource ↔
+      FixedPointImpliesRenormalizable := by
+  constructor
+  · intro h_source f h_fix
+    exact h_source (toHybridClass f) (by simpa [R_hybrid, toHybridClass] using h_fix)
+  · intro h_bridge c h_fix
+    exact h_bridge c (by simpa [R_hybrid] using h_fix)
+
+/--
+Dead-end certificate for the obvious next reduction attempt:
+`MoleculeResidualHybridClassFixedPointRenormalizableSource` is false in the
+current scaffold because it collapses to the false global bridge `(R)`.
+-/
+theorem no_molecule_residual_hybrid_class_fixed_point_renormalizable_source :
+    ¬ MoleculeResidualHybridClassFixedPointRenormalizableSource := by
+  intro h_source
+  have h_fix_default : R_hybrid (toHybridClass defaultBMol) = toHybridClass defaultBMol := by
+    change Rfast defaultBMol = defaultBMol
+    simp [Rfast, defaultBMol_not_renormalizable]
+  have h_renorm_default : IsFastRenormalizable defaultBMol :=
+    h_source (toHybridClass defaultBMol) h_fix_default
+  exact defaultBMol_not_renormalizable h_renorm_default
 
 /--
 Feasibility gate: in the current model this bridge contract is false, because
@@ -2619,6 +2821,107 @@ def MoleculeResidualFixedPointExistenceSource : Prop :=
   ∃ f : BMol, IsFastRenormalizable f ∧ Rfast f = f
 
 /--
+PLAN_84 seed interface:
+an existence-side seed is any explicitly packaged renormalizable fixed point.
+Unlike `selected_fixed_point`, this interface does not mention
+`fixed_point_exists`.
+-/
+def MoleculeResidualRenormalizableFixedSeedSource : Prop :=
+  ∃ f_seed : BMol, IsFastRenormalizable f_seed ∧ Rfast f_seed = f_seed
+
+/--
+Chosen seed point from a PLAN_84 seed source.
+-/
+noncomputable def renormalizable_fixed_seed_point
+    (h_seed : MoleculeResidualRenormalizableFixedSeedSource) : BMol :=
+  Classical.choose h_seed
+
+/--
+Specification of the chosen PLAN_84 seed point.
+-/
+theorem renormalizable_fixed_seed_point_spec
+    (h_seed : MoleculeResidualRenormalizableFixedSeedSource) :
+    IsFastRenormalizable (renormalizable_fixed_seed_point h_seed) ∧
+      Rfast (renormalizable_fixed_seed_point h_seed) =
+        renormalizable_fixed_seed_point h_seed :=
+  Classical.choose_spec h_seed
+
+/--
+The chosen PLAN_84 seed point is fixed by `Rfast`.
+-/
+theorem renormalizable_fixed_seed_point_fixed
+    (h_seed : MoleculeResidualRenormalizableFixedSeedSource) :
+    Rfast (renormalizable_fixed_seed_point h_seed) =
+      renormalizable_fixed_seed_point h_seed :=
+  (renormalizable_fixed_seed_point_spec h_seed).2
+
+/--
+Any PLAN_84 seed yields a singleton-domain renormalizability bridge without
+mentioning `fixed_point_exists`.
+-/
+theorem fixed_point_implies_renormalizable_on_seed_singleton
+    (h_seed : MoleculeResidualRenormalizableFixedSeedSource) :
+    FixedPointImpliesRenormalizableOn
+      ({renormalizable_fixed_seed_point h_seed} : Set BMol) :=
+  fixed_point_implies_renormalizable_on_singleton_of_renorm
+    (renormalizable_fixed_seed_point_spec h_seed).1
+
+/--
+The singleton bridge at a PLAN_84 seed is equivalent to renormalizability of
+the seed, exactly as in the selected-point route but without `fixed_point_exists`.
+-/
+theorem fixed_point_implies_renormalizable_on_seed_singleton_iff
+    (h_seed : MoleculeResidualRenormalizableFixedSeedSource) :
+    FixedPointImpliesRenormalizableOn
+      ({renormalizable_fixed_seed_point h_seed} : Set BMol) ↔
+      IsFastRenormalizable (renormalizable_fixed_seed_point h_seed) :=
+  fixed_point_implies_renormalizable_on_singleton_iff
+    (renormalizable_fixed_seed_point_fixed h_seed)
+
+/--
+A PLAN_84 seed is visibly disjoint from the old `defaultBMol` obstruction:
+the chosen seed cannot be `defaultBMol`, because the seed is renormalizable and
+`defaultBMol` is not.
+-/
+theorem renormalizable_fixed_seed_point_ne_defaultBMol
+    (h_seed : MoleculeResidualRenormalizableFixedSeedSource) :
+    renormalizable_fixed_seed_point h_seed ≠ defaultBMol := by
+  intro h_eq
+  have h_renorm_default : IsFastRenormalizable defaultBMol := by
+    simpa [h_eq] using (renormalizable_fixed_seed_point_spec h_seed).1
+  exact defaultBMol_not_renormalizable h_renorm_default
+
+/--
+Any PLAN_84 seed already yields the existence-side source target.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_renormalizable_fixed_seed_source
+    (h_seed : MoleculeResidualRenormalizableFixedSeedSource) :
+    MoleculeResidualFixedPointExistenceSource :=
+  h_seed
+
+/--
+In the current identity-model scaffold, exact uniqueness of fixed hybrid
+classes rules out any renormalizable fixed point, because `defaultBMol` is
+already a fixed point and is not fast-renormalizable.
+-/
+theorem no_molecule_residual_fixed_point_existence_source_of_hybrid_class_fixed_point_exact_uniqueness
+    (h_unique_exact : MoleculeResidualHybridClassFixedPointExactUniquenessSource) :
+    ¬ MoleculeResidualFixedPointExistenceSource := by
+  intro h_exists
+  rcases h_exists with ⟨g, h_renorm_g, h_fix_g⟩
+  have h_fix_default : R_hybrid (toHybridClass defaultBMol) = toHybridClass defaultBMol := by
+    change Rfast defaultBMol = defaultBMol
+    simp [Rfast, defaultBMol_not_renormalizable]
+  have h_fix_g_class : R_hybrid (toHybridClass g) = toHybridClass g := by
+    simpa [R_hybrid, toHybridClass] using h_fix_g
+  have h_eq_class :
+      toHybridClass defaultBMol = toHybridClass g :=
+    h_unique_exact (toHybridClass defaultBMol) (toHybridClass g)
+      h_fix_default h_fix_g_class
+  have h_eq : defaultBMol = g := toHybridClass_injective h_eq_class
+  exact defaultBMol_not_renormalizable (by simpa [h_eq] using h_renorm_g)
+
+/--
 Source seam for the fixed-point renormalizability bridge contract.
 -/
 def MoleculeResidualFixedPointBridgeSource : Prop :=
@@ -2661,6 +2964,60 @@ theorem molecule_residual_fixed_point_existence_source_of_bridge_on
       h_bridge_on_K with
     ⟨f_star, _hf_domain, h_renorm, h_fixed⟩
   exact ⟨f_star, h_renorm, h_fixed⟩
+
+/--
+Assemble a restricted bridge-on source from the ground fixed-point theorem and
+renormalizability of the designated fixed point selected from that theorem.
+-/
+theorem molecule_residual_fixed_point_bridge_on_source_of_fixed_point_exists_and_singleton_renorm
+    (h_renorm :
+      IsFastRenormalizable (Classical.choose fixed_point_exists)) :
+    MoleculeResidualFixedPointBridgeOnSource := by
+  classical
+  let f_star : BMol := Classical.choose fixed_point_exists
+  have h_fixed_point :
+      Rfast f_star = f_star ∧ criticalValue f_star = 0 :=
+    Classical.choose_spec fixed_point_exists
+  refine
+    ⟨
+      ({f_star} : Set BMol),
+      ⟨f_star, by simp, h_fixed_point.1⟩,
+      fixed_point_implies_renormalizable_on_singleton_of_renorm h_renorm
+    ⟩
+
+/--
+Candidate PLAN_83 bridge route from the exact one-point renormalizability
+source attached to `fixed_point_exists`.
+-/
+theorem molecule_residual_fixed_point_bridge_on_source_of_selected_fixed_point_renormalizable
+    (h_renorm : MoleculeResidualSelectedFixedPointRenormalizableSource) :
+    MoleculeResidualFixedPointBridgeOnSource :=
+  molecule_residual_fixed_point_bridge_on_source_of_fixed_point_exists_and_singleton_renorm
+    h_renorm
+
+/--
+Candidate existence route for PLAN_83:
+the localized bridge problem on the refined singleton route is reduced to
+renormalizability of one designated fixed point.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_fixed_point_exists_and_singleton_renorm
+    (h_renorm :
+      IsFastRenormalizable (Classical.choose fixed_point_exists)) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_bridge_on
+    (molecule_residual_fixed_point_bridge_on_source_of_fixed_point_exists_and_singleton_renorm
+      h_renorm)
+
+/--
+Candidate existence route from the exact one-point renormalizability source
+named by PLAN_83.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_selected_fixed_point_renormalizable
+    (h_renorm : MoleculeResidualSelectedFixedPointRenormalizableSource) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_bridge_on
+    (molecule_residual_fixed_point_bridge_on_source_of_selected_fixed_point_renormalizable
+      h_renorm)
 
 /--
 Assemble a restricted bridge-on source from:
@@ -5159,6 +5516,102 @@ theorem residual_fixed_point_existence_of_canonical_fast_fixed_point_data
   h_canonical
 
 /--
+If the designated selected point agrees with every renormalizable fixed point,
+then any canonical fixed-point witness yields renormalizability of the selected
+point.
+-/
+theorem molecule_residual_selected_fixed_point_renormalizable_of_identification_and_canonical
+    (h_ident : MoleculeResidualSelectedFixedPointIdentificationSource)
+    (h_canonical : CanonicalFastFixedPointData) :
+    MoleculeResidualSelectedFixedPointRenormalizableSource := by
+  classical
+  let g : BMol := Classical.choose h_canonical
+  have hg_spec : IsFastRenormalizable g ∧ Rfast g = g :=
+    Classical.choose_spec h_canonical
+  have h_eq : selected_fixed_point = g := h_ident g hg_spec.1 hg_spec.2
+  simpa [MoleculeResidualSelectedFixedPointRenormalizableSource, h_eq] using hg_spec.1
+
+/--
+If the hybrid class of the designated selected point agrees with every fixed
+hybrid class, then any canonical fixed-point witness yields renormalizability
+of the selected point.
+-/
+theorem molecule_residual_selected_fixed_point_renormalizable_of_hybrid_class_fixed_identification_and_canonical
+    (h_ident_class : MoleculeResidualSelectedHybridClassFixedIdentificationSource)
+    (h_canonical : CanonicalFastFixedPointData) :
+    MoleculeResidualSelectedFixedPointRenormalizableSource := by
+  classical
+  let g : BMol := Classical.choose h_canonical
+  have hg_spec : IsFastRenormalizable g ∧ Rfast g = g :=
+    Classical.choose_spec h_canonical
+  have h_class_fix : R_hybrid (toHybridClass g) = toHybridClass g := by
+    simpa [R_hybrid, toHybridClass] using hg_spec.2
+  have h_class_eq :
+      toHybridClass selected_fixed_point = toHybridClass g :=
+    h_ident_class (toHybridClass g) h_class_fix
+  have h_eq : selected_fixed_point = g := toHybridClass_injective h_class_eq
+  simpa [MoleculeResidualSelectedFixedPointRenormalizableSource, h_eq] using hg_spec.1
+
+/--
+Candidate PLAN_83 continuation from PLAN_82:
+canonical fixed-point data plus identification of the selected point with any
+renormalizable fixed point implies the exact selected-point renormalizability
+source.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_selected_fixed_point_identification_and_canonical
+    (h_ident : MoleculeResidualSelectedFixedPointIdentificationSource)
+    (h_canonical : CanonicalFastFixedPointData) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_selected_fixed_point_renormalizable
+    (molecule_residual_selected_fixed_point_renormalizable_of_identification_and_canonical
+      h_ident h_canonical)
+
+/--
+Candidate PLAN_83 continuation from a fixed-point-only identification theorem.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_selected_fixed_point_fixed_identification_and_canonical
+    (h_ident_fixed : MoleculeResidualSelectedFixedPointFixedIdentificationSource)
+    (h_canonical : CanonicalFastFixedPointData) :
+    MoleculeResidualFixedPointExistenceSource := by
+  classical
+  let g : BMol := Classical.choose h_canonical
+  have hg_spec : IsFastRenormalizable g ∧ Rfast g = g :=
+    Classical.choose_spec h_canonical
+  have h_eq : selected_fixed_point = g := h_ident_fixed g hg_spec.2
+  have h_renorm : MoleculeResidualSelectedFixedPointRenormalizableSource := by
+    simpa [MoleculeResidualSelectedFixedPointRenormalizableSource, h_eq] using
+      hg_spec.1
+  exact
+    molecule_residual_fixed_point_existence_source_of_selected_fixed_point_renormalizable
+      h_renorm
+
+/--
+Sharper PLAN_83 continuation from PLAN_82:
+it is enough to identify the hybrid class of the selected point with every
+fixed hybrid class. In the current identity-model seam this already implies the
+map-level fixed-point identification target.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_selected_hybrid_class_fixed_identification_and_canonical
+    (h_ident_class : MoleculeResidualSelectedHybridClassFixedIdentificationSource)
+    (h_canonical : CanonicalFastFixedPointData) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_selected_fixed_point_renormalizable
+    (molecule_residual_selected_fixed_point_renormalizable_of_hybrid_class_fixed_identification_and_canonical
+      h_ident_class h_canonical)
+
+/--
+Sharper PLAN_83 continuation from exact hybrid-class fixed-point uniqueness.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_hybrid_class_fixed_point_exact_uniqueness_and_canonical
+    (h_unique_exact : MoleculeResidualHybridClassFixedPointExactUniquenessSource)
+    (h_canonical : CanonicalFastFixedPointData) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_selected_hybrid_class_fixed_identification_and_canonical
+    (molecule_residual_selected_hybrid_class_fixed_identification_of_exact_uniqueness
+      h_unique_exact)
+    h_canonical
+
+/--
 Subtarget A bridge from refined contract assumptions.
 -/
 theorem residual_fixed_point_existence_of_refined_contract
@@ -7057,10 +7510,41 @@ theorem molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_point_
 /--
 Recover fixed-point existence from canonical fast fixed-point data.
 -/
+theorem molecule_residual_renormalizable_fixed_seed_source_of_canonical_fast_fixed_point_data_source
+    (h_canonical : MoleculeResidualCanonicalFastFixedPointDataSource) :
+    MoleculeResidualRenormalizableFixedSeedSource :=
+  h_canonical
+
+/--
+The PLAN_84 seed interface is definitionally equivalent to canonical fast
+fixed-point data.
+-/
+theorem molecule_residual_renormalizable_fixed_seed_source_iff_canonical_fast_fixed_point_data_source :
+    MoleculeResidualRenormalizableFixedSeedSource ↔
+      MoleculeResidualCanonicalFastFixedPointDataSource := by
+  constructor <;> intro h
+  · exact h
+  · exact h
+
+/--
+Recover fixed-point existence from canonical fast fixed-point data by first
+passing through the PLAN_84 renormalizable seed interface.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_canonical_fast_fixed_point_data_source_via_seed
+    (h_canonical : MoleculeResidualCanonicalFastFixedPointDataSource) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_renormalizable_fixed_seed_source
+    (molecule_residual_renormalizable_fixed_seed_source_of_canonical_fast_fixed_point_data_source
+      h_canonical)
+
+/--
+Recover fixed-point existence from canonical fast fixed-point data.
+-/
 theorem molecule_residual_fixed_point_existence_source_of_canonical_fast_fixed_point_data_source
     (h_canonical : MoleculeResidualCanonicalFastFixedPointDataSource) :
     MoleculeResidualFixedPointExistenceSource :=
-  h_canonical
+  molecule_residual_fixed_point_existence_source_of_canonical_fast_fixed_point_data_source_via_seed
+    h_canonical
 
 /--
 The existence-side split target is definitionally equivalent to canonical fast
@@ -7088,6 +7572,44 @@ seam.
 theorem molecule_residual_canonical_fast_fixed_point_data_source :
     MoleculeResidualCanonicalFastFixedPointDataSource :=
   molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_orbit_clause_at_and_uniqueness
+
+/--
+PLAN_84 current-route alias:
+recover fixed-point existence from the current canonical-data source via the
+seeded existence route.
+-/
+theorem molecule_residual_fixed_point_existence_source_via_canonical_fast_fixed_point_data_source :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_canonical_fast_fixed_point_data_source
+    molecule_residual_canonical_fast_fixed_point_data_source
+
+/--
+Build fixed-point existence directly from fixed-point normalization data, the
+local orbit-at source, and the direct uniqueness source by passing through the
+PLAN_84 seeded canonical route.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_fixed_data_orbit_clause_at_and_uniqueness_direct_via_seed
+    (h_fixed_data : MoleculeResidualFixedPointDataSource)
+    (h_orbit_at : MoleculeResidualOrbitClauseAtSource)
+    (h_unique_direct : MoleculeResidualFixedPointUniquenessDirectSource) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_canonical_fast_fixed_point_data_source_via_seed
+    (molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_data_orbit_clause_at_and_uniqueness_direct
+      h_fixed_data
+      h_orbit_at
+      h_unique_direct)
+
+/--
+PLAN_84 current-route alias with the canonical wrapper fully expanded:
+the active seeded existence route depends exactly on the current fixed-data,
+local orbit-at, and direct uniqueness carriers.
+-/
+theorem molecule_residual_fixed_point_existence_source_via_fixed_data_orbit_clause_at_and_uniqueness_direct_via_seed :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_fixed_data_orbit_clause_at_and_uniqueness_direct_via_seed
+    molecule_residual_fixed_point_data_source
+    molecule_residual_orbit_clause_at_source
+    molecule_residual_fixed_point_uniqueness_direct_source
 
 /--
 Under any bounds witness (hence canonical fixed-point existence), hybrid-level

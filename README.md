@@ -104,6 +104,43 @@ Shared witness-side frontier:
 - Operationally, this means proving `FixedPointImpliesRenormalizableOn K` for a
   live domain `K` and composing it with the existing fixed-point-in-`K`
   theorem.
+- That localized route is now blocked in the current scaffold when seeded from
+  `fixed_point_exists`, because the chosen witness ultimately traces back to
+  `defaultBMol`.
+- The next live direction is therefore a seed-replacement program:
+```text
+(S)  produce f_seed : BMol with
+       IsFastRenormalizable f_seed /\ Rfast f_seed = f_seed
+     from canonical or renormalizable fixed-point data,
+     without using fixed_point_exists
+```
+- Once such an `f_seed` exists, the singleton-bridge / identification machinery
+  can be rebuilt around `f_seed` rather than `selected_fixed_point`.
+- This seed-replacement route is now explicit in the code:
+```text
+MoleculeResidualRenormalizableFixedSeedSource
+  <-> MoleculeResidualCanonicalFastFixedPointDataSource
+```
+- The canonical seeded existence route
+  `molecule_residual_fixed_point_existence_source_of_canonical_fast_fixed_point_data_source_via_seed`
+  is ground-axiom-only.
+- The concrete current-route alias
+  `molecule_residual_fixed_point_existence_source_via_canonical_fast_fixed_point_data_source`
+  now exposes that seeded route directly from the current canonical source.
+- Its fully expanded form
+  `molecule_residual_fixed_point_existence_source_via_fixed_data_orbit_clause_at_and_uniqueness_direct_via_seed`
+  shows the exact remaining inputs on this branch: fixed-data, local orbit-at,
+  and direct uniqueness.
+- The parameterized expanded theorem
+  `molecule_residual_fixed_point_existence_source_of_fixed_data_orbit_clause_at_and_uniqueness_direct_via_seed`
+  is ground-axiom-only, so the residual non-ground debt on the current route is
+  exactly those three inputs.
+- Targeted probes show that this alias has the same axiom footprint as both
+  `molecule_residual_canonical_fast_fixed_point_data_source` and the current
+  `molecule_residual_fixed_point_existence_source`.
+- So the PLAN_84 structural debt is now discharged. The remaining question on
+  this branch is upstream only: can canonical fast fixed-point data itself be
+  produced without `Molecule.molecule_h_norm`?
 
 Transfer-only additional frontier:
 ```text

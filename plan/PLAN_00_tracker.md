@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 99%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77, PLAN_78, PLAN_79, PLAN_80, PLAN_81, PLAN_82, PLAN_83
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77, PLAN_78, PLAN_79, PLAN_80, PLAN_81, PLAN_82, PLAN_83, PLAN_84
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-07
 
@@ -56,12 +56,13 @@ Last Updated: 2026-03-07
 | PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [#########-] 85% |
 | PLAN_81 | Single-reference fixed-point data witness | ACTIVE | [######----] 60% |
 | PLAN_82 | Canonical fast fixed-point data witness | ACTIVE | [#########-] 95% |
-| PLAN_83 | Localized fixed-point renormalizability bridge | ACTIVE | [###-------] 30% |
+| PLAN_83 | Localized fixed-point renormalizability bridge | STUCK | [#########-] 95% |
+| PLAN_84 | Canonical seed replacement for existence route | ACTIVE | [#########-] 96% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_83 localized renormalizability bridge + PLAN_82 canonical fast fixed-point data witness + PLAN_81 single-reference fixed-data witness + PLAN_80 fixed-point-data-source track + PLAN_78 concrete local-witness theorem + PLAN_53 (model bottleneck refactor) + PLAN_76 (anchor-witness bottleneck break) + PLAN_47/49 integration. PLAN_79 and PLAN_77 are now STUCK history/handoff; model-restriction redesign remains fallback-only.
+- Current queue is PLAN_84 canonical seed replacement + PLAN_82 canonical fast fixed-point data witness + PLAN_81 single-reference fixed-data witness + PLAN_80 fixed-point-data-source track + PLAN_78 concrete local-witness theorem + PLAN_53 (model bottleneck refactor) + PLAN_76 (anchor-witness bottleneck break) + PLAN_47/49 integration. PLAN_83, PLAN_79, and PLAN_77 are now STUCK history/handoff; model-restriction redesign remains fallback-only.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -1581,15 +1582,118 @@ Last Updated: 2026-03-07
   - This shows the domain-search part is live on the refined route, but on
     that route the remaining bridge debt collapses to renormalizability of one
     designated fixed point.
+  - Added the exact singleton-bridge reduction and a clean candidate
+    bridge-on/existence route from one-point renormalizability of the fixed
+    point chosen by `fixed_point_exists`.
+  - Named the exact live target proposition:
+    `MoleculeResidualSelectedFixedPointRenormalizableSource`, together with
+    direct bridge/existence routes from that source.
+  - Added a stronger integration source,
+    `MoleculeResidualSelectedFixedPointIdentificationSource`, showing how
+    PLAN_82 canonical fixed-point data would feed PLAN_83 if the selected point
+    could be identified with any renormalizable fixed point.
+  - Added the sharper fixed-point-only source,
+    `MoleculeResidualSelectedFixedPointFixedIdentificationSource`, and the
+    corresponding candidate route from PLAN_82 canonical fixed-point data.
+  - Added the sharper class-level fixed-point source,
+    `MoleculeResidualSelectedHybridClassFixedIdentificationSource`, showed that
+    it implies the map-level fixed-point-only source in the current
+    identity-model seam, and added the corresponding candidate route from
+    PLAN_82 canonical fixed-point data.
+  - Added the direct class-level continuation from
+    `MoleculeResidualSelectedHybridClassFixedIdentificationSource` to selected
+    point renormalizability using canonical fixed-point data, so the candidate
+    PLAN_83 route no longer needs the intermediate map-level
+    fixed-identification wrapper.
+  - Added the sharper exact source
+    `MoleculeResidualHybridClassFixedPointExactUniquenessSource`, showed that
+    it implies the selected hybrid-class identification target, and added the
+    corresponding candidate route from canonical fixed-point data.
+  - Proved that exact hybrid-class fixed-point uniqueness and selected
+    hybrid-class identification are equivalent formulations of the same
+    frontier, so the PLAN_83 target is now structurally saturated at the
+    hybrid-class level.
+  - Targeted `#print axioms` probes confirm both directions of that
+    equivalence, the equivalence theorem itself, and the exact-uniqueness
+    candidate existence route are ground-axiom-only.
+  - Explicitly ruled out the tempting next reduction
+    `MoleculeResidualHybridClassFixedPointRenormalizableSource`: in the current
+    identity-model seam it is equivalent to the false global bridge `(R)`, so
+    that branch is now formally dead.
+  - Proved the decisive obstruction theorem
+    `no_molecule_residual_fixed_point_existence_source_of_hybrid_class_fixed_point_exact_uniqueness`:
+    in the current scaffold, exact hybrid-class fixed-point uniqueness already
+    implies `¬ MoleculeResidualFixedPointExistenceSource`.
+  - This means the current PLAN_83 live target cannot satisfy the plan
+    acceptance criterion of removing `Molecule.molecule_h_norm` from the active
+    existence theorem; the route is therefore STUCK unless the ground witness
+    `fixed_point_exists` is changed or the route is redesigned.
+  - Targeted `#print axioms` probes confirm
+    `molecule_residual_selected_hybrid_class_fixed_identification_of_exact_uniqueness`
+    and
+    `molecule_residual_fixed_point_existence_source_of_hybrid_class_fixed_point_exact_uniqueness_and_canonical`
+    are ground-axiom-only.
+  - Targeted `#print axioms` probes confirm
+    `no_molecule_residual_fixed_point_existence_source_of_hybrid_class_fixed_point_exact_uniqueness`
+    is ground-axiom-only.
+  - Targeted `#print axioms` probes confirm
+    `selected_fixed_point_hybrid_fixed`,
+    `molecule_residual_selected_fixed_point_renormalizable_of_hybrid_class_fixed_identification_and_canonical`,
+    and
+    `molecule_residual_fixed_point_existence_source_of_selected_hybrid_class_fixed_identification_and_canonical`
+    are ground-axiom-only.
+  - Targeted `#print axioms` probes confirm the new class-level reduction and
+    its candidate existence route are ground-axiom-only, while
+    `molecule_residual_fixed_point_existence_source` still carries
+    `Molecule.molecule_h_norm`.
   - `make build` passed; `make check` passed; targeted probes show the new
     refined-domain source and its projection are ground-axiom-only, while the
     active existence theorem remains `Molecule.molecule_h_norm`-backed.
   - Route status:
     feasibility gate [##########] 100%,
     circularity guard [########--] 80%,
-    domain source search [#######---] 70%,
-    local bridge proof [#---------] 10%,
-    downstream cutover readiness [#######---] 70%.
+    domain source search [##########] 100%,
+    local bridge proof [#########-] 90%,
+    downstream cutover readiness [##########] 100%.
+- `PLAN_84` progress:
+  - Opened a new direction after PLAN_83 was shown to be blocked by the
+    current ground witness behind `fixed_point_exists`.
+  - The new route does not try to prove more properties of
+    `selected_fixed_point`; it replaces that seed entirely.
+  - `MoleculeResidualRenormalizableFixedSeedSource` and its singleton bridge
+    are now explicit, and the chosen seed is proved distinct from
+    `defaultBMol`.
+  - `CanonicalFastFixedPointDataSource` now feeds that seed interface directly,
+    with an equivalence certificate:
+    `molecule_residual_renormalizable_fixed_seed_source_iff_canonical_fast_fixed_point_data_source`.
+  - The existence-side canonical route is now cut over to
+    `canonical -> seed -> existence`.
+  - The theorem
+    `molecule_residual_fixed_point_existence_source_via_canonical_fast_fixed_point_data_source`
+    now exposes the full seeded canonical route as a concrete current-route
+    alias; declaration order is the only reason the earlier legacy theorem body
+    is still present.
+  - Targeted probes show the new seed-source equivalence and canonical-seed
+    existence route are ground-axiom-only; the remaining debt on this branch is
+    exactly `MoleculeResidualCanonicalFastFixedPointDataSource`.
+  - Probes also show:
+    `molecule_residual_fixed_point_existence_source_via_canonical_fast_fixed_point_data_source`,
+    `molecule_residual_canonical_fast_fixed_point_data_source`, and the current
+    `molecule_residual_fixed_point_existence_source` have the same axiom
+    footprint. So PLAN_84 is now structurally saturated.
+  - The fully expanded seeded route is now explicit:
+    `molecule_residual_fixed_point_existence_source_via_fixed_data_orbit_clause_at_and_uniqueness_direct_via_seed`
+    depends exactly on the current fixed-data, local orbit-at, and direct
+    uniqueness carriers.
+  - Targeted probes show the parameterized theorem
+    `molecule_residual_fixed_point_existence_source_of_fixed_data_orbit_clause_at_and_uniqueness_direct_via_seed`
+    is ground-axiom-only, while the current-route alias inherits precisely the
+    `Molecule.molecule_h_norm` debt of those three carriers.
+  - Current route status:
+    seed abstraction [#########-] 90%,
+    obstruction escape [########--] 80%,
+    upstream witness source [#########-] 90%,
+    downstream cutover readiness [##########] 100%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
