@@ -2960,6 +2960,79 @@ def molecule_residual_fixed_point_local_witness_on_sources_of_fixed_point_exists
 
 /--
 Refined-chart invariant slice-data pack whose designated reference map is
+already known to be an `Rfast` fixed point, but without any normalization
+assumption on the domain.
+-/
+structure MoleculeResidualRefinedInvariantFixedPointDomainSources where
+  K : Set BMol
+  f_ref : BMol
+  P : Set SliceSpace
+  compact : IsCompact P
+  convex : Convex ℝ P
+  maps : MapsTo (slice_operator f_ref) P P
+  kdef : K = {f | slice_chart_refined f_ref f ∈ P}
+  surj : SurjOn (slice_chart_refined f_ref) K P
+  finite : K.Finite
+  inj : InjOn (slice_chart_refined f_ref) K
+  cont : ContinuousOn (slice_operator f_ref) ((slice_chart_refined f_ref) '' K)
+  nonempty : K.Nonempty
+  mem : f_ref ∈ K
+  fixed : Rfast f_ref = f_ref
+
+/--
+Build the refined invariant-domain source pack from the ground fixed-point
+theorem plus the refined singleton slice witness.
+-/
+def molecule_residual_refined_invariant_fixed_point_domain_sources_of_fixed_point_exists :
+    MoleculeResidualRefinedInvariantFixedPointDomainSources := by
+  classical
+  let f_star : BMol := Classical.choose fixed_point_exists
+  have h_fixed_point :
+      Rfast f_star = f_star ∧ criticalValue f_star = 0 :=
+    Classical.choose_spec fixed_point_exists
+  let K : Set BMol := Classical.choose (refined_singleton_slice_witness f_star)
+  let P : Set SliceSpace :=
+    Classical.choose (Classical.choose_spec (refined_singleton_slice_witness f_star))
+  have h_refined_spec :
+      IsCompact P ∧
+        Convex ℝ P ∧
+          MapsTo (slice_operator f_star) P P ∧
+            K = {f | slice_chart_refined f_star f ∈ P} ∧
+              SurjOn (slice_chart_refined f_star) K P ∧
+                K.Finite ∧
+                  InjOn (slice_chart_refined f_star) K ∧
+                    ContinuousOn (slice_operator f_star) ((slice_chart_refined f_star) '' K) ∧
+                      K.Nonempty ∧
+                        f_star ∈ K :=
+    Classical.choose_spec (Classical.choose_spec (refined_singleton_slice_witness f_star))
+  exact
+    ⟨
+      K,
+      f_star,
+      P,
+      h_refined_spec.1,
+      h_refined_spec.2.1,
+      h_refined_spec.2.2.1,
+      h_refined_spec.2.2.2.1,
+      h_refined_spec.2.2.2.2.1,
+      h_refined_spec.2.2.2.2.2.1,
+      h_refined_spec.2.2.2.2.2.2.1,
+      h_refined_spec.2.2.2.2.2.2.2.1,
+      h_refined_spec.2.2.2.2.2.2.2.2.1,
+      h_refined_spec.2.2.2.2.2.2.2.2.2,
+      h_fixed_point.1
+    ⟩
+
+/--
+Project a fixed-point-in-domain witness from the refined singleton-domain pack.
+-/
+def molecule_residual_invariant_slice_fixed_point_source_of_refined_invariant_fixed_point_domain_sources
+    (h_sources : MoleculeResidualRefinedInvariantFixedPointDomainSources) :
+    MoleculeResidualInvariantSliceFixedPointSource :=
+  ⟨h_sources.K, h_sources.f_ref, h_sources.mem, h_sources.fixed⟩
+
+/--
+Refined-chart invariant slice-data pack whose designated reference map is
 already known to be an `Rfast` fixed point.
 -/
 structure MoleculeResidualRefinedInvariantFixedPointSources where

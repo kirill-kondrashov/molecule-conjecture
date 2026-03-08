@@ -56,7 +56,7 @@ Last Updated: 2026-03-07
 | PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [#########-] 85% |
 | PLAN_81 | Single-reference fixed-point data witness | ACTIVE | [######----] 60% |
 | PLAN_82 | Canonical fast fixed-point data witness | ACTIVE | [#########-] 95% |
-| PLAN_83 | Localized fixed-point renormalizability bridge | ACTIVE | [##--------] 15% |
+| PLAN_83 | Localized fixed-point renormalizability bridge | ACTIVE | [###-------] 30% |
 
 ## Dependency Map
 
@@ -1575,14 +1575,19 @@ Last Updated: 2026-03-07
     `renormalizable_fixed_exists_of_fixed_point_exists_in_and_bridge_on`.
   - Tightened the plan to forbid circular local domains and proofs routed
     through `NormalizationOn K` or downstream fixed-data.
-  - Existing invariant-slice infrastructure already provides a theorem shape
-    for fixed-point-in-`K`, but no concrete upstream source of `K` has yet been
-    identified that avoids both the constant-slice obstruction and the dead
-    normalized seam.
+  - Added one concrete upstream domain source from the refined singleton slice
+    witness plus the ground fixed-point theorem, and projected it into the
+    fixed-point-in-domain seam.
+  - This shows the domain-search part is live on the refined route, but on
+    that route the remaining bridge debt collapses to renormalizability of one
+    designated fixed point.
+  - `make build` passed; `make check` passed; targeted probes show the new
+    refined-domain source and its projection are ground-axiom-only, while the
+    active existence theorem remains `Molecule.molecule_h_norm`-backed.
   - Route status:
     feasibility gate [##########] 100%,
     circularity guard [########--] 80%,
-    domain source search [##--------] 20%,
+    domain source search [#######---] 70%,
     local bridge proof [#---------] 10%,
     downstream cutover readiness [#######---] 70%.
 - `PLAN_54` progress:

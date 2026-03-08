@@ -1,7 +1,7 @@
 # PLAN 83 - Localized Fixed-Point Renormalizability Bridge
 
 Status: ACTIVE
-Progress: [##--------] 15%
+Progress: [###-------] 30%
 Scope: Replace the false full-domain fixed-point renormalizability contract
 with one non-circular local bridge of the form
 `FixedPointImpliesRenormalizableOn K`, where the domain `K` is produced from an
@@ -73,7 +73,7 @@ Last Updated: 2026-03-08
 |---|---|---|
 | Feasibility gate | The repository now explicitly records that the full-domain bridge is false in the current model; only a localized bridge can be a live target. | [##########] 100% |
 | Circularity guard | The admissible proof shape is now explicit: `K` may not be defined using `IsFastRenormalizable`, and the bridge may not be obtained from `NormalizationOn K` or downstream fixed-data. | [########--] 80% |
-| Domain source search | `molecule_residual_invariant_slice_fixed_point_source_of_invariant_slice_data_source` already gives a fixed point in a domain `K`, but no concrete upstream source of such a `K` is yet known that avoids the constant-slice obstruction. | [##--------] 20% |
+| Domain source search | A concrete refined singleton-domain source now exists from `fixed_point_exists` plus `refined_singleton_slice_witness`; this avoids the dead normalized seam and the legacy constant-chart route, but it collapses the remaining bridge target to renormalizability of one designated fixed point. | [#######---] 70% |
 | Local bridge proof | No current theorem produces `FixedPointImpliesRenormalizableOn K` from a weaker premise than `NormalizationOn K`. | [#---------] 10% |
 | Downstream cutover readiness | The active existence branch is already reduced to the direct renormalizability carrier, so a localized bridge would plug in immediately once available. | [#######---] 70% |
 
@@ -90,6 +90,9 @@ Last Updated: 2026-03-08
   - `FixedPointImpliesRenormalizableOn`
   - `renormalizable_fixed_exists_of_fixed_point_exists_in_and_bridge_on`
   - `molecule_residual_invariant_slice_fixed_point_source_of_invariant_slice_data_source`
+- A concrete upstream candidate domain is now available from the refined route:
+  - `molecule_residual_refined_invariant_fixed_point_domain_sources_of_fixed_point_exists`
+  - `molecule_residual_invariant_slice_fixed_point_source_of_refined_invariant_fixed_point_domain_sources`
 - Hard obstructions to avoid are already known:
   - `no_molecule_residual_invariant_slice_data_with_normalization_source`
   - `has_invariant_slice_data_forces_univ_finite`
@@ -121,3 +124,20 @@ Last Updated: 2026-03-08
   - added an early fail condition: if every candidate `K` comes only from the
     legacy constant-slice route or from downstream fixed-data, this plan should
     be marked STUCK quickly rather than expanded further.
+- Step-3 refined-domain checkpoint (2026-03-08):
+  - added a concrete refined singleton-domain source from the ground theorem
+    `fixed_point_exists` plus `refined_singleton_slice_witness`;
+  - added a projection from that source into the existing
+    fixed-point-in-domain seam;
+  - this completes the domain-search part of the plan on one live route, but
+    also shows that the remaining bridge target on that route is now exactly a
+    one-point renormalizability theorem for the designated fixed point;
+  - `make build` passed;
+  - `make check` passed;
+  - targeted `#print axioms` probes show:
+    `molecule_residual_refined_invariant_fixed_point_domain_sources_of_fixed_point_exists`
+    and
+    `molecule_residual_invariant_slice_fixed_point_source_of_refined_invariant_fixed_point_domain_sources`
+    are ground-axiom-only, while
+    `molecule_residual_fixed_point_existence_source`
+    still carries `Molecule.molecule_h_norm`.
