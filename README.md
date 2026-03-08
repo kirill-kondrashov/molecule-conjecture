@@ -97,19 +97,18 @@ Current axiom frontier:
   `MoleculeResidualFixedPointExistenceSource` is ground-axiom-only equivalent to
   `MoleculeResidualCanonicalFastFixedPointDataSource`.
 - The current canonical theorem is now routed through the smaller triple:
-  `MoleculeResidualFixedPointDataSource`,
+  `MoleculeResidualFixedPointNormalizationIngredients`,
   `MoleculeResidualOrbitClauseAtSource`,
-  and `MoleculeResidualFixedPointUniquenessSource`.
+  and `MoleculeResidualFixedPointUniquenessDirectSource`.
 - Concretely, the active theorem carriers on that branch are now:
-  `molecule_residual_fixed_point_data_source_via_fixed_data_direct`,
+  `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`,
   `molecule_residual_orbit_clause_at_source`,
-  and `molecule_residual_fixed_point_uniqueness_source_direct`.
+  and `molecule_residual_fixed_point_uniqueness_direct_source`.
 - Under the fixed-data branch itself, the current carrier now splits into:
-  `molecule_residual_fixed_exists_via_global_norm_direct` and
-  `molecule_residual_fixed_point_local_normalization_transfer_via_global_norm_direct`.
-- More sharply:
-  `fixed_point_exists` is already ground-axiom-only, so the remaining
-  fixed-data debt is concentrated in
+  `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`,
+  built from the ground theorem `fixed_point_exists` plus three direct
+  non-ground carriers.
+- Concretely, the remaining fixed-data debt is concentrated in
   `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`,
   `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`,
   and

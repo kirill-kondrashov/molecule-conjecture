@@ -1,7 +1,7 @@
 # PLAN 80 - Non-h_norm Fixed-Point Data Source
 
 Status: ACTIVE
-Progress: [#####-----] 50%
+Progress: [#####-----] 55%
 Scope: Replace the current `molecule_h_fixed_data_direct` carrier with one
 concrete non-`molecule_h_norm` theorem-level source for
 `MoleculeResidualFixedPointDataSource`, then feed
@@ -45,7 +45,7 @@ Last Updated: 2026-03-07
 
 | Route | Current State | Progress |
 |---|---|---|
-| Minimal blocker exposure | The current `molecule_residual_fixed_point_data_source` theorem and the downstream local-witness theorem now both route through the direct fixed-data carrier, and that carrier is now split into ground fixed-point existence plus exact renormalizability/critical-value/`V`-bound blockers. | [########--] 80% |
+| Minimal blocker exposure | The current `molecule_residual_fixed_point_data_source` theorem and the downstream local-witness theorem now both route through the direct fixed-data carrier, and that carrier is now rebuilt from an explicit ingredients theorem using ground `fixed_point_exists` plus exact renormalizability/critical-value/`V`-bound blockers. | [#########-] 90% |
 | Legacy branch closure | `no_molecule_residual_invariant_slice_data_with_normalization_source` proves the old normalized invariant-slice-data seam is inconsistent in the current model. | [##########] 100% |
 | Live source search | Ground-axiom-only constructors exist from ingredients, fixed-exists+transfer, and invariant-slice-data; the missing piece is now a live producer for one of those inputs that does not pass through the dead legacy normalized seam. | [##--------] 20% |
 
@@ -145,3 +145,14 @@ Last Updated: 2026-03-07
     `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`,
     and
     `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
+- Step-10 primitive-ingredient checkpoint (2026-03-07):
+  - added
+    `residual_fixed_point_normalization_ingredients_of_fixed_point_exists_and_component_transfers`
+    and current-route alias
+    `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`;
+  - rerouted
+    `molecule_residual_fixed_point_data_source_via_fixed_exists_and_transfer_direct`
+    through that explicit primitive-ingredient theorem;
+  - this makes the fixed-data branch mathematically exact: ground
+    `fixed_point_exists` plus the three remaining non-ground carriers
+    (`renormalizable`, critical-value transfer, `V`-bound transfer).

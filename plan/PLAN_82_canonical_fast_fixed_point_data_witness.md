@@ -34,8 +34,8 @@ Last Updated: 2026-03-07
 | Route | Current State | Progress |
 |---|---|---|
 | Target exposure | The existence half is now formally reduced to `MoleculeResidualCanonicalFastFixedPointDataSource`, and the current canonical theorem is rerouted through fixed-point data, local orbit-at source, and uniqueness. | [##########] 100% |
-| Downstream leverage | The active canonical route now shares the transfer branch explicitly and no longer hides orbit-clause transport wrappers. | [#########-] 90% |
-| Witness search | The live upstream package is now split as `MoleculeResidualFixedPointDataSource` + `MoleculeResidualOrbitClauseAtSource` + `MoleculeResidualFixedPointUniquenessSource`; no non-`molecule_h_norm` witness for that combination is known yet. | [##########] 100% |
+| Downstream leverage | The active canonical route now shares the transfer branch explicitly and no longer hides orbit-clause transport wrappers or the intermediate fixed-data wrapper. | [##########] 100% |
+| Witness search | The live upstream package is now split as `MoleculeResidualFixedPointNormalizationIngredients` + `MoleculeResidualOrbitClauseAtSource` + `MoleculeResidualFixedPointUniquenessDirectSource`; no non-`molecule_h_norm` witness for that combination is known yet. | [##########] 100% |
 
 ## Notes
 
@@ -180,26 +180,31 @@ Last Updated: 2026-03-07
   - this removes the remaining existence/transfer wrappers from the active
     canonical frontier and ties PLAN_82 directly to the PLAN_80/81 fixed-data
     witness search plus the uniqueness frontier.
-- Step-12 exact-theorem frontier checkpoint (2026-03-07):
-  - added
-    `molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_direct_orbit_clause_at_and_uniqueness_direct`;
-  - rerouted the active fixed-data/local-orbit/uniqueness alias through the
-    exact theorem carriers
-    `molecule_residual_fixed_point_data_source_via_fixed_data_direct`,
-    `molecule_residual_orbit_clause_at_source`,
-    and
-    `molecule_residual_fixed_point_uniqueness_source_direct`;
-  - targeted probes show these are now the exact theorem blockers for the
-    canonical branch.
 - Step-12 concrete-carrier checkpoint (2026-03-07):
   - added
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_data_orbit_clause_at_and_uniqueness_direct`
+    and
     `molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_direct_orbit_clause_at_and_uniqueness_direct`;
   - rerouted the active fixed-data/local-orbit/uniqueness alias through the
     exact current theorem carriers:
     `molecule_residual_fixed_point_data_source_via_fixed_data_direct`,
     `molecule_residual_orbit_clause_at_source`,
     and
-    `molecule_residual_fixed_point_uniqueness_source_direct`;
+    `molecule_residual_fixed_point_uniqueness_direct_source`;
   - targeted probes show this is now the exact concrete blocker set for
     PLAN_82; further progress requires improving one of those three theorems,
     not more canonical-route rewiring.
+- Step-13 primitive-ingredient checkpoint (2026-03-07):
+  - added
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_primitive_ingredients_orbit_clause_at_and_uniqueness_direct`;
+  - rerouted
+    `molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_direct_orbit_clause_at_and_uniqueness_direct`
+    through the primitive ingredient carrier
+    `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`,
+    plus
+    `molecule_residual_orbit_clause_at_source`
+    and
+    `molecule_residual_fixed_point_uniqueness_direct_source`;
+  - this removes the remaining `FixedPointNormalizationData` wrapper from the
+    active canonical frontier; the exact blocker set is now primitive
+    ingredients + local orbit-at + direct uniqueness.

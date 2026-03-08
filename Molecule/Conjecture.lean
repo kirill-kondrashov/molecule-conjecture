@@ -518,6 +518,23 @@ theorem fixed_point_normalization_data_of_fixed_exists_and_transfer
   exact ⟨f_star, h_fixed, h_renorm, h_local.1, h_local.2⟩
 
 /--
+Build bundled residual fixed-point-normalization ingredients from:
+- the ground fixed-point existence theorem,
+- renormalizability of fixed points, and
+- the critical-value and `V`-bound transfer components.
+-/
+theorem residual_fixed_point_normalization_ingredients_of_fixed_point_exists_and_component_transfers
+    (h_renorm : ∀ f : BMol, Rfast f = f → IsFastRenormalizable f)
+    (h_crit : FixedPointCriticalValueTransferSource)
+    (h_vbound : FixedPointVBoundTransferSource) :
+    MoleculeResidualFixedPointNormalizationIngredients := by
+  rcases fixed_point_exists with ⟨f_star, h_fixed, _h_cv⟩
+  exact ⟨
+    ⟨f_star, h_renorm f_star h_fixed, h_fixed⟩,
+    fixed_point_local_normalization_transfer_of_critical_and_vbound h_crit h_vbound
+  ⟩
+
+/--
 Subtarget B bridge: obtain fixed-point local normalization transfer from:
 - one normalized fast-renormalizable fixed point, and
 - uniqueness of fast-renormalizable fixed points.
@@ -2463,14 +2480,25 @@ theorem molecule_residual_fixed_point_local_normalization_transfer_via_global_no
     molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct
 
 /--
+Current bundled fixed-point-normalization ingredients carrier underneath the
+fixed-data route, reduced to the ground fixed-point theorem plus the direct
+renormalizability / critical-value / `V`-bound carriers.
+-/
+theorem molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct :
+    MoleculeResidualFixedPointNormalizationIngredients :=
+  residual_fixed_point_normalization_ingredients_of_fixed_point_exists_and_component_transfers
+    molecule_residual_fixed_point_renormalizable_via_global_norm_direct
+    molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct
+    molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct
+
+/--
 Current fixed-data carrier exposed directly through the underlying fixed-point
 existence and local-transfer theorems.
 -/
 theorem molecule_residual_fixed_point_data_source_via_fixed_exists_and_transfer_direct :
     FixedPointNormalizationData :=
-  fixed_point_normalization_data_of_fixed_exists_and_transfer
-    molecule_residual_fixed_exists_via_global_norm_direct
-    molecule_residual_fixed_point_local_normalization_transfer_via_global_norm_direct
+  fixed_point_normalization_data_of_ingredients
+    molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct
 
 /--
 Source seam for residual fixed-point normalization data.
@@ -6629,13 +6657,28 @@ theorem molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_data_o
       h_unique_direct)
 
 /--
+Current-route canonical-data source exposed through the direct primitive
+fixed-point-ingredient carrier, the local orbit-at source, and the direct
+uniqueness source.
+-/
+theorem molecule_residual_canonical_fast_fixed_point_data_source_of_primitive_ingredients_orbit_clause_at_and_uniqueness_direct
+    (h_ingredients : MoleculeResidualFixedPointNormalizationIngredients)
+    (h_orbit_at : MoleculeResidualOrbitClauseAtSource)
+    (h_unique_direct : MoleculeResidualFixedPointUniquenessDirectSource) :
+    MoleculeResidualCanonicalFastFixedPointDataSource :=
+  molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_data_orbit_clause_at_and_uniqueness_direct
+    (fixed_point_normalization_data_of_ingredients h_ingredients)
+    h_orbit_at
+    h_unique_direct
+
+/--
 Current-route canonical-data source exposed through the direct fixed-data
 carrier, the local orbit-at source, and the direct uniqueness source.
 -/
 theorem molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_direct_orbit_clause_at_and_uniqueness_direct :
     MoleculeResidualCanonicalFastFixedPointDataSource :=
-  molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_data_orbit_clause_at_and_uniqueness_direct
-    molecule_residual_fixed_point_data_source_via_fixed_data_direct
+  molecule_residual_canonical_fast_fixed_point_data_source_of_primitive_ingredients_orbit_clause_at_and_uniqueness_direct
+    molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct
     molecule_residual_orbit_clause_at_source
     molecule_residual_fixed_point_uniqueness_direct_source
 

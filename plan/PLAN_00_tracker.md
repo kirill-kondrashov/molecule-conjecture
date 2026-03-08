@@ -53,7 +53,7 @@ Last Updated: 2026-03-07
 | PLAN_77 | Upstream model change for non-h_norm fixed-point sources | STUCK | [########--] 80% |
 | PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [######----] 65% |
 | PLAN_79 | Invariant-domain fixed-point source | STUCK | [#######---] 70% |
-| PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [#####-----] 50% |
+| PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [#####-----] 55% |
 | PLAN_81 | Single-reference fixed-point data witness | ACTIVE | [######----] 60% |
 | PLAN_82 | Canonical fast fixed-point data witness | ACTIVE | [#########-] 95% |
 
@@ -329,6 +329,30 @@ Last Updated: 2026-03-07
     reduced the existence half to canonical fast fixed-point data via
     `molecule_residual_fixed_point_existence_source_iff_canonical_fast_fixed_point_data_source`;
     targeted probes show this equivalence is ground-axiom-only.
+  - PLAN_80 step-10 checkpoint:
+    added
+    `residual_fixed_point_normalization_ingredients_of_fixed_point_exists_and_component_transfers`
+    and
+    `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`;
+    rerouted
+    `molecule_residual_fixed_point_data_source_via_fixed_exists_and_transfer_direct`
+    through the primitive-ingredient theorem, so the fixed-data branch now
+    depends explicitly on ground `fixed_point_exists` plus the three remaining
+    non-ground carriers:
+    `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`,
+    `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`,
+    and
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
+  - PLAN_82 step-13 checkpoint:
+    added
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_primitive_ingredients_orbit_clause_at_and_uniqueness_direct`;
+    rerouted the active canonical branch through
+    `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`,
+    `molecule_residual_orbit_clause_at_source`,
+    and
+    `molecule_residual_fixed_point_uniqueness_direct_source`;
+    this removes the intermediate fixed-data wrapper from the active canonical
+    frontier and exposes the exact live blocker triple for PLAN_82.
   - PLAN_82 step-1 checkpoint:
     opened a focused existence-side plan on
     `MoleculeResidualCanonicalFastFixedPointDataSource`, which is now the
