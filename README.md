@@ -113,6 +113,9 @@ Current axiom frontier:
   `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`,
   and
   `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
+- The current transfer theorem now also routes through the same primitive
+  ingredient carrier plus direct uniqueness, so the transfer branch no longer
+  hides an extra `FixedPointNormalizationData` wrapper.
 
 Implementation notes (important for interpretation):
 

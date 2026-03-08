@@ -1,7 +1,7 @@
 # PLAN 80 - Non-h_norm Fixed-Point Data Source
 
 Status: ACTIVE
-Progress: [#####-----] 55%
+Progress: [######----] 60%
 Scope: Replace the current `molecule_h_fixed_data_direct` carrier with one
 concrete non-`molecule_h_norm` theorem-level source for
 `MoleculeResidualFixedPointDataSource`, then feed
@@ -45,7 +45,7 @@ Last Updated: 2026-03-07
 
 | Route | Current State | Progress |
 |---|---|---|
-| Minimal blocker exposure | The current `molecule_residual_fixed_point_data_source` theorem and the downstream local-witness theorem now both route through the direct fixed-data carrier, and that carrier is now rebuilt from an explicit ingredients theorem using ground `fixed_point_exists` plus exact renormalizability/critical-value/`V`-bound blockers. | [#########-] 90% |
+| Minimal blocker exposure | The current `molecule_residual_fixed_point_data_source`, transfer, and downstream local-witness theorems now route through the direct fixed-data / primitive-ingredient frontier; the live fixed-data debt is explicit as ground `fixed_point_exists` plus exact renormalizability/critical-value/`V`-bound blockers. | [#########-] 95% |
 | Legacy branch closure | `no_molecule_residual_invariant_slice_data_with_normalization_source` proves the old normalized invariant-slice-data seam is inconsistent in the current model. | [##########] 100% |
 | Live source search | Ground-axiom-only constructors exist from ingredients, fixed-exists+transfer, and invariant-slice-data; the missing piece is now a live producer for one of those inputs that does not pass through the dead legacy normalized seam. | [##--------] 20% |
 
@@ -55,8 +55,11 @@ Last Updated: 2026-03-07
   normalized invariant-slice-data branch as a dead end.
 - The concrete proof-target handoff for the missing witness theorem is now
   `PLAN_81_single_reference_fixed_point_data_witness.md`.
-- The exact current blocker is `molecule_h_fixed_data_direct` in
-  `Molecule/Conjecture.lean`.
+- The exact current fixed-data blocker set is now:
+  `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`,
+  `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`,
+  and
+  `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
 - Step-1 checkpoint (2026-03-07):
   - added direct current-route alias
     `molecule_residual_fixed_point_local_witness_on_sources_via_fixed_data_source`;
@@ -156,3 +159,20 @@ Last Updated: 2026-03-07
   - this makes the fixed-data branch mathematically exact: ground
     `fixed_point_exists` plus the three remaining non-ground carriers
     (`renormalizable`, critical-value transfer, `V`-bound transfer).
+- Step-11 transfer primitive checkpoint (2026-03-08):
+  - added
+    `fixed_point_local_normalization_transfer_of_ingredients_and_unique`;
+  - rerouted
+    `molecule_residual_fixed_point_transfer_source_via_fixed_data_and_uniqueness_direct`
+    through
+    `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`
+    and
+    `molecule_residual_fixed_point_uniqueness_direct_source`;
+  - this removes the extra `FixedPointNormalizationData` wrapper from the
+    active transfer branch and aligns the transfer frontier with the primitive
+    fixed-data blocker set;
+  - targeted probes show the new constructor is ground-axiom-only, while the
+    current transfer theorem is now blocked exactly by
+    `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`
+    and
+    `molecule_residual_fixed_point_uniqueness_direct_source`.

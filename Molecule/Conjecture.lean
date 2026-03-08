@@ -600,6 +600,22 @@ theorem residual_fixed_point_normalization_ingredients_of_fixed_data_and_unique
   ⟩
 
 /--
+Build fixed-point local normalization transfer directly from the bundled
+ingredient contract plus uniqueness.
+-/
+theorem fixed_point_local_normalization_transfer_of_ingredients_and_unique
+    (h_ingredients : MoleculeResidualFixedPointNormalizationIngredients)
+    (h_unique :
+      ∀ f1 f2, (Rfast f1 = f1 ∧ IsFastRenormalizable f1) →
+               (Rfast f2 = f2 ∧ IsFastRenormalizable f2) → f1 = f2) :
+    FixedPointLocalNormalizationTransfer :=
+  fixed_point_local_normalization_transfer_of_fixed_data_and_unique
+    (fixed_point_normalization_data_of_fixed_exists_and_transfer
+      h_ingredients.1
+      h_ingredients.2)
+    h_unique
+
+/--
 Build fixed-point normalization data from the bundled ingredient contract.
 -/
 theorem fixed_point_normalization_data_of_ingredients
@@ -4205,14 +4221,14 @@ theorem molecule_residual_fixed_point_transfer_source_via_model_sources :
   molecule_residual_fixed_point_transfer_source_via_on_sources
 
 /--
-Current fixed-point transfer source routed directly through fixed data and the
-current direct uniqueness source.
+Current fixed-point transfer source routed directly through primitive
+fixed-point ingredients and the current direct uniqueness source.
 -/
 theorem molecule_residual_fixed_point_transfer_source_via_fixed_data_and_uniqueness_direct :
     MoleculeResidualFixedPointTransferSource :=
-  molecule_residual_fixed_point_transfer_source_of_fixed_data_and_unique
-    molecule_residual_fixed_point_data_source_via_fixed_data_direct
-    molecule_residual_fixed_point_uniqueness_source_direct
+  fixed_point_local_normalization_transfer_of_ingredients_and_unique
+    molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct
+    molecule_residual_fixed_point_uniqueness_direct_source
 
 /--
 Current fixed-point local-normalization transfer source theorem.

@@ -53,7 +53,7 @@ Last Updated: 2026-03-07
 | PLAN_77 | Upstream model change for non-h_norm fixed-point sources | STUCK | [########--] 80% |
 | PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [######----] 65% |
 | PLAN_79 | Invariant-domain fixed-point source | STUCK | [#######---] 70% |
-| PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [#####-----] 55% |
+| PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [######----] 60% |
 | PLAN_81 | Single-reference fixed-point data witness | ACTIVE | [######----] 60% |
 | PLAN_82 | Canonical fast fixed-point data witness | ACTIVE | [#########-] 95% |
 
@@ -353,6 +353,21 @@ Last Updated: 2026-03-07
     `molecule_residual_fixed_point_uniqueness_direct_source`;
     this removes the intermediate fixed-data wrapper from the active canonical
     frontier and exposes the exact live blocker triple for PLAN_82.
+  - PLAN_80 step-11 checkpoint:
+    added
+    `fixed_point_local_normalization_transfer_of_ingredients_and_unique`;
+    rerouted
+    `molecule_residual_fixed_point_transfer_source_via_fixed_data_and_uniqueness_direct`
+    through
+    `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`
+    and
+    `molecule_residual_fixed_point_uniqueness_direct_source`;
+    this removes the extra fixed-data wrapper from the active transfer branch
+    and aligns the transfer frontier with the primitive fixed-data blocker
+    set;
+    targeted probes show the new constructor is ground-axiom-only, while the
+    current transfer theorem is now blocked exactly by the primitive
+    ingredient carrier plus direct uniqueness.
   - PLAN_82 step-1 checkpoint:
     opened a focused existence-side plan on
     `MoleculeResidualCanonicalFastFixedPointDataSource`, which is now the
