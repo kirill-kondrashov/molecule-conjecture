@@ -45,7 +45,7 @@ Last Updated: 2026-03-07
 
 | Route | Current State | Progress |
 |---|---|---|
-| Minimal blocker exposure | The current `molecule_residual_fixed_point_data_source`, transfer, and downstream local-witness theorems now route through the direct fixed-data / primitive-ingredient frontier; the live fixed-data debt is explicit as ground `fixed_point_exists` plus exact renormalizability/critical-value/`V`-bound blockers. | [#########-] 95% |
+| Minimal blocker exposure | The current `molecule_residual_fixed_point_data_source`, transfer, and downstream local-witness theorems now route through the direct fixed-data / primitive-ingredient frontier; the live fixed-data debt is explicit as ground `fixed_point_exists` plus exact renormalizability/critical-value/`V`-bound blockers, and the active transfer theorem is just a projection from that primitive ingredient carrier. | [##########] 100% |
 | Legacy branch closure | `no_molecule_residual_invariant_slice_data_with_normalization_source` proves the old normalized invariant-slice-data seam is inconsistent in the current model. | [##########] 100% |
 | Live source search | Ground-axiom-only constructors exist from ingredients, fixed-exists+transfer, and invariant-slice-data; the missing piece is now a live producer for one of those inputs that does not pass through the dead legacy normalized seam. | [##--------] 20% |
 
@@ -176,3 +176,13 @@ Last Updated: 2026-03-07
     `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`
     and
     `molecule_residual_fixed_point_uniqueness_direct_source`.
+- Step-12 direct-projection checkpoint (2026-03-08):
+  - added
+    `fixed_point_local_normalization_transfer_of_ingredients`;
+  - rerouted
+    `molecule_residual_fixed_point_transfer_source_via_fixed_data_and_uniqueness_direct`
+    directly through
+    `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`;
+  - this removes the remaining uniqueness wrapper from the active transfer
+    frontier; the transfer theorem is now a direct projection from the
+    primitive fixed-point ingredient carrier.

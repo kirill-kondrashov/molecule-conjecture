@@ -97,13 +97,11 @@ Current axiom frontier:
   `MoleculeResidualFixedPointExistenceSource` is ground-axiom-only equivalent to
   `MoleculeResidualCanonicalFastFixedPointDataSource`.
 - The current canonical theorem is now routed through the smaller triple:
-  `MoleculeResidualFixedPointNormalizationIngredients`,
-  `MoleculeResidualOrbitClauseAtSource`,
-  and `MoleculeResidualFixedPointUniquenessDirectSource`.
+  `MoleculeResidualFixedPointNormalizationIngredients`
+  and `MoleculeResidualOrbitClauseAtSource`.
 - Concretely, the active theorem carriers on that branch are now:
   `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`,
-  `molecule_residual_orbit_clause_at_source`,
-  and `molecule_residual_fixed_point_uniqueness_direct_source`.
+  and `molecule_residual_orbit_clause_at_source`.
 - Under the fixed-data branch itself, the current carrier now splits into:
   `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`,
   built from the ground theorem `fixed_point_exists` plus three direct
@@ -113,9 +111,9 @@ Current axiom frontier:
   `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`,
   and
   `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
-- The current transfer theorem now also routes through the same primitive
-  ingredient carrier plus direct uniqueness, so the transfer branch no longer
-  hides an extra `FixedPointNormalizationData` wrapper.
+- The current transfer theorem now routes directly through the same primitive
+  ingredient carrier, so the transfer branch no longer hides either an extra
+  `FixedPointNormalizationData` wrapper or a uniqueness wrapper.
 
 Implementation notes (important for interpretation):
 

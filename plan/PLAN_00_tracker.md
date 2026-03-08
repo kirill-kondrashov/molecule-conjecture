@@ -368,6 +368,24 @@ Last Updated: 2026-03-07
     targeted probes show the new constructor is ground-axiom-only, while the
     current transfer theorem is now blocked exactly by the primitive
     ingredient carrier plus direct uniqueness.
+  - PLAN_82 step-14 checkpoint:
+    rerouted
+    `molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_direct_orbit_clause_at_and_uniqueness_direct`
+    through
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_ingredients_and_orbit_clause_at_source`;
+    this removes the direct-uniqueness wrapper from the active canonical
+    frontier, which now depends only on the primitive ingredient carrier and
+    `molecule_residual_orbit_clause_at_source`.
+  - PLAN_80 step-12 checkpoint:
+    added
+    `fixed_point_local_normalization_transfer_of_ingredients`;
+    rerouted
+    `molecule_residual_fixed_point_transfer_source_via_fixed_data_and_uniqueness_direct`
+    directly through
+    `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`;
+    this removes the remaining uniqueness wrapper from the active transfer
+    frontier; the transfer theorem is now a direct projection from the
+    primitive ingredient carrier.
   - PLAN_82 step-1 checkpoint:
     opened a focused existence-side plan on
     `MoleculeResidualCanonicalFastFixedPointDataSource`, which is now the

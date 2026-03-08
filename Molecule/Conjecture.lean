@@ -600,6 +600,15 @@ theorem residual_fixed_point_normalization_ingredients_of_fixed_data_and_unique
   ⟩
 
 /--
+Project fixed-point local normalization transfer directly from the bundled
+ingredient contract.
+-/
+theorem fixed_point_local_normalization_transfer_of_ingredients
+    (h_ingredients : MoleculeResidualFixedPointNormalizationIngredients) :
+    FixedPointLocalNormalizationTransfer :=
+  h_ingredients.2
+
+/--
 Build fixed-point local normalization transfer directly from the bundled
 ingredient contract plus uniqueness.
 -/
@@ -4226,9 +4235,8 @@ fixed-point ingredients and the current direct uniqueness source.
 -/
 theorem molecule_residual_fixed_point_transfer_source_via_fixed_data_and_uniqueness_direct :
     MoleculeResidualFixedPointTransferSource :=
-  fixed_point_local_normalization_transfer_of_ingredients_and_unique
+  fixed_point_local_normalization_transfer_of_ingredients
     molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct
-    molecule_residual_fixed_point_uniqueness_direct_source
 
 /--
 Current fixed-point local-normalization transfer source theorem.
@@ -6688,15 +6696,14 @@ theorem molecule_residual_canonical_fast_fixed_point_data_source_of_primitive_in
     h_unique_direct
 
 /--
-Current-route canonical-data source exposed through the direct fixed-data
-carrier, the local orbit-at source, and the direct uniqueness source.
+Current-route canonical-data source exposed through the direct primitive
+ingredient carrier and the local orbit-at source.
 -/
 theorem molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_direct_orbit_clause_at_and_uniqueness_direct :
     MoleculeResidualCanonicalFastFixedPointDataSource :=
-  molecule_residual_canonical_fast_fixed_point_data_source_of_primitive_ingredients_orbit_clause_at_and_uniqueness_direct
+  molecule_residual_canonical_fast_fixed_point_data_source_of_ingredients_and_orbit_clause_at_source
     molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct
     molecule_residual_orbit_clause_at_source
-    molecule_residual_fixed_point_uniqueness_direct_source
 
 /--
 Current-route canonical-data source exposed through fixed-point ingredients and

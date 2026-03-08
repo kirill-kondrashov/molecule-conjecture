@@ -34,8 +34,8 @@ Last Updated: 2026-03-07
 | Route | Current State | Progress |
 |---|---|---|
 | Target exposure | The existence half is now formally reduced to `MoleculeResidualCanonicalFastFixedPointDataSource`, and the current canonical theorem is rerouted through fixed-point data, local orbit-at source, and uniqueness. | [##########] 100% |
-| Downstream leverage | The active canonical route now shares the transfer branch explicitly and no longer hides orbit-clause transport wrappers or the intermediate fixed-data wrapper. | [##########] 100% |
-| Witness search | The live upstream package is now split as `MoleculeResidualFixedPointNormalizationIngredients` + `MoleculeResidualOrbitClauseAtSource` + `MoleculeResidualFixedPointUniquenessDirectSource`; no non-`molecule_h_norm` witness for that combination is known yet. | [##########] 100% |
+| Downstream leverage | The active canonical route no longer hides orbit-clause transport wrappers, the intermediate fixed-data wrapper, or the direct-uniqueness wrapper. | [##########] 100% |
+| Witness search | The live upstream package is now split as `MoleculeResidualFixedPointNormalizationIngredients` + `MoleculeResidualOrbitClauseAtSource`; no non-`molecule_h_norm` witness for that combination is known yet. | [##########] 100% |
 
 ## Notes
 
@@ -208,3 +208,14 @@ Last Updated: 2026-03-07
   - this removes the remaining `FixedPointNormalizationData` wrapper from the
     active canonical frontier; the exact blocker set is now primitive
     ingredients + local orbit-at + direct uniqueness.
+- Step-14 orbit-only frontier checkpoint (2026-03-08):
+  - rerouted
+    `molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_direct_orbit_clause_at_and_uniqueness_direct`
+    through
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_ingredients_and_orbit_clause_at_source`;
+  - the active canonical branch now depends only on
+    `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`
+    and
+    `molecule_residual_orbit_clause_at_source`;
+  - this removes the remaining direct-uniqueness wrapper from the active
+    canonical frontier.
