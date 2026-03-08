@@ -92,6 +92,19 @@ Shared witness-side frontier:
        f.V subset Metric.ball 0 0.1
 ```
 
+- The literal full-domain `(R)` above is not a viable constructive target in
+  the current scaffold:
+  `no_fixed_point_implies_renormalizable` blocks that bridge.
+- The active research program therefore targets a localized replacement:
+```text
+(R_K)  exists K : Set BMol,
+         (exists f : BMol, f in K /\ Rfast f = f) /\
+         (forall f : BMol, f in K -> Rfast f = f -> IsFastRenormalizable f)
+```
+- Operationally, this means proving `FixedPointImpliesRenormalizableOn K` for a
+  live domain `K` and composing it with the existing fixed-point-in-`K`
+  theorem.
+
 Transfer-only additional frontier:
 ```text
 (C)  forall f : BMol,

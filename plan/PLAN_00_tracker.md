@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 99%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77, PLAN_78, PLAN_79, PLAN_80, PLAN_81, PLAN_82
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77, PLAN_78, PLAN_79, PLAN_80, PLAN_81, PLAN_82, PLAN_83
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-07
 
@@ -56,11 +56,12 @@ Last Updated: 2026-03-07
 | PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [#########-] 85% |
 | PLAN_81 | Single-reference fixed-point data witness | ACTIVE | [######----] 60% |
 | PLAN_82 | Canonical fast fixed-point data witness | ACTIVE | [#########-] 95% |
+| PLAN_83 | Localized fixed-point renormalizability bridge | ACTIVE | [##--------] 15% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_82 canonical fast fixed-point data witness + PLAN_81 single-reference fixed-data witness + PLAN_80 fixed-point-data-source track + PLAN_78 concrete local-witness theorem + PLAN_53 (model bottleneck refactor) + PLAN_76 (anchor-witness bottleneck break) + PLAN_47/49 integration. PLAN_79 and PLAN_77 are now STUCK history/handoff; model-restriction redesign remains fallback-only.
+- Current queue is PLAN_83 localized renormalizability bridge + PLAN_82 canonical fast fixed-point data witness + PLAN_81 single-reference fixed-data witness + PLAN_80 fixed-point-data-source track + PLAN_78 concrete local-witness theorem + PLAN_53 (model bottleneck refactor) + PLAN_76 (anchor-witness bottleneck break) + PLAN_47/49 integration. PLAN_79 and PLAN_77 are now STUCK history/handoff; model-restriction redesign remains fallback-only.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -1566,6 +1567,24 @@ Last Updated: 2026-03-07
     target exposure [##########] 100%,
     downstream leverage [#########-] 90%,
     witness search [##########] 100%.
+- `PLAN_83` progress:
+  - Opened a focused localized-bridge track after the frontier reduction showed
+    that literal global `(R)` is false in the current model.
+  - Existing code already contains the right interface:
+    `FixedPointImpliesRenormalizableOn` together with
+    `renormalizable_fixed_exists_of_fixed_point_exists_in_and_bridge_on`.
+  - Tightened the plan to forbid circular local domains and proofs routed
+    through `NormalizationOn K` or downstream fixed-data.
+  - Existing invariant-slice infrastructure already provides a theorem shape
+    for fixed-point-in-`K`, but no concrete upstream source of `K` has yet been
+    identified that avoids both the constant-slice obstruction and the dead
+    normalized seam.
+  - Route status:
+    feasibility gate [##########] 100%,
+    circularity guard [########--] 80%,
+    domain source search [##--------] 20%,
+    local bridge proof [#---------] 10%,
+    downstream cutover readiness [#######---] 70%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
@@ -1652,4 +1671,4 @@ Last Updated: 2026-03-07
 ## Current Critical Blockers
 
 1. Root blocker: `Molecule.molecule_h_norm` remains in the zero-arg theorem path.
-2. Active mitigation: PLAN_81 single-reference fixed-data witness track, PLAN_80 fixed-point-data-source track, PLAN_78 concrete local-witness theorem track, PLAN_53 model bottleneck track, PLAN_76 anchor-witness bottleneck-break track, PLAN_47/49 integration tracks. PLAN_79 and PLAN_77 remain STUCK history/handoff.
+2. Active mitigation: PLAN_83 localized renormalizability bridge track, PLAN_81 single-reference fixed-data witness track, PLAN_80 fixed-point-data-source track, PLAN_78 concrete local-witness theorem track, PLAN_53 model bottleneck track, PLAN_76 anchor-witness bottleneck-break track, PLAN_47/49 integration tracks. PLAN_79 and PLAN_77 remain STUCK history/handoff.
