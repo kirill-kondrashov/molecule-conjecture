@@ -114,6 +114,8 @@ Current axiom frontier:
 - The current transfer theorem now routes directly through the same primitive
   ingredient carrier, so the transfer branch no longer hides either an extra
   `FixedPointNormalizationData` wrapper or a uniqueness wrapper.
+- The current local-witness theorem and witness-source pack now also route
+  directly through that primitive ingredient carrier.
 
 Implementation notes (important for interpretation):
 

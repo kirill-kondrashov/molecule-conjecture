@@ -2836,6 +2836,26 @@ def molecule_residual_fixed_point_local_witness_on_sources_of_fixed_data
         simpa [h_eq] using h_witness.vbound
 
 /--
+Build the PLAN_77 local-witness source pack directly from bundled primitive
+fixed-point ingredients.
+-/
+def molecule_residual_fixed_point_local_witness_sources_of_ingredients
+    (h_ingredients : MoleculeResidualFixedPointNormalizationIngredients) :
+    MoleculeResidualFixedPointLocalWitnessSources :=
+  molecule_residual_fixed_point_local_witness_sources_of_fixed_data
+    (fixed_point_normalization_data_of_ingredients h_ingredients)
+
+/--
+Build the concrete local-domain witness target directly from bundled primitive
+fixed-point ingredients.
+-/
+def molecule_residual_fixed_point_local_witness_on_sources_of_ingredients
+    (h_ingredients : MoleculeResidualFixedPointNormalizationIngredients) :
+    MoleculeResidualFixedPointLocalWitnessOnSources :=
+  molecule_residual_fixed_point_local_witness_on_sources_of_fixed_data
+    (fixed_point_normalization_data_of_ingredients h_ingredients)
+
+/--
 Refined-chart invariant slice-data pack whose designated reference map is
 already known to be an `Rfast` fixed point.
 -/
@@ -4180,20 +4200,30 @@ def molecule_residual_fixed_point_local_witness_on_sources_via_fixed_data_source
     h_fixed_data
 
 /--
+Current PLAN_77 local-witness source pack routed directly through primitive
+fixed-point ingredients.
+-/
+def molecule_residual_fixed_point_local_witness_on_sources_via_ingredients_source
+    (h_ingredients : MoleculeResidualFixedPointNormalizationIngredients) :
+    MoleculeResidualFixedPointLocalWitnessOnSources :=
+  molecule_residual_fixed_point_local_witness_on_sources_of_ingredients
+    h_ingredients
+
+/--
 Current PLAN_77 local-witness source pack.
 -/
 def molecule_residual_fixed_point_local_witness_on_sources :
     MoleculeResidualFixedPointLocalWitnessOnSources :=
-  molecule_residual_fixed_point_local_witness_on_sources_via_fixed_data_source
-    molecule_residual_fixed_point_data_source_via_fixed_data_direct
+  molecule_residual_fixed_point_local_witness_on_sources_via_ingredients_source
+    molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct
 
 /--
 Current PLAN_77 local-witness source pack.
 -/
 def molecule_residual_fixed_point_local_witness_sources :
     MoleculeResidualFixedPointLocalWitnessSources :=
-  molecule_residual_fixed_point_local_witness_sources_of_on_sources
-    molecule_residual_fixed_point_local_witness_on_sources
+  molecule_residual_fixed_point_local_witness_sources_of_ingredients
+    molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct
 
 /--
 Current PLAN_77 local-domain transfer source pack routed via the local-witness

@@ -51,7 +51,7 @@ Last Updated: 2026-03-07
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
 | PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 92% |
 | PLAN_77 | Upstream model change for non-h_norm fixed-point sources | STUCK | [########--] 80% |
-| PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [######----] 65% |
+| PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [#######---] 70% |
 | PLAN_79 | Invariant-domain fixed-point source | STUCK | [#######---] 70% |
 | PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [######----] 60% |
 | PLAN_81 | Single-reference fixed-point data witness | ACTIVE | [######----] 60% |
@@ -386,6 +386,16 @@ Last Updated: 2026-03-07
     this removes the remaining uniqueness wrapper from the active transfer
     frontier; the transfer theorem is now a direct projection from the
     primitive ingredient carrier.
+  - PLAN_78 primitive-ingredient checkpoint:
+    added
+    `molecule_residual_fixed_point_local_witness_sources_of_ingredients`,
+    `molecule_residual_fixed_point_local_witness_on_sources_of_ingredients`,
+    and
+    `molecule_residual_fixed_point_local_witness_on_sources_via_ingredients_source`;
+    rerouted current local-witness theorems through
+    `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`,
+    removing the remaining fixed-data wrapper from the active local-witness
+    branch.
   - PLAN_82 step-1 checkpoint:
     opened a focused existence-side plan on
     `MoleculeResidualCanonicalFastFixedPointDataSource`, which is now the

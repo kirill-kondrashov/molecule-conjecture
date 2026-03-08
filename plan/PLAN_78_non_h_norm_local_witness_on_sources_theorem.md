@@ -1,7 +1,7 @@
 # PLAN 78 - Non-h_norm Local Witness-On-Sources Theorem
 
 Status: ACTIVE
-Progress: [######----] 65%
+Progress: [#######---] 70%
 Scope: Replace the current transfer-branch local witness root with one
 concrete non-`molecule_h_norm` theorem:
 `molecule_residual_fixed_point_local_witness_on_sources`.
@@ -53,8 +53,8 @@ Last Updated: 2026-03-07
 
 | Route | Current State | Progress |
 |---|---|---|
-| Concrete target exposure | The concrete local-domain witness target is explicit in `Molecule/Conjecture.lean` and current local-witness routing now goes through its minimal fixed-data input. | [#####-----] 50% |
-| Transfer-branch cutover readiness | `molecule_residual_fixed_point_local_witness_sources` and `molecule_residual_fixed_point_transfer_source_via_on_sources` already consume the concrete target theorem, so a replacement there will propagate immediately. | [#####-----] 50% |
+| Concrete target exposure | The concrete local-domain witness target is explicit in `Molecule/Conjecture.lean` and current local-witness routing now goes directly through the primitive ingredient carrier instead of the fixed-data wrapper. | [#######---] 70% |
+| Transfer-branch cutover readiness | `molecule_residual_fixed_point_local_witness_sources` and `molecule_residual_fixed_point_transfer_source_via_on_sources` now consume the primitive-ingredient local-witness route, so a replacement there will propagate immediately. | [#######---] 70% |
 | Proof-source search | `PLAN_79` closed the legacy normalized invariant-slice-data branch as a dead end; the live search is now `PLAN_80`, targeting a non-`molecule_h_norm` `FixedPointNormalizationData` source. | [######----] 60% |
 
 ## Notes
@@ -129,3 +129,18 @@ Last Updated: 2026-03-07
   - Active continuation therefore moves to `PLAN_80`: replace
     `molecule_h_fixed_data_direct` itself rather than continue on the dead
     legacy invariant-domain branch.
+- New checkpoint (2026-03-08, primitive-ingredient cutover):
+  - added
+    `molecule_residual_fixed_point_local_witness_sources_of_ingredients`,
+    `molecule_residual_fixed_point_local_witness_on_sources_of_ingredients`,
+    and
+    `molecule_residual_fixed_point_local_witness_on_sources_via_ingredients_source`;
+  - rerouted current
+    `molecule_residual_fixed_point_local_witness_on_sources`
+    and
+    `molecule_residual_fixed_point_local_witness_sources`
+    through
+    `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`;
+  - this removes the remaining `FixedPointNormalizationData` wrapper from the
+    active local-witness branch, aligning it with the PLAN_80 primitive
+    ingredient frontier.
