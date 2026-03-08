@@ -96,26 +96,27 @@ Current axiom frontier:
 - The existence half is now reduced further:
   `MoleculeResidualFixedPointExistenceSource` is ground-axiom-only equivalent to
   `MoleculeResidualCanonicalFastFixedPointDataSource`.
-- The current canonical theorem is now routed through the smaller triple:
-  `MoleculeResidualFixedPointNormalizationIngredients`
-  and `MoleculeResidualOrbitClauseAtSource`.
-- Concretely, the active theorem carriers on that branch are now:
-  `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`,
-  and `molecule_residual_orbit_clause_at_source`.
-- Under the fixed-data branch itself, the current carrier now splits into:
-  `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`,
-  built from the ground theorem `fixed_point_exists` plus three direct
-  non-ground carriers.
-- Concretely, the remaining fixed-data debt is concentrated in
+- The current existence theorem is now routed through:
+  ground `fixed_point_exists` plus
+  `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`.
+- The current transfer theorem is now routed directly through:
+  `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`
+  and
+  `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
+- The current local-witness theorem is now routed directly through:
   `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`,
   `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`,
   and
   `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
-- The current transfer theorem now routes directly through the same primitive
-  ingredient carrier, so the transfer branch no longer hides either an extra
-  `FixedPointNormalizationData` wrapper or a uniqueness wrapper.
-- The current local-witness theorem and witness-source pack now also route
-  directly through that primitive ingredient carrier.
+- The current canonical theorem is now routed directly through those same
+  three carriers, plus `molecule_residual_orbit_clause_at_source`.
+- Concretely, the remaining non-ground fixed-point debt is:
+  `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`,
+  `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`,
+  and
+  `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
+- The only additional canonical-side debt beyond those three is:
+  `molecule_residual_orbit_clause_at_source`.
 
 Implementation notes (important for interpretation):
 

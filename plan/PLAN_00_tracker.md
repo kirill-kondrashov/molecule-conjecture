@@ -51,9 +51,9 @@ Last Updated: 2026-03-07
 | PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
 | PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 92% |
 | PLAN_77 | Upstream model change for non-h_norm fixed-point sources | STUCK | [########--] 80% |
-| PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [#######---] 70% |
+| PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [########--] 80% |
 | PLAN_79 | Invariant-domain fixed-point source | STUCK | [#######---] 70% |
-| PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [######----] 60% |
+| PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [#######---] 70% |
 | PLAN_81 | Single-reference fixed-point data witness | ACTIVE | [######----] 60% |
 | PLAN_82 | Canonical fast fixed-point data witness | ACTIVE | [#########-] 95% |
 
@@ -396,6 +396,25 @@ Last Updated: 2026-03-07
     `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`,
     removing the remaining fixed-data wrapper from the active local-witness
     branch.
+  - PLAN_80 step-13 checkpoint:
+    added
+    `fixed_point_normalization_data_of_fixed_point_exists_and_component_transfers`;
+    rerouted current data, existence, transfer, and local-witness theorems so
+    the active fixed-point frontier is now the exact direct carrier set:
+    `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`,
+    `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`,
+    and
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
+  - PLAN_78 direct-component checkpoint:
+    rerouted current local-witness theorems through those exact three direct
+    component carriers, removing the remaining primitive-ingredient wrapper
+    from the active local-witness branch.
+  - PLAN_82 step-15 checkpoint:
+    rerouted the active canonical theorem through the same exact direct
+    fixed-point carrier triple, plus
+    `molecule_residual_orbit_clause_at_source`;
+    this leaves a single additional canonical-side obligation beyond the
+    shared fixed-point frontier.
   - PLAN_82 step-1 checkpoint:
     opened a focused existence-side plan on
     `MoleculeResidualCanonicalFastFixedPointDataSource`, which is now the

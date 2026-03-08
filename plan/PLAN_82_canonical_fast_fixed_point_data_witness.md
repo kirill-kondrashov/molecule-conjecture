@@ -35,7 +35,7 @@ Last Updated: 2026-03-07
 |---|---|---|
 | Target exposure | The existence half is now formally reduced to `MoleculeResidualCanonicalFastFixedPointDataSource`, and the current canonical theorem is rerouted through fixed-point data, local orbit-at source, and uniqueness. | [##########] 100% |
 | Downstream leverage | The active canonical route no longer hides orbit-clause transport wrappers, the intermediate fixed-data wrapper, or the direct-uniqueness wrapper. | [##########] 100% |
-| Witness search | The live upstream package is now split as `MoleculeResidualFixedPointNormalizationIngredients` + `MoleculeResidualOrbitClauseAtSource`; no non-`molecule_h_norm` witness for that combination is known yet. | [##########] 100% |
+| Witness search | The live upstream package is now split as the exact direct fixed-point carrier triple (`renormalizable`, critical-value transfer, `V`-bound transfer) plus `MoleculeResidualOrbitClauseAtSource`; no non-`molecule_h_norm` witness for that combination is known yet. | [##########] 100% |
 
 ## Notes
 
@@ -219,3 +219,13 @@ Last Updated: 2026-03-07
     `molecule_residual_orbit_clause_at_source`;
   - this removes the remaining direct-uniqueness wrapper from the active
     canonical frontier.
+- Step-15 exact-direct frontier checkpoint (2026-03-08):
+  - rerouted the active canonical theorem through the exact direct fixed-point
+    component carriers by expanding the primitive ingredient wrapper inline:
+    `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`,
+    `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`,
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`,
+    plus
+    `molecule_residual_orbit_clause_at_source`;
+  - targeted probes show the active canonical branch is now reduced to those
+    exact four current non-ground carriers.
