@@ -965,6 +965,15 @@ theorem no_fixed_point_implies_renormalizable :
   exact defaultBMol_not_renormalizable (h_bridge defaultBMol h_fixed_default)
 
 /--
+Dead-end certificate for the active global witness-side carrier `R`:
+global renormalizability of `Rfast` fixed points is false in the current
+scaffold.
+-/
+theorem no_molecule_residual_fixed_point_renormalizable_source :
+    ¬ (∀ f : BMol, Rfast f = f → IsFastRenormalizable f) :=
+  no_fixed_point_implies_renormalizable
+
+/--
 Global normalization implies the fixed-point renormalizability bridge contract.
 -/
 theorem fixed_point_implies_renormalizable_of_global_norm
@@ -2143,6 +2152,28 @@ theorem molecule_residual_renorm_vbound_source_of_global_vbound_source
   exact h_global_vbound f
 
 /--
+Build fixed-point normalization data directly from:
+- the ground fixed-point existence theorem,
+- renormalizability of fixed points, and
+- renormalizable-point `V`-bound control.
+
+The critical-value condition again comes for free from `fixed_point_exists`.
+-/
+theorem fixed_point_normalization_data_of_fixed_point_exists_and_renorm_and_renorm_vbound
+    (h_renorm : ∀ f : BMol, Rfast f = f → IsFastRenormalizable f)
+    (h_renorm_vbound : MoleculeResidualRenormVBoundSource) :
+    FixedPointNormalizationData := by
+  rcases fixed_point_exists with ⟨f_star, h_fixed, h_crit⟩
+  have h_renorm_star : IsFastRenormalizable f_star := h_renorm f_star h_fixed
+  exact ⟨
+    f_star,
+    h_fixed,
+    h_renorm_star,
+    h_crit,
+    h_renorm_vbound f_star h_renorm_star h_crit
+  ⟩
+
+/--
 Project canonical fixed-data `V`-bound control from fixed-point `V`-bound
 transfer source.
 -/
@@ -2830,6 +2861,17 @@ def MoleculeResidualRenormalizableFixedSeedSource : Prop :=
   ∃ f_seed : BMol, IsFastRenormalizable f_seed ∧ Rfast f_seed = f_seed
 
 /--
+Stronger seed contract needed to re-enter the fixed-data / local-witness
+branches without the old `fixed_point_exists` witness:
+the seed is renormalizable, fixed, and has critical value zero.
+-/
+def MoleculeResidualCriticalRenormalizableFixedSeedSource : Prop :=
+  ∃ f_seed : BMol,
+    IsFastRenormalizable f_seed ∧
+      Rfast f_seed = f_seed ∧
+      criticalValue f_seed = 0
+
+/--
 Chosen seed point from a PLAN_84 seed source.
 -/
 noncomputable def renormalizable_fixed_seed_point
@@ -2900,6 +2942,17 @@ theorem molecule_residual_fixed_point_existence_source_of_renormalizable_fixed_s
   h_seed
 
 /--
+Upgrade a renormalizable fixed seed to the stronger critical-value-zero seed
+contract using the fixed-point critical-value transfer source.
+-/
+theorem molecule_residual_critical_renormalizable_fixed_seed_source_of_seed_and_critical_value_transfer
+    (h_seed : MoleculeResidualRenormalizableFixedSeedSource)
+    (h_crit : FixedPointCriticalValueTransferSource) :
+    MoleculeResidualCriticalRenormalizableFixedSeedSource := by
+  rcases h_seed with ⟨f_seed, h_renorm, h_fixed⟩
+  exact ⟨f_seed, h_renorm, h_fixed, h_crit f_seed h_fixed h_renorm⟩
+
+/--
 In the current identity-model scaffold, exact uniqueness of fixed hybrid
 classes rules out any renormalizable fixed point, because `defaultBMol` is
 already a fixed point and is not fast-renormalizable.
@@ -2937,6 +2990,18 @@ def MoleculeResidualFixedPointBridgeOnSource : Prop :=
       FixedPointImpliesRenormalizableOn K
 
 /--
+Exact larger-domain target for PLAN_86: a localized bridge package whose domain
+contains the designated fixed reference point but is not just its singleton.
+-/
+structure MoleculeResidualNonSingletonLocalizedBridgeSources where
+  K : Set BMol
+  f_ref : BMol
+  mem : f_ref ∈ K
+  fixed : Rfast f_ref = f_ref
+  bridge_on : FixedPointImpliesRenormalizableOn K
+  nontrivial : ∃ g : BMol, g ∈ K ∧ g ≠ f_ref
+
+/--
 Current fixed-point renormalizability bridge source theorem
 (legacy global-normalization route).
 -/
@@ -2964,6 +3029,80 @@ theorem molecule_residual_fixed_point_existence_source_of_bridge_on
       h_bridge_on_K with
     ⟨f_star, _hf_domain, h_renorm, h_fixed⟩
   exact ⟨f_star, h_renorm, h_fixed⟩
+
+/--
+Upgrade any existence witness to the stronger critical-value-zero seed
+contract using the fixed-point critical-value transfer source.
+-/
+theorem molecule_residual_critical_renormalizable_fixed_seed_source_of_fixed_point_existence_source_and_critical_value_transfer
+    (h_exists : MoleculeResidualFixedPointExistenceSource)
+    (h_crit : FixedPointCriticalValueTransferSource) :
+    MoleculeResidualCriticalRenormalizableFixedSeedSource :=
+  molecule_residual_critical_renormalizable_fixed_seed_source_of_seed_and_critical_value_transfer
+    h_exists
+    h_crit
+
+
+/--
+Forget the nontriviality witness and recover the basic localized bridge source.
+-/
+theorem molecule_residual_fixed_point_bridge_on_source_of_non_singleton_localized_bridge_sources
+    (h_sources : MoleculeResidualNonSingletonLocalizedBridgeSources) :
+    MoleculeResidualFixedPointBridgeOnSource :=
+  ⟨h_sources.K, ⟨h_sources.f_ref, h_sources.mem, h_sources.fixed⟩, h_sources.bridge_on⟩
+
+/--
+Any larger-domain localized bridge source would already solve the existence
+side of PLAN_86.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_non_singleton_localized_bridge_sources
+    (h_sources : MoleculeResidualNonSingletonLocalizedBridgeSources) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_bridge_on
+    (molecule_residual_fixed_point_bridge_on_source_of_non_singleton_localized_bridge_sources
+      h_sources)
+
+/--
+Any non-singleton localized bridge source plus critical-value transfer already
+yields the stronger critical seed contract. This is the exact common midpoint
+between the localized PLAN_88 branch and the downstream fixed-data/local-
+witness rebases.
+-/
+theorem molecule_residual_critical_renormalizable_fixed_seed_source_of_non_singleton_localized_bridge_sources_and_critical_value_transfer
+    (h_sources : MoleculeResidualNonSingletonLocalizedBridgeSources)
+    (h_crit : FixedPointCriticalValueTransferSource) :
+    MoleculeResidualCriticalRenormalizableFixedSeedSource :=
+  molecule_residual_critical_renormalizable_fixed_seed_source_of_fixed_point_existence_source_and_critical_value_transfer
+    (molecule_residual_fixed_point_existence_source_of_non_singleton_localized_bridge_sources
+      h_sources)
+    h_crit
+
+/--
+Any PLAN_84 seed yields a restricted bridge-on source on its singleton domain,
+without mentioning `fixed_point_exists` or `selected_fixed_point`.
+-/
+theorem molecule_residual_fixed_point_bridge_on_source_of_renormalizable_fixed_seed_source
+    (h_seed : MoleculeResidualRenormalizableFixedSeedSource) :
+    MoleculeResidualFixedPointBridgeOnSource :=
+  ⟨
+    ({renormalizable_fixed_seed_point h_seed} : Set BMol),
+    ⟨
+      renormalizable_fixed_seed_point h_seed,
+      by simp,
+      renormalizable_fixed_seed_point_fixed h_seed
+    ⟩,
+    fixed_point_implies_renormalizable_on_seed_singleton h_seed
+  ⟩
+
+/--
+The reseeded singleton bridge route already yields the existence-side target.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_renormalizable_fixed_seed_source_via_bridge_on
+    (h_seed : MoleculeResidualRenormalizableFixedSeedSource) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_bridge_on
+    (molecule_residual_fixed_point_bridge_on_source_of_renormalizable_fixed_seed_source
+      h_seed)
 
 /--
 Assemble a restricted bridge-on source from the ground fixed-point theorem and
@@ -3107,12 +3246,23 @@ theorem molecule_residual_fixed_point_existence_source_via_fixed_data_source
   renormalizable_fixed_exists_of_fixed_point_normalization_data h_fixed_data
 
 /--
+Build fixed-point existence directly from the ground fixed-point theorem and
+renormalizability of fixed points.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_fixed_point_renormalizable
+    (h_renorm : ∀ f : BMol, Rfast f = f → IsFastRenormalizable f) :
+    MoleculeResidualFixedPointExistenceSource := by
+  rcases fixed_point_exists with ⟨f_star, h_fixed, _h_cv⟩
+  exact ⟨f_star, h_renorm f_star h_fixed, h_fixed⟩
+
+/--
 Current fixed-point existence source routed directly through the ground
 fixed-point theorem and the direct renormalizability carrier.
 -/
 theorem molecule_residual_fixed_point_existence_source_via_fixed_data_direct :
     MoleculeResidualFixedPointExistenceSource :=
-  molecule_residual_fixed_exists_via_fixed_point_exists_and_renorm_direct
+  molecule_residual_fixed_point_existence_source_of_fixed_point_renormalizable
+    molecule_residual_fixed_point_renormalizable_via_global_norm_direct
 
 /--
 Current fixed-point existence source (legacy global-norm route).
@@ -3276,6 +3426,20 @@ def molecule_residual_fixed_point_local_witness_sources_of_fixed_point_exists_an
       h_vbound)
 
 /--
+Build the PLAN_77 local-witness source pack directly from the ground
+fixed-point theorem, renormalizability of fixed points, and renormalizable-point
+`V`-bound control.
+-/
+def molecule_residual_fixed_point_local_witness_sources_of_fixed_point_exists_and_renorm_and_renorm_vbound
+    (h_renorm : ∀ f : BMol, Rfast f = f → IsFastRenormalizable f)
+    (h_renorm_vbound : MoleculeResidualRenormVBoundSource) :
+    MoleculeResidualFixedPointLocalWitnessSources :=
+  molecule_residual_fixed_point_local_witness_sources_of_fixed_data
+    (fixed_point_normalization_data_of_fixed_point_exists_and_renorm_and_renorm_vbound
+      h_renorm
+      h_renorm_vbound)
+
+/--
 Build the concrete local-domain witness target directly from bundled primitive
 fixed-point ingredients.
 -/
@@ -3316,6 +3480,54 @@ def molecule_residual_fixed_point_local_witness_on_sources_of_fixed_point_exists
       h_vbound)
 
 /--
+Build the concrete local-domain witness target directly from the ground
+fixed-point theorem, renormalizability of fixed points, and renormalizable-point
+`V`-bound control.
+-/
+def molecule_residual_fixed_point_local_witness_on_sources_of_fixed_point_exists_and_renorm_and_renorm_vbound
+    (h_renorm : ∀ f : BMol, Rfast f = f → IsFastRenormalizable f)
+    (h_renorm_vbound : MoleculeResidualRenormVBoundSource) :
+    MoleculeResidualFixedPointLocalWitnessOnSources :=
+  molecule_residual_fixed_point_local_witness_on_sources_of_fixed_data
+    (fixed_point_normalization_data_of_fixed_point_exists_and_renorm_and_renorm_vbound
+      h_renorm
+      h_renorm_vbound)
+
+/--
+Build the concrete local-witness target directly from the stronger
+critical-value-zero seed contract and renormalizable-point `V`-bound control.
+-/
+def molecule_residual_fixed_point_local_witness_on_sources_of_critical_renormalizable_fixed_seed_source_and_renorm_vbound
+    (h_seed : MoleculeResidualCriticalRenormalizableFixedSeedSource)
+    (h_renorm_vbound : MoleculeResidualRenormVBoundSource) :
+    MoleculeResidualFixedPointLocalWitnessOnSources :=
+  molecule_residual_fixed_point_local_witness_on_sources_of_fixed_data
+    (by
+      rcases h_seed with ⟨f_seed, h_renorm, h_fixed, h_crit⟩
+      exact ⟨f_seed, h_fixed, h_renorm, h_crit, h_renorm_vbound f_seed h_renorm h_crit⟩)
+
+/--
+Build the concrete local-witness target from existence plus critical-value
+transfer and renormalizable-point `V`-bound control.
+-/
+def molecule_residual_fixed_point_local_witness_on_sources_of_existence_and_critical_value_transfer_and_renorm_vbound
+    (h_exists : MoleculeResidualFixedPointExistenceSource)
+    (h_crit : FixedPointCriticalValueTransferSource)
+    (h_renorm_vbound : MoleculeResidualRenormVBoundSource) :
+    MoleculeResidualFixedPointLocalWitnessOnSources :=
+  molecule_residual_fixed_point_local_witness_on_sources_of_fixed_data
+    (by
+      rcases h_exists with ⟨f_seed, h_renorm, h_fixed⟩
+      exact
+        ⟨
+          f_seed,
+          h_fixed,
+          h_renorm,
+          h_crit f_seed h_fixed h_renorm,
+          h_renorm_vbound f_seed h_renorm (h_crit f_seed h_fixed h_renorm)
+        ⟩)
+
+/--
 Refined-chart invariant slice-data pack whose designated reference map is
 already known to be an `Rfast` fixed point, but without any normalization
 assumption on the domain.
@@ -3335,6 +3547,70 @@ structure MoleculeResidualRefinedInvariantFixedPointDomainSources where
   nonempty : K.Nonempty
   mem : f_ref ∈ K
   fixed : Rfast f_ref = f_ref
+
+/--
+Refined-chart invariant singleton-domain pack around a renormalizable fixed
+seed. This makes the localized PLAN_86 branch concrete without mentioning
+`fixed_point_exists` or `selected_fixed_point`.
+-/
+structure MoleculeResidualRefinedInvariantFixedSeedSingletonDomainSources extends
+    MoleculeResidualRefinedInvariantFixedPointDomainSources where
+  singleton : K = ({f_ref} : Set BMol)
+  renorm : IsFastRenormalizable f_ref
+
+/--
+Build the refined singleton-domain pack directly from a renormalizable fixed
+seed.
+-/
+def molecule_residual_refined_invariant_fixed_seed_singleton_domain_sources_of_renormalizable_fixed_seed_source
+    (h_seed : MoleculeResidualRenormalizableFixedSeedSource) :
+    MoleculeResidualRefinedInvariantFixedSeedSingletonDomainSources := by
+  let f_ref := renormalizable_fixed_seed_point h_seed
+  refine
+    { K := ({f_ref} : Set BMol)
+      f_ref := f_ref
+      P := ({(0 : SliceSpace)} : Set SliceSpace)
+      compact := by
+        exact (Set.finite_singleton (0 : SliceSpace)).isCompact
+      convex := by
+        exact convex_singleton (0 : SliceSpace)
+      maps := by
+        intro x hx
+        simp [slice_operator]
+      kdef := by
+        ext f
+        simp [slice_chart_refined]
+      surj := by
+        intro y hy
+        have hy0 : y = (0 : SliceSpace) := by
+          simpa using hy
+        refine ⟨f_ref, by simp, ?_⟩
+        simp [slice_chart_refined, hy0]
+      finite := Set.finite_singleton f_ref
+      inj := by
+        intro x hx y hy hxy
+        simp at hx hy
+        simp [hx, hy]
+      cont := by
+        change ContinuousOn (fun _ : SliceSpace => (0 : SliceSpace))
+          ((slice_chart_refined f_ref) '' ({f_ref} : Set BMol))
+        exact continuousOn_const
+      nonempty := by
+        exact Set.singleton_nonempty f_ref
+      mem := by simp
+      fixed := renormalizable_fixed_seed_point_fixed h_seed
+      singleton := rfl
+      renorm := (renormalizable_fixed_seed_point_spec h_seed).1 }
+
+/--
+Forget the singleton/renormalizability extras and keep only the refined
+invariant fixed-point domain data.
+-/
+def molecule_residual_refined_invariant_fixed_point_domain_sources_of_renormalizable_fixed_seed_source
+    (h_seed : MoleculeResidualRenormalizableFixedSeedSource) :
+    MoleculeResidualRefinedInvariantFixedPointDomainSources :=
+  (molecule_residual_refined_invariant_fixed_seed_singleton_domain_sources_of_renormalizable_fixed_seed_source
+    h_seed).toMoleculeResidualRefinedInvariantFixedPointDomainSources
 
 /--
 Build the refined invariant-domain source pack from the ground fixed-point
@@ -3387,6 +3663,96 @@ def molecule_residual_invariant_slice_fixed_point_source_of_refined_invariant_fi
     (h_sources : MoleculeResidualRefinedInvariantFixedPointDomainSources) :
     MoleculeResidualInvariantSliceFixedPointSource :=
   ⟨h_sources.K, h_sources.f_ref, h_sources.mem, h_sources.fixed⟩
+
+/--
+Project a fixed-point-in-domain witness from the seed-based refined singleton
+domain pack.
+-/
+def molecule_residual_invariant_slice_fixed_point_source_of_renormalizable_fixed_seed_source_via_refined_singleton_domain
+    (h_seed : MoleculeResidualRenormalizableFixedSeedSource) :
+    MoleculeResidualInvariantSliceFixedPointSource :=
+  molecule_residual_invariant_slice_fixed_point_source_of_refined_invariant_fixed_point_domain_sources
+    (molecule_residual_refined_invariant_fixed_point_domain_sources_of_renormalizable_fixed_seed_source
+      h_seed)
+
+/--
+Any seed-based refined singleton domain already carries the localized bridge
+contract on its designated domain.
+-/
+theorem molecule_residual_fixed_point_bridge_on_source_of_refined_invariant_fixed_seed_singleton_domain_sources
+    (h_sources : MoleculeResidualRefinedInvariantFixedSeedSingletonDomainSources) :
+    MoleculeResidualFixedPointBridgeOnSource := by
+  refine ⟨h_sources.K, ⟨h_sources.f_ref, h_sources.mem, h_sources.fixed⟩, ?_⟩
+  intro f hfK _h_fixed
+  have hf_eq : f = h_sources.f_ref := by
+    have hf_singleton : f ∈ ({h_sources.f_ref} : Set BMol) := by
+      simpa [h_sources.singleton] using hfK
+    simpa using hf_singleton
+  simpa [hf_eq] using h_sources.renorm
+
+/--
+The localized PLAN_86 branch is concrete on the seed-based refined singleton
+domain, without mentioning `fixed_point_exists` or `selected_fixed_point`.
+-/
+theorem molecule_residual_fixed_point_bridge_on_source_of_renormalizable_fixed_seed_source_via_refined_singleton_domain
+    (h_seed : MoleculeResidualRenormalizableFixedSeedSource) :
+    MoleculeResidualFixedPointBridgeOnSource :=
+  molecule_residual_fixed_point_bridge_on_source_of_refined_invariant_fixed_seed_singleton_domain_sources
+    (molecule_residual_refined_invariant_fixed_seed_singleton_domain_sources_of_renormalizable_fixed_seed_source
+      h_seed)
+
+/--
+The seed-based refined singleton domain yields the existence-side source target.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_renormalizable_fixed_seed_source_via_refined_singleton_domain
+    (h_seed : MoleculeResidualRenormalizableFixedSeedSource) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_bridge_on
+    (molecule_residual_fixed_point_bridge_on_source_of_renormalizable_fixed_seed_source_via_refined_singleton_domain
+      h_seed)
+
+/--
+The current seed-based refined singleton-domain route cannot witness the
+non-singleton localized target of PLAN_86.
+-/
+theorem no_nontrivial_member_of_refined_invariant_fixed_seed_singleton_domain_sources
+    (h_sources : MoleculeResidualRefinedInvariantFixedSeedSingletonDomainSources) :
+    ¬ ∃ g : BMol, g ∈ h_sources.K ∧ g ≠ h_sources.f_ref := by
+  intro h_nontrivial
+  rcases h_nontrivial with ⟨g, hgK, hg_ne⟩
+  have hg_singleton : g ∈ ({h_sources.f_ref} : Set BMol) := by
+    simpa [h_sources.singleton] using hgK
+  exact hg_ne (by simpa using hg_singleton)
+
+/--
+Any concrete seed-based refined singleton-domain pack already contains a
+renormalizable fixed seed.
+-/
+theorem molecule_residual_renormalizable_fixed_seed_source_of_refined_invariant_fixed_seed_singleton_domain_sources
+    (h_sources : MoleculeResidualRefinedInvariantFixedSeedSingletonDomainSources) :
+    MoleculeResidualRenormalizableFixedSeedSource :=
+  ⟨h_sources.f_ref, h_sources.renorm, h_sources.fixed⟩
+
+/--
+The current localized seed-domain route is equivalent to the reseeded route:
+under the present refined witness, having a seed-based refined singleton domain
+is exactly the same as having a renormalizable fixed seed.
+-/
+theorem molecule_residual_refined_invariant_fixed_seed_singleton_domain_sources_nonempty_iff_renormalizable_fixed_seed_source :
+    Nonempty MoleculeResidualRefinedInvariantFixedSeedSingletonDomainSources ↔
+      MoleculeResidualRenormalizableFixedSeedSource := by
+  constructor
+  · intro h_nonempty
+    rcases h_nonempty with ⟨h_sources⟩
+    exact
+      molecule_residual_renormalizable_fixed_seed_source_of_refined_invariant_fixed_seed_singleton_domain_sources
+        h_sources
+  · intro h_seed
+    exact ⟨
+      molecule_residual_refined_invariant_fixed_seed_singleton_domain_sources_of_renormalizable_fixed_seed_source
+        h_seed
+    ⟩
+
 
 /--
 Refined-chart invariant slice-data pack whose designated reference map is
@@ -4784,16 +5150,18 @@ Current PLAN_77 local-witness source pack.
 -/
 def molecule_residual_fixed_point_local_witness_on_sources :
     MoleculeResidualFixedPointLocalWitnessOnSources :=
-  molecule_residual_fixed_point_local_witness_on_sources_via_fixed_point_exists_and_component_transfers_direct
+  molecule_residual_fixed_point_local_witness_on_sources_of_fixed_point_exists_and_renorm_and_renorm_vbound
+    molecule_residual_fixed_point_renormalizable_via_global_norm_direct
+    molecule_residual_renorm_vbound_source
 
 /--
 Current PLAN_77 local-witness source pack.
 -/
 def molecule_residual_fixed_point_local_witness_sources :
     MoleculeResidualFixedPointLocalWitnessSources :=
-  molecule_residual_fixed_point_local_witness_sources_of_fixed_point_exists_and_renorm_and_vbound
+  molecule_residual_fixed_point_local_witness_sources_of_fixed_point_exists_and_renorm_and_renorm_vbound
     molecule_residual_fixed_point_renormalizable_via_global_norm_direct
-    molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct
+    molecule_residual_renorm_vbound_source
 
 /--
 Current PLAN_77 local-domain transfer source pack routed via the local-witness
@@ -4943,6 +5311,78 @@ theorem molecule_residual_fixed_point_data_source_of_sources
     h_transfer
 
 /--
+Build fixed-point data directly from the stronger critical-value-zero seed
+contract and renormalizable-point `V`-bound control.
+-/
+theorem molecule_residual_fixed_point_data_source_of_critical_renormalizable_fixed_seed_source_and_renorm_vbound
+    (h_seed : MoleculeResidualCriticalRenormalizableFixedSeedSource)
+    (h_renorm_vbound : MoleculeResidualRenormVBoundSource) :
+    MoleculeResidualFixedPointDataSource := by
+  rcases h_seed with ⟨f_seed, h_renorm, h_fixed, h_crit⟩
+  exact ⟨f_seed, h_fixed, h_renorm, h_crit, h_renorm_vbound f_seed h_renorm h_crit⟩
+
+/--
+Build fixed-point data from existence plus critical-value transfer and
+renormalizable-point `V`-bound control.
+-/
+theorem molecule_residual_fixed_point_data_source_of_existence_and_critical_value_transfer_and_renorm_vbound
+    (h_exists : MoleculeResidualFixedPointExistenceSource)
+    (h_crit : FixedPointCriticalValueTransferSource)
+    (h_renorm_vbound : MoleculeResidualRenormVBoundSource) :
+    MoleculeResidualFixedPointDataSource :=
+  molecule_residual_fixed_point_data_source_of_critical_renormalizable_fixed_seed_source_and_renorm_vbound
+    (molecule_residual_critical_renormalizable_fixed_seed_source_of_fixed_point_existence_source_and_critical_value_transfer
+      h_exists
+      h_crit)
+    h_renorm_vbound
+
+/--
+Any non-singleton localized bridge source plus critical-value transfer and
+renormalizable-point `V`-bound control already yields the fixed-data target.
+-/
+theorem molecule_residual_fixed_point_data_source_of_non_singleton_localized_bridge_sources_and_critical_value_transfer_and_renorm_vbound
+    (h_sources : MoleculeResidualNonSingletonLocalizedBridgeSources)
+    (h_crit : FixedPointCriticalValueTransferSource)
+    (h_renorm_vbound : MoleculeResidualRenormVBoundSource) :
+    MoleculeResidualFixedPointDataSource :=
+  molecule_residual_fixed_point_data_source_of_existence_and_critical_value_transfer_and_renorm_vbound
+    (molecule_residual_fixed_point_existence_source_of_non_singleton_localized_bridge_sources
+      h_sources)
+    h_crit
+    h_renorm_vbound
+
+/--
+Any non-singleton localized bridge source plus critical-value transfer and
+renormalizable-point `V`-bound control already yields the local-witness target.
+-/
+def molecule_residual_fixed_point_local_witness_on_sources_of_non_singleton_localized_bridge_sources_and_critical_value_transfer_and_renorm_vbound
+    (h_sources : MoleculeResidualNonSingletonLocalizedBridgeSources)
+    (h_crit : FixedPointCriticalValueTransferSource)
+    (h_renorm_vbound : MoleculeResidualRenormVBoundSource) :
+    MoleculeResidualFixedPointLocalWitnessOnSources :=
+  molecule_residual_fixed_point_local_witness_on_sources_of_fixed_data
+    (molecule_residual_fixed_point_data_source_of_non_singleton_localized_bridge_sources_and_critical_value_transfer_and_renorm_vbound
+      h_sources
+      h_crit
+      h_renorm_vbound)
+
+/--
+Any non-singleton localized bridge source plus critical-value transfer and
+renormalizable-point `V`-bound control already yields the local-witness source
+pack.
+-/
+def molecule_residual_fixed_point_local_witness_sources_of_non_singleton_localized_bridge_sources_and_critical_value_transfer_and_renorm_vbound
+    (h_sources : MoleculeResidualNonSingletonLocalizedBridgeSources)
+    (h_crit : FixedPointCriticalValueTransferSource)
+    (h_renorm_vbound : MoleculeResidualRenormVBoundSource) :
+    MoleculeResidualFixedPointLocalWitnessSources :=
+  molecule_residual_fixed_point_local_witness_sources_of_fixed_data
+    (molecule_residual_fixed_point_data_source_of_non_singleton_localized_bridge_sources_and_critical_value_transfer_and_renorm_vbound
+      h_sources
+      h_crit
+      h_renorm_vbound)
+
+/--
 PLAN_77 source pack for fixed-point data routed from explicit existence and
 transfer inputs.
 -/
@@ -5014,9 +5454,9 @@ Current residual fixed-point data source (legacy global-norm route).
 -/
 theorem molecule_residual_fixed_point_data_source :
     MoleculeResidualFixedPointDataSource :=
-  molecule_residual_fixed_point_data_source_of_sources
-    molecule_residual_fixed_point_existence_source
-    molecule_residual_fixed_point_transfer_source
+  fixed_point_normalization_data_of_fixed_point_exists_and_renorm_and_renorm_vbound
+    molecule_residual_fixed_point_renormalizable_via_global_norm_direct
+    molecule_residual_renorm_vbound_source
 
 /--
 Fallback split-witness route for PLAN_81:
@@ -7508,6 +7948,17 @@ theorem molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_point_
   h_exists
 
 /--
+Any non-singleton localized bridge source already yields the canonical
+fixed-point data target on the existence/canonical branch.
+-/
+theorem molecule_residual_canonical_fast_fixed_point_data_source_of_non_singleton_localized_bridge_sources
+    (h_sources : MoleculeResidualNonSingletonLocalizedBridgeSources) :
+    MoleculeResidualCanonicalFastFixedPointDataSource :=
+  molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_point_existence_source
+    (molecule_residual_fixed_point_existence_source_of_non_singleton_localized_bridge_sources
+      h_sources)
+
+/--
 Recover fixed-point existence from canonical fast fixed-point data.
 -/
 theorem molecule_residual_renormalizable_fixed_seed_source_of_canonical_fast_fixed_point_data_source
@@ -7527,6 +7978,74 @@ theorem molecule_residual_renormalizable_fixed_seed_source_iff_canonical_fast_fi
   · exact h
 
 /--
+Canonical fast fixed-point data plus critical-value transfer yields the
+stronger critical seed contract. This is the exact seed-side upstream hit plus
+sidecar gate needed before re-entering the fixed-data/local-witness branches.
+-/
+theorem molecule_residual_critical_renormalizable_fixed_seed_source_of_canonical_fast_fixed_point_data_source_and_critical_value_transfer
+    (h_canonical : MoleculeResidualCanonicalFastFixedPointDataSource)
+    (h_crit : FixedPointCriticalValueTransferSource) :
+    MoleculeResidualCriticalRenormalizableFixedSeedSource :=
+  molecule_residual_critical_renormalizable_fixed_seed_source_of_seed_and_critical_value_transfer
+    (molecule_residual_renormalizable_fixed_seed_source_of_canonical_fast_fixed_point_data_source
+      h_canonical)
+    h_crit
+
+/--
+Canonical fast fixed-point data plus critical-value transfer and
+renormalizable-point `V`-bound control already yields the fixed-data target.
+This is the exact downstream gate on the seed-side branch of PLAN_88.
+-/
+theorem molecule_residual_fixed_point_data_source_of_canonical_fast_fixed_point_data_source_and_critical_value_transfer_and_renorm_vbound
+    (h_canonical : MoleculeResidualCanonicalFastFixedPointDataSource)
+    (h_crit : FixedPointCriticalValueTransferSource)
+    (h_renorm_vbound : MoleculeResidualRenormVBoundSource) :
+    MoleculeResidualFixedPointDataSource :=
+  molecule_residual_fixed_point_data_source_of_critical_renormalizable_fixed_seed_source_and_renorm_vbound
+    (molecule_residual_critical_renormalizable_fixed_seed_source_of_canonical_fast_fixed_point_data_source_and_critical_value_transfer
+      h_canonical
+      h_crit)
+    h_renorm_vbound
+
+/--
+Canonical fast fixed-point data plus critical-value transfer and
+renormalizable-point `V`-bound control already yields the local-witness target.
+This matches the exact downstream gate on the seed-side branch of PLAN_88.
+-/
+def molecule_residual_fixed_point_local_witness_on_sources_of_canonical_fast_fixed_point_data_source_and_critical_value_transfer_and_renorm_vbound
+    (h_canonical : MoleculeResidualCanonicalFastFixedPointDataSource)
+    (h_crit : FixedPointCriticalValueTransferSource)
+    (h_renorm_vbound : MoleculeResidualRenormVBoundSource) :
+    MoleculeResidualFixedPointLocalWitnessOnSources :=
+  molecule_residual_fixed_point_local_witness_on_sources_of_fixed_data
+    (molecule_residual_fixed_point_data_source_of_canonical_fast_fixed_point_data_source_and_critical_value_transfer_and_renorm_vbound
+      h_canonical
+      h_crit
+      h_renorm_vbound)
+
+/--
+The current localized refined-singleton route is exactly as strong as canonical
+fast fixed-point data: it adds no extra power beyond the existing seed/canonical
+equivalence.
+-/
+theorem molecule_residual_refined_invariant_fixed_seed_singleton_domain_sources_nonempty_iff_canonical_fast_fixed_point_data_source :
+    Nonempty MoleculeResidualRefinedInvariantFixedSeedSingletonDomainSources ↔
+      MoleculeResidualCanonicalFastFixedPointDataSource := by
+  exact
+    molecule_residual_refined_invariant_fixed_seed_singleton_domain_sources_nonempty_iff_renormalizable_fixed_seed_source.trans
+      molecule_residual_renormalizable_fixed_seed_source_iff_canonical_fast_fixed_point_data_source
+
+/--
+Any current localized refined-singleton source already yields canonical fast
+fixed-point data.
+-/
+theorem molecule_residual_canonical_fast_fixed_point_data_source_of_refined_invariant_fixed_seed_singleton_domain_sources
+    (h_sources : Nonempty MoleculeResidualRefinedInvariantFixedSeedSingletonDomainSources) :
+    MoleculeResidualCanonicalFastFixedPointDataSource :=
+  molecule_residual_refined_invariant_fixed_seed_singleton_domain_sources_nonempty_iff_canonical_fast_fixed_point_data_source.mp
+    h_sources
+
+/--
 Recover fixed-point existence from canonical fast fixed-point data by first
 passing through the PLAN_84 renormalizable seed interface.
 -/
@@ -7536,6 +8055,17 @@ theorem molecule_residual_fixed_point_existence_source_of_canonical_fast_fixed_p
   molecule_residual_fixed_point_existence_source_of_renormalizable_fixed_seed_source
     (molecule_residual_renormalizable_fixed_seed_source_of_canonical_fast_fixed_point_data_source
       h_canonical)
+
+/--
+Any current localized refined-singleton source already yields the existence-side
+target, via the canonical/seed equivalence.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_refined_invariant_fixed_seed_singleton_domain_sources
+    (h_sources : Nonempty MoleculeResidualRefinedInvariantFixedSeedSingletonDomainSources) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_canonical_fast_fixed_point_data_source_via_seed
+    (molecule_residual_canonical_fast_fixed_point_data_source_of_refined_invariant_fixed_seed_singleton_domain_sources
+      h_sources)
 
 /--
 Recover fixed-point existence from canonical fast fixed-point data.
@@ -7571,7 +8101,8 @@ seam.
 -/
 theorem molecule_residual_canonical_fast_fixed_point_data_source :
     MoleculeResidualCanonicalFastFixedPointDataSource :=
-  molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_orbit_clause_at_and_uniqueness
+  molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_point_existence_source
+    molecule_residual_fixed_point_existence_source
 
 /--
 PLAN_84 current-route alias:
@@ -7610,6 +8141,284 @@ theorem molecule_residual_fixed_point_existence_source_via_fixed_data_orbit_clau
     molecule_residual_fixed_point_data_source
     molecule_residual_orbit_clause_at_source
     molecule_residual_fixed_point_uniqueness_direct_source
+
+/--
+Build fixed-point existence directly from:
+- renormalizability of fixed points,
+- the `V`-bound transfer component,
+- the local orbit-at source, and
+- the direct uniqueness source,
+by passing through the PLAN_84 seeded canonical route.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_renorm_vbound_orbit_clause_at_and_uniqueness_direct_via_seed
+    (h_renorm : ∀ f : BMol, Rfast f = f → IsFastRenormalizable f)
+    (h_vbound : FixedPointVBoundTransferSource)
+    (h_orbit_at : MoleculeResidualOrbitClauseAtSource)
+    (h_unique_direct : MoleculeResidualFixedPointUniquenessDirectSource) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_fixed_data_orbit_clause_at_and_uniqueness_direct_via_seed
+    (fixed_point_normalization_data_of_fixed_point_exists_and_renorm_and_vbound
+      h_renorm
+      h_vbound)
+    h_orbit_at
+    h_unique_direct
+
+/--
+Build fixed-point existence directly from:
+- renormalizability of fixed points,
+- renormalizable-point `V`-bound control,
+- the local orbit-at source, and
+- the direct uniqueness source,
+by passing through the PLAN_84 seeded canonical route.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_renorm_renorm_vbound_orbit_clause_at_and_uniqueness_direct_via_seed
+    (h_renorm : ∀ f : BMol, Rfast f = f → IsFastRenormalizable f)
+    (h_renorm_vbound : MoleculeResidualRenormVBoundSource)
+    (h_orbit_at : MoleculeResidualOrbitClauseAtSource)
+    (h_unique_direct : MoleculeResidualFixedPointUniquenessDirectSource) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_fixed_data_orbit_clause_at_and_uniqueness_direct_via_seed
+    (fixed_point_normalization_data_of_fixed_point_exists_and_renorm_and_renorm_vbound
+      h_renorm
+      h_renorm_vbound)
+    h_orbit_at
+    h_unique_direct
+
+/--
+PLAN_84 current-route alias with the fixed-data wrapper also expanded:
+the active seeded existence route depends exactly on the current renormalizable
+fixed-point carrier, the current `V`-bound transfer carrier, the local
+orbit-at source, and the direct uniqueness carrier.
+-/
+theorem molecule_residual_fixed_point_existence_source_via_renorm_vbound_orbit_clause_at_and_uniqueness_direct_via_seed :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_renorm_vbound_orbit_clause_at_and_uniqueness_direct_via_seed
+    molecule_residual_fixed_point_renormalizable_via_global_norm_direct
+    molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct
+    molecule_residual_orbit_clause_at_source
+    molecule_residual_fixed_point_uniqueness_direct_source
+
+/--
+Build fixed-point existence directly from:
+- renormalizability of fixed points,
+- the `V`-bound transfer component,
+- the local orbit-at source, and
+- the hybrid-class-collapse source,
+by passing through the PLAN_84 seeded canonical route.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_renorm_vbound_orbit_clause_at_and_hybrid_class_collapse_via_seed
+    (h_renorm : ∀ f : BMol, Rfast f = f → IsFastRenormalizable f)
+    (h_vbound : FixedPointVBoundTransferSource)
+    (h_orbit_at : MoleculeResidualOrbitClauseAtSource)
+    (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_renorm_vbound_orbit_clause_at_and_uniqueness_direct_via_seed
+    h_renorm
+    h_vbound
+    h_orbit_at
+    (molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_collapse_source
+      h_collapse)
+
+/--
+Build fixed-point existence directly from:
+- renormalizability of fixed points,
+- renormalizable-point `V`-bound control,
+- the local orbit-at source, and
+- the hybrid-class-collapse source,
+by passing through the PLAN_84 seeded canonical route.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_renorm_renorm_vbound_orbit_clause_at_and_hybrid_class_collapse_via_seed
+    (h_renorm : ∀ f : BMol, Rfast f = f → IsFastRenormalizable f)
+    (h_renorm_vbound : MoleculeResidualRenormVBoundSource)
+    (h_orbit_at : MoleculeResidualOrbitClauseAtSource)
+    (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_renorm_renorm_vbound_orbit_clause_at_and_uniqueness_direct_via_seed
+    h_renorm
+    h_renorm_vbound
+    h_orbit_at
+    (molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_collapse_source
+      h_collapse)
+
+/--
+PLAN_84 current-route alias with the uniqueness wrapper also expanded away:
+the active seeded existence route depends exactly on the current renormalizable
+fixed-point carrier, the current `V`-bound transfer carrier, the local
+orbit-at source, and the hybrid-class-collapse carrier.
+-/
+theorem molecule_residual_fixed_point_existence_source_via_renorm_vbound_orbit_clause_at_and_hybrid_class_collapse_via_seed :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_renorm_vbound_orbit_clause_at_and_hybrid_class_collapse_via_seed
+    molecule_residual_fixed_point_renormalizable_via_global_norm_direct
+    molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct
+    molecule_residual_orbit_clause_at_source
+    molecule_residual_fixed_point_hybrid_class_collapse_source
+
+/--
+PLAN_85 upstream package:
+the exact four-carrier frontier handed off by PLAN_84.
+-/
+structure MoleculeResidualWitnessPairSources : Prop where
+  renorm : ∀ f : BMol, Rfast f = f → IsFastRenormalizable f
+  renormVBound : MoleculeResidualRenormVBoundSource
+
+structure MoleculeResidualUpstreamFourCarrierSources : Prop where
+  renorm : ∀ f : BMol, Rfast f = f → IsFastRenormalizable f
+  renormVBound : MoleculeResidualRenormVBoundSource
+  orbitAt : MoleculeResidualOrbitClauseAtSource
+  collapse : MoleculeResidualFixedPointHybridClassCollapseSource
+
+/--
+Recover fixed-point normalization data from the shared PLAN_85 witness-side
+pair.
+-/
+theorem molecule_residual_fixed_point_data_source_of_witness_pair_sources
+    (h_sources : MoleculeResidualWitnessPairSources) :
+    MoleculeResidualFixedPointDataSource :=
+  fixed_point_normalization_data_of_fixed_point_exists_and_renorm_and_renorm_vbound
+    h_sources.renorm
+    h_sources.renormVBound
+
+/--
+Recover the concrete local-witness target directly from the shared PLAN_85
+witness-side pair.
+-/
+def molecule_residual_fixed_point_local_witness_on_sources_of_witness_pair_sources
+    (h_sources : MoleculeResidualWitnessPairSources) :
+    MoleculeResidualFixedPointLocalWitnessOnSources :=
+  molecule_residual_fixed_point_local_witness_on_sources_of_fixed_point_exists_and_renorm_and_renorm_vbound
+    h_sources.renorm
+    h_sources.renormVBound
+
+/--
+Build the full PLAN_85 upstream frontier from the shared witness-side pair plus
+the orbit and collapse carriers.
+-/
+theorem molecule_residual_upstream_four_carrier_sources_of_witness_pair_orbit_at_and_hybrid_class_collapse
+    (h_pair : MoleculeResidualWitnessPairSources)
+    (h_orbit_at : MoleculeResidualOrbitClauseAtSource)
+    (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
+    MoleculeResidualUpstreamFourCarrierSources :=
+  ⟨h_pair.renorm, h_pair.renormVBound, h_orbit_at, h_collapse⟩
+
+/--
+Current shared PLAN_85 witness-side pair.
+-/
+theorem molecule_residual_witness_pair_sources :
+    MoleculeResidualWitnessPairSources :=
+  ⟨
+    molecule_residual_fixed_point_renormalizable_via_global_norm_direct,
+    molecule_residual_renorm_vbound_source
+  ⟩
+
+/--
+Current fixed-data route factored through the shared PLAN_85 witness-side pair.
+-/
+theorem molecule_residual_fixed_point_data_source_via_witness_pair_sources :
+    MoleculeResidualFixedPointDataSource :=
+  molecule_residual_fixed_point_data_source_of_witness_pair_sources
+    molecule_residual_witness_pair_sources
+
+/--
+Current local-witness route factored through the shared PLAN_85 witness-side
+pair.
+-/
+def molecule_residual_fixed_point_local_witness_on_sources_via_witness_pair_sources :
+    MoleculeResidualFixedPointLocalWitnessOnSources :=
+  molecule_residual_fixed_point_local_witness_on_sources_of_witness_pair_sources
+    molecule_residual_witness_pair_sources
+
+/--
+Recover seeded existence directly from the packaged PLAN_85 upstream frontier.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_upstream_four_carrier_sources
+    (h_sources : MoleculeResidualUpstreamFourCarrierSources) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_renorm_renorm_vbound_orbit_clause_at_and_hybrid_class_collapse_via_seed
+    h_sources.renorm
+    h_sources.renormVBound
+    h_sources.orbitAt
+    h_sources.collapse
+
+/--
+Recover seeded existence directly from the shared witness-side pair together
+with the orbit and collapse carriers.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_witness_pair_orbit_at_and_hybrid_class_collapse_via_seed
+    (h_pair : MoleculeResidualWitnessPairSources)
+    (h_orbit_at : MoleculeResidualOrbitClauseAtSource)
+    (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_renorm_renorm_vbound_orbit_clause_at_and_hybrid_class_collapse_via_seed
+    h_pair.renorm
+    h_pair.renormVBound
+    h_orbit_at
+    h_collapse
+
+/--
+Current packaged PLAN_85 upstream frontier.
+-/
+theorem molecule_residual_upstream_four_carrier_sources :
+    MoleculeResidualUpstreamFourCarrierSources :=
+  molecule_residual_upstream_four_carrier_sources_of_witness_pair_orbit_at_and_hybrid_class_collapse
+    molecule_residual_witness_pair_sources
+    molecule_residual_orbit_clause_at_source
+    molecule_residual_fixed_point_hybrid_class_collapse_source
+
+/--
+Current seeded existence route factored through the explicit PLAN_85 upstream
+four-carrier package.
+-/
+theorem molecule_residual_fixed_point_existence_source_via_upstream_four_carrier_sources :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_upstream_four_carrier_sources
+    molecule_residual_upstream_four_carrier_sources
+
+/--
+Current seeded existence route factored as:
+shared witness-side pair + orbit-at + hybrid-class collapse.
+-/
+theorem molecule_residual_fixed_point_existence_source_via_witness_pair_orbit_at_and_hybrid_class_collapse_via_seed :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_witness_pair_orbit_at_and_hybrid_class_collapse_via_seed
+    molecule_residual_witness_pair_sources
+    molecule_residual_orbit_clause_at_source
+    molecule_residual_fixed_point_hybrid_class_collapse_source
+
+/--
+Recover canonical fast fixed-point data directly from the packaged PLAN_85
+upstream frontier.
+-/
+theorem molecule_residual_canonical_fast_fixed_point_data_source_of_upstream_four_carrier_sources
+    (h_sources : MoleculeResidualUpstreamFourCarrierSources) :
+    MoleculeResidualCanonicalFastFixedPointDataSource :=
+  molecule_residual_canonical_fast_fixed_point_data_source_of_fixed_point_existence_source
+    (molecule_residual_fixed_point_existence_source_of_upstream_four_carrier_sources
+      h_sources)
+
+/--
+Recover canonical fast fixed-point data directly from the shared witness-side
+pair together with the orbit and collapse carriers.
+-/
+theorem molecule_residual_canonical_fast_fixed_point_data_source_of_witness_pair_orbit_at_and_hybrid_class_collapse
+    (h_pair : MoleculeResidualWitnessPairSources)
+    (h_orbit_at : MoleculeResidualOrbitClauseAtSource)
+    (h_collapse : MoleculeResidualFixedPointHybridClassCollapseSource) :
+    MoleculeResidualCanonicalFastFixedPointDataSource :=
+  molecule_residual_canonical_fast_fixed_point_data_source_of_upstream_four_carrier_sources
+    (molecule_residual_upstream_four_carrier_sources_of_witness_pair_orbit_at_and_hybrid_class_collapse
+      h_pair
+      h_orbit_at
+      h_collapse)
+
+/--
+Current canonical route factored through the explicit PLAN_85 upstream
+four-carrier package.
+-/
+theorem molecule_residual_canonical_fast_fixed_point_data_source_via_upstream_four_carrier_sources :
+    MoleculeResidualCanonicalFastFixedPointDataSource :=
+  molecule_residual_canonical_fast_fixed_point_data_source_of_upstream_four_carrier_sources
+    molecule_residual_upstream_four_carrier_sources
 
 /--
 Under any bounds witness (hence canonical fixed-point existence), hybrid-level

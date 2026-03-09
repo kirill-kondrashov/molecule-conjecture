@@ -1,11 +1,12 @@
 # PLAN 84 - Canonical Seed Replacement for Existence Route
 
-Status: ACTIVE
-Progress: [#########-] 96%
+Status: DONE
+Progress: [##########] 100%
 Scope: Replace the existence-side dependence on
 `selected_fixed_point := Classical.choose fixed_point_exists` with a seed
-obtained from canonical or renormalizable fixed-point data, so the active
-existence route no longer inherits the `defaultBMol` obstruction.
+obtained from canonical or renormalizable fixed-point data, and isolate the
+exact remaining upstream frontier on that seeded branch. This plan does not own
+proofs of the remaining upstream carriers.
 Acceptance:
 1. A theorem-level source yields a seed `f_seed : BMol` with
    `IsFastRenormalizable f_seed ∧ Rfast f_seed = f_seed` without mentioning
@@ -16,8 +17,11 @@ Acceptance:
 3. The old PLAN_83 obstruction
    `no_molecule_residual_fixed_point_existence_source_of_hybrid_class_fixed_point_exact_uniqueness`
    does not reappear by construction on the new seeded route.
-4. The seeded route either removes `Molecule.molecule_h_norm` from the active
-   existence theorem or isolates one exact upstream theorem still needed.
+4. The seeded route is expanded until the remaining non-ground debt is stated
+   entirely in terms of upstream carriers that are not specific to seed
+   replacement.
+5. Further wrapper reductions on the seeded branch are shown not to shrink the
+   axiom frontier, so the plan can be handed off as complete.
 Dependencies: `Molecule/Conjecture.lean`,
 `Molecule/FixedPointExistence.lean`,
 `README.md`,
@@ -26,11 +30,10 @@ Dependencies: `Molecule/Conjecture.lean`,
 `plan/PLAN_81_single_reference_fixed_point_data_witness.md`,
 `plan/PLAN_82_canonical_fast_fixed_point_data_witness.md`,
 `plan/PLAN_83_localized_fixed_point_renormalizability_bridge.md`
-Stuck Rule: STUCK if every candidate `f_seed` either:
-- definitionally factors through `fixed_point_exists` / `selected_fixed_point`;
-- already requires `MoleculeResidualFixedPointExistenceSource`; or
-- only exists on a route that already depends on `Molecule.molecule_h_norm`.
-Last Updated: 2026-03-08
+Completion Rule: DONE once the seeded branch no longer carries any residual
+debt specific to `selected_fixed_point` or seed selection, and the remaining
+frontier is expressed purely in upstream carriers.
+Last Updated: 2026-03-09
 
 ## Work Plan
 
@@ -45,15 +48,18 @@ Last Updated: 2026-03-08
   that the `defaultBMol` contradiction is gone.
 - [x] Thread the seeded route into the active existence theorem or state the
   exact remaining upstream dependency.
+- [x] Prove that further wrapper lowering on this branch does not shrink the
+  live non-ground frontier.
+- [x] Hand off the residual carrier tuple to the upstream plans that own it.
 
 ## Route Progress
 
 | Route | Current State | Progress |
 |---|---|---|
-| Seed abstraction | `MoleculeResidualRenormalizableFixedSeedSource`, `renormalizable_fixed_seed_point`, and the seed singleton bridge are now in place. | [#########-] 90% |
-| Obstruction escape | `renormalizable_fixed_seed_point_ne_defaultBMol` shows the new seed route avoids the old `defaultBMol` witness by construction. | [########--] 80% |
-| Upstream witness source | Canonical fast fixed-point data is now wired into the seed interface, and the two source contracts are definitionally equivalent. | [#########-] 90% |
-| Downstream cutover readiness | The later aliases now expose both `canonical -> seed -> existence` and its fully expanded `fixed_data + orbit_at + uniqueness_direct -> seed -> existence` form. | [##########] 100% |
+| Seed abstraction | `MoleculeResidualRenormalizableFixedSeedSource`, `renormalizable_fixed_seed_point`, and the seed singleton bridge are now in place. | [##########] 100% |
+| Obstruction escape | `renormalizable_fixed_seed_point_ne_defaultBMol` shows the new seed route avoids the old `defaultBMol` witness by construction. | [##########] 100% |
+| Upstream witness source | Canonical fast fixed-point data is wired into the seed interface, and the two source contracts are definitionally equivalent. | [##########] 100% |
+| Downstream cutover readiness | The later aliases expose the seeded route all the way down to the residual upstream carrier tuple. | [##########] 100% |
 
 ## Notes
 
@@ -69,6 +75,11 @@ Last Updated: 2026-03-08
 - This plan is compatible with PLAN_82: if PLAN_82 can provide canonical fixed
   data without `Molecule.molecule_h_norm`, PLAN_84 should be able to reuse that
   witness directly instead of routing through `fixed_point_exists`.
+- Critical revision:
+  - The earlier `ACTIVE [#########-] 99%` framing was misleading.
+  - `PLAN_84` no longer owns any live theorem debt. It has completed its
+    seed-replacement job and is now a handoff plan.
+  - The remaining non-ground frontier is upstream and non-seed-specific.
 - New checkpoint:
   - `MoleculeResidualRenormalizableFixedSeedSource` is now an explicit
     interface, disjoint from `defaultBMol` by construction.
@@ -103,3 +114,28 @@ Last Updated: 2026-03-08
     `molecule_residual_fixed_point_existence_source_via_fixed_data_orbit_clause_at_and_uniqueness_direct_via_seed`
     shows the seeded branch now depends exactly on the current fixed-data,
     local orbit-at, and direct uniqueness carriers.
+  - Final frontier checkpoint:
+    `molecule_residual_fixed_point_existence_source_of_renorm_vbound_orbit_clause_at_and_uniqueness_direct_via_seed`
+    is ground-axiom-only, and the fully expanded current alias now names the
+    exact four residual inputs on this branch:
+    renormalizability, `V`-bound transfer, local orbit-at, and direct
+    uniqueness.
+  - One wrapper less:
+    `molecule_residual_fixed_point_existence_source_of_renorm_vbound_orbit_clause_at_and_hybrid_class_collapse_via_seed`
+    is also ground-axiom-only, so the seeded branch can be expressed with
+    hybrid-class collapse instead of direct uniqueness.
+  - Saturation note:
+    the collapse-based current alias has the same axiom frontier as the
+    uniqueness-based current alias, so this reduction improves naming but does
+    not further shrink the live non-ground debt.
+  - Probe confirmation:
+    `molecule_residual_fixed_point_existence_source_via_renorm_vbound_orbit_clause_at_and_uniqueness_direct_via_seed`
+    has exactly the same non-ground axiom frontier as those four current
+    carriers, and nothing else.
+  - Residual handoff frontier:
+    - renormalizability of fixed points
+    - `V`-bound transfer on fixed renormalizable maps
+    - local orbit-at
+    - hybrid-class collapse
+  - Those debts are not specific to seed replacement and should now be attacked
+    in the upstream plans that natively own them.

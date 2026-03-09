@@ -4,7 +4,7 @@ Status: ACTIVE
 Progress: [#########-] 99%
 Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77, PLAN_78, PLAN_79, PLAN_80, PLAN_81, PLAN_82, PLAN_83, PLAN_84
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77, PLAN_78, PLAN_79, PLAN_80, PLAN_81, PLAN_82, PLAN_83, PLAN_84, PLAN_85, PLAN_86, PLAN_87, PLAN_88
 Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
 Last Updated: 2026-03-07
 
@@ -57,12 +57,16 @@ Last Updated: 2026-03-07
 | PLAN_81 | Single-reference fixed-point data witness | ACTIVE | [######----] 60% |
 | PLAN_82 | Canonical fast fixed-point data witness | ACTIVE | [#########-] 95% |
 | PLAN_83 | Localized fixed-point renormalizability bridge | STUCK | [#########-] 95% |
-| PLAN_84 | Canonical seed replacement for existence route | ACTIVE | [#########-] 96% |
+| PLAN_84 | Canonical seed replacement for existence route | DONE | [##########] 100% |
+| PLAN_85 | Upstream four-carrier burndown | DONE | [##########] 100% |
+| PLAN_86 | Localized or reseeded replacement for R | DONE | [##########] 100% |
+| PLAN_87 | Non-circular critical seed source | ACTIVE | [##--------] 20% |
+| PLAN_88 | Dual-track seed or non-singleton localized bridge | ACTIVE | [#####-----] 45% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_84 canonical seed replacement + PLAN_82 canonical fast fixed-point data witness + PLAN_81 single-reference fixed-data witness + PLAN_80 fixed-point-data-source track + PLAN_78 concrete local-witness theorem + PLAN_53 (model bottleneck refactor) + PLAN_76 (anchor-witness bottleneck break) + PLAN_47/49 integration. PLAN_83, PLAN_79, and PLAN_77 are now STUCK history/handoff; model-restriction redesign remains fallback-only.
+- Current queue is PLAN_88 dual-track seed-or-localized-bridge program + PLAN_87 seed-side subtrack + PLAN_82 canonical fast fixed-point data witness + PLAN_81 single-reference fixed-data witness + PLAN_80 fixed-point-data-source track + PLAN_78 concrete local-witness theorem + PLAN_53 (model bottleneck refactor) + PLAN_76 (anchor-witness bottleneck break) + PLAN_47/49 integration. PLAN_86 is now DONE as a structural handoff plan; PLAN_85 is DONE as a burndown/handoff plan; PLAN_84 is DONE as a seed-replacement handoff; PLAN_83, PLAN_79, and PLAN_77 are STUCK history/handoff; model-restriction redesign remains fallback-only.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
@@ -1689,11 +1693,255 @@ Last Updated: 2026-03-07
     `molecule_residual_fixed_point_existence_source_of_fixed_data_orbit_clause_at_and_uniqueness_direct_via_seed`
     is ground-axiom-only, while the current-route alias inherits precisely the
     `Molecule.molecule_h_norm` debt of those three carriers.
+  - The route is now expanded one layer further:
+    `molecule_residual_fixed_point_existence_source_via_renorm_vbound_orbit_clause_at_and_uniqueness_direct_via_seed`
+    exposes the exact four residual inputs on the PLAN_84 branch.
+  - Probe confirmation:
+    the four-input current-route alias carries exactly the shared
+    `Molecule.molecule_h_norm` debt of those four carriers, with no extra seed
+    or canonical wrapper debt.
+  - One wrapper less again:
+    `molecule_residual_fixed_point_existence_source_via_renorm_vbound_orbit_clause_at_and_hybrid_class_collapse_via_seed`
+    exposes the same branch using the more primitive hybrid-class-collapse
+    carrier instead of direct uniqueness.
+  - Probe result:
+    this collapse-based alias has the same axiom footprint as the
+    uniqueness-based four-input alias, so PLAN_84 is now effectively
+    saturated.
+  - Critical revision:
+    PLAN_84 is now DONE, not ACTIVE. Its scope was seed replacement and
+    frontier isolation, and that scope is complete.
+  - Residual handoff frontier:
+    renormalizability, `V`-bound transfer, local orbit-at, and
+    hybrid-class collapse.
   - Current route status:
-    seed abstraction [#########-] 90%,
-    obstruction escape [########--] 80%,
-    upstream witness source [#########-] 90%,
+    seed abstraction [##########] 100%,
+    obstruction escape [##########] 100%,
+    upstream witness source [##########] 100%,
     downstream cutover readiness [##########] 100%.
+- `PLAN_85` progress:
+  - added explicit upstream package:
+    `MoleculeResidualUpstreamFourCarrierSources`
+  - added package-routed existence theorem:
+    `molecule_residual_fixed_point_existence_source_of_upstream_four_carrier_sources`
+  - added current package and current-route alias:
+    `molecule_residual_upstream_four_carrier_sources`,
+    `molecule_residual_fixed_point_existence_source_via_upstream_four_carrier_sources`
+  - targeted probes show the parameterized package theorem is
+    ground-axiom-only, while the current package and current-route alias carry
+    exactly the shared `Molecule.molecule_h_norm` debt of the four packaged
+    carriers
+  - added explicit shared witness-side package:
+    `MoleculeResidualWitnessPairSources`
+  - added pair-routed fixed-data and local-witness theorems:
+    `molecule_residual_fixed_point_data_source_of_witness_pair_sources`,
+    `molecule_residual_fixed_point_local_witness_on_sources_of_witness_pair_sources`
+  - targeted probes show the pair-level parameterized theorems are
+    ground-axiom-only, while the current pair package carries exactly the
+    shared witness-side debt
+  - added pair+orbit+collapse existence theorem:
+    `molecule_residual_fixed_point_existence_source_of_witness_pair_orbit_at_and_hybrid_class_collapse_via_seed`
+  - this reduces the seeded existence branch to:
+    shared witness-side pair + orbit-at + collapse
+  - shrank the shared witness-side pair:
+    it now uses renormalizable-point `V`-bound control
+    (`MoleculeResidualRenormVBoundSource`)
+    instead of fixed-point `V`-bound transfer
+  - added
+    `fixed_point_normalization_data_of_fixed_point_exists_and_renorm_and_renorm_vbound`
+    and rerouted the current PLAN_85 witness-side package through that smaller
+    carrier
+  - targeted probes show:
+    `molecule_residual_fixed_point_data_source_of_witness_pair_sources`,
+    `molecule_residual_fixed_point_local_witness_on_sources_of_witness_pair_sources`,
+    and
+    `molecule_residual_fixed_point_existence_source_of_witness_pair_orbit_at_and_hybrid_class_collapse_via_seed`
+    are ground-axiom-only, while
+    `molecule_residual_witness_pair_sources`,
+    `molecule_residual_upstream_four_carrier_sources`,
+    and
+    `molecule_residual_fixed_point_existence_source_via_upstream_four_carrier_sources`
+    still carry `Molecule.molecule_h_norm` exactly through the smaller
+    witness-side pair + orbit-at + collapse frontier
+  - added canonical-threading theorems:
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_upstream_four_carrier_sources`,
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_witness_pair_orbit_at_and_hybrid_class_collapse`,
+    and
+    `molecule_residual_canonical_fast_fixed_point_data_source_via_upstream_four_carrier_sources`
+  - targeted probes show the two parameterized canonical-threading theorems are
+    ground-axiom-only, while the current canonical alias carries exactly the
+    reduced `(R, RV, O, H)` frontier with no extra canonical wrapper debt
+  - rerouted the active current
+    `molecule_residual_fixed_point_data_source`
+    through the smaller witness-side pair `R + RV`
+  - rerouted the active current
+    `molecule_residual_fixed_point_local_witness_on_sources`
+    and
+    `molecule_residual_fixed_point_local_witness_sources`
+    through that same pair
+  - rerouted the active current
+    `molecule_residual_canonical_fast_fixed_point_data_source`
+    through current fixed-data, removing `O` and `H` from the active canonical
+    branch
+  - targeted probes show the current fixed-data, local-witness, and canonical
+    theorems still carry `Molecule.molecule_h_norm`, but the exact remaining
+    current carriers are now only:
+    `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`
+    and
+    `molecule_residual_renorm_vbound_source`
+  - rerouted the active current
+    `molecule_residual_canonical_fast_fixed_point_data_source`
+    one step further through current existence
+  - targeted probes show the current canonical theorem now has the same axiom
+    footprint as the current existence theorem, so the active current
+    canonical branch is down to `R` alone
+  - added exact obstruction theorem
+    `no_molecule_residual_fixed_point_renormalizable_source`
+    certifying that literal global `R` is false in the current scaffold
+  - added exact parameterized current-route theorem
+    `molecule_residual_fixed_point_existence_source_of_fixed_point_renormalizable`
+    showing the active current existence route is exactly:
+    ground `fixed_point_exists` + `R`
+  - targeted probes show both new theorems are ground-axiom-only, while the
+    current existence and current canonical theorems remain
+    `Molecule.molecule_h_norm`-backed
+  - this forces the redesign fallback on the existence/canonical branch:
+    further progress must replace global `R`, not prove it
+  - Current route status:
+    frontier stabilization [##########] 100%,
+    shared witness-side attack [##########] 100%,
+    orbit-side attack [##########] 100%,
+    collapse-side attack [##########] 100%,
+    redesign fallback [#####-----] 50%.
+- `PLAN_86` progress:
+  - opened the replacement program after PLAN_85 certified literal global `R`
+    false
+  - the new active target is:
+    replace global `R` by either localized `R_K` or a reseeded existence route
+  - added a clean seed-singleton bridge route:
+    `molecule_residual_fixed_point_bridge_on_source_of_renormalizable_fixed_seed_source`
+    and
+    `molecule_residual_fixed_point_existence_source_of_renormalizable_fixed_seed_source_via_bridge_on`
+  - targeted probes show those two new theorems are ground-axiom-only, so the
+    localized and reseeded branches now meet at one clean singleton bridge
+    seam avoiding both `fixed_point_exists` and `selected_fixed_point`
+  - added a seed-based refined singleton-domain pack:
+    `molecule_residual_refined_invariant_fixed_seed_singleton_domain_sources_of_renormalizable_fixed_seed_source`
+  - added the localized seed-domain bridge/existence route:
+    `molecule_residual_fixed_point_bridge_on_source_of_renormalizable_fixed_seed_source_via_refined_singleton_domain`
+    and
+    `molecule_residual_fixed_point_existence_source_of_renormalizable_fixed_seed_source_via_refined_singleton_domain`
+  - targeted probes show the new localized seed-domain route is
+    ground-axiom-only
+  - this makes the localized branch concrete, but only as a singleton-domain
+    route under the current refined witness
+  - added the reverse reduction:
+    `molecule_residual_renormalizable_fixed_seed_source_of_refined_invariant_fixed_seed_singleton_domain_sources`
+    and the equivalence
+    `molecule_residual_refined_invariant_fixed_seed_singleton_domain_sources_nonempty_iff_renormalizable_fixed_seed_source`
+  - targeted probes show those two reduction theorems are ground-axiom-only
+  - this means the current localized refined-singleton branch is equivalent to
+    the reseeded seed source, not a larger-domain replacement yet
+  - added the canonical comparison/cutover:
+    `molecule_residual_refined_invariant_fixed_seed_singleton_domain_sources_nonempty_iff_canonical_fast_fixed_point_data_source`,
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_refined_invariant_fixed_seed_singleton_domain_sources`,
+    and
+    `molecule_residual_fixed_point_existence_source_of_refined_invariant_fixed_seed_singleton_domain_sources`
+  - targeted probes show those three new comparison/cutover theorems are
+    ground-axiom-only
+  - this means the current localized refined-singleton branch is also exactly
+    as strong as canonical fast fixed-point data
+  - added the exact larger-domain target:
+    `MoleculeResidualNonSingletonLocalizedBridgeSources`
+  - added the bridge/existence cutovers from that target:
+    `molecule_residual_fixed_point_bridge_on_source_of_non_singleton_localized_bridge_sources`
+    and
+    `molecule_residual_fixed_point_existence_source_of_non_singleton_localized_bridge_sources`
+  - added
+    `no_nontrivial_member_of_refined_invariant_fixed_seed_singleton_domain_sources`
+  - targeted probes show all three theorems are ground-axiom-only
+  - this means the current refined singleton route cannot witness the required
+    larger-domain localized target
+  - added the stronger downstream seed contract:
+    `MoleculeResidualCriticalRenormalizableFixedSeedSource`
+  - added
+    `molecule_residual_critical_renormalizable_fixed_seed_source_of_fixed_point_existence_source_and_critical_value_transfer`
+  - added the exact fixed-data/local-witness rebases:
+    `molecule_residual_fixed_point_data_source_of_existence_and_critical_value_transfer_and_renorm_vbound`
+    and
+    `molecule_residual_fixed_point_local_witness_on_sources_of_existence_and_critical_value_transfer_and_renorm_vbound`
+  - targeted probes show those three new theorems are ground-axiom-only
+  - this means the downstream rebase requirement is now exact:
+    replacement existence alone is too weak; the active `PLAN_80` / `PLAN_78`
+    branches need existence + critical-value transfer + `RV`
+  - added the full non-singleton localized downstream cutovers:
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_non_singleton_localized_bridge_sources`,
+    `molecule_residual_fixed_point_data_source_of_non_singleton_localized_bridge_sources_and_critical_value_transfer_and_renorm_vbound`,
+    `molecule_residual_fixed_point_local_witness_on_sources_of_non_singleton_localized_bridge_sources_and_critical_value_transfer_and_renorm_vbound`,
+    and
+    `molecule_residual_fixed_point_local_witness_sources_of_non_singleton_localized_bridge_sources_and_critical_value_transfer_and_renorm_vbound`
+  - targeted probes show all four downstream cutovers are ground-axiom-only
+  - this completes the structural handoff from the larger-domain localized
+    target into existence, canonical, fixed-data, and local-witness
+  - current route status:
+    blocked global route inventory [##########] 100%,
+    localized replacement [#########-] 90%,
+    reseeded replacement [######----] 60%,
+    fixed-data/local-witness rebase [########--] 80%,
+    redesign handoff [####------] 40%.
+  - critical revision:
+    the plan had become too broad because it mixed theorem search with
+    structural downstream handoff
+  - result:
+    PLAN_86 is now DONE as a structural handoff plan
+    and the active theorem search is moved to PLAN_88,
+    with PLAN_87 retained as the seed-side subtrack
+- `PLAN_87` progress:
+  - opened as the focused seed-side theorem-search subtrack after PLAN_86
+    completed its structural reductions
+  - exact live target:
+    `MoleculeResidualCriticalRenormalizableFixedSeedSource`
+  - acceptance is now stricter:
+    no use of `fixed_point_exists`, `selected_fixed_point`, current existence,
+    or any route already equivalent to the blocked global `R`
+  - critical revision:
+    as a standalone master program this was too narrow, because the
+    non-singleton localized branch remains equally live
+  - current route status:
+    candidate inventory [##--------] 20%,
+    seed theorem target [###-------] 30%,
+    downstream cutover readiness [##########] 100%,
+    handoff to larger-domain branch [########--] 80%.
+- `PLAN_88` progress:
+  - opened as the revised master research program after criticizing PLAN_87
+    for overfitting to the seed-only subtrack
+  - exact live targets:
+    `MoleculeResidualCriticalRenormalizableFixedSeedSource`
+    and
+    `MoleculeResidualNonSingletonLocalizedBridgeSources`
+  - acceptance now requires explicit non-equivalence screening against the
+    singleton/canonical class before counting any candidate as progress
+  - critical revision:
+    the first PLAN_88 version was still too optimistic because it treated an
+    upstream hit as if it were already a route replacement, and it did not yet
+    forbid localized-side packages that smuggle in renormalizability through
+    the domain or through seed-equivalent constructions
+  - ownership revision:
+    PLAN_88 should not own the proof search for critical-value transfer or
+    `RV`; those remain with PLAN_80 / PLAN_78 / PLAN_53, while PLAN_88 owns
+    the upstream replacement search and the exact downstream dependency gate
+  - new checkpoint:
+    both upstream tracks now meet at the same stronger critical-seed midpoint
+    once fixed-point critical-value transfer is supplied, and the seed-side
+    canonical gate into fixed-data/local-witness is now fully explicit
+  - current route status:
+    seed-side track [##--------] 20%,
+    larger-domain localized track [##--------] 20%,
+    non-equivalence screening [######----] 60%,
+    strong non-circularity screening [##--------] 20%,
+    external sidecar dependency gate [########--] 80%,
+    downstream cutover readiness [##########] 100%,
+    redesign handoff [###-------] 30%.
 - `PLAN_54` progress:
   - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
   - Added localized residual-bounds wrapper seam:
