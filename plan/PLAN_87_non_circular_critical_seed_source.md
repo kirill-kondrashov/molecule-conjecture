@@ -1,7 +1,7 @@
 # PLAN 87 - Non-Circular Critical Seed Source
 
 Status: ACTIVE
-Progress: [##--------] 20%
+Progress: [###-------] 30%
 Scope: Seed-side subtrack of the broader dual-track program. Produce the
 stronger upstream seed theorem actually needed by the downstream rebase:
 
@@ -18,9 +18,12 @@ without using the blocked current existence route.
 
 Critical revision:
 - As a standalone master research program, this plan is too narrow.
-- PLAN_86 already exposed two co-equal live upstream targets:
+- PLAN_86 already exposed two structurally live upstream targets:
   1. a non-circular critical seed
   2. a genuinely non-singleton localized bridge source
+- Current plausibility is asymmetric, however:
+  the seed side has a concrete producer inventory, while the localized branch
+  now needs a new producer class beyond the closed refined-chart route.
 - So this file is now the seed-side subtrack only. The active master program is
   `PLAN_88_dual_track_seed_or_non_singleton_localized_bridge.md`.
 
@@ -52,7 +55,7 @@ Stuck Rule: STUCK if all candidate seed producers are either:
 - definitionally equivalent to current canonical/current singleton routes, or
 - blocked by the same `defaultBMol` obstruction as the old global route.
 
-Last Updated: 2026-03-09
+Last Updated: 2026-03-10
 
 ## Research Program
 
@@ -77,7 +80,7 @@ Last Updated: 2026-03-09
 
 | Route | Current State | Progress |
 |---|---|---|
-| Candidate inventory | No non-circular producer isolated yet. | [##--------] 20% |
+| Candidate inventory | One concrete producer family is now isolated (`exists_standard_siegel_fixed_point` / Feigenbaum assumptions), but it is blocked for this plan because it factors through `h_norm`. | [###-------] 30% |
 | Seed theorem target | Exact target is now `MoleculeResidualCriticalRenormalizableFixedSeedSource`; canonical + critical-value-transfer now exposes the exact external gate into it. | [####------] 40% |
 | Downstream cutover readiness | Already complete structurally via PLAN_86. | [##########] 100% |
 | Handoff to larger-domain branch | Owned by PLAN_88; ready if seed search collapses. | [########--] 80% |
@@ -93,8 +96,9 @@ Last Updated: 2026-03-09
   - this plan should not be used as the sole active research program
   - singleton localized and canonical seed routes have already been shown to
     collapse to the same upstream debt
-  - therefore seed search must be paired with a live larger-domain search,
-    rather than treated as primary by default
+  - therefore the broader program must still keep a localized escape hatch,
+    but current operational priority should sit on seed-side inventory rather
+    than abstract larger-domain wrapper search
 - The exact remaining downstream requirement is already exposed:
   existence alone is not enough; fixed-data/local-witness need a critical seed
   plus `RV`.
@@ -115,5 +119,14 @@ Last Updated: 2026-03-09
   - targeted probes show all three are ground-axiom-only
   - this does not solve the seed-side theorem search, but it makes the exact
     canonical-side external gate fully explicit
+- New checkpoint:
+  - added
+    `molecule_residual_critical_renormalizable_fixed_seed_source_of_standard_siegel_fixed_point`
+  - targeted probe shows it is ground-axiom-only
+  - this exposes one concrete alternative seed-side producer family already
+    present in the repository:
+    the standard-Siegel / Feigenbaum fixed-point assumptions
+  - but this family is not a valid non-circular hit for PLAN_87, because it
+    explicitly factors through `h_norm`
 - Therefore this plan owns only the theorem search for a non-circular critical
   seed source, under the broader PLAN_88 program.

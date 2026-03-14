@@ -173,7 +173,7 @@ MoleculeResidualRenormalizableFixedSeedSource
   `molecule_residual_fixed_point_existence_source_of_renormalizable_fixed_seed_source_via_refined_singleton_domain`.
 - Targeted probes show that localized seed-domain route is ground-axiom-only.
   Under the current refined witness, however, it is still only a singleton
-  domain, so the live missing step is either:
+  domain, so the structural missing step is either:
   - a non-circular producer of the seed, or
   - a genuinely larger live domain `K`.
 - The current localized refined-singleton route is now also explicitly reduced
@@ -202,20 +202,246 @@ MoleculeResidualRenormalizableFixedSeedSource
   a non-singleton localized bridge source would already propagate to
   existence, canonical fast fixed-point data, fixed-data, and local-witness
   through ground-axiom-only cutovers.
+- The refined-side localized search is now exact:
+  `molecule_residual_non_singleton_localized_bridge_sources_of_refined_invariant_fixed_point_domain_sources_and_bridge_on_and_nontrivial`
+  shows that a real larger-domain breakthrough on that branch must provide:
+  - refined invariant domain data
+  - a localized bridge on that same domain
+  - a genuinely nontrivial second point in the domain
+- The current localized-side candidate is now formally closed:
+  `molecule_residual_refined_invariant_fixed_point_domain_sources_shape`
+  shows the present `fixed_point_exists`-based refined-domain route always has
+  domain either `{f_ref}` or `univ`, and
+  `no_fixed_point_exists_refined_domain_bridge_on_and_nontrivial` shows the
+  nontrivial branch would collapse localized bridge-on to the already-false
+  global `R`.
+  So this current candidate is no longer live; any real localized
+  breakthrough must come from a different larger-domain producer.
+- The refined-chart localized producer class is now generically closed as well:
+  `no_refined_invariant_fixed_point_domain_sources_bridge_on_and_nontrivial`
+  shows that under the current `slice_chart_refined` scaffold, any refined
+  invariant fixed-point domain source with localized bridge-on and a genuine
+  second point still collapses to the already-false global `R`.
+  So any remaining localized-side breakthrough must come from a different
+  producer class, not just a different witness of the same refined-chart form.
+- On the seed side, one concrete alternative producer family is now explicit:
+  `molecule_residual_critical_renormalizable_fixed_seed_source_of_standard_siegel_fixed_point`
+  shows that the standard-Siegel / Feigenbaum fixed-point assumptions already
+  yield a critical seed.
+  But this does not count as a live upstream hit for the current program,
+  because that producer family explicitly factors through `h_norm`.
+- `PLAN_89_non_h_norm_seed_producer_inventory.md` is now complete as an
+  inventory/handoff plan:
+  no surviving non-`h_norm` seed producer class remains in the current repo.
+- New redesign checkpoint:
+  `MoleculeResidualSeparatedOperatorActionSourceWith` and
+  `MoleculeResidualDynamicalBanachNeighborhoodOperatorSeedSourcesWith`
+  make the next operator-side target exact.
+  `no_molecule_residual_separated_operator_action_source_with_current_operator`
+  shows that even after changing the chart, the current `slice_operator` is
+  still too trivial to realize genuine operator-side dynamics.
+- The new active redesign follow-on is
+  `PLAN_90_separated_operator_action_redesign.md`:
+  the next honest progress must now start with one explicit non-`z^2` base-map
+  constructor in `Molecule/BMol.lean`, and only then reconsider further
+  chart/operator redesign.
+- That redesign track now has a first concrete zero-argument scaffold witness:
+  `largeBMol`, `slice_operator_refined`, and
+  `molecule_residual_separated_operator_action_source_with_refined_chart_and_operator`
+  realize separated operator action without going through any seed source.
+  This witness is now also lifted to a compact neighborhood package candidate
+  via
+  `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator`.
+  The refined package is now also factored into a distinct-base scaffold
+  family via
+  `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne`,
+  including a concrete `largeBMol`-based candidate
+  `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator`.
+  The original default-based candidate has now been screened one step further:
+  `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_base_fixed`
+  and
+  `no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_base_renorm`
+  show that this package is not already a disguised PLAN_84 seed package.
+  Its exact upgrade debt collapses to renormalizability of `defaultBMol`,
+  which is false in the current model.
+  `no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_scaffold_and_fixed_renorm`
+  now records that failure directly at the fixed-and-renormalizable
+  seed-upgrade interface.
+  The new theorem
+  `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator_base_ne_default`
+  records that the second candidate does not reuse that same obstruction
+  verbatim.
+  The gate is now sharper:
+  `isFastRenormalizable_of_fixed_of_ne_defaultBMol` and
+  `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator_base_renorm_of_fixed`
+  show that for the `largeBMol`-based candidate, fixedness already forces
+  renormalizability.
+  So
+  `molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_large_base_refined_chart_and_operator_of_fixed`
+  upgrades that package to the seed route from fixedness alone.
+  The screen is now reduced one step further:
+  `self_renormalization_relation_of_fixed_of_ne_defaultBMol` and
+  `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator_base_self_renorm_of_fixed`
+  show that any fixedness proof for that candidate would already force a
+  self-renormalization relation on `largeBMol`.
+  Conversely,
+  `no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator_base_fixed_of_no_self_renorm`
+  reduces the remaining obstruction to ruling out that self-renormalization
+  relation.
+  That obstruction is now discharged for the explicit large-base candidate:
+  `no_self_renormalization_relation_largeBMol` and
+  `no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator_base_fixed`
+  show that the current `largeBMol`-based refined scaffold is not fixed by
+  `Rfast`.
+  The screen is now broader than that single example:
+  `no_self_renormalization_relation_of_eq_sq` and
+  `no_fixed_of_eq_sq_of_ne_defaultBMol`
+  show that any non-`defaultBMol` `BMol` point whose underlying map is
+  literally `z ↦ z^2` is ruled out as a fixed-base candidate.
+  So merely changing the source/target disks around the same quadratic
+  polynomial is no longer live `PLAN_90` search space.
+  Feasibility revision:
+  the next high-value move was no longer another `z^2` disk variant or another
+  immediate `BanachSlice` rewrite.
+  That feasibility step is now implemented:
+  `isProperMap_quad`, `isProperMap_quad_add_const`, and `shiftedBMol` give a
+  first explicit non-`z^2` base-map constructor in `Molecule/BMol.lean`, and
+  `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator`
+  reuses the current refined chart/operator package on that base.
+  That screen is now complete too:
+  `eval_quad_add_const_iterate`,
+  `natDegree_quad_add_const_iterate`,
+  `no_self_renormalization_relation_of_eq_sq_add_const`,
+  and
+  `no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator_base_fixed`
+  show that the shifted-base package is not fixed by `Rfast`.
+  That obstruction is now pushed one level further:
+  `eval_polynomial_iterate`,
+  `natDegree_polynomial_iterate`,
+  `no_self_renormalization_relation_of_eq_eval_polynomial_natDegree_gt_one`,
+  `one_lt_natDegree_of_eq_eval_polynomial`,
+  `no_self_renormalization_relation_of_eq_eval_polynomial`,
+  `no_fixed_and_renorm_of_eq_eval_polynomial`,
+  `not_exists_eq_eval_polynomial_of_fixed_and_renorm`,
+  `no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_fixed_of_eq_eval_polynomial`,
+  `no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_ne_of_fixed_of_eq_eval_polynomial`,
+  `no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_eq_eval_polynomial`,
+  `not_exists_eq_eval_polynomial_of_refined_chart_and_operator_of_ne_fixed_and_renorm`,
+  `not_exists_eq_eval_polynomial_of_refined_chart_and_operator_seed_sources_with_of_ne_of_fixed`,
+  `no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_large_base_refined_chart_and_operator_of_fixed`,
+  `no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_shifted_base_refined_chart_and_operator_of_fixed`,
+  and
+  `no_fixed_of_eq_eval_polynomial_of_ne_defaultBMol`
+  show that any explicit polynomial `BMol` base map fails the same way:
+  low-degree polynomial models are excluded by the `BMol` critical-point
+  axioms, and higher-degree ones fail by iterate degree growth.
+  The full fixed-and-renormalizable gate is now already closed at the bare
+  `BMol` level by `no_fixed_and_renorm_of_eq_eval_polynomial`.
+  Equivalently, `not_exists_eq_eval_polynomial_of_fixed_and_renorm` says any
+  surviving fixed-and-renormalizable point must already lie outside the
+  explicit-polynomial family, and
+  `not_exists_eq_eval_polynomial_of_refined_chart_and_operator_of_ne_fixed_and_renorm`
+  says the same for any surviving generic refined-scaffold candidate.
+  `not_exists_eq_eval_polynomial_of_refined_chart_and_operator_seed_sources_with_of_ne_of_fixed`
+  says the same directly for the actual seed package produced by the generic
+  `of_ne` fixed-upgrade constructor.
+  The same screen now applies directly to the generic refined-scaffold
+  constructor and its fixed-to-seed-upgrade interface too.
+  The full fixed-and-renormalizable upgrade interface is now closed for the
+  whole explicit-polynomial `of_ne` family as well, including the current
+  named default/large/shifted refined-scaffold candidates.
+  And the old large-base-only reduction has now been generalized as well:
+  any non-`defaultBMol` refined-scaffold candidate built via the generic
+  `of_ne` constructor now inherits the exact same fixedness,
+  self-renormalization, and seed-upgrade route.
+  So any future fixed-and-renormalizable candidate in this family must already
+  come from a base with no explicit polynomial representation.
+  So the live next search is beyond the current explicit polynomial
+  family.
 - Critical revision of the research program:
-  seed search and larger-domain localized search should not be treated as a
-  primary route plus a fallback.
-  They are the two co-equal live upstream targets after the structural work.
-- Second critical revision:
+  the old “base-map first, scaffold later” ordering is no longer the active
+  one.
+  the current refined scaffold is still toy-level:
+  `slice_domain = univ`,
+  `slice_chart_refined` is only a two-valued equality code,
+  `slice_operator_refined` is the identity, and
+  `BMol` still carries the current discrete placeholder topology.
+  So although the in-repo search is now exhausted for the explicit polynomial
+  family, that mainly shows the current toy scaffold rejects those models.
+  The live bottleneck is therefore stricter:
+  first produce a non-vacuous scaffold/model redesign with genuine
+  `f_star`-dependence, a nontrivial neighborhood/domain notion, and at least
+  one local/analytic property that is not trivialized by the placeholder
+  topology.
+  Only after that should the `BMol` search widen beyond the explicit
+  polynomial family.
+  Further exclusion theorems should count only if they directly support that
+  positive redesign or isolate the exact model/topology obstruction forcing it.
+- First exact theorem behind that revision:
+  `MoleculeResidualDistinctNonbaseChartDirectionsSourceWith`,
+  `MoleculeResidualDistinctNonbaseOperatorDirectionsSourceWith`,
+  `MoleculeResidualLocallyInjectiveChartSourceWith`,
+  `slice_chart_refined_self`,
+  `slice_chart_refined_eq_one_of_ne`,
+  `slice_chart_refined_nonbase_eq_of_ne`,
+  and
+  `no_molecule_residual_distinct_nonbase_chart_directions_source_with_refined_chart`,
+  `no_molecule_residual_distinct_nonbase_operator_directions_source_with_refined_chart`,
+  `no_molecule_residual_proper_localized_chart_domain_source_current_slice_domain`,
+  `molecule_residual_locally_injective_chart_source_with_of_current_BMol_topology`,
+  `molecule_residual_continuous_chart_source_with_of_current_BMol_topology`,
+  `molecule_residual_locally_constant_chart_source_with_of_current_BMol_topology`,
+  `no_molecule_residual_locally_nonconstant_chart_source_with_of_current_BMol_topology`
+  now make the chart-side and first topology-side toy weaknesses formal.
+  The current refined chart does separate the base point from nonbase points,
+  but all nonbase points still collapse to the same chart value, so the
+  scaffold cannot realize two distinct nonbase directions.
+  The current `slice_domain` is also globally `univ`, and this is now
+  formalized as an exact obstruction too: it cannot count as a proper
+  localized chart domain.
+  There is now also a first replacement-domain witness:
+  `slice_domain_localized` and
+  `molecule_residual_proper_localized_chart_domain_source_with_slice_domain_localized`
+  provide a reference-dependent proper localized chart domain.
+  There is now also a concrete multivalued replacement scaffold:
+  `slice_chart_multivalued`,
+  `slice_operator_multivalued`,
+  `molecule_residual_distinct_nonbase_chart_directions_source_with_slice_chart_multivalued`,
+  `molecule_residual_distinct_nonbase_operator_directions_source_with_slice_chart_multivalued_and_slice_operator_multivalued`,
+  and
+  `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_multivalued_and_slice_operator_multivalued`.
+  There is now also a nontrivial analytic obligation on that stronger pair:
+  `MoleculeResidualNontrivialOperatorLinearizationSourceWith`,
+  `no_molecule_residual_nontrivial_operator_linearization_source_with_refined_operator`,
+  and
+  `molecule_residual_nontrivial_operator_linearization_source_with_slice_chart_multivalued_and_slice_operator_multivalued`.
+  So the active redesign problem is no longer “find any nontrivial domain/chart/operator at all”,
+  or even “find any nonvacuous analytic target at all”.
+  It is now narrower: reuse this stronger scaffold on the first
+  non-explicit-polynomial base and test the fixed/renorm gate there.
+  As a result, no operator placed on top of `slice_chart_refined` can promote
+  it to a source class requiring two distinct nonbase directions either.
+  Meanwhile, the current discrete `BMol` topology makes local injectivity
+  vacuous for every chart by singleton open neighborhoods and makes every chart
+  continuous and locally constant automatically, so none of those local
+  regularity targets can count as meaningful evidence either. More sharply,
+  any chart target that demands a distinct nearby chart direction in every open
+  neighborhood is impossible in the current model.
+- Operational correction:
+  localized-side search stays open only as a reserve branch until a concrete
+  producer class is named beyond the now-closed refined-chart scaffold;
+  abstract localized wrapper search without such a class should not count as
+  progress.
+- Downstream correction:
   an upstream theorem hit is not yet a full replacement theorem.
   The downstream interface still needs:
   - fixed-point critical-value transfer, and
   - renormalizable-point `V`-bound control (`RV`)
   before fixed-data/local-witness can be rebuilt.
-- Third critical revision:
+- Localized-side screening correction:
   a localized-side candidate does not count if its domain/bridge package only
   repackages a seed theorem or bakes `IsFastRenormalizable` into the domain.
-- Fourth critical revision:
+- Ownership correction:
   the active master program should not claim ownership of those sidecar
   carriers. They remain owned by the existing downstream plans
   `PLAN_80`, `PLAN_78`, and `PLAN_53`.
@@ -227,11 +453,15 @@ MoleculeResidualRenormalizableFixedSeedSource
   canonical fast fixed-point data + critical-value transfer + `RV`
   already yields fixed-data and local-witness through ground-axiom-only
   cutovers.
-- So the current active theorem search is now split explicitly into:
-  - seed-side target:
-    `MoleculeResidualCriticalRenormalizableFixedSeedSource`
-  - localized-side target:
+- So the current active theorem program is now ordered explicitly as:
+  - primary operational target:
+    redesign the chart/operator scaffold via
+    `PLAN_90_separated_operator_action_redesign.md`
+    so a genuinely new seed-side producer class can exist at all
+  - reserve target:
     `MoleculeResidualNonSingletonLocalizedBridgeSources`
+    only after naming a concrete producer class outside the closed
+    refined-chart family
 - Any candidate on either side only counts if it escapes the already-known
   singleton/canonical equivalence class.
 - Full downstream progress still requires the separate sidecar carrier plans to

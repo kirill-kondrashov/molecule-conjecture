@@ -2872,6 +2872,248 @@ def MoleculeResidualCriticalRenormalizableFixedSeedSource : Prop :=
       criticalValue f_seed = 0
 
 /--
+Paper-guided upstream seed package suggested by DLS17 Theorem 3.16:
+record a compact `Rfast`-invariant Banach-neighborhood operator route around a
+renormalizable fixed pacman, at the minimal interface needed by the seed-side
+program. The current repository does not yet produce this package
+non-circularly; this structure names the target.
+-/
+structure MoleculeResidualBanachNeighborhoodOperatorSeedSourcesWith
+    (chart : BMol → BMol → SliceSpace)
+    (op : BMol → SliceSpace → SliceSpace) where
+  f_star : BMol
+  B : Set SliceSpace
+  chart_mem : chart f_star f_star ∈ B
+  compact : IsCompact B
+  maps : MapsTo (op f_star) B B
+  fixed : Rfast f_star = f_star
+  renorm : IsFastRenormalizable f_star
+
+/--
+Chart-parameterized separated operator package: the Banach neighborhood must
+realize a genuinely nontrivial chart direction.
+-/
+structure MoleculeResidualSeparatedBanachNeighborhoodOperatorSeedSourcesWith
+    (chart : BMol → BMol → SliceSpace)
+    (op : BMol → SliceSpace → SliceSpace)
+    extends MoleculeResidualBanachNeighborhoodOperatorSeedSourcesWith chart op where
+  realized_nonbase :
+    ∃ g : BMol,
+      chart f_star g ∈ B ∧
+        chart f_star g ≠ chart f_star f_star
+
+/--
+Minimal separation target for a chosen chart scaffold.
+-/
+def MoleculeResidualSeparatedSliceChartSourceWith
+    (chart : BMol → BMol → SliceSpace) : Prop :=
+  ∃ f_ref g : BMol, chart f_ref g ≠ chart f_ref f_ref
+
+/--
+Stronger chart-side redesign target: the scaffold should support at least two
+distinct nonbase chart directions, not just one distinguished non-reference
+value.
+-/
+def MoleculeResidualDistinctNonbaseChartDirectionsSourceWith
+    (chart : BMol → BMol → SliceSpace) : Prop :=
+  ∃ f_ref g h : BMol,
+    chart f_ref g ≠ chart f_ref f_ref ∧
+      chart f_ref h ≠ chart f_ref f_ref ∧
+      chart f_ref g ≠ chart f_ref h
+
+/--
+Minimal operator-side redesign target for a chosen chart/operator scaffold:
+some separated chart direction must also be moved differently by the operator.
+-/
+def MoleculeResidualSeparatedOperatorActionSourceWith
+    (chart : BMol → BMol → SliceSpace)
+    (op : BMol → SliceSpace → SliceSpace) : Prop :=
+  ∃ f_ref g : BMol,
+    chart f_ref g ≠ chart f_ref f_ref ∧
+      op f_ref (chart f_ref g) ≠ op f_ref (chart f_ref f_ref)
+
+/--
+Stronger operator-side redesign target: the scaffold should support two
+distinct nonbase chart directions whose operator images are also distinct.
+-/
+def MoleculeResidualDistinctNonbaseOperatorDirectionsSourceWith
+    (chart : BMol → BMol → SliceSpace)
+    (op : BMol → SliceSpace → SliceSpace) : Prop :=
+  ∃ f_ref g h : BMol,
+    chart f_ref g ≠ chart f_ref f_ref ∧
+      chart f_ref h ≠ chart f_ref f_ref ∧
+      chart f_ref g ≠ chart f_ref h ∧
+      op f_ref (chart f_ref g) ≠ op f_ref (chart f_ref h)
+
+/--
+Minimal local chart regularity target: around every reference point, the chart
+should be injective on some open neighborhood.
+-/
+def MoleculeResidualLocallyInjectiveChartSourceWith
+    (chart : BMol → BMol → SliceSpace) : Prop :=
+  ∀ f_ref : BMol,
+    ∃ U : Set BMol, IsOpen U ∧ f_ref ∈ U ∧ InjOn (chart f_ref) U
+
+/--
+Minimal continuity target: each reference-point chart should be continuous as a
+map out of `BMol`.
+-/
+def MoleculeResidualContinuousChartSourceWith
+    (chart : BMol → BMol → SliceSpace) : Prop :=
+  ∀ f_ref : BMol, Continuous (chart f_ref)
+
+/--
+Topology-parameterized continuity target: same chart family, but with the
+`BMol` topology supplied explicitly instead of inherited from the default
+instance.
+-/
+def MoleculeResidualContinuousChartSourceWithOn
+    (t : TopologicalSpace BMol)
+    (chart : BMol → BMol → SliceSpace) : Prop :=
+  ∀ f_ref : BMol, @Continuous BMol SliceSpace t inferInstance (chart f_ref)
+
+/--
+Stronger local regularity target: around every point, the chart should be
+constant on some open neighborhood.
+-/
+def MoleculeResidualLocallyConstantChartSourceWith
+    (chart : BMol → BMol → SliceSpace) : Prop :=
+  ∀ f_ref x : BMol,
+    ∃ U : Set BMol, IsOpen U ∧ x ∈ U ∧ ∀ y ∈ U, chart f_ref y = chart f_ref x
+
+/--
+Genuine local-variation target: every open neighborhood of every point should
+contain a distinct chart direction.
+-/
+def MoleculeResidualLocallyNonconstantChartSourceWith
+    (chart : BMol → BMol → SliceSpace) : Prop :=
+  ∀ f_ref x : BMol, ∀ U : Set BMol,
+    IsOpen U → x ∈ U →
+      ∃ y ∈ U, y ≠ x ∧ chart f_ref y ≠ chart f_ref x
+
+/--
+Nontrivial chart-domain target: each reference point should have a proper open
+chart domain containing it, rather than the global placeholder domain `univ`.
+-/
+def MoleculeResidualProperLocalizedChartDomainSource
+    (domain : BMol → Set BMol) : Prop :=
+  ∀ f_ref : BMol,
+    IsOpen (domain f_ref) ∧
+      f_ref ∈ domain f_ref ∧
+      ∃ g : BMol, g ∉ domain f_ref
+
+/--
+Nonvacuous operator-linearization target: at the reference chart value, the
+operator should be differentiable with derivative neither `0` nor `1`.
+This excludes the constant and identity placeholder operators.
+-/
+def MoleculeResidualNontrivialOperatorLinearizationSourceWith
+    (chart : BMol → BMol → SliceSpace)
+    (op : BMol → SliceSpace → SliceSpace) : Prop :=
+  ∃ f_ref : BMol,
+    DifferentiableAt ℂ (op f_ref) (chart f_ref f_ref) ∧
+      deriv (op f_ref) (chart f_ref f_ref) ≠ 0 ∧
+      deriv (op f_ref) (chart f_ref f_ref) ≠ 1
+
+/--
+Pre-seed Banach-neighborhood scaffold for the paper-guided operator route.
+This records only the compact invariant neighborhood and chart/operator
+geometry, without yet supplying a fixed renormalizable seed.
+-/
+structure MoleculeResidualBanachNeighborhoodOperatorScaffoldSourcesWith
+    (chart : BMol → BMol → SliceSpace)
+    (op : BMol → SliceSpace → SliceSpace) where
+  f_ref : BMol
+  B : Set SliceSpace
+  chart_mem : chart f_ref f_ref ∈ B
+  compact : IsCompact B
+  maps : MapsTo (op f_ref) B B
+
+/--
+Stronger pre-seed scaffold package: the compact invariant neighborhood already
+realizes a nontrivial chart direction and genuine operator-side action on it.
+-/
+structure MoleculeResidualDynamicalBanachNeighborhoodOperatorScaffoldSourcesWith
+    (chart : BMol → BMol → SliceSpace)
+    (op : BMol → SliceSpace → SliceSpace)
+    extends MoleculeResidualBanachNeighborhoodOperatorScaffoldSourcesWith chart op where
+  realized_nonbase :
+    ∃ g : BMol,
+      chart f_ref g ∈ B ∧
+        chart f_ref g ≠ chart f_ref f_ref
+  moved_nonbase :
+    ∃ g : BMol,
+      chart f_ref g ∈ B ∧
+        chart f_ref g ≠ chart f_ref f_ref ∧
+        op f_ref (chart f_ref g) ≠ op f_ref (chart f_ref f_ref)
+
+/--
+Stronger chart-parameterized operator package: besides chart separation, the
+operator must act differently on a realized nonbase chart direction.
+-/
+structure MoleculeResidualDynamicalBanachNeighborhoodOperatorSeedSourcesWith
+    (chart : BMol → BMol → SliceSpace)
+    (op : BMol → SliceSpace → SliceSpace)
+    extends MoleculeResidualSeparatedBanachNeighborhoodOperatorSeedSourcesWith chart op where
+  moved_nonbase :
+    ∃ g : BMol,
+      chart f_star g ∈ B ∧
+        chart f_star g ≠ chart f_star f_star ∧
+        op f_star (chart f_star g) ≠ op f_star (chart f_star f_star)
+
+/--
+Legacy mainline instantiation of the paper-guided operator package.
+-/
+structure MoleculeResidualBanachNeighborhoodOperatorSeedSources where
+  f_star : BMol
+  B : Set SliceSpace
+  chart_mem : slice_chart f_star f_star ∈ B
+  compact : IsCompact B
+  maps : MapsTo (slice_operator f_star) B B
+  fixed : Rfast f_star = f_star
+  renorm : IsFastRenormalizable f_star
+
+/--
+Stronger paper-guided operator package: the Banach neighborhood must witness a
+genuinely nontrivial chart direction realized by some map in the current model.
+This is the minimal separation property missing from the constant-slice
+scaffold.
+-/
+structure MoleculeResidualSeparatedBanachNeighborhoodOperatorSeedSources
+    extends MoleculeResidualBanachNeighborhoodOperatorSeedSources where
+  realized_nonbase :
+    ∃ g : BMol,
+      slice_chart f_star g ∈ B ∧
+        slice_chart f_star g ≠ slice_chart f_star f_star
+
+/--
+Minimal redesign target exposed by the operator-route obstruction:
+the slice chart must separate the base map from some other map.
+-/
+def MoleculeResidualSeparatedSliceChartSource : Prop :=
+  ∃ f_ref g : BMol, slice_chart f_ref g ≠ slice_chart f_ref f_ref
+
+/--
+Any chart-parameterized Banach-neighborhood operator seed package already
+yields the PLAN_84 seed source.
+-/
+theorem molecule_residual_renormalizable_fixed_seed_source_of_banach_neighborhood_operator_seed_sources_with
+    {chart : BMol → BMol → SliceSpace}
+    {op : BMol → SliceSpace → SliceSpace}
+    (h_sources : MoleculeResidualBanachNeighborhoodOperatorSeedSourcesWith chart op) :
+    MoleculeResidualRenormalizableFixedSeedSource :=
+  ⟨h_sources.f_star, h_sources.renorm, h_sources.fixed⟩
+
+/--
+Any Banach-neighborhood operator seed package already yields the PLAN_84 seed
+source.
+-/
+theorem molecule_residual_renormalizable_fixed_seed_source_of_banach_neighborhood_operator_seed_sources
+    (h_sources : MoleculeResidualBanachNeighborhoodOperatorSeedSources) :
+    MoleculeResidualRenormalizableFixedSeedSource :=
+  ⟨h_sources.f_star, h_sources.renorm, h_sources.fixed⟩
+
+/--
 Chosen seed point from a PLAN_84 seed source.
 -/
 noncomputable def renormalizable_fixed_seed_point
@@ -2896,6 +3138,2258 @@ theorem renormalizable_fixed_seed_point_fixed
     Rfast (renormalizable_fixed_seed_point h_seed) =
       renormalizable_fixed_seed_point h_seed :=
   (renormalizable_fixed_seed_point_spec h_seed).2
+
+/--
+Under the current placeholder Banach-slice scaffold, any PLAN_84 seed already
+produces the Banach-neighborhood operator package by taking the singleton
+slice neighborhood `{0}`. This shows the new operator route is not yet a
+genuinely stronger in-repo producer class.
+-/
+noncomputable def molecule_residual_banach_neighborhood_operator_seed_sources_of_renormalizable_fixed_seed_source
+    (h_seed : MoleculeResidualRenormalizableFixedSeedSource) :
+    MoleculeResidualBanachNeighborhoodOperatorSeedSources := by
+  have h_compact_zero : IsCompact ({0} : Set SliceSpace) :=
+    isCompact_singleton
+  refine {
+    f_star := renormalizable_fixed_seed_point h_seed
+    B := ({0} : Set SliceSpace)
+    chart_mem := by simp [slice_chart]
+    compact := h_compact_zero
+    maps := ?_
+    fixed := renormalizable_fixed_seed_point_fixed h_seed
+    renorm := (renormalizable_fixed_seed_point_spec h_seed).1
+  }
+  intro z hz
+  simp [slice_operator]
+
+/--
+In the current scaffold the Banach-neighborhood operator source is equivalent
+to the PLAN_84 seed interface: the forward direction is structural, and the
+reverse direction uses the constant-slice placeholder package.
+-/
+theorem molecule_residual_banach_neighborhood_operator_seed_sources_iff_renormalizable_fixed_seed_source :
+    Nonempty MoleculeResidualBanachNeighborhoodOperatorSeedSources ↔
+      MoleculeResidualRenormalizableFixedSeedSource := by
+  constructor
+  · intro h_nonempty
+    rcases h_nonempty with ⟨h_sources⟩
+    exact
+      molecule_residual_renormalizable_fixed_seed_source_of_banach_neighborhood_operator_seed_sources
+        h_sources
+  · intro h_seed
+    exact
+      ⟨molecule_residual_banach_neighborhood_operator_seed_sources_of_renormalizable_fixed_seed_source
+        h_seed⟩
+
+/--
+Under the current placeholder `slice_chart`, no Banach-neighborhood operator
+package can realize a genuinely nontrivial chart direction. So any future use
+of the paper-guided operator route must first strengthen the slice scaffold.
+-/
+theorem no_molecule_residual_separated_banach_neighborhood_operator_seed_sources :
+    ¬ Nonempty MoleculeResidualSeparatedBanachNeighborhoodOperatorSeedSources := by
+  intro h_nonempty
+  rcases h_nonempty with ⟨h_sources⟩
+  rcases h_sources.realized_nonbase with ⟨g, _hg_mem, hg_ne⟩
+  simp [slice_chart] at hg_ne
+
+/--
+Any separated chart-parameterized operator source forces chart separation.
+-/
+theorem molecule_residual_separated_slice_chart_source_with_of_separated_banach_neighborhood_operator_seed_sources_with
+    {chart : BMol → BMol → SliceSpace}
+    {op : BMol → SliceSpace → SliceSpace}
+    (h_sources :
+      MoleculeResidualSeparatedBanachNeighborhoodOperatorSeedSourcesWith chart op) :
+    MoleculeResidualSeparatedSliceChartSourceWith chart := by
+  rcases h_sources.realized_nonbase with ⟨g, _hg_mem, hg_ne⟩
+  exact ⟨h_sources.f_star, g, hg_ne⟩
+
+/--
+Any dynamical chart-parameterized operator package forces separated operator
+action on some realized chart direction.
+-/
+theorem molecule_residual_separated_operator_action_source_with_of_dynamical_banach_neighborhood_operator_seed_sources_with
+    {chart : BMol → BMol → SliceSpace}
+    {op : BMol → SliceSpace → SliceSpace}
+    (h_sources :
+      MoleculeResidualDynamicalBanachNeighborhoodOperatorSeedSourcesWith chart op) :
+    MoleculeResidualSeparatedOperatorActionSourceWith chart op := by
+  rcases h_sources.moved_nonbase with ⟨g, _hg_mem, hg_ne, hmove⟩
+  exact ⟨h_sources.f_star, g, hg_ne, hmove⟩
+
+/--
+Any dynamical pre-seed scaffold package already forces separated operator
+action on some realized chart direction.
+-/
+theorem molecule_residual_separated_operator_action_source_with_of_dynamical_banach_neighborhood_operator_scaffold_sources_with
+    {chart : BMol → BMol → SliceSpace}
+    {op : BMol → SliceSpace → SliceSpace}
+    (h_sources :
+      MoleculeResidualDynamicalBanachNeighborhoodOperatorScaffoldSourcesWith chart op) :
+    MoleculeResidualSeparatedOperatorActionSourceWith chart op := by
+  rcases h_sources.moved_nonbase with ⟨g, _hg_mem, hg_ne, hmove⟩
+  exact ⟨h_sources.f_ref, g, hg_ne, hmove⟩
+
+/--
+If a dynamical pre-seed scaffold package is later paired with a fixed
+renormalizable base map, it upgrades directly to the stronger seed package.
+-/
+def molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_of_scaffold_and_fixed_renorm
+    {chart : BMol → BMol → SliceSpace}
+    {op : BMol → SliceSpace → SliceSpace}
+    (h_scaffold :
+      MoleculeResidualDynamicalBanachNeighborhoodOperatorScaffoldSourcesWith chart op)
+    (h_fixed : Rfast h_scaffold.f_ref = h_scaffold.f_ref)
+    (h_renorm : IsFastRenormalizable h_scaffold.f_ref) :
+    MoleculeResidualDynamicalBanachNeighborhoodOperatorSeedSourcesWith chart op :=
+  { toMoleculeResidualSeparatedBanachNeighborhoodOperatorSeedSourcesWith :=
+      { toMoleculeResidualBanachNeighborhoodOperatorSeedSourcesWith :=
+          { f_star := h_scaffold.f_ref
+            B := h_scaffold.B
+            chart_mem := h_scaffold.chart_mem
+            compact := h_scaffold.compact
+            maps := h_scaffold.maps
+            fixed := h_fixed
+            renorm := h_renorm }
+        realized_nonbase := h_scaffold.realized_nonbase }
+    moved_nonbase := h_scaffold.moved_nonbase }
+
+/--
+Any separated Banach-neighborhood operator source would in particular force the
+slice chart to separate two maps.
+-/
+theorem molecule_residual_separated_slice_chart_source_of_separated_banach_neighborhood_operator_seed_sources
+    (h_sources : MoleculeResidualSeparatedBanachNeighborhoodOperatorSeedSources) :
+    MoleculeResidualSeparatedSliceChartSource := by
+  rcases h_sources.realized_nonbase with ⟨g, _hg_mem, hg_ne⟩
+  exact ⟨h_sources.f_star, g, hg_ne⟩
+
+/--
+The current placeholder `slice_chart` is constant, so the minimal redesign
+target is impossible in the current scaffold.
+-/
+theorem no_molecule_residual_separated_slice_chart_source :
+    ¬ MoleculeResidualSeparatedSliceChartSource := by
+  intro h_sep
+  rcases h_sep with ⟨f_ref, g, hg_ne⟩
+  simp [slice_chart] at hg_ne
+
+/--
+With the current placeholder `slice_operator`, no chart choice can realize a
+genuine separated operator action: the operator is constant.
+-/
+theorem no_molecule_residual_separated_operator_action_source_with_current_operator
+    {chart : BMol → BMol → SliceSpace} :
+    ¬ MoleculeResidualSeparatedOperatorActionSourceWith chart slice_operator := by
+  intro h_action
+  rcases h_action with ⟨f_ref, g, _hg_ne, hmove⟩
+  simp [slice_operator] at hmove
+
+/--
+So with the current placeholder `slice_operator`, no chart-parameterized
+Banach-neighborhood package can yet realize genuine operator-side dynamics.
+-/
+theorem no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_current_operator
+    {chart : BMol → BMol → SliceSpace} :
+    ¬ Nonempty
+        (MoleculeResidualDynamicalBanachNeighborhoodOperatorSeedSourcesWith
+          chart slice_operator) := by
+  intro h_nonempty
+  rcases h_nonempty with ⟨h_sources⟩
+  exact
+    no_molecule_residual_separated_operator_action_source_with_current_operator
+      (molecule_residual_separated_operator_action_source_with_of_dynamical_banach_neighborhood_operator_seed_sources_with
+        h_sources)
+
+/--
+The refined chart paired with the nonconstant operator candidate
+`slice_operator_refined` already realizes the minimal operator-side redesign
+target, and it does so without appealing to any seed source.
+-/
+theorem molecule_residual_separated_operator_action_source_with_refined_chart_and_operator :
+    MoleculeResidualSeparatedOperatorActionSourceWith
+      slice_chart_refined slice_operator_refined := by
+  refine ⟨defaultBMol, largeBMol, ?_, ?_⟩
+  · simp [slice_chart_refined, largeBMol_ne_defaultBMol]
+  · simp [slice_operator_refined, slice_chart_refined, largeBMol_ne_defaultBMol]
+
+/--
+The multivalued replacement chart already realizes two distinct nonbase chart
+directions in the current repository.
+-/
+theorem molecule_residual_distinct_nonbase_chart_directions_source_with_slice_chart_multivalued :
+    MoleculeResidualDistinctNonbaseChartDirectionsSourceWith slice_chart_multivalued := by
+  let h_self := slice_chart_multivalued_self shiftedBMol
+  let h_default :=
+    slice_chart_multivalued_default_eq_one_of_ne shiftedBMol_ne_defaultBMol
+  let h_large :=
+    slice_chart_multivalued_large_eq_two_of_ne
+      shiftedBMol_ne_largeBMol
+  refine ⟨shiftedBMol, defaultBMol, largeBMol, ?_, ?_, ?_⟩
+  · rw [h_default, h_self]
+    norm_num
+  · rw [h_large, h_self]
+    norm_num
+  · rw [h_default, h_large]
+    norm_num
+
+/--
+The multivalued replacement chart/operator pair already realizes two distinct
+nonbase operator directions in the current repository.
+-/
+theorem
+    molecule_residual_distinct_nonbase_operator_directions_source_with_slice_chart_multivalued_and_slice_operator_multivalued :
+    MoleculeResidualDistinctNonbaseOperatorDirectionsSourceWith
+      slice_chart_multivalued slice_operator_multivalued := by
+  let h_self := slice_chart_multivalued_self shiftedBMol
+  let h_default :=
+    slice_chart_multivalued_default_eq_one_of_ne shiftedBMol_ne_defaultBMol
+  let h_large :=
+    slice_chart_multivalued_large_eq_two_of_ne shiftedBMol_ne_largeBMol
+  refine ⟨shiftedBMol, defaultBMol, largeBMol, ?_, ?_, ?_, ?_⟩
+  · rw [h_default, h_self]
+    norm_num
+  · rw [h_large, h_self]
+    norm_num
+  · rw [h_default, h_large]
+    norm_num
+  · rw [h_default, h_large]
+    exact slice_operator_multivalued_separates_one_two_shifted
+
+/--
+The finite-observation replacement chart already realizes two distinct
+nonbase chart directions without using literal `BMol` equality tests.
+-/
+theorem
+    molecule_residual_distinct_nonbase_chart_directions_source_with_slice_chart_finite_observation :
+    MoleculeResidualDistinctNonbaseChartDirectionsSourceWith
+      slice_chart_finite_observation := by
+  let h_self := slice_chart_finite_observation_self shiftedBMol
+  let h_default := slice_chart_finite_observation_default_shifted
+  let h_large := slice_chart_finite_observation_large_shifted
+  refine ⟨shiftedBMol, defaultBMol, largeBMol, ?_, ?_, ?_⟩
+  · rw [h_default, h_self]
+    norm_num
+  · rw [h_large, h_self]
+    norm_num
+  · rw [h_default, h_large]
+    norm_num
+
+/--
+The finite-observation chart pairs with the existing multivalued operator to
+realize two distinct nonbase operator directions at the shifted base point.
+-/
+theorem
+    molecule_residual_distinct_nonbase_operator_directions_source_with_slice_chart_finite_observation_and_slice_operator_multivalued :
+    MoleculeResidualDistinctNonbaseOperatorDirectionsSourceWith
+      slice_chart_finite_observation slice_operator_multivalued := by
+  let h_self := slice_chart_finite_observation_self shiftedBMol
+  let h_default := slice_chart_finite_observation_default_shifted
+  let h_large := slice_chart_finite_observation_large_shifted
+  refine ⟨shiftedBMol, defaultBMol, largeBMol, ?_, ?_, ?_, ?_⟩
+  · rw [h_default, h_self]
+    norm_num
+  · rw [h_large, h_self]
+    norm_num
+  · rw [h_default, h_large]
+    norm_num
+  · rw [h_default, h_large]
+    exact slice_operator_multivalued_separates_one_two_shifted
+
+/--
+The finite-observation chart paired with the finite-observation operator still
+realizes two distinct nonbase operator directions on the shifted observation
+class.
+-/
+theorem
+    molecule_residual_distinct_nonbase_operator_directions_source_with_slice_chart_finite_observation_and_slice_operator_finite_observation :
+    MoleculeResidualDistinctNonbaseOperatorDirectionsSourceWith
+      slice_chart_finite_observation slice_operator_finite_observation := by
+  let h_obs : bmol_finite_observation shiftedBMol = bmol_finite_observation shiftedBMol := rfl
+  let h_self := slice_chart_finite_observation_self shiftedBMol
+  let h_default :=
+    slice_chart_finite_observation_default_eq_one_of_eq_shifted_observation h_obs
+  let h_large :=
+    slice_chart_finite_observation_large_eq_two_of_eq_shifted_observation h_obs
+  refine ⟨shiftedBMol, defaultBMol, largeBMol, ?_, ?_, ?_, ?_⟩
+  · rw [h_default, h_self]
+    norm_num
+  · rw [h_large, h_self]
+    norm_num
+  · rw [h_default, h_large]
+    norm_num
+  · rw [h_default, h_large]
+    exact
+      slice_operator_finite_observation_separates_one_two_of_eq_shifted_observation
+        h_obs
+
+/--
+The multivalued replacement chart/operator pair already lifts to a compact
+Banach-neighborhood scaffold package without using any seed source.
+-/
+noncomputable def
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_multivalued_and_slice_operator_multivalued :
+    MoleculeResidualDynamicalBanachNeighborhoodOperatorScaffoldSourcesWith
+      slice_chart_multivalued slice_operator_multivalued := by
+  let B : Set SliceSpace := ({(0 : SliceSpace), 1, 2} : Set SliceSpace)
+  have h_compact_B : IsCompact B := by
+    exact
+      (((Set.finite_singleton (2 : SliceSpace)).insert (1 : SliceSpace)).insert
+        (0 : SliceSpace)).isCompact
+  let h_self := slice_chart_multivalued_self shiftedBMol
+  let h_default :=
+    slice_chart_multivalued_default_eq_one_of_ne shiftedBMol_ne_defaultBMol
+  refine
+    { f_ref := shiftedBMol
+      B := B
+      chart_mem := by
+        rw [h_self]
+        simp [B]
+      compact := h_compact_B
+      maps := by
+        simpa [B] using slice_operator_multivalued_maps_three_point_shifted
+      realized_nonbase := by
+        refine ⟨defaultBMol, ?_, ?_⟩
+        · rw [h_default]
+          simp [B]
+        · rw [h_default, h_self]
+          norm_num
+      moved_nonbase := by
+        refine ⟨defaultBMol, ?_, ?_, ?_⟩
+        · rw [h_default]
+          simp [B]
+        · rw [h_default, h_self]
+          norm_num
+        · rw [h_default, h_self]
+          rw [slice_operator_multivalued_one_shifted, slice_operator_multivalued_zero_shifted]
+          norm_num }
+
+/--
+The finite-observation chart reuses the same compact `{0, 1, 2}` slice package
+with the existing multivalued operator at the shifted base point.
+-/
+noncomputable def
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_finite_observation_and_slice_operator_multivalued :
+    MoleculeResidualDynamicalBanachNeighborhoodOperatorScaffoldSourcesWith
+      slice_chart_finite_observation slice_operator_multivalued := by
+  let B : Set SliceSpace := ({(0 : SliceSpace), 1, 2} : Set SliceSpace)
+  have h_compact_B : IsCompact B := by
+    exact
+      (((Set.finite_singleton (2 : SliceSpace)).insert (1 : SliceSpace)).insert
+        (0 : SliceSpace)).isCompact
+  let h_self := slice_chart_finite_observation_self shiftedBMol
+  let h_default := slice_chart_finite_observation_default_shifted
+  refine
+    { f_ref := shiftedBMol
+      B := B
+      chart_mem := by
+        rw [h_self]
+        simp [B]
+      compact := h_compact_B
+      maps := by
+        simpa [B] using slice_operator_multivalued_maps_three_point_shifted
+      realized_nonbase := by
+        refine ⟨defaultBMol, ?_, ?_⟩
+        · rw [h_default]
+          simp [B]
+        · rw [h_default, h_self]
+          norm_num
+      moved_nonbase := by
+        refine ⟨defaultBMol, ?_, ?_, ?_⟩
+        · rw [h_default]
+          simp [B]
+        · rw [h_default, h_self]
+          norm_num
+        · rw [h_default, h_self]
+          rw [slice_operator_multivalued_one_shifted, slice_operator_multivalued_zero_shifted]
+          norm_num }
+
+/--
+Any base in the shifted finite-observation class already supports the same
+compact `{0, 1, 2}` scaffold package with the finite-observation chart and
+finite-observation operator.
+-/
+noncomputable def
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_finite_observation_and_slice_operator_finite_observation_of_eq_shifted_observation
+    {f_ref : BMol}
+    (h_obs : bmol_finite_observation f_ref = bmol_finite_observation shiftedBMol) :
+    MoleculeResidualDynamicalBanachNeighborhoodOperatorScaffoldSourcesWith
+      slice_chart_finite_observation slice_operator_finite_observation := by
+  let B : Set SliceSpace := ({(0 : SliceSpace), 1, 2} : Set SliceSpace)
+  have h_compact_B : IsCompact B := by
+    exact
+      (((Set.finite_singleton (2 : SliceSpace)).insert (1 : SliceSpace)).insert
+        (0 : SliceSpace)).isCompact
+  let h_self := slice_chart_finite_observation_self f_ref
+  let h_default :=
+    slice_chart_finite_observation_default_eq_one_of_eq_shifted_observation h_obs
+  refine
+    { f_ref := f_ref
+      B := B
+      chart_mem := by
+        rw [h_self]
+        simp [B]
+      compact := h_compact_B
+      maps := by
+        simpa [B] using
+          slice_operator_finite_observation_maps_three_point_of_eq_shifted_observation
+            h_obs
+      realized_nonbase := by
+        refine ⟨defaultBMol, ?_, ?_⟩
+        · rw [h_default]
+          simp [B]
+        · rw [h_default, h_self]
+          norm_num
+      moved_nonbase := by
+        refine ⟨defaultBMol, ?_, ?_, ?_⟩
+        · rw [h_default]
+          simp [B]
+        · rw [h_default, h_self]
+          norm_num
+        · rw [h_default, h_self]
+          rw [slice_operator_finite_observation_one_of_eq_shifted_observation h_obs]
+          rw [slice_operator_finite_observation_zero_of_eq_shifted_observation h_obs]
+          norm_num }
+
+/--
+In particular, the shifted base itself still realizes that finite-observation
+scaffold package.
+-/
+noncomputable def
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_finite_observation_and_slice_operator_finite_observation :
+    MoleculeResidualDynamicalBanachNeighborhoodOperatorScaffoldSourcesWith
+      slice_chart_finite_observation slice_operator_finite_observation :=
+  molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_finite_observation_and_slice_operator_finite_observation_of_eq_shifted_observation
+    (f_ref := shiftedBMol) rfl
+
+/--
+Any base with zero-value observation `1` already supports a compact
+finite-observation scaffold with the broader zero-observation operator.
+The invariant neighborhood depends on whether the source-domain tag is `0` or
+`1`, but both branches carry genuine moved nonbase directions.
+-/
+noncomputable def
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_finite_observation_and_slice_operator_zero_observation_of_zero_eq_one
+    {f_ref : BMol}
+    (h_zero : bmol_zero_observation f_ref = 1) :
+    MoleculeResidualDynamicalBanachNeighborhoodOperatorScaffoldSourcesWith
+      slice_chart_finite_observation slice_operator_zero_observation := by
+  by_cases h_mem : ((5 : ℂ) / 2) ∈ f_ref.U
+  · have h_tag : bmol_large_source_tag_observation f_ref = 1 := by
+      simp [bmol_large_source_tag_observation, h_mem]
+    let B : Set SliceSpace := ({(-1 : SliceSpace), 0, 1, 2, 3} : Set SliceSpace)
+    have h_compact_B : IsCompact B := by
+      exact
+        ((((Set.finite_singleton (3 : SliceSpace)).insert (2 : SliceSpace)).insert
+            (1 : SliceSpace)).insert (0 : SliceSpace)).insert (-1 : SliceSpace) |>.isCompact
+    let h_self := slice_chart_finite_observation_self f_ref
+    let h_large :=
+      slice_chart_finite_observation_large_eq_one_of_zero_eq_one_and_tag_one h_zero h_tag
+    refine
+      { f_ref := f_ref
+        B := B
+        chart_mem := by
+          rw [h_self]
+          simp [B]
+        compact := h_compact_B
+        maps := by
+          simpa [B] using
+            slice_operator_zero_observation_maps_five_point_of_zero_eq_one h_zero
+        realized_nonbase := by
+          refine ⟨largeBMol, ?_, ?_⟩
+          · rw [h_large]
+            simp [B]
+          · rw [h_large, h_self]
+            norm_num
+        moved_nonbase := by
+          refine ⟨largeBMol, ?_, ?_, ?_⟩
+          · rw [h_large]
+            simp [B]
+          · rw [h_large, h_self]
+            norm_num
+          · rw [h_large, h_self]
+            rw [slice_operator_zero_observation_one_of_zero_eq_one h_zero]
+            rw [slice_operator_zero_observation_zero_of_zero_eq_one h_zero]
+            norm_num }
+  · have h_tag : bmol_large_source_tag_observation f_ref = 0 := by
+      simp [bmol_large_source_tag_observation, h_mem]
+    let B : Set SliceSpace := ({(0 : SliceSpace), 1, 2} : Set SliceSpace)
+    have h_compact_B : IsCompact B := by
+      exact
+        (((Set.finite_singleton (2 : SliceSpace)).insert (1 : SliceSpace)).insert
+          (0 : SliceSpace)).isCompact
+    let h_self := slice_chart_finite_observation_self f_ref
+    let h_default :=
+      slice_chart_finite_observation_default_eq_one_of_zero_eq_one_and_tag_zero h_zero h_tag
+    refine
+      { f_ref := f_ref
+        B := B
+        chart_mem := by
+          rw [h_self]
+          simp [B]
+        compact := h_compact_B
+        maps := by
+          simpa [B] using
+            slice_operator_zero_observation_maps_three_point_of_zero_eq_one h_zero
+        realized_nonbase := by
+          refine ⟨defaultBMol, ?_, ?_⟩
+          · rw [h_default]
+            simp [B]
+          · rw [h_default, h_self]
+            norm_num
+        moved_nonbase := by
+          refine ⟨defaultBMol, ?_, ?_, ?_⟩
+          · rw [h_default]
+            simp [B]
+          · rw [h_default, h_self]
+            norm_num
+          · rw [h_default, h_self]
+            rw [slice_operator_zero_observation_one_of_zero_eq_one h_zero]
+            rw [slice_operator_zero_observation_zero_of_zero_eq_one h_zero]
+            norm_num }
+
+/--
+But the current refined chart is still toy-level: it only has one nonbase
+chart direction, so it cannot support a richer local chart geometry.
+-/
+theorem no_molecule_residual_distinct_nonbase_chart_directions_source_with_refined_chart :
+    ¬ MoleculeResidualDistinctNonbaseChartDirectionsSourceWith slice_chart_refined := by
+  intro h_source
+  rcases h_source with ⟨f_ref, g, h, hg_nonbase, hh_nonbase, h_sep⟩
+  have hg_ne : g ≠ f_ref := by
+    intro h_eq
+    apply hg_nonbase
+    simp [slice_chart_refined, h_eq]
+  have hh_ne : h ≠ f_ref := by
+    intro h_eq
+    apply hh_nonbase
+    simp [slice_chart_refined, h_eq]
+  exact h_sep (slice_chart_refined_nonbase_eq_of_ne hg_ne hh_ne)
+
+/--
+So the current refined chart also blocks any stronger operator-side source
+that would require two distinct nonbase directions, regardless of the chosen
+operator.
+-/
+theorem no_molecule_residual_distinct_nonbase_operator_directions_source_with_refined_chart
+    {op : BMol → SliceSpace → SliceSpace} :
+    ¬ MoleculeResidualDistinctNonbaseOperatorDirectionsSourceWith slice_chart_refined op := by
+  intro h_source
+  rcases h_source with ⟨f_ref, g, h, hg_nonbase, hh_nonbase, h_sep, _hop_sep⟩
+  exact
+    no_molecule_residual_distinct_nonbase_chart_directions_source_with_refined_chart
+      ⟨f_ref, g, h, hg_nonbase, hh_nonbase, h_sep⟩
+
+/--
+The current discrete placeholder topology on `BMol` makes local chart
+injectivity vacuous: every chart is injective on the singleton open
+neighborhood of each point.
+-/
+theorem molecule_residual_locally_injective_chart_source_with_of_current_BMol_topology
+    {chart : BMol → BMol → SliceSpace} :
+    MoleculeResidualLocallyInjectiveChartSourceWith chart := by
+  intro f_ref
+  refine ⟨{f_ref}, ?_, by simp, ?_⟩
+  · trivial
+  · intro x hx y hy _hxy
+    simp at hx hy
+    simp [hx, hy]
+
+/--
+The current discrete placeholder topology on `BMol` also makes chart
+continuity vacuous: every chart is continuous.
+-/
+theorem molecule_residual_continuous_chart_source_with_of_current_BMol_topology
+    {chart : BMol → BMol → SliceSpace} :
+    MoleculeResidualContinuousChartSourceWith chart := by
+  intro f_ref
+  exact continuous_of_discreteTopology
+
+/--
+The topology-parameterized continuity family specializes to the same vacuous
+result on the current default `BMol` topology.
+-/
+theorem molecule_residual_continuous_chart_source_with_on_of_current_BMol_topology
+    {chart : BMol → BMol → SliceSpace} :
+    MoleculeResidualContinuousChartSourceWithOn inferInstance chart := by
+  intro f_ref
+  exact continuous_of_discreteTopology
+
+/--
+Under the named zero-observation topology, the observation chart itself is
+continuous by construction.
+-/
+theorem molecule_residual_continuous_chart_source_with_on_zero_observation_chart_of_bmol_zero_topology :
+    MoleculeResidualContinuousChartSourceWithOn
+      bmol_zero_topology (fun _ => bmol_zero_observation) := by
+  intro f_ref
+  change @Continuous BMol ℂ bmol_zero_topology inferInstance bmol_zero_observation
+  exact continuous_bmol_zero_observation
+
+/--
+Under the finite-observation topology, the observation-based replacement chart
+is continuous for every reference point.
+-/
+theorem
+    molecule_residual_continuous_chart_source_with_on_slice_chart_finite_observation_of_bmol_finite_topology :
+    MoleculeResidualContinuousChartSourceWithOn
+      bmol_finite_topology slice_chart_finite_observation := by
+  intro f_ref
+  exact continuous_slice_chart_finite_observation_of_bmol_finite_topology f_ref
+
+/--
+Under the named zero-observation topology, continuity is no longer automatic:
+the current multivalued chart fails continuity because it separates
+`defaultBMol` from `largeBMol` even though the topology identifies them by the
+same zero-value observation.
+-/
+theorem not_molecule_residual_continuous_chart_source_with_on_slice_chart_multivalued_of_bmol_zero_topology :
+    ¬ MoleculeResidualContinuousChartSourceWithOn
+        bmol_zero_topology slice_chart_multivalued := by
+  intro h_cont
+  let s : Set SliceSpace := Metric.ball 1 (1 / 2 : ℝ)
+  let _ : TopologicalSpace BMol := bmol_zero_topology
+  have h_cont_shifted : Continuous (slice_chart_multivalued shiftedBMol) :=
+    h_cont shiftedBMol
+  have h_open_pre : IsOpen ((slice_chart_multivalued shiftedBMol) ⁻¹' s) := by
+    exact Metric.isOpen_ball.preimage h_cont_shifted
+  rcases isOpen_induced_iff.mp h_open_pre with ⟨t, _ht, ht_eq⟩
+  have h_default_val :
+      slice_chart_multivalued shiftedBMol defaultBMol = 1 :=
+    slice_chart_multivalued_default_eq_one_of_ne shiftedBMol_ne_defaultBMol
+  have h_large_val :
+      slice_chart_multivalued shiftedBMol largeBMol = 2 :=
+    slice_chart_multivalued_large_eq_two_of_ne shiftedBMol_ne_largeBMol
+  have h_one_mem : (1 : SliceSpace) ∈ s := by
+    simp [s, Metric.mem_ball]
+  have h_two_not_mem : (2 : SliceSpace) ∉ s := by
+    have h_half_le : (1 / 2 : ℝ) ≤ ‖((2 : ℂ) - 1)‖ := by
+      norm_num
+    simpa [s, Metric.mem_ball, dist_eq_norm] using h_half_le
+  have h_default_mem_pre :
+      defaultBMol ∈ (slice_chart_multivalued shiftedBMol) ⁻¹' s := by
+    change slice_chart_multivalued shiftedBMol defaultBMol ∈ s
+    simpa [h_default_val] using h_one_mem
+  have h_zero_mem_t : (0 : ℂ) ∈ t := by
+    have h_default_mem_obs : defaultBMol ∈ bmol_zero_observation ⁻¹' t := by
+      simpa [ht_eq] using h_default_mem_pre
+    simpa using h_default_mem_obs
+  have h_large_mem_pre :
+      largeBMol ∈ (slice_chart_multivalued shiftedBMol) ⁻¹' s := by
+    have h_large_mem_obs : largeBMol ∈ bmol_zero_observation ⁻¹' t := by
+      simpa using h_zero_mem_t
+    simpa [ht_eq] using h_large_mem_obs
+  have h_large_not_mem_pre :
+      largeBMol ∉ (slice_chart_multivalued shiftedBMol) ⁻¹' s := by
+    change slice_chart_multivalued shiftedBMol largeBMol ∉ s
+    simpa [h_large_val] using h_two_not_mem
+  exact h_large_not_mem_pre h_large_mem_pre
+
+/--
+The current discrete placeholder topology on `BMol` even makes local chart
+constancy vacuous: every chart is constant on the singleton open neighborhood
+of each point.
+-/
+theorem molecule_residual_locally_constant_chart_source_with_of_current_BMol_topology
+    {chart : BMol → BMol → SliceSpace} :
+    MoleculeResidualLocallyConstantChartSourceWith chart := by
+  intro f_ref x
+  refine ⟨{x}, ?_, by simp, ?_⟩
+  · trivial
+  · intro y hy
+    simp at hy
+    simp [hy]
+
+/--
+The current discrete placeholder topology on `BMol` blocks any genuinely local
+chart variation requirement: singleton open neighborhoods leave no room for a
+distinct nearby chart direction.
+-/
+theorem no_molecule_residual_locally_nonconstant_chart_source_with_of_current_BMol_topology
+    {chart : BMol → BMol → SliceSpace} :
+    ¬ MoleculeResidualLocallyNonconstantChartSourceWith chart := by
+  intro h_source
+  rcases
+      h_source defaultBMol defaultBMol ({defaultBMol} : Set BMol) trivial
+        (by simp) with
+    ⟨y, hy, hy_ne, _hchart_ne⟩
+  simp at hy
+  exact hy_ne hy
+
+/--
+Any chart-domain scaffold that is definitionally `univ` at every reference
+point cannot satisfy the proper localized-domain target.
+-/
+theorem no_molecule_residual_proper_localized_chart_domain_source_of_eq_univ
+    {domain : BMol → Set BMol}
+    (h_domain : ∀ f_ref : BMol, domain f_ref = univ) :
+    ¬ MoleculeResidualProperLocalizedChartDomainSource domain := by
+  intro h_source
+  rcases h_source defaultBMol with ⟨_h_open, _h_mem, g, hg_not_mem⟩
+  rw [h_domain defaultBMol] at hg_not_mem
+  exact hg_not_mem (by simp)
+
+/--
+The current placeholder `slice_domain` is globally `univ`, so it cannot count
+as a proper localized chart domain.
+-/
+theorem no_molecule_residual_proper_localized_chart_domain_source_current_slice_domain :
+    ¬ MoleculeResidualProperLocalizedChartDomainSource slice_domain := by
+  apply no_molecule_residual_proper_localized_chart_domain_source_of_eq_univ
+  intro f_ref
+  simp [slice_domain]
+
+/--
+The localized replacement domain in `BanachSlice.lean` satisfies the proper
+localized-domain target: it is open, contains the reference point, and omits
+at least one distinguished `BMol` point.
+-/
+theorem molecule_residual_proper_localized_chart_domain_source_with_slice_domain_localized :
+    MoleculeResidualProperLocalizedChartDomainSource slice_domain_localized := by
+  intro f_ref
+  refine ⟨slice_domain_localized_open f_ref, mem_slice_domain_localized_self f_ref, ?_⟩
+  exact exists_not_mem_slice_domain_localized f_ref
+
+/--
+The identity-style refined operator cannot satisfy the nontrivial
+linearization target: its derivative is always `1`.
+-/
+theorem no_molecule_residual_nontrivial_operator_linearization_source_with_refined_operator
+    {chart : BMol → BMol → SliceSpace} :
+    ¬ MoleculeResidualNontrivialOperatorLinearizationSourceWith
+        chart slice_operator_refined := by
+  intro h_source
+  rcases h_source with ⟨f_ref, _hdiff, _hderiv_ne_zero, hderiv_ne_one⟩
+  have hderiv : deriv (slice_operator_refined f_ref) (chart f_ref f_ref) = 1 := by
+    change deriv (fun z : SliceSpace => z) (chart f_ref f_ref) = 1
+    exact
+      congrFun
+        (deriv_id'' : (deriv fun z : SliceSpace => z) = fun _ => (1 : SliceSpace))
+        (chart f_ref f_ref)
+  exact hderiv_ne_one hderiv
+
+/--
+The multivalued replacement chart/operator pair satisfies a nonvacuous
+analytic obligation: at the reference chart value, the operator is
+differentiable with derivative `-1`.
+-/
+theorem
+    molecule_residual_nontrivial_operator_linearization_source_with_slice_chart_multivalued_and_slice_operator_multivalued :
+    MoleculeResidualNontrivialOperatorLinearizationSourceWith
+      slice_chart_multivalued slice_operator_multivalued := by
+  let h_self := slice_chart_multivalued_self shiftedBMol
+  refine ⟨shiftedBMol, ?_, ?_, ?_⟩
+  · rw [h_self]
+    exact slice_operator_multivalued_differentiableAt_shifted (0 : SliceSpace)
+  · rw [h_self, deriv_slice_operator_multivalued_shifted]
+    norm_num
+  · rw [h_self, deriv_slice_operator_multivalued_shifted]
+    norm_num
+
+/--
+The topology-compatible finite-observation chart also satisfies the same
+nonvacuous analytic obligation with the multivalued operator: at the reference
+chart value, the derivative is still `-1`.
+-/
+theorem
+    molecule_residual_nontrivial_operator_linearization_source_with_slice_chart_finite_observation_and_slice_operator_multivalued :
+    MoleculeResidualNontrivialOperatorLinearizationSourceWith
+      slice_chart_finite_observation slice_operator_multivalued := by
+  let h_self := slice_chart_finite_observation_self shiftedBMol
+  refine ⟨shiftedBMol, ?_, ?_, ?_⟩
+  · rw [h_self]
+    exact slice_operator_multivalued_differentiableAt_shifted (0 : SliceSpace)
+  · rw [h_self, deriv_slice_operator_multivalued_shifted]
+    norm_num
+  · rw [h_self, deriv_slice_operator_multivalued_shifted]
+    norm_num
+
+/--
+More generally, every base in the shifted finite-observation class satisfies
+the same nontrivial derivative checkpoint for the finite-observation operator.
+-/
+theorem
+    molecule_residual_nontrivial_operator_linearization_source_with_slice_chart_finite_observation_and_slice_operator_finite_observation_of_eq_shifted_observation
+    {f_ref : BMol}
+    (h_obs : bmol_finite_observation f_ref = bmol_finite_observation shiftedBMol) :
+    MoleculeResidualNontrivialOperatorLinearizationSourceWith
+      slice_chart_finite_observation slice_operator_finite_observation := by
+  let h_self := slice_chart_finite_observation_self f_ref
+  refine ⟨f_ref, ?_, ?_, ?_⟩
+  · rw [h_self]
+    exact
+      slice_operator_finite_observation_differentiableAt_of_eq_shifted_observation
+        h_obs (0 : SliceSpace)
+  · rw [h_self, deriv_slice_operator_finite_observation_of_eq_shifted_observation h_obs]
+    norm_num
+  · rw [h_self, deriv_slice_operator_finite_observation_of_eq_shifted_observation h_obs]
+    norm_num
+
+/--
+In particular, the shifted base gives a nontrivial derivative witness for the
+finite-observation operator.
+-/
+theorem
+    molecule_residual_nontrivial_operator_linearization_source_with_slice_chart_finite_observation_and_slice_operator_finite_observation :
+    MoleculeResidualNontrivialOperatorLinearizationSourceWith
+      slice_chart_finite_observation slice_operator_finite_observation := by
+  exact
+    molecule_residual_nontrivial_operator_linearization_source_with_slice_chart_finite_observation_and_slice_operator_finite_observation_of_eq_shifted_observation
+      (f_ref := shiftedBMol) rfl
+
+/--
+Any base with zero-value observation `1` also carries the same nontrivial
+derivative checkpoint for the broader zero-observation operator.
+-/
+theorem
+    molecule_residual_nontrivial_operator_linearization_source_with_slice_chart_finite_observation_and_slice_operator_zero_observation_of_zero_eq_one
+    {f_ref : BMol}
+    (h_zero : bmol_zero_observation f_ref = 1) :
+    MoleculeResidualNontrivialOperatorLinearizationSourceWith
+      slice_chart_finite_observation slice_operator_zero_observation := by
+  let h_self := slice_chart_finite_observation_self f_ref
+  refine ⟨f_ref, ?_, ?_, ?_⟩
+  · rw [h_self]
+    exact slice_operator_zero_observation_differentiableAt_of_zero_eq_one h_zero (0 : SliceSpace)
+  · rw [h_self, deriv_slice_operator_zero_observation_of_zero_eq_one h_zero]
+    norm_num
+  · rw [h_self, deriv_slice_operator_zero_observation_of_zero_eq_one h_zero]
+    norm_num
+
+/--
+Any nontrivial-derivative witness for the current multivalued operator is
+forced onto the hard-coded shifted branch, because away from `shiftedBMol`
+the operator is just the identity with derivative `1`.
+-/
+theorem eq_shifted_of_deriv_ne_one_slice_operator_multivalued
+    {f_ref : BMol} {z : SliceSpace}
+    (h_ne_one : deriv (slice_operator_multivalued f_ref) z ≠ 1) :
+    f_ref = shiftedBMol := by
+  by_contra h_ref
+  exact h_ne_one (deriv_slice_operator_multivalued_of_ne_shifted h_ref z)
+
+/--
+So every witness of the nontrivial operator-linearization target for the
+current multivalued operator is still anchored at the explicit shifted base.
+-/
+theorem eq_shifted_of_molecule_residual_nontrivial_operator_linearization_source_with_slice_operator_multivalued
+    {chart : BMol → BMol → SliceSpace}
+    (h_source :
+      MoleculeResidualNontrivialOperatorLinearizationSourceWith
+        chart slice_operator_multivalued) :
+    ∃ f_ref : BMol,
+      f_ref = shiftedBMol ∧
+        DifferentiableAt ℂ (slice_operator_multivalued f_ref) (chart f_ref f_ref) ∧
+        deriv (slice_operator_multivalued f_ref) (chart f_ref f_ref) ≠ 0 ∧
+        deriv (slice_operator_multivalued f_ref) (chart f_ref f_ref) ≠ 1 := by
+  rcases h_source with ⟨f_ref, h_diff, h_ne_zero, h_ne_one⟩
+  refine ⟨f_ref, ?_, h_diff, h_ne_zero, h_ne_one⟩
+  exact eq_shifted_of_deriv_ne_one_slice_operator_multivalued h_ne_one
+
+/--
+For the finite-observation operator, a nontrivial derivative witness only
+forces the shifted finite-observation class, not literal equality to the
+named base point.
+-/
+theorem eq_shifted_observation_of_deriv_ne_one_slice_operator_finite_observation
+    {f_ref : BMol} {z : SliceSpace}
+    (h_ne_one : deriv (slice_operator_finite_observation f_ref) z ≠ 1) :
+    bmol_finite_observation f_ref = bmol_finite_observation shiftedBMol := by
+  by_contra h_obs
+  exact h_ne_one
+    (deriv_slice_operator_finite_observation_of_ne_shifted_observation h_obs z)
+
+/--
+So every witness of the nontrivial operator-linearization target for the
+finite-observation operator lies in the shifted finite-observation class.
+-/
+theorem
+    eq_shifted_observation_of_molecule_residual_nontrivial_operator_linearization_source_with_slice_operator_finite_observation
+    {chart : BMol → BMol → SliceSpace}
+    (h_source :
+      MoleculeResidualNontrivialOperatorLinearizationSourceWith
+        chart slice_operator_finite_observation) :
+    ∃ f_ref : BMol,
+      bmol_finite_observation f_ref = bmol_finite_observation shiftedBMol ∧
+        DifferentiableAt ℂ (slice_operator_finite_observation f_ref) (chart f_ref f_ref) ∧
+        deriv (slice_operator_finite_observation f_ref) (chart f_ref f_ref) ≠ 0 ∧
+        deriv (slice_operator_finite_observation f_ref) (chart f_ref f_ref) ≠ 1 := by
+  rcases h_source with ⟨f_ref, h_diff, h_ne_zero, h_ne_one⟩
+  refine ⟨f_ref, ?_, h_diff, h_ne_zero, h_ne_one⟩
+  exact eq_shifted_observation_of_deriv_ne_one_slice_operator_finite_observation h_ne_one
+
+/--
+For the zero-observation operator, a nontrivial derivative witness forces only
+the scalar observation `f_ref.f 0 = 1`.
+-/
+theorem eq_one_of_deriv_ne_one_slice_operator_zero_observation
+    {f_ref : BMol} {z : SliceSpace}
+    (h_ne_one : deriv (slice_operator_zero_observation f_ref) z ≠ 1) :
+    bmol_zero_observation f_ref = 1 := by
+  by_contra h_zero
+  exact h_ne_one (deriv_slice_operator_zero_observation_of_zero_ne_one h_zero z)
+
+/--
+So every witness of the nontrivial operator-linearization target for the
+zero-observation operator lies in the broader class `f_ref.f 0 = 1`.
+-/
+theorem
+    eq_one_of_molecule_residual_nontrivial_operator_linearization_source_with_slice_operator_zero_observation
+    {chart : BMol → BMol → SliceSpace}
+    (h_source :
+      MoleculeResidualNontrivialOperatorLinearizationSourceWith
+        chart slice_operator_zero_observation) :
+    ∃ f_ref : BMol,
+      bmol_zero_observation f_ref = 1 ∧
+        DifferentiableAt ℂ (slice_operator_zero_observation f_ref) (chart f_ref f_ref) ∧
+        deriv (slice_operator_zero_observation f_ref) (chart f_ref f_ref) ≠ 0 ∧
+        deriv (slice_operator_zero_observation f_ref) (chart f_ref f_ref) ≠ 1 := by
+  rcases h_source with ⟨f_ref, h_diff, h_ne_zero, h_ne_one⟩
+  refine ⟨f_ref, ?_, h_diff, h_ne_zero, h_ne_one⟩
+  exact eq_one_of_deriv_ne_one_slice_operator_zero_observation h_ne_one
+
+/--
+The current refined chart/operator candidate already lifts to a compact
+Banach-neighborhood scaffold package without using any seed source.
+-/
+noncomputable def
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+    (f_ref g : BMol)
+    (hg_ne : g ≠ f_ref) :
+    MoleculeResidualDynamicalBanachNeighborhoodOperatorScaffoldSourcesWith
+      slice_chart_refined slice_operator_refined := by
+  let B : Set SliceSpace := ({(0 : SliceSpace), (1 : SliceSpace)} : Set SliceSpace)
+  have h_compact_B : IsCompact B := by
+    exact
+      ((Set.finite_singleton (1 : SliceSpace)).insert (0 : SliceSpace)).isCompact
+  refine
+    { f_ref := f_ref
+      B := B
+      chart_mem := by
+        simp [B, slice_chart_refined]
+      compact := h_compact_B
+      maps := ?_
+      realized_nonbase := ?_
+      moved_nonbase := ?_ }
+  · intro z hz
+    simpa [B, slice_operator_refined] using hz
+  · refine ⟨g, ?_, ?_⟩
+    · simp [B, slice_chart_refined, hg_ne]
+    · simp [slice_chart_refined, hg_ne]
+  · refine ⟨g, ?_, ?_, ?_⟩
+    · simp [B, slice_chart_refined, hg_ne]
+    · simp [slice_chart_refined, hg_ne]
+    · simp [slice_operator_refined, slice_chart_refined, hg_ne]
+
+/--
+The current refined chart/operator candidate already lifts to a compact
+Banach-neighborhood scaffold package without using any seed source.
+-/
+noncomputable def
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator :
+    MoleculeResidualDynamicalBanachNeighborhoodOperatorScaffoldSourcesWith
+      slice_chart_refined slice_operator_refined :=
+  molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+    defaultBMol largeBMol largeBMol_ne_defaultBMol
+
+/--
+The current refined chart/operator scaffold candidate is anchored at
+`defaultBMol`.
+-/
+theorem
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_base_fixed :
+    Rfast
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator.f_ref) =
+      molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator.f_ref := by
+  simpa [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator]
+    using defaultBMol_is_fixed_point
+
+/--
+The same current scaffold candidate cannot already be a disguised PLAN_84 seed
+package, because its base map is `defaultBMol`, which is not
+fast-renormalizable.
+-/
+theorem
+    no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_base_renorm :
+    ¬ IsFastRenormalizable
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator.f_ref) := by
+  simpa [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator]
+    using defaultBMol_not_renormalizable
+
+/--
+So the current default-based refined scaffold cannot upgrade to the dynamical
+seed package: the required renormalizability leg of the fixed-and-renormalizable
+upgrade theorem is false.
+-/
+theorem
+    no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_scaffold_and_fixed_renorm
+    (h_renorm :
+      IsFastRenormalizable
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator.f_ref)) :
+    False := by
+  exact
+    no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_base_renorm
+      h_renorm
+
+/--
+The same refined chart/operator scaffold also has a concrete non-`defaultBMol`
+base candidate. This keeps the current search from collapsing immediately to
+the original `defaultBMol` obstruction.
+-/
+noncomputable def
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator :
+    MoleculeResidualDynamicalBanachNeighborhoodOperatorScaffoldSourcesWith
+      slice_chart_refined slice_operator_refined :=
+  molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+    largeBMol defaultBMol largeBMol_ne_defaultBMol.symm
+
+/--
+The new large-base refined scaffold is genuinely outside the old
+`defaultBMol`-anchored obstruction.
+-/
+theorem
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator_base_ne_default :
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator.f_ref ≠
+      defaultBMol := by
+  simpa
+    [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator,
+      molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne]
+    using largeBMol_ne_defaultBMol
+
+/--
+The same refined chart/operator scaffold also has a first explicit non-`z^2`
+base candidate. This is the feasibility-prioritized next step after exhausting
+all domain-only variants of the literal quadratic model.
+-/
+noncomputable def
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator :
+    MoleculeResidualDynamicalBanachNeighborhoodOperatorScaffoldSourcesWith
+      slice_chart_refined slice_operator_refined :=
+  molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+    shiftedBMol defaultBMol shiftedBMol_ne_defaultBMol.symm
+
+/--
+The shifted-base refined scaffold also stays outside the old
+`defaultBMol`-anchored obstruction.
+-/
+theorem
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator_base_ne_default :
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator.f_ref ≠
+      defaultBMol := by
+  simpa
+    [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator,
+      molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne]
+    using shiftedBMol_ne_defaultBMol
+
+/--
+More importantly, the shifted-base refined scaffold is genuinely outside the
+generic literal-`z ↦ z^2` obstruction established for the previous family.
+-/
+theorem
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator_base_f_ne_sq :
+    (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator.f_ref).f ≠
+      fun z => z ^ 2 := by
+  simpa
+    [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator,
+      molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne]
+    using shiftedBMol_f_ne_sq
+
+/--
+Any non-`defaultBMol` fixed point of `Rfast` is automatically
+fast-renormalizable in the current totalized model, because the non-renormalizable
+fallback value of `Rfast` is exactly `defaultBMol`.
+-/
+theorem isFastRenormalizable_of_fixed_of_ne_defaultBMol
+    {f : BMol}
+    (h_ne : f ≠ defaultBMol)
+    (h_fixed : Rfast f = f) :
+    IsFastRenormalizable f := by
+  by_contra h_not_renorm
+  have h_rfast_default : Rfast f = defaultBMol := by
+    simp [Rfast, h_not_renorm]
+  exact h_ne (by simpa [h_fixed] using h_rfast_default)
+
+/--
+Any non-`defaultBMol` fixed point of `Rfast` also carries a self-renormalization
+relation: the chosen renormalized target must coincide with the original map.
+-/
+theorem self_renormalization_relation_of_fixed_of_ne_defaultBMol
+    {f : BMol}
+    (h_ne : f ≠ defaultBMol)
+    (h_fixed : Rfast f = f) :
+    Nonempty (RenormalizationRelation f f) := by
+  have h_renorm : IsFastRenormalizable f :=
+    isFastRenormalizable_of_fixed_of_ne_defaultBMol h_ne h_fixed
+  simpa [h_fixed] using (Rfast_spec f h_renorm)
+
+/--
+Any base in the shifted finite-observation class is automatically distinct
+from `defaultBMol`.
+-/
+theorem ne_defaultBMol_of_bmol_zero_observation_eq_one
+    {f_ref : BMol}
+    (h_zero : bmol_zero_observation f_ref = 1) :
+    f_ref ≠ defaultBMol := by
+  intro h_eq
+  have h_eq_zero : bmol_zero_observation defaultBMol = 1 := by
+    simpa [h_eq] using h_zero
+  simpa using h_eq_zero
+
+/--
+Any base in the shifted finite-observation class is automatically distinct
+from `defaultBMol`.
+-/
+theorem ne_defaultBMol_of_eq_shifted_bmol_finite_observation
+    {f_ref : BMol}
+    (h_obs : bmol_finite_observation f_ref = bmol_finite_observation shiftedBMol) :
+    f_ref ≠ defaultBMol := by
+  intro h_eq
+  have h_eq_obs : bmol_finite_observation defaultBMol =
+      bmol_finite_observation shiftedBMol := by
+    simpa [h_eq] using h_obs
+  have h_zero_eq_one : (0 : ℂ) = 1 := by
+    simpa using congrArg Prod.fst h_eq_obs
+  norm_num at h_zero_eq_one
+
+/--
+So any fixed point of `Rfast` in the shifted finite-observation class already
+upgrades to a seed package for the finite-observation scaffold.
+-/
+noncomputable def
+    molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_slice_chart_finite_observation_and_slice_operator_finite_observation_of_eq_shifted_observation_of_fixed
+    {f_ref : BMol}
+    (h_obs : bmol_finite_observation f_ref = bmol_finite_observation shiftedBMol)
+    (h_fixed : Rfast f_ref = f_ref) :
+    MoleculeResidualDynamicalBanachNeighborhoodOperatorSeedSourcesWith
+      slice_chart_finite_observation slice_operator_finite_observation :=
+  molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_of_scaffold_and_fixed_renorm
+    (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_finite_observation_and_slice_operator_finite_observation_of_eq_shifted_observation
+      h_obs)
+    h_fixed
+    (isFastRenormalizable_of_fixed_of_ne_defaultBMol
+      (ne_defaultBMol_of_eq_shifted_bmol_finite_observation h_obs) h_fixed)
+
+/--
+Likewise, any fixed point of `Rfast` with zero-value observation `1` already
+upgrades to a seed package for the broader zero-observation scaffold.
+-/
+noncomputable def
+    molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_slice_chart_finite_observation_and_slice_operator_zero_observation_of_zero_eq_one_of_fixed
+    {f_ref : BMol}
+    (h_zero : bmol_zero_observation f_ref = 1)
+    (h_fixed : Rfast f_ref = f_ref) :
+    MoleculeResidualDynamicalBanachNeighborhoodOperatorSeedSourcesWith
+      slice_chart_finite_observation slice_operator_zero_observation := by
+  let h_scaffold :=
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_finite_observation_and_slice_operator_zero_observation_of_zero_eq_one
+      h_zero
+  have h_fref : h_scaffold.f_ref = f_ref := by
+    unfold h_scaffold
+    by_cases h_mem : ((5 : ℂ) / 2) ∈ f_ref.U
+    · simp
+        [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_finite_observation_and_slice_operator_zero_observation_of_zero_eq_one,
+          h_mem]
+    · simp
+        [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_finite_observation_and_slice_operator_zero_observation_of_zero_eq_one,
+          h_mem]
+  refine
+    molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_of_scaffold_and_fixed_renorm
+      h_scaffold
+      ?_
+      ?_
+  · simpa [h_fref] using h_fixed
+  · simpa [h_fref] using
+      (isFastRenormalizable_of_fixed_of_ne_defaultBMol
+        (ne_defaultBMol_of_bmol_zero_observation_eq_one h_zero) h_fixed)
+
+/--
+For any non-`defaultBMol` refined-scaffold package built via the generic
+`of_ne` constructor, fixedness already forces the remaining renormalizability
+gate.
+-/
+theorem
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_renorm_of_fixed
+    {f_ref g : BMol}
+    (hg_ne : g ≠ f_ref)
+    (h_ne_default : f_ref ≠ defaultBMol)
+    (h_fixed :
+      Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+            f_ref g hg_ne).f_ref =
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+          f_ref g hg_ne).f_ref) :
+    IsFastRenormalizable
+      (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+        f_ref g hg_ne).f_ref := by
+  simpa
+    [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne]
+    using isFastRenormalizable_of_fixed_of_ne_defaultBMol h_ne_default h_fixed
+
+/--
+Likewise, any fixedness proof for a non-`defaultBMol` refined-scaffold package
+built via the generic `of_ne` constructor already forces a self-renormalization
+relation on its base.
+-/
+theorem
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_self_renorm_of_fixed
+    {f_ref g : BMol}
+    (hg_ne : g ≠ f_ref)
+    (h_ne_default : f_ref ≠ defaultBMol)
+    (h_fixed :
+      Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+            f_ref g hg_ne).f_ref =
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+          f_ref g hg_ne).f_ref) :
+    Nonempty
+      (RenormalizationRelation
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+          f_ref g hg_ne).f_ref
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+          f_ref g hg_ne).f_ref) := by
+  simpa
+    [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne]
+    using self_renormalization_relation_of_fixed_of_ne_defaultBMol h_ne_default h_fixed
+
+/--
+Conversely, any future proof that a non-`defaultBMol` base does not admit
+self-renormalization immediately rules out fixedness of the corresponding
+generic refined-scaffold package.
+-/
+theorem
+    no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_fixed_of_no_self_renorm
+    {f_ref g : BMol}
+    (hg_ne : g ≠ f_ref)
+    (h_ne_default : f_ref ≠ defaultBMol)
+    (h_no_self : ¬ Nonempty (RenormalizationRelation f_ref f_ref)) :
+    ¬ Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+            f_ref g hg_ne).f_ref =
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+          f_ref g hg_ne).f_ref := by
+  intro h_fixed
+  exact
+    h_no_self
+      (by
+        simpa
+          [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne]
+          using
+            (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_self_renorm_of_fixed
+              hg_ne h_ne_default h_fixed))
+
+/--
+If such a non-`defaultBMol` generic refined-scaffold package is fixed, it
+upgrades directly to the dynamical seed package.
+-/
+noncomputable def
+    molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_ne_of_fixed
+    {f_ref g : BMol}
+    (hg_ne : g ≠ f_ref)
+    (h_ne_default : f_ref ≠ defaultBMol)
+    (h_fixed :
+      Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+            f_ref g hg_ne).f_ref =
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+          f_ref g hg_ne).f_ref) :
+    MoleculeResidualDynamicalBanachNeighborhoodOperatorSeedSourcesWith
+      slice_chart_refined slice_operator_refined :=
+  molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_of_scaffold_and_fixed_renorm
+    (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+      f_ref g hg_ne)
+    h_fixed
+    (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_renorm_of_fixed
+      hg_ne h_ne_default h_fixed)
+
+/--
+For the large-base refined scaffold candidate, fixedness already forces the
+remaining renormalizability gate.
+-/
+theorem
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator_base_renorm_of_fixed
+    (h_fixed :
+      Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator.f_ref) =
+        molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator.f_ref) :
+    IsFastRenormalizable
+      (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator.f_ref) :=
+  molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_renorm_of_fixed
+    largeBMol_ne_defaultBMol.symm
+    largeBMol_ne_defaultBMol
+    (by
+      simpa
+        [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator]
+        using h_fixed)
+
+/--
+So any fixedness proof for the large-base refined scaffold would already force
+`largeBMol` to be a self-renormalizing point of the current model.
+-/
+theorem
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator_base_self_renorm_of_fixed
+    (h_fixed :
+      Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator.f_ref) =
+        molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator.f_ref) :
+    Nonempty
+      (RenormalizationRelation
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator.f_ref)
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator.f_ref)) :=
+  molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_self_renorm_of_fixed
+    largeBMol_ne_defaultBMol.symm
+    largeBMol_ne_defaultBMol
+    (by
+      simpa
+        [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator]
+        using h_fixed)
+
+/--
+Conversely, any future proof that the large-base candidate does not admit a
+self-renormalization relation immediately rules out fixedness of that base.
+-/
+theorem
+    no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator_base_fixed_of_no_self_renorm
+    (h_no_self :
+      ¬ Nonempty
+          (RenormalizationRelation
+            (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator.f_ref)
+            (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator.f_ref))) :
+    ¬ Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator.f_ref) =
+        molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator.f_ref := by
+  simpa
+    [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator]
+    using
+      (no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_fixed_of_no_self_renorm
+        (f_ref := largeBMol)
+        (g := defaultBMol)
+        largeBMol_ne_defaultBMol.symm
+        largeBMol_ne_defaultBMol
+        h_no_self)
+
+/--
+Any `BMol` whose underlying map is literally `z ↦ z^2` cannot self-renormalize
+in the current affine renormalization scaffold: the left-hand side stays
+quadratic, while the right-hand side has degree `2 ^ p` with `p ≥ 2`.
+-/
+theorem no_self_renormalization_relation_of_eq_sq
+    {g : BMol}
+    (h_quad : g.f = fun z => z ^ 2) :
+    ¬ Nonempty (RenormalizationRelation g g) := by
+  rintro ⟨h_rel⟩
+  rcases h_rel.rescaling_affine with ⟨a, b, ha, hψ⟩
+  let lhs : Polynomial ℂ := Polynomial.C a * Polynomial.X ^ 2 + Polynomial.C b
+  let rhs : Polynomial ℂ := (Polynomial.C a * Polynomial.X + Polynomial.C b) ^ (2 ^ h_rel.p)
+  have h_eval_eq : ∀ z ∈ g.U, Polynomial.eval z lhs = Polynomial.eval z rhs := by
+    intro z hz
+    simpa [lhs, rhs, hψ, h_quad, pow_iterate] using h_rel.eq_f z hz
+  have h_gU_infinite : Set.Infinite g.U := by
+    rcases g.isConnected_U.nonempty with ⟨z0, hz0⟩
+    exact infinite_of_mem_nhds z0 (g.isOpen_U.mem_nhds hz0)
+  have h_poly_eq : lhs = rhs := by
+    apply Polynomial.eq_of_infinite_eval_eq
+    refine h_gU_infinite.mono ?_
+    intro z hz
+    simpa using h_eval_eq z hz
+  have h_lhs_deg : lhs.natDegree ≤ 2 := by
+    simpa [lhs, zero_mul, add_assoc] using
+      (Polynomial.natDegree_quadratic_le (a := a) (b := (0 : ℂ)) (c := b))
+  have h_rhs_deg : rhs.natDegree = 2 ^ h_rel.p := by
+    calc
+      rhs.natDegree
+          = (((Polynomial.C a : Polynomial ℂ) * Polynomial.X + Polynomial.C b) ^
+              (2 ^ h_rel.p)).natDegree := by
+              rfl
+      _ = (2 ^ h_rel.p) *
+            (((Polynomial.C a : Polynomial ℂ) * Polynomial.X + Polynomial.C b).natDegree) := by
+            rw [Polynomial.natDegree_pow]
+      _ = (2 ^ h_rel.p) * 1 := by
+            rw [Polynomial.natDegree_linear (a := a) (b := b) ha]
+      _ = 2 ^ h_rel.p := by simp
+  have h_pow_gt_two : 2 < 2 ^ h_rel.p := by
+    have h_pow_ge_four : 4 ≤ 2 ^ h_rel.p := by
+      simpa using (Nat.pow_le_pow_right (by decide : 0 < 2) h_rel.p_pos)
+    exact lt_of_lt_of_le (by norm_num : 2 < 4) h_pow_ge_four
+  have h_deg_lt : lhs.natDegree < rhs.natDegree := by
+    rw [h_rhs_deg]
+    exact lt_of_le_of_lt h_lhs_deg h_pow_gt_two
+  exact (Nat.ne_of_lt h_deg_lt) (congrArg Polynomial.natDegree h_poly_eq)
+
+/--
+Polynomial evaluation model for iterates of the explicit quadratic polynomial
+`z ↦ z^2 + c`.
+-/
+lemma eval_polynomial_iterate (P : Polynomial ℂ) :
+    ∀ n z,
+      Polynomial.eval z ((P.comp^[n]) Polynomial.X) =
+        (fun w : ℂ => Polynomial.eval w P)^[n] z := by
+  intro n
+  induction n with
+  | zero =>
+      intro z
+      simp
+  | succ n ih =>
+      intro z
+      rw [Function.iterate_succ_apply', Function.iterate_succ_apply', Polynomial.eval_comp, ih]
+
+/--
+Any explicit polynomial self-map is modeled by iterating composition on the
+polynomial side.
+-/
+lemma eval_quad_add_const_iterate (c : ℂ) :
+    ∀ n z,
+      Polynomial.eval z ((((Polynomial.X ^ 2 + Polynomial.C c) : Polynomial ℂ).comp^[n]) Polynomial.X) =
+        (fun w : ℂ => w ^ 2 + c)^[n] z := by
+  intro n z
+  convert (eval_polynomial_iterate (Polynomial.X ^ 2 + Polynomial.C c) n z) using 1
+  · simp
+
+/--
+The iterate-composition model records the exact degree growth for any explicit
+polynomial base map.
+-/
+lemma natDegree_polynomial_iterate (P : Polynomial ℂ) (n : ℕ) :
+    ((P.comp^[n]) Polynomial.X).natDegree = P.natDegree ^ n := by
+  rw [Polynomial.natDegree_iterate_comp]
+  simp
+
+/--
+The explicit quadratic polynomial `z ↦ z^2 + c` has iterate degree `2 ^ n`.
+-/
+lemma natDegree_quad_add_const_iterate (c : ℂ) (n : ℕ) :
+    ((((Polynomial.X ^ 2 + Polynomial.C c) : Polynomial ℂ).comp^[n]) Polynomial.X).natDegree =
+      2 ^ n := by
+  have h_quad_deg : ((Polynomial.X ^ 2 + Polynomial.C c : Polynomial ℂ)).natDegree = 2 := by
+    rw [Polynomial.natDegree_X_pow_add_C]
+  rw [natDegree_polynomial_iterate, h_quad_deg]
+
+/--
+Any polynomial of degree `2` has iterate degree `2 ^ n` under composition.
+-/
+lemma natDegree_polynomial_iterate_of_natDegree_two
+    (P : Polynomial ℂ)
+    (h_deg : P.natDegree = 2)
+    (n : ℕ) :
+    ((P.comp^[n]) Polynomial.X).natDegree = 2 ^ n := by
+  rw [Polynomial.natDegree_iterate_comp, h_deg]
+  simp
+
+/--
+Any `BMol` whose underlying map is literally `z ↦ z^2 + c` cannot
+self-renormalize in the current affine renormalization scaffold: the left-hand
+side stays quadratic, while the right-hand side has degree `2 ^ p` with
+`p ≥ 2`.
+-/
+theorem no_self_renormalization_relation_of_eq_sq_add_const
+    {g : BMol} {c : ℂ}
+    (h_quad : g.f = fun z => z ^ 2 + c) :
+    ¬ Nonempty (RenormalizationRelation g g) := by
+  rintro ⟨h_rel⟩
+  rcases h_rel.rescaling_affine with ⟨a, b, ha, hψ⟩
+  let P : Polynomial ℂ := Polynomial.X ^ 2 + Polynomial.C c
+  let lhs : Polynomial ℂ := Polynomial.C a * P + Polynomial.C b
+  let rhsCore : Polynomial ℂ := (P.comp^[h_rel.p]) Polynomial.X
+  let rhs : Polynomial ℂ := rhsCore.comp (Polynomial.C a * Polynomial.X + Polynomial.C b)
+  have h_eval_eq : ∀ z ∈ g.U, Polynomial.eval z lhs = Polynomial.eval z rhs := by
+    intro z hz
+    calc
+      Polynomial.eval z lhs = a * (z ^ 2 + c) + b := by
+        simp [lhs, P, mul_add, add_comm]
+      _ = (fun w : ℂ => w ^ 2 + c)^[h_rel.p] (a * z + b) := by
+        simpa [hψ, h_quad] using h_rel.eq_f z hz
+      _ = Polynomial.eval (a * z + b) rhsCore := by
+        rw [show rhsCore =
+          ((((Polynomial.X ^ 2 + Polynomial.C c) : Polynomial ℂ).comp^[h_rel.p]) Polynomial.X) by
+            rfl]
+        exact (eval_quad_add_const_iterate c h_rel.p (a * z + b)).symm
+      _ = Polynomial.eval z rhs := by
+        change
+          Polynomial.eval (a * z + b) rhsCore =
+            Polynomial.eval z
+              (rhsCore.comp ((Polynomial.C a : Polynomial ℂ) * Polynomial.X + Polynomial.C b))
+        rw [Polynomial.eval_comp]
+        simp
+  have h_gU_infinite : Set.Infinite g.U := by
+    rcases g.isConnected_U.nonempty with ⟨z0, hz0⟩
+    exact infinite_of_mem_nhds z0 (g.isOpen_U.mem_nhds hz0)
+  have h_poly_eq : lhs = rhs := by
+    apply Polynomial.eq_of_infinite_eval_eq
+    refine h_gU_infinite.mono ?_
+    intro z hz
+    simpa using h_eval_eq z hz
+  have h_lhs_form :
+      lhs = Polynomial.C a * Polynomial.X ^ 2 + Polynomial.C (a * c + b) := by
+    calc
+      lhs = Polynomial.C a * (Polynomial.X ^ 2 + Polynomial.C c) + Polynomial.C b := by
+        rfl
+      _ = Polynomial.C a * Polynomial.X ^ 2 + Polynomial.C (a * c) + Polynomial.C b := by
+        simp [mul_add, add_assoc]
+      _ = Polynomial.C a * Polynomial.X ^ 2 + Polynomial.C (a * c + b) := by
+        simp [Polynomial.C_add, add_assoc]
+  have h_lhs_deg : lhs.natDegree ≤ 2 := by
+    rw [h_lhs_form]
+    simpa [zero_mul, add_assoc] using
+      (Polynomial.natDegree_quadratic_le (a := a) (b := (0 : ℂ)) (c := a * c + b))
+  have h_rhs_deg : rhs.natDegree = 2 ^ h_rel.p := by
+    calc
+      rhs.natDegree
+          = rhsCore.natDegree *
+              ((Polynomial.C a : Polynomial ℂ) * Polynomial.X + Polynomial.C b).natDegree := by
+              change
+                (rhsCore.comp ((Polynomial.C a : Polynomial ℂ) * Polynomial.X + Polynomial.C b)).natDegree =
+                  rhsCore.natDegree *
+                    ((Polynomial.C a : Polynomial ℂ) * Polynomial.X + Polynomial.C b).natDegree
+              rw [Polynomial.natDegree_comp]
+      _ = rhsCore.natDegree * 1 := by
+            rw [Polynomial.natDegree_linear (a := a) (b := b) ha]
+      _ = rhsCore.natDegree := by
+            simp
+      _ = 2 ^ h_rel.p := by
+            rw [show rhsCore =
+              ((((Polynomial.X ^ 2 + Polynomial.C c) : Polynomial ℂ).comp^[h_rel.p]) Polynomial.X) by
+                rfl]
+            exact natDegree_quad_add_const_iterate c h_rel.p
+  have h_pow_gt_two : 2 < 2 ^ h_rel.p := by
+    have h_pow_ge_four : 4 ≤ 2 ^ h_rel.p := by
+      simpa using (Nat.pow_le_pow_right (by decide : 0 < 2) h_rel.p_pos)
+    exact lt_of_lt_of_le (by norm_num : 2 < 4) h_pow_ge_four
+  have h_deg_lt : lhs.natDegree < rhs.natDegree := by
+    rw [h_rhs_deg]
+    exact lt_of_le_of_lt h_lhs_deg h_pow_gt_two
+  exact (Nat.ne_of_lt h_deg_lt) (congrArg Polynomial.natDegree h_poly_eq)
+
+/--
+More generally, any `BMol` whose underlying map is literally a polynomial of
+degree `2` cannot self-renormalize in the current affine renormalization
+scaffold.
+-/
+theorem no_self_renormalization_relation_of_eq_eval_polynomial_natDegree_two
+    {g : BMol} {P : Polynomial ℂ}
+    (h_poly : g.f = fun z => Polynomial.eval z P)
+    (h_deg : P.natDegree = 2) :
+    ¬ Nonempty (RenormalizationRelation g g) := by
+  rintro ⟨h_rel⟩
+  rcases h_rel.rescaling_affine with ⟨a, b, ha, hψ⟩
+  let lhs : Polynomial ℂ := Polynomial.C a * P + Polynomial.C b
+  let rhsCore : Polynomial ℂ := (P.comp^[h_rel.p]) Polynomial.X
+  let rhs : Polynomial ℂ := rhsCore.comp (Polynomial.C a * Polynomial.X + Polynomial.C b)
+  have h_eval_eq : ∀ z ∈ g.U, Polynomial.eval z lhs = Polynomial.eval z rhs := by
+    intro z hz
+    calc
+      Polynomial.eval z lhs = a * Polynomial.eval z P + b := by
+        simp [lhs, add_comm]
+      _ = (fun w : ℂ => Polynomial.eval w P)^[h_rel.p] (a * z + b) := by
+        simpa [hψ, h_poly] using h_rel.eq_f z hz
+      _ = Polynomial.eval (a * z + b) rhsCore := by
+        rw [show rhsCore = ((P.comp^[h_rel.p]) Polynomial.X) by rfl]
+        exact (eval_polynomial_iterate P h_rel.p (a * z + b)).symm
+      _ = Polynomial.eval z rhs := by
+        change
+          Polynomial.eval (a * z + b) rhsCore =
+            Polynomial.eval z
+              (rhsCore.comp ((Polynomial.C a : Polynomial ℂ) * Polynomial.X + Polynomial.C b))
+        rw [Polynomial.eval_comp]
+        simp
+  have h_gU_infinite : Set.Infinite g.U := by
+    rcases g.isConnected_U.nonempty with ⟨z0, hz0⟩
+    exact infinite_of_mem_nhds z0 (g.isOpen_U.mem_nhds hz0)
+  have h_poly_eq : lhs = rhs := by
+    apply Polynomial.eq_of_infinite_eval_eq
+    refine h_gU_infinite.mono ?_
+    intro z hz
+    simpa using h_eval_eq z hz
+  have h_lhs_deg : lhs.natDegree ≤ 2 := by
+    refine Polynomial.natDegree_add_le_of_degree_le ?_ ?_
+    · rw [Polynomial.natDegree_C_mul ha, h_deg]
+    · simp
+  have h_rhs_deg : rhs.natDegree = 2 ^ h_rel.p := by
+    calc
+      rhs.natDegree
+          = rhsCore.natDegree *
+              ((Polynomial.C a : Polynomial ℂ) * Polynomial.X + Polynomial.C b).natDegree := by
+              change
+                (rhsCore.comp ((Polynomial.C a : Polynomial ℂ) * Polynomial.X + Polynomial.C b)).natDegree =
+                  rhsCore.natDegree *
+                    ((Polynomial.C a : Polynomial ℂ) * Polynomial.X + Polynomial.C b).natDegree
+              rw [Polynomial.natDegree_comp]
+      _ = rhsCore.natDegree * 1 := by
+            rw [Polynomial.natDegree_linear (a := a) (b := b) ha]
+      _ = rhsCore.natDegree := by
+            simp
+      _ = 2 ^ h_rel.p := by
+            rw [show rhsCore = ((P.comp^[h_rel.p]) Polynomial.X) by rfl]
+            exact natDegree_polynomial_iterate_of_natDegree_two P h_deg h_rel.p
+  have h_pow_gt_two : 2 < 2 ^ h_rel.p := by
+    have h_pow_ge_four : 4 ≤ 2 ^ h_rel.p := by
+      simpa using (Nat.pow_le_pow_right (by decide : 0 < 2) h_rel.p_pos)
+    exact lt_of_lt_of_le (by norm_num : 2 < 4) h_pow_ge_four
+  have h_deg_lt : lhs.natDegree < rhs.natDegree := by
+    rw [h_rhs_deg]
+    exact lt_of_le_of_lt h_lhs_deg h_pow_gt_two
+  exact (Nat.ne_of_lt h_deg_lt) (congrArg Polynomial.natDegree h_poly_eq)
+
+/--
+The same degree argument already rules out self-renormalization for every
+explicit polynomial base map of degree strictly bigger than `1`.
+-/
+theorem no_self_renormalization_relation_of_eq_eval_polynomial_natDegree_gt_one
+    {g : BMol} {P : Polynomial ℂ}
+    (h_poly : g.f = fun z => Polynomial.eval z P)
+    (h_deg : 1 < P.natDegree) :
+    ¬ Nonempty (RenormalizationRelation g g) := by
+  rintro ⟨h_rel⟩
+  rcases h_rel.rescaling_affine with ⟨a, b, ha, hψ⟩
+  let lhs : Polynomial ℂ := Polynomial.C a * P + Polynomial.C b
+  let rhsCore : Polynomial ℂ := (P.comp^[h_rel.p]) Polynomial.X
+  let rhs : Polynomial ℂ := rhsCore.comp (Polynomial.C a * Polynomial.X + Polynomial.C b)
+  have h_eval_eq : ∀ z ∈ g.U, Polynomial.eval z lhs = Polynomial.eval z rhs := by
+    intro z hz
+    calc
+      Polynomial.eval z lhs = a * Polynomial.eval z P + b := by
+        simp [lhs, add_comm]
+      _ = (fun w : ℂ => Polynomial.eval w P)^[h_rel.p] (a * z + b) := by
+        simpa [hψ, h_poly] using h_rel.eq_f z hz
+      _ = Polynomial.eval (a * z + b) rhsCore := by
+        rw [show rhsCore = ((P.comp^[h_rel.p]) Polynomial.X) by rfl]
+        exact (eval_polynomial_iterate P h_rel.p (a * z + b)).symm
+      _ = Polynomial.eval z rhs := by
+        change
+          Polynomial.eval (a * z + b) rhsCore =
+            Polynomial.eval z
+              (rhsCore.comp ((Polynomial.C a : Polynomial ℂ) * Polynomial.X + Polynomial.C b))
+        rw [Polynomial.eval_comp]
+        simp
+  have h_gU_infinite : Set.Infinite g.U := by
+    rcases g.isConnected_U.nonempty with ⟨z0, hz0⟩
+    exact infinite_of_mem_nhds z0 (g.isOpen_U.mem_nhds hz0)
+  have h_poly_eq : lhs = rhs := by
+    apply Polynomial.eq_of_infinite_eval_eq
+    refine h_gU_infinite.mono ?_
+    intro z hz
+    simpa using h_eval_eq z hz
+  have h_lhs_deg : lhs.natDegree = P.natDegree := by
+    calc
+      lhs.natDegree = (Polynomial.C a * P).natDegree := by
+        simp [lhs]
+      _ = P.natDegree := by
+        rw [Polynomial.natDegree_C_mul ha]
+  have h_rhs_deg : rhs.natDegree = P.natDegree ^ h_rel.p := by
+    calc
+      rhs.natDegree
+          = rhsCore.natDegree *
+              ((Polynomial.C a : Polynomial ℂ) * Polynomial.X + Polynomial.C b).natDegree := by
+              change
+                (rhsCore.comp ((Polynomial.C a : Polynomial ℂ) * Polynomial.X + Polynomial.C b)).natDegree =
+                  rhsCore.natDegree *
+                    ((Polynomial.C a : Polynomial ℂ) * Polynomial.X + Polynomial.C b).natDegree
+              rw [Polynomial.natDegree_comp]
+      _ = rhsCore.natDegree * 1 := by
+            rw [Polynomial.natDegree_linear (a := a) (b := b) ha]
+      _ = rhsCore.natDegree := by
+            simp
+      _ = P.natDegree ^ h_rel.p := by
+            rw [show rhsCore = ((P.comp^[h_rel.p]) Polynomial.X) by rfl]
+            exact natDegree_polynomial_iterate P h_rel.p
+  have h_one_lt_p : 1 < h_rel.p := by
+    exact lt_of_lt_of_le (by norm_num : 1 < 2) h_rel.p_pos
+  have h_pow_gt : P.natDegree < P.natDegree ^ h_rel.p := by
+    simpa using (Nat.pow_lt_pow_right h_deg h_one_lt_p)
+  have h_deg_lt : lhs.natDegree < rhs.natDegree := by
+    rw [h_lhs_deg, h_rhs_deg]
+    exact h_pow_gt
+  exact (Nat.ne_of_lt h_deg_lt) (congrArg Polynomial.natDegree h_poly_eq)
+
+/--
+Every explicit polynomial model in `BMol` already has degree strictly bigger
+than `1`: otherwise its derivative would be affine-constant, contradicting the
+existence of a simple unique critical point.
+-/
+theorem one_lt_natDegree_of_eq_eval_polynomial
+    {g : BMol} {P : Polynomial ℂ}
+    (h_poly : g.f = fun z => Polynomial.eval z P) :
+    1 < P.natDegree := by
+  by_contra h_not_lt
+  have h_deg : P.natDegree ≤ 1 := Nat.not_lt.mp h_not_lt
+  obtain ⟨a, b, hP⟩ := Polynomial.exists_eq_X_add_C_of_natDegree_le_one h_deg
+  let c := criticalPoint g
+  have hcU : c ∈ g.U := (Classical.choose_spec g.unique_critical_point).1.1
+  have hcrit : deriv g.f c = 0 := (Classical.choose_spec g.unique_critical_point).1.2
+  have hsimple := g.simple_critical_point c hcU hcrit
+  have hderiv_const_mul :
+      deriv (fun z : ℂ => a * z) = fun _ : ℂ => a := by
+    funext x
+    simpa using (hasDerivAt_const_mul (x := x) a).deriv
+  have hsecond_zero : deriv (deriv g.f) c = 0 := by
+    calc
+      deriv (deriv g.f) c = deriv (deriv (fun z : ℂ => a * z + b)) c := by
+        simp [h_poly, hP]
+      _ = deriv (deriv (fun z : ℂ => a * z)) c := by
+        simp
+      _ = deriv (fun _ : ℂ => a) c := by
+        rw [hderiv_const_mul]
+      _ = 0 := by
+        simp
+  exact hsimple hsecond_zero
+
+/--
+So the current affine renormalization scaffold rules out self-renormalization
+for every explicit polynomial `BMol` point, not just the degree-`2` examples.
+-/
+theorem no_self_renormalization_relation_of_eq_eval_polynomial
+    {g : BMol} {P : Polynomial ℂ}
+    (h_poly : g.f = fun z => Polynomial.eval z P) :
+    ¬ Nonempty (RenormalizationRelation g g) := by
+  exact
+    no_self_renormalization_relation_of_eq_eval_polynomial_natDegree_gt_one h_poly
+      (one_lt_natDegree_of_eq_eval_polynomial h_poly)
+
+/--
+The explicit shifted quadratic model also cannot self-renormalize in the
+current affine renormalization scaffold.
+-/
+theorem no_self_renormalization_relation_shiftedBMol :
+    ¬ Nonempty (RenormalizationRelation shiftedBMol shiftedBMol) := by
+  apply no_self_renormalization_relation_of_eq_sq_add_const (g := shiftedBMol) (c := 1)
+  funext z
+  simp [shiftedBMol]
+
+/--
+The explicit `largeBMol` model cannot self-renormalize in the current affine
+renormalization scaffold.
+-/
+theorem no_self_renormalization_relation_largeBMol :
+    ¬ Nonempty (RenormalizationRelation largeBMol largeBMol) := by
+  apply no_self_renormalization_relation_of_eq_sq (g := largeBMol)
+  funext z
+  simp [largeBMol]
+
+/--
+Any non-`defaultBMol` point whose underlying map is literally `z ↦ z^2`
+cannot be fixed by `Rfast`: fixedness would force the impossible
+self-renormalization relation.
+-/
+theorem no_fixed_of_eq_sq_of_ne_defaultBMol
+    {g : BMol}
+    (h_quad : g.f = fun z => z ^ 2)
+    (h_ne : g ≠ defaultBMol) :
+    ¬ Rfast g = g := by
+  intro h_fixed
+  exact
+    no_self_renormalization_relation_of_eq_sq h_quad
+      (self_renormalization_relation_of_fixed_of_ne_defaultBMol h_ne h_fixed)
+
+/--
+The same fixedness obstruction extends to every explicit quadratic polynomial
+`z ↦ z^2 + c`.
+-/
+theorem no_fixed_of_eq_sq_add_const_of_ne_defaultBMol
+    {g : BMol} {c : ℂ}
+    (h_quad : g.f = fun z => z ^ 2 + c)
+    (h_ne : g ≠ defaultBMol) :
+    ¬ Rfast g = g := by
+  intro h_fixed
+  exact
+    no_self_renormalization_relation_of_eq_sq_add_const h_quad
+      (self_renormalization_relation_of_fixed_of_ne_defaultBMol h_ne h_fixed)
+
+/--
+The same fixedness obstruction already covers every explicit polynomial base of
+degree `2`.
+-/
+theorem no_fixed_of_eq_eval_polynomial_natDegree_two_of_ne_defaultBMol
+    {g : BMol} {P : Polynomial ℂ}
+    (h_poly : g.f = fun z => Polynomial.eval z P)
+    (h_deg : P.natDegree = 2)
+    (h_ne : g ≠ defaultBMol) :
+    ¬ Rfast g = g := by
+  intro h_fixed
+  exact
+    no_self_renormalization_relation_of_eq_eval_polynomial_natDegree_two h_poly h_deg
+      (self_renormalization_relation_of_fixed_of_ne_defaultBMol h_ne h_fixed)
+
+/--
+So any explicit polynomial base map of degree strictly bigger than `1` is also
+screened out by the current fixedness gate.
+-/
+theorem no_fixed_of_eq_eval_polynomial_natDegree_gt_one_of_ne_defaultBMol
+    {g : BMol} {P : Polynomial ℂ}
+    (h_poly : g.f = fun z => Polynomial.eval z P)
+    (h_deg : 1 < P.natDegree)
+    (h_ne : g ≠ defaultBMol) :
+    ¬ Rfast g = g := by
+  intro h_fixed
+  exact
+    no_self_renormalization_relation_of_eq_eval_polynomial_natDegree_gt_one h_poly h_deg
+      (self_renormalization_relation_of_fixed_of_ne_defaultBMol h_ne h_fixed)
+
+/--
+So the current fixedness gate already screens every explicit polynomial base
+map in `BMol`.
+-/
+theorem no_fixed_of_eq_eval_polynomial_of_ne_defaultBMol
+    {g : BMol} {P : Polynomial ℂ}
+    (h_poly : g.f = fun z => Polynomial.eval z P)
+    (h_ne : g ≠ defaultBMol) :
+    ¬ Rfast g = g := by
+  intro h_fixed
+  exact
+    no_self_renormalization_relation_of_eq_eval_polynomial h_poly
+      (self_renormalization_relation_of_fixed_of_ne_defaultBMol h_ne h_fixed)
+
+/--
+So no explicit polynomial `BMol` point can pass the full fixed-and-
+renormalizable seed gate in the current `Rfast` model.
+-/
+theorem no_fixed_and_renorm_of_eq_eval_polynomial
+    {g : BMol} {P : Polynomial ℂ}
+    (h_poly : g.f = fun z => Polynomial.eval z P)
+    (h_fixed : Rfast g = g)
+    (h_renorm : IsFastRenormalizable g) :
+    False := by
+  by_cases h_default : g = defaultBMol
+  · exact defaultBMol_not_renormalizable (by simpa [h_default] using h_renorm)
+  · exact (no_fixed_of_eq_eval_polynomial_of_ne_defaultBMol h_poly h_default) h_fixed
+
+/--
+Equivalently, any fixed-and-renormalizable point of `Rfast` already lies
+outside the explicit-polynomial family.
+-/
+theorem not_exists_eq_eval_polynomial_of_fixed_and_renorm
+    {g : BMol}
+    (h_fixed : Rfast g = g)
+    (h_renorm : IsFastRenormalizable g) :
+    ¬ ∃ P : Polynomial ℂ, g.f = fun z => Polynomial.eval z P := by
+  intro h_poly
+  rcases h_poly with ⟨P, hP⟩
+  exact no_fixed_and_renorm_of_eq_eval_polynomial hP h_fixed h_renorm
+
+/--
+Therefore any fixed point in the shifted finite-observation class already lies
+outside the explicit-polynomial family if it is to survive the seed upgrade.
+-/
+theorem
+    not_exists_eq_eval_polynomial_of_slice_chart_finite_observation_and_slice_operator_finite_observation_of_eq_shifted_observation_of_fixed
+    {f_ref : BMol}
+    (h_obs : bmol_finite_observation f_ref = bmol_finite_observation shiftedBMol)
+    (h_fixed : Rfast f_ref = f_ref) :
+    ¬ ∃ P : Polynomial ℂ, f_ref.f = fun z => Polynomial.eval z P := by
+  exact
+    not_exists_eq_eval_polynomial_of_fixed_and_renorm
+      h_fixed
+      (isFastRenormalizable_of_fixed_of_ne_defaultBMol
+        (ne_defaultBMol_of_eq_shifted_bmol_finite_observation h_obs) h_fixed)
+
+/--
+The same explicit-polynomial exclusion already holds for every fixed base in
+the broader zero-observation-`1` class of the new operator.
+-/
+theorem
+    not_exists_eq_eval_polynomial_of_slice_chart_finite_observation_and_slice_operator_zero_observation_of_zero_eq_one_of_fixed
+    {f_ref : BMol}
+    (h_zero : bmol_zero_observation f_ref = 1)
+    (h_fixed : Rfast f_ref = f_ref) :
+    ¬ ∃ P : Polynomial ℂ, f_ref.f = fun z => Polynomial.eval z P := by
+  exact
+    not_exists_eq_eval_polynomial_of_fixed_and_renorm
+      h_fixed
+      (isFastRenormalizable_of_fixed_of_ne_defaultBMol
+        (ne_defaultBMol_of_bmol_zero_observation_eq_one h_zero) h_fixed)
+
+/--
+The current multivalued scaffold still sits on the explicit polynomial base
+`shiftedBMol`, so it cannot be fixed by `Rfast` in the current model.
+-/
+theorem
+    no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_multivalued_and_slice_operator_multivalued_base_fixed :
+    ¬ Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_multivalued_and_slice_operator_multivalued.f_ref) =
+        molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_multivalued_and_slice_operator_multivalued.f_ref := by
+  intro h_fixed
+  have h_renorm :
+      IsFastRenormalizable
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_multivalued_and_slice_operator_multivalued.f_ref) := by
+    simpa
+      [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_multivalued_and_slice_operator_multivalued]
+      using
+        isFastRenormalizable_of_fixed_of_ne_defaultBMol shiftedBMol_ne_defaultBMol h_fixed
+  have h_poly :
+      (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_multivalued_and_slice_operator_multivalued.f_ref).f =
+        fun z => Polynomial.eval z (Polynomial.X ^ 2 + Polynomial.C 1) := by
+    simpa
+      [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_multivalued_and_slice_operator_multivalued]
+      using shiftedBMol_f_eq_eval_polynomial_sq_add_one
+  exact
+    no_fixed_and_renorm_of_eq_eval_polynomial
+      h_poly
+      (by
+        simpa
+          [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_multivalued_and_slice_operator_multivalued]
+          using h_fixed)
+      h_renorm
+
+/--
+So any refined-scaffold package built from a non-`defaultBMol` explicit
+polynomial base is not fixed by `Rfast`.
+-/
+theorem
+    no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_fixed_of_eq_eval_polynomial
+    {f_ref g : BMol}
+    (hg_ne : g ≠ f_ref)
+    {P : Polynomial ℂ}
+    (h_poly : f_ref.f = fun z => Polynomial.eval z P)
+    (h_ne_default : f_ref ≠ defaultBMol) :
+    ¬ Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+            f_ref g hg_ne).f_ref =
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+          f_ref g hg_ne).f_ref := by
+  exact
+    no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_fixed_of_no_self_renorm
+      hg_ne
+      h_ne_default
+      (no_self_renormalization_relation_of_eq_eval_polynomial h_poly)
+
+/--
+So any attempted fixedness-based seed upgrade from a non-`defaultBMol`
+refined-scaffold package already fails as soon as the base has no
+self-renormalization relation.
+-/
+theorem
+    no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_ne_of_fixed_of_no_self_renorm
+    {f_ref g : BMol}
+    (hg_ne : g ≠ f_ref)
+    (h_ne_default : f_ref ≠ defaultBMol)
+    (h_no_self : ¬ Nonempty (RenormalizationRelation f_ref f_ref))
+    (h_fixed :
+      Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+            f_ref g hg_ne).f_ref =
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+          f_ref g hg_ne).f_ref) :
+    False := by
+  exact
+    (no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_fixed_of_no_self_renorm
+      hg_ne h_ne_default h_no_self)
+      h_fixed
+
+/--
+In particular, the fixedness-based seed-upgrade route is impossible for every
+non-`defaultBMol` refined-scaffold package whose base is an explicit
+polynomial.
+-/
+theorem
+    no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_ne_of_fixed_of_eq_eval_polynomial
+    {f_ref g : BMol}
+    (hg_ne : g ≠ f_ref)
+    {P : Polynomial ℂ}
+    (h_poly : f_ref.f = fun z => Polynomial.eval z P)
+    (h_ne_default : f_ref ≠ defaultBMol)
+    (h_fixed :
+      Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+            f_ref g hg_ne).f_ref =
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+          f_ref g hg_ne).f_ref) :
+    False := by
+  exact
+    (no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_fixed_of_eq_eval_polynomial
+      hg_ne h_poly h_ne_default)
+      h_fixed
+
+/--
+At the full fixed-and-renormalizable upgrade interface, the same obstruction
+already closes every explicit-polynomial refined-scaffold package built by the
+generic `of_ne` constructor. The `defaultBMol` branch dies on
+renormalizability, and every non-`defaultBMol` branch dies on fixedness.
+-/
+theorem
+    no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_eq_eval_polynomial
+    {f_ref g : BMol}
+    (hg_ne : g ≠ f_ref)
+    {P : Polynomial ℂ}
+    (h_poly : f_ref.f = fun z => Polynomial.eval z P)
+    (h_fixed :
+      Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+            f_ref g hg_ne).f_ref =
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+          f_ref g hg_ne).f_ref)
+    (h_renorm :
+      IsFastRenormalizable
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+          f_ref g hg_ne).f_ref) :
+    False := by
+  exact
+    no_fixed_and_renorm_of_eq_eval_polynomial
+      h_poly
+      (by
+        simpa
+          [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne]
+          using h_fixed)
+      (by
+        simpa
+          [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne]
+          using h_renorm)
+
+/--
+So any future fixed-and-renormalizable `of_ne` refined-scaffold candidate must
+already use a base map outside the explicit-polynomial family.
+-/
+theorem
+    not_exists_eq_eval_polynomial_of_refined_chart_and_operator_of_ne_fixed_and_renorm
+    {f_ref g : BMol}
+    (hg_ne : g ≠ f_ref)
+    (h_fixed :
+      Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+            f_ref g hg_ne).f_ref =
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+          f_ref g hg_ne).f_ref)
+    (h_renorm :
+      IsFastRenormalizable
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+          f_ref g hg_ne).f_ref) :
+    ¬ ∃ P : Polynomial ℂ, f_ref.f = fun z => Polynomial.eval z P := by
+  intro h_poly
+  rcases h_poly with ⟨P, hP⟩
+  exact
+    no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_eq_eval_polynomial
+      hg_ne hP h_fixed h_renorm
+
+/--
+So the actual seed package produced by the generic `of_ne` fixed-upgrade
+constructor already carries the same frontier condition: its base cannot be an
+explicit polynomial point.
+-/
+theorem
+    not_exists_eq_eval_polynomial_of_refined_chart_and_operator_seed_sources_with_of_ne_of_fixed
+    {f_ref g : BMol}
+    (hg_ne : g ≠ f_ref)
+    (h_ne_default : f_ref ≠ defaultBMol)
+    (h_fixed :
+      Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+            f_ref g hg_ne).f_ref =
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne
+          f_ref g hg_ne).f_ref) :
+    ¬ ∃ P : Polynomial ℂ,
+        (molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_ne_of_fixed
+          hg_ne h_ne_default h_fixed).f_star.f =
+          fun z => Polynomial.eval z P := by
+  simpa
+    [molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_ne_of_fixed,
+      molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_of_scaffold_and_fixed_renorm,
+      molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne]
+    using
+      (not_exists_eq_eval_polynomial_of_refined_chart_and_operator_of_ne_fixed_and_renorm
+        hg_ne
+        h_fixed
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_renorm_of_fixed
+          hg_ne h_ne_default h_fixed))
+
+/--
+So the large-base refined scaffold cannot upgrade to the dynamical seed package
+via fixedness: its base is an explicit polynomial point already screened by the
+generic `of_ne` obstruction.
+-/
+theorem
+    no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_large_base_refined_chart_and_operator_of_fixed
+    (h_fixed :
+      Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator.f_ref) =
+        molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator.f_ref) :
+    False := by
+  exact
+    (no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_ne_of_fixed_of_eq_eval_polynomial
+      (f_ref := largeBMol)
+      (g := defaultBMol)
+      (P := Polynomial.X ^ 2)
+      largeBMol_ne_defaultBMol.symm
+      (by
+        funext z
+        simp [largeBMol])
+      largeBMol_ne_defaultBMol)
+      (by
+        simpa
+          [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator]
+          using h_fixed)
+
+/--
+The shifted-base refined scaffold is blocked at the same fixed-to-seed-upgrade
+interface.
+-/
+theorem
+    no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_shifted_base_refined_chart_and_operator_of_fixed
+    (h_fixed :
+      Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator.f_ref) =
+        molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator.f_ref) :
+    False := by
+  exact
+    (no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_ne_of_fixed_of_eq_eval_polynomial
+      (f_ref := shiftedBMol)
+      (g := defaultBMol)
+      (P := Polynomial.X ^ 2 + Polynomial.C 1)
+      shiftedBMol_ne_defaultBMol.symm
+      (by
+        funext z
+        simp [shiftedBMol])
+      shiftedBMol_ne_defaultBMol)
+      (by
+        simpa
+          [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator]
+          using h_fixed)
+
+/--
+So the large-base refined scaffold candidate is not fixed by `Rfast`: fixedness
+would force the impossible self-renormalization relation on `largeBMol`.
+-/
+theorem
+    no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator_base_fixed :
+    ¬ Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator.f_ref) =
+        molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator.f_ref := by
+  simpa
+    [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator]
+    using
+      (no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_fixed_of_eq_eval_polynomial
+        (f_ref := largeBMol)
+        (g := defaultBMol)
+        (P := Polynomial.X ^ 2)
+        largeBMol_ne_defaultBMol.symm
+        (by
+          funext z
+          simp [largeBMol])
+        largeBMol_ne_defaultBMol)
+
+/--
+So the shifted-base refined scaffold candidate is also not fixed by `Rfast`:
+fixedness would force the impossible affine self-renormalization relation on
+`shiftedBMol`.
+-/
+theorem
+    no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator_base_fixed :
+    ¬ Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator.f_ref) =
+        molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator.f_ref := by
+  simpa
+    [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator]
+    using
+      (no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_fixed_of_eq_eval_polynomial
+        (f_ref := shiftedBMol)
+        (g := defaultBMol)
+        (P := Polynomial.X ^ 2 + Polynomial.C 1)
+        shiftedBMol_ne_defaultBMol.symm
+        (by
+          funext z
+          simp [shiftedBMol])
+        shiftedBMol_ne_defaultBMol)
+
+/--
+So the large-base refined scaffold upgrades to the dynamical seed package as
+soon as its base is shown to be fixed by `Rfast`.
+-/
+noncomputable def
+    molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_large_base_refined_chart_and_operator_of_fixed
+    (h_fixed :
+      Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator.f_ref) =
+        molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator.f_ref) :
+    MoleculeResidualDynamicalBanachNeighborhoodOperatorSeedSourcesWith
+      slice_chart_refined slice_operator_refined :=
+  molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_ne_of_fixed
+    largeBMol_ne_defaultBMol.symm
+    largeBMol_ne_defaultBMol
+    (by
+      simpa
+        [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator]
+        using h_fixed)
+
+/--
+If a PLAN_84 seed exists, the refined chart/operator scaffold already admits a
+separated Banach-neighborhood operator package. This isolates the obstruction
+to the legacy `slice_chart`, not to the operator-route shape itself.
+-/
+noncomputable def
+    molecule_residual_separated_banach_neighborhood_operator_seed_sources_with_refined_of_renormalizable_fixed_seed_source
+    (h_seed : MoleculeResidualRenormalizableFixedSeedSource) :
+    MoleculeResidualSeparatedBanachNeighborhoodOperatorSeedSourcesWith
+      slice_chart_refined slice_operator := by
+  let f_star := renormalizable_fixed_seed_point h_seed
+  let B : Set SliceSpace := ({(0 : SliceSpace), (1 : SliceSpace)} : Set SliceSpace)
+  have h_compact_B : IsCompact B := by
+    exact
+      ((Set.finite_singleton (1 : SliceSpace)).insert (0 : SliceSpace)).isCompact
+  have h_default_ne_f_star : defaultBMol ≠ f_star := by
+    intro h_eq
+    have h_renorm_default : IsFastRenormalizable defaultBMol := by
+      simpa [f_star, h_eq] using (renormalizable_fixed_seed_point_spec h_seed).1
+    exact defaultBMol_not_renormalizable h_renorm_default
+  refine
+    { f_star := f_star
+      B := B
+      chart_mem := by
+        simp [B, slice_chart_refined]
+      compact := h_compact_B
+      maps := ?_
+      fixed := renormalizable_fixed_seed_point_fixed h_seed
+      renorm := (renormalizable_fixed_seed_point_spec h_seed).1
+      realized_nonbase := ?_ }
+  · intro z hz
+    simp [B, slice_operator]
+  · refine ⟨defaultBMol, ?_, ?_⟩
+    · simp [B, slice_chart_refined, h_default_ne_f_star]
+    · simp [slice_chart_refined, h_default_ne_f_star]
+
+/--
+Under the refined chart scaffold, the separated Banach-neighborhood operator
+route is available exactly when the PLAN_84 seed interface is available. So
+chart separation alone is not a new zero-argument producer class.
+-/
+theorem
+    molecule_residual_separated_banach_neighborhood_operator_seed_sources_with_refined_iff_renormalizable_fixed_seed_source :
+    Nonempty
+        (MoleculeResidualSeparatedBanachNeighborhoodOperatorSeedSourcesWith
+          slice_chart_refined slice_operator) ↔
+      MoleculeResidualRenormalizableFixedSeedSource := by
+  constructor
+  · intro h_nonempty
+    rcases h_nonempty with ⟨h_sources⟩
+    exact
+      molecule_residual_renormalizable_fixed_seed_source_of_banach_neighborhood_operator_seed_sources_with
+        h_sources.toMoleculeResidualBanachNeighborhoodOperatorSeedSourcesWith
+  · intro h_seed
+    exact
+      ⟨molecule_residual_separated_banach_neighborhood_operator_seed_sources_with_refined_of_renormalizable_fixed_seed_source
+        h_seed⟩
+
+/--
+Any PLAN_84 seed also witnesses separation for the refined chart. This is the
+smallest in-repo proxy for the kind of nonconstant chart the legacy scaffold
+still lacks.
+-/
+theorem
+    molecule_residual_separated_slice_chart_source_with_refined_of_renormalizable_fixed_seed_source
+    (h_seed : MoleculeResidualRenormalizableFixedSeedSource) :
+    MoleculeResidualSeparatedSliceChartSourceWith slice_chart_refined := by
+  exact
+    molecule_residual_separated_slice_chart_source_with_of_separated_banach_neighborhood_operator_seed_sources_with
+      (molecule_residual_separated_banach_neighborhood_operator_seed_sources_with_refined_of_renormalizable_fixed_seed_source
+        h_seed)
+
+/--
+Even after replacing the legacy chart by `slice_chart_refined`, the current
+operator scaffold is still too trivial to realize genuine operator-side
+dynamics.
+-/
+theorem
+    no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_current_operator :
+    ¬ Nonempty
+        (MoleculeResidualDynamicalBanachNeighborhoodOperatorSeedSourcesWith
+          slice_chart_refined slice_operator) := by
+  exact
+    no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_current_operator
 
 /--
 Any PLAN_84 seed yields a singleton-domain renormalizability bridge without
@@ -2951,6 +5445,19 @@ theorem molecule_residual_critical_renormalizable_fixed_seed_source_of_seed_and_
     MoleculeResidualCriticalRenormalizableFixedSeedSource := by
   rcases h_seed with ⟨f_seed, h_renorm, h_fixed⟩
   exact ⟨f_seed, h_renorm, h_fixed, h_crit f_seed h_fixed h_renorm⟩
+
+/--
+Any Banach-neighborhood operator seed package plus critical-value transfer
+already yields the stronger critical-seed contract.
+-/
+theorem molecule_residual_critical_renormalizable_fixed_seed_source_of_banach_neighborhood_operator_seed_sources_and_critical_value_transfer
+    (h_sources : MoleculeResidualBanachNeighborhoodOperatorSeedSources)
+    (h_crit : FixedPointCriticalValueTransferSource) :
+    MoleculeResidualCriticalRenormalizableFixedSeedSource :=
+  molecule_residual_critical_renormalizable_fixed_seed_source_of_seed_and_critical_value_transfer
+    (molecule_residual_renormalizable_fixed_seed_source_of_banach_neighborhood_operator_seed_sources
+      h_sources)
+    h_crit
 
 /--
 In the current identity-model scaffold, exact uniqueness of fixed hybrid
@@ -3041,6 +5548,38 @@ theorem molecule_residual_critical_renormalizable_fixed_seed_source_of_fixed_poi
   molecule_residual_critical_renormalizable_fixed_seed_source_of_seed_and_critical_value_transfer
     h_exists
     h_crit
+
+/--
+The standard-Siegel / Feigenbaum fixed-point assumptions already yield the
+stronger critical seed contract directly. This exposes a concrete seed-side
+producer family already present in the repository.
+-/
+theorem molecule_residual_critical_renormalizable_fixed_seed_source_of_standard_siegel_fixed_point
+    (h_exists :
+      ∃ (K : Set BMol) (f_ref : BMol) (P : Set SliceSpace),
+        IsCompact P ∧
+        Convex ℝ P ∧
+        MapsTo (slice_operator f_ref) P P ∧
+        K = {f | slice_chart f_ref f ∈ P} ∧
+        SurjOn (slice_chart f_ref) K P ∧
+        K.Finite ∧
+        InjOn (slice_chart f_ref) K ∧
+        ContinuousOn (slice_operator f_ref) ((slice_chart f_ref) '' K) ∧
+        K.Nonempty ∧
+        f_ref ∈ K)
+    (h_conj :
+      ∀ f_ref : BMol,
+        ∀ x ∈ slice_domain f_ref,
+          slice_operator f_ref (slice_chart f_ref x) = slice_chart f_ref (Rfast x))
+    (h_norm :
+      ∀ K : Set BMol,
+        (∀ f ∈ K, IsFastRenormalizable f) ∧
+        (∀ f ∈ K, criticalValue f = 0) ∧
+        (∀ f ∈ K, f.V ⊆ Metric.ball 0 0.1)) :
+    MoleculeResidualCriticalRenormalizableFixedSeedSource := by
+  rcases exists_standard_siegel_fixed_point h_exists h_conj h_norm with
+    ⟨f_seed, h_std, h_fix⟩
+  exact ⟨f_seed, h_std.1, h_fix, h_std.2.1⟩
 
 
 /--
@@ -3657,12 +6196,143 @@ def molecule_residual_refined_invariant_fixed_point_domain_sources_of_fixed_poin
     ⟩
 
 /--
+Any refined invariant fixed-point domain built from `slice_chart_refined`
+contains the designated reference point and therefore has only two possible
+shapes: either the singleton `{f_ref}` or all of `BMol`.
+-/
+theorem molecule_residual_refined_invariant_fixed_point_domain_sources_shape
+    (h_sources : MoleculeResidualRefinedInvariantFixedPointDomainSources) :
+    h_sources.K = ({h_sources.f_ref} : Set BMol) ∨ h_sources.K = (Set.univ : Set BMol) := by
+  have h0 : (0 : SliceSpace) ∈ h_sources.P := by
+    have h_ref_in_chart_preimage :
+        h_sources.f_ref ∈ {f : BMol | slice_chart_refined h_sources.f_ref f ∈ h_sources.P} := by
+      simpa [h_sources.kdef] using h_sources.mem
+    simpa [slice_chart_refined] using h_ref_in_chart_preimage
+  by_cases h1 : (1 : SliceSpace) ∈ h_sources.P
+  · right
+    ext f
+    constructor
+    · intro _hf
+      simp
+    · intro _hf
+      by_cases hf : f = h_sources.f_ref
+      · simp [h_sources.kdef, slice_chart_refined, hf, h0]
+      · simp [h_sources.kdef, slice_chart_refined, hf, h1]
+  · left
+    ext f
+    by_cases hf : f = h_sources.f_ref
+    · simp [h_sources.kdef, slice_chart_refined, hf, h0]
+    · simp [h_sources.kdef, slice_chart_refined, hf, h1]
+
+/--
 Project a fixed-point-in-domain witness from the refined singleton-domain pack.
 -/
 def molecule_residual_invariant_slice_fixed_point_source_of_refined_invariant_fixed_point_domain_sources
     (h_sources : MoleculeResidualRefinedInvariantFixedPointDomainSources) :
     MoleculeResidualInvariantSliceFixedPointSource :=
   ⟨h_sources.K, h_sources.f_ref, h_sources.mem, h_sources.fixed⟩
+
+/--
+Any refined invariant fixed-point domain source becomes a genuine PLAN_88
+larger-domain candidate exactly when it is paired with a localized bridge on
+its domain and a nontrivial second point. This exposes the refined-side search
+target without routing through the singleton/canonical class.
+-/
+def molecule_residual_non_singleton_localized_bridge_sources_of_refined_invariant_fixed_point_domain_sources_and_bridge_on_and_nontrivial
+    (h_sources : MoleculeResidualRefinedInvariantFixedPointDomainSources)
+    (h_bridge_on : FixedPointImpliesRenormalizableOn h_sources.K)
+    (h_nontrivial : ∃ g : BMol, g ∈ h_sources.K ∧ g ≠ h_sources.f_ref) :
+    MoleculeResidualNonSingletonLocalizedBridgeSources :=
+  { K := h_sources.K
+    f_ref := h_sources.f_ref
+    mem := h_sources.mem
+    fixed := h_sources.fixed
+    bridge_on := h_bridge_on
+    nontrivial := h_nontrivial }
+
+/--
+The present refined-chart localized-side route is generically blocked:
+for any refined invariant fixed-point domain source, adding a localized bridge
+and a genuinely nontrivial second point forces the already-false global
+fixed-point renormalizability carrier.
+-/
+theorem no_refined_invariant_fixed_point_domain_sources_bridge_on_and_nontrivial
+    (h_sources : MoleculeResidualRefinedInvariantFixedPointDomainSources)
+    (h_bridge_on : FixedPointImpliesRenormalizableOn h_sources.K)
+    (h_nontrivial : ∃ g : BMol, g ∈ h_sources.K ∧ g ≠ h_sources.f_ref) :
+    False := by
+  have h_shape :
+      h_sources.K = ({h_sources.f_ref} : Set BMol) ∨ h_sources.K = (Set.univ : Set BMol) :=
+    molecule_residual_refined_invariant_fixed_point_domain_sources_shape h_sources
+  cases h_shape with
+  | inl h_singleton =>
+      rcases h_nontrivial with ⟨g, hgK, hg_ne⟩
+      have hg_eq : g = h_sources.f_ref := by
+        simpa [h_singleton] using hgK
+      exact hg_ne hg_eq
+  | inr h_univ =>
+      have h_global : ∀ f : BMol, Rfast f = f → IsFastRenormalizable f := by
+        intro f h_fix
+        exact h_bridge_on f (by simp [h_univ]) h_fix
+      exact no_molecule_residual_fixed_point_renormalizable_source h_global
+
+/--
+Current refined-domain candidate for the localized PLAN_88 branch:
+if the domain extracted from `fixed_point_exists` carries a localized bridge
+and is genuinely non-singleton, then it already yields the exact larger-domain
+target.
+-/
+def molecule_residual_non_singleton_localized_bridge_sources_of_fixed_point_exists_refined_domain_and_bridge_on_and_nontrivial
+    (h_bridge_on :
+      FixedPointImpliesRenormalizableOn
+        (molecule_residual_refined_invariant_fixed_point_domain_sources_of_fixed_point_exists).K)
+    (h_nontrivial :
+      ∃ g : BMol,
+        g ∈ (molecule_residual_refined_invariant_fixed_point_domain_sources_of_fixed_point_exists).K ∧
+          g ≠ (molecule_residual_refined_invariant_fixed_point_domain_sources_of_fixed_point_exists).f_ref) :
+    MoleculeResidualNonSingletonLocalizedBridgeSources :=
+  molecule_residual_non_singleton_localized_bridge_sources_of_refined_invariant_fixed_point_domain_sources_and_bridge_on_and_nontrivial
+    molecule_residual_refined_invariant_fixed_point_domain_sources_of_fixed_point_exists
+    h_bridge_on
+    h_nontrivial
+
+/--
+The current refined-domain candidate would already solve the existence side if
+it supplied the exact remaining localized-side hypotheses.
+-/
+theorem molecule_residual_fixed_point_existence_source_of_fixed_point_exists_refined_domain_and_bridge_on_and_nontrivial
+    (h_bridge_on :
+      FixedPointImpliesRenormalizableOn
+        (molecule_residual_refined_invariant_fixed_point_domain_sources_of_fixed_point_exists).K)
+    (h_nontrivial :
+      ∃ g : BMol,
+        g ∈ (molecule_residual_refined_invariant_fixed_point_domain_sources_of_fixed_point_exists).K ∧
+          g ≠ (molecule_residual_refined_invariant_fixed_point_domain_sources_of_fixed_point_exists).f_ref) :
+    MoleculeResidualFixedPointExistenceSource :=
+  molecule_residual_fixed_point_existence_source_of_non_singleton_localized_bridge_sources
+    (molecule_residual_non_singleton_localized_bridge_sources_of_fixed_point_exists_refined_domain_and_bridge_on_and_nontrivial
+      h_bridge_on
+      h_nontrivial)
+
+/--
+The current `fixed_point_exists`-based refined-domain candidate cannot become a
+genuine PLAN_88 larger-domain breakthrough: if it were non-singleton, its
+localized bridge would collapse to the already-false global fixed-point
+renormalizability carrier.
+-/
+theorem no_fixed_point_exists_refined_domain_bridge_on_and_nontrivial
+    (h_bridge_on :
+      FixedPointImpliesRenormalizableOn
+        (molecule_residual_refined_invariant_fixed_point_domain_sources_of_fixed_point_exists).K)
+    (h_nontrivial :
+      ∃ g : BMol,
+        g ∈ (molecule_residual_refined_invariant_fixed_point_domain_sources_of_fixed_point_exists).K ∧
+          g ≠ (molecule_residual_refined_invariant_fixed_point_domain_sources_of_fixed_point_exists).f_ref) :
+    False := by
+  exact no_refined_invariant_fixed_point_domain_sources_bridge_on_and_nontrivial
+    molecule_residual_refined_invariant_fixed_point_domain_sources_of_fixed_point_exists
+    h_bridge_on
+    h_nontrivial
 
 /--
 Project a fixed-point-in-domain witness from the seed-based refined singleton
