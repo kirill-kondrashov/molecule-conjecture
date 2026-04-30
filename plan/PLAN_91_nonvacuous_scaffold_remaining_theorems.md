@@ -374,6 +374,19 @@ broaden the operator further if even that class proves too narrow.
   thread the surviving scaffold into the existing
   `molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_of_scaffold_and_fixed_renorm`
   route, or prove the exact next failure point.
+  Progress on this gate:
+  - the exact base identity is now exposed by
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_base_eq_spikedShiftedBMol`
+  - fixedness now implies renormalizability via
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_base_renorm_of_fixed`
+  - fixedness now implies self-renormalization via
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_base_self_renorm_of_fixed`
+  - fixedness now upgrades directly to the seed package via
+    `molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_of_fixed`
+  Remaining gap:
+  - prove fixedness for this surviving package, or
+  - prove the corresponding no-self-renormalization obstruction and close the
+    branch honestly
 
 - [ ] Critical-seed cutover theorem or exact handoff obstruction.
   Positive target shape:

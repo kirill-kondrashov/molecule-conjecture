@@ -3662,6 +3662,23 @@ noncomputable def
     (f_ref := spikedShiftedBMol) (by simpa using bmol_zero_observation_spikedShifted)
 
 /--
+The spiked-shifted scaffold package is genuinely based at `spikedShiftedBMol`.
+-/
+theorem
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_base_eq_spikedShiftedBMol :
+    (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation).f_ref =
+      spikedShiftedBMol := by
+  unfold
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation
+  by_cases h_mem : ((5 : ℂ) / 2) ∈ spikedShiftedBMol.U
+  · simp
+      [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_finite_observation_and_slice_operator_zero_observation_of_zero_eq_one,
+        h_mem]
+  · simp
+      [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_finite_observation_and_slice_operator_zero_observation_of_zero_eq_one,
+        h_mem]
+
+/--
 But the current refined chart is still toy-level: it only has one nonbase
 chart direction, so it cannot support a richer local chart geometry.
 -/
@@ -4314,6 +4331,72 @@ noncomputable def
   · simpa [h_fref] using
       (isFastRenormalizable_of_fixed_of_ne_defaultBMol
         (ne_defaultBMol_of_bmol_zero_observation_eq_one h_zero) h_fixed)
+
+/--
+So the spiked-shifted scaffold base is already known to be distinct from the
+totalized fallback point `defaultBMol`.
+-/
+theorem
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_base_ne_default :
+    (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation).f_ref ≠
+      defaultBMol := by
+  rw
+    [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_base_eq_spikedShiftedBMol]
+  exact
+    ne_defaultBMol_of_bmol_zero_observation_eq_one
+      (by simpa using bmol_zero_observation_spikedShifted)
+
+/--
+For the first non-explicit-polynomial scaffold package, fixedness already
+forces the remaining renormalizability gate.
+-/
+theorem
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_base_renorm_of_fixed
+    (h_fixed :
+      Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation.f_ref) =
+        molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation.f_ref) :
+    IsFastRenormalizable
+      (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation.f_ref) :=
+  isFastRenormalizable_of_fixed_of_ne_defaultBMol
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_base_ne_default
+    h_fixed
+
+/--
+So any fixedness proof for the spiked-shifted scaffold candidate would already
+force a self-renormalization relation on its base.
+-/
+theorem
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_base_self_renorm_of_fixed
+    (h_fixed :
+      Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation.f_ref) =
+        molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation.f_ref) :
+    Nonempty
+      (RenormalizationRelation
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation.f_ref)
+        (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation.f_ref)) :=
+  self_renormalization_relation_of_fixed_of_ne_defaultBMol
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_base_ne_default
+    h_fixed
+
+/--
+If the spiked-shifted scaffold base is fixed, the current operator route already
+upgrades it to a dynamical seed package.
+-/
+noncomputable def
+    molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_of_fixed
+    (h_fixed :
+      Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation.f_ref) =
+        molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation.f_ref) :
+    MoleculeResidualDynamicalBanachNeighborhoodOperatorSeedSourcesWith
+      slice_chart_finite_observation slice_operator_zero_observation :=
+  molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_of_scaffold_and_fixed_renorm
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation
+    h_fixed
+    (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_base_renorm_of_fixed
+      h_fixed)
 
 /--
 For any non-`defaultBMol` refined-scaffold package built via the generic
