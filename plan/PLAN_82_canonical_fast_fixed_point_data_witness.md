@@ -1,10 +1,12 @@
 # PLAN 82 - Canonical Fast Fixed-Point Data Witness
 
 Status: ACTIVE
-Progress: [#########-] 95%
-Scope: Replace the current `Molecule.molecule_h_norm`-backed canonical
-fixed-point source with a non-`molecule_h_norm` theorem producing
-`MoleculeResidualCanonicalFastFixedPointDataSource`.
+Progress: [#######---] 70%
+Scope: Canonical-side dependent cutover plan. Replace the current
+`Molecule.molecule_h_norm`-backed canonical fixed-point source with a
+non-`molecule_h_norm` theorem producing
+`MoleculeResidualCanonicalFastFixedPointDataSource`, but only count progress
+here when the upstream seed/existence frontier actually changes.
 Acceptance:
 1. `#print axioms Molecule.molecule_residual_canonical_fast_fixed_point_data_source`
    does not include `Molecule.molecule_h_norm`.
@@ -18,7 +20,18 @@ Dependencies: `Molecule/Conjecture.lean`,
 Stuck Rule: STUCK if every canonical fixed-point witness candidate still
 factors through the current existence source or another equivalent
 `molecule_h_norm` carrier.
-Last Updated: 2026-03-07
+Last Updated: 2026-04-30
+
+## Critical Audit Revision
+
+- Canonical-route rewiring is saturated.
+- This file is not the governing frontier plan.
+  The upstream live search is owned by `PLAN_88` and currently operationalized
+  through `PLAN_90` / `PLAN_91`.
+- Count progress here only when:
+  1. a genuinely new non-`molecule_h_norm` existence/seed source lands, or
+  2. a smaller exact canonical blocker is exposed than the current upstream
+     frontier.
 
 ## Work Plan
 
@@ -26,7 +39,10 @@ Last Updated: 2026-03-07
   existence-side split target.
 - [x] Identify the smallest live source package that could imply canonical fast
   fixed-point data directly.
-- [ ] Attempt a non-`molecule_h_norm` canonical witness theorem.
+- [x] Saturate direct canonical-route rewiring so the remaining blocker is
+  upstream rather than hidden in canonical wrappers.
+- [ ] Rebase the canonical source immediately when a new non-`molecule_h_norm`
+  upstream existence/seed source lands.
 - [ ] Re-run `make build`, `make check`, and targeted `#print axioms` probes.
 
 ## Route Progress
@@ -35,7 +51,7 @@ Last Updated: 2026-03-07
 |---|---|---|
 | Target exposure | The existence half is now formally reduced to `MoleculeResidualCanonicalFastFixedPointDataSource`, and the current canonical theorem is rerouted through fixed-point data, local orbit-at source, and uniqueness. | [##########] 100% |
 | Downstream leverage | The active canonical route no longer hides orbit-clause transport wrappers, the intermediate fixed-data wrapper, or the direct-uniqueness wrapper. | [##########] 100% |
-| Witness search | The live upstream package is now split as the exact shared witness pair (`renormalizable`, `V`-bound transfer) plus `MoleculeResidualOrbitClauseAtSource`; no non-`molecule_h_norm` witness for that combination is known yet. | [##########] 100% |
+| Witness search | Structural canonical rewiring is complete, but no non-`molecule_h_norm` upstream source is currently available. This plan is therefore waiting on the `PLAN_88` / `PLAN_90` / `PLAN_91` frontier, not nearing independent completion. | [####------] 40% |
 
 ## Notes
 

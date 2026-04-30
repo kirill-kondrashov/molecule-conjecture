@@ -1,12 +1,39 @@
 # PLAN 00 - Molecule Hypothesis Elimination Tracker
 
 Status: ACTIVE
-Progress: [#########-] 99%
-Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
-Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
+Progress: [########--] 80%
+Scope: Track hypothesis-elimination plans, dependencies, blockers, and
+readiness, while distinguishing the live operational queue from historical
+handoff or wrapper-reduction plans.
+Acceptance: Active plans are current; completed plans are marked DONE; blocker
+status reflects the verified current frontier; and the tracker makes the live
+operational queue explicit rather than implying a near-complete burndown.
 Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77, PLAN_78, PLAN_79, PLAN_80, PLAN_81, PLAN_82, PLAN_83, PLAN_84, PLAN_85, PLAN_86, PLAN_87, PLAN_88, PLAN_89, PLAN_90, PLAN_91, PLAN_92
-Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
-Last Updated: 2026-03-14
+Stuck Rule: STUCK if the tracker stops distinguishing the live frontier from
+historical handoff plans and therefore misstates the current work.
+Last Updated: 2026-04-30
+
+## Critical Audit Revision
+
+- Verified current frontier:
+  `check_axioms Molecule.molecule_conjecture_refined` still reports the single
+  residual project-local axiom `Molecule.molecule_h_norm`.
+- Therefore the repository is **not** in a “99% complete elimination” state.
+  The live work is an upstream redesign/search program, not another round of
+  wrapper burndown.
+- Governing frontier:
+  `PLAN_88` remains the master route plan.
+- Operational queue:
+  `PLAN_90` and `PLAN_91` are the active day-to-day redesign theorem queue.
+- Sidecar dependency queue:
+  `PLAN_80`, `PLAN_78`, and `PLAN_53` remain the external gates for fixed-data,
+  local-witness, and witness-side control once a real upstream source lands.
+- Dependent but not lead-frontier plans:
+  `PLAN_82` is a canonical cutover gate; `PLAN_87` is currently stuck pending a
+  genuinely new seed producer class.
+- Reserve-only sidecar:
+  `PLAN_92` is explanatory/model-diagnostic only unless it feeds back into the
+  redesign queue.
 
 ## Plan Matrix
 
@@ -14,7 +41,7 @@ Last Updated: 2026-03-14
 |---|---|---|---|
 | PLAN_06 | Contract consistency refactor | DONE | [##########] 100% |
 | PLAN_07 | De-wrapper pseudo-Siegel/orbit | DONE | [##########] 100% |
-| PLAN_11 | Full `molecule_h_*` axiom burndown | DONE | [##########] 100% |
+| PLAN_11 | Historical `molecule_h_*` burndown to residual `molecule_h_norm` | DONE | [##########] 100% |
 | PLAN_12 | h_exists/h_norm localization | DONE | [##########] 100% |
 | PLAN_13 | h_orbit non-circular path | DONE | [##########] 100% |
 | PLAN_15 | Replace global h_norm contract | DONE | [##########] 100% |
@@ -55,22 +82,30 @@ Last Updated: 2026-03-14
 | PLAN_79 | Invariant-domain fixed-point source | STUCK | [#######---] 70% |
 | PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [#########-] 85% |
 | PLAN_81 | Single-reference fixed-point data witness | ACTIVE | [######----] 60% |
-| PLAN_82 | Canonical fast fixed-point data witness | ACTIVE | [#########-] 95% |
+| PLAN_82 | Canonical fast fixed-point data witness | ACTIVE | [#######---] 70% |
 | PLAN_83 | Localized fixed-point renormalizability bridge | STUCK | [#########-] 95% |
 | PLAN_84 | Canonical seed replacement for existence route | DONE | [##########] 100% |
 | PLAN_85 | Upstream four-carrier burndown | DONE | [##########] 100% |
 | PLAN_86 | Localized or reseeded replacement for R | DONE | [##########] 100% |
-| PLAN_87 | Non-circular critical seed source | ACTIVE | [###-------] 30% |
-| PLAN_88 | Dual-track seed or non-singleton localized bridge | ACTIVE | [########--] 80% |
+| PLAN_87 | Non-circular critical seed source | STUCK | [######----] 60% |
+| PLAN_88 | Dual-track seed or non-singleton localized bridge | ACTIVE | [#######---] 70% |
 | PLAN_89 | Non-h_norm seed producer inventory | DONE | [##########] 100% |
-| PLAN_90 | Separated operator action redesign | ACTIVE | [#########-] 90% |
-| PLAN_91 | Nonvacuous scaffold remaining theorems | ACTIVE | [#########-] 93% |
+| PLAN_90 | Separated operator action redesign | ACTIVE | [########--] 80% |
+| PLAN_91 | Nonvacuous scaffold remaining theorems | ACTIVE | [########--] 80% |
 | PLAN_92 | Main cardioid boundary first homology seam | PROPOSED | [#---------] 10% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Current queue is PLAN_88 master program + PLAN_90 separated-operator-action redesign subplan + PLAN_87 seed-side theorem subtrack + PLAN_82 canonical fast fixed-point data witness + PLAN_81 single-reference fixed-data witness + PLAN_80 fixed-point-data-source track + PLAN_78 concrete local-witness theorem + PLAN_53 (model bottleneck refactor) + PLAN_76 (anchor-witness bottleneck break) + PLAN_47/49 integration. PLAN_89 is now DONE as an inventory/handoff plan; PLAN_86 is DONE as a structural handoff plan; PLAN_85 is DONE as a burndown/handoff plan; PLAN_84 is DONE as a seed-replacement handoff; PLAN_83, PLAN_79, and PLAN_77 are STUCK history/handoff.
+- Current operational queue is:
+  `PLAN_88` governance -> `PLAN_90` / `PLAN_91` redesign theorem queue ->
+  `PLAN_80` / `PLAN_78` / `PLAN_53` sidecar dependency gates.
+- `PLAN_82` remains important, but only as a dependent canonical cutover once a
+  real upstream source lands.
+- `PLAN_87` is currently STUCK after the `PLAN_89` inventory closure; it should
+  not be treated as an equal day-to-day queue with `PLAN_90` / `PLAN_91`.
+- `PLAN_47`, `PLAN_49`, `PLAN_76`, and `PLAN_81` remain useful history and
+  secondary integration context, but they are no longer the lead frontier.
 - Reserve sidecar note:
   `PLAN_92` now tracks the first credible homology seam. It is explicitly not
   part of the active elimination queue: current slice-side objects only expose
@@ -82,6 +117,15 @@ Last Updated: 2026-03-14
 
 - `check_axioms` for `Molecule.molecule_conjecture_refined` currently reports:
   - `Molecule.molecule_h_norm`
+- Verification checkpoint (2026-04-30):
+  - `make build` and `make check` pass.
+  - `scripts/verify_output.sh` passes.
+  - the README expected output remains accurate:
+    `propext`, `Quot.sound`, `Classical.choice`, `Molecule.molecule_h_norm`
+- Critical planning correction:
+  - the active frontier is no longer another wrapper decomposition pass.
+  - the active frontier is a redesign/search queue owned by `PLAN_88` and
+    operationalized by `PLAN_90` / `PLAN_91`.
 - Verification checkpoint (2026-03-04):
   - `make build` and `make check` pass.
   - targeted probes still include `Molecule.molecule_h_norm` in:

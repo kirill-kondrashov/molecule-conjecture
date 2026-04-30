@@ -1,7 +1,7 @@
 # PLAN 91 - Nonvacuous Scaffold Remaining Theorems
 
 Status: ACTIVE
-Progress: [#########-] 93%
+Progress: [#########-] 85%
 Scope: theorem backlog after the `PLAN_90` obstruction inventory. The current
 repo has already proved that the existing refined scaffold is too weak:
 `slice_chart_refined` has only one nonbase direction, `slice_domain = univ`
@@ -13,7 +13,19 @@ model-redesign obstruction.
 
 Parent plan: `plan/PLAN_90_separated_operator_action_redesign.md`
 
-Last Updated: 2026-03-14
+Last Updated: 2026-04-30
+
+## Critical Audit Revision
+
+- This file is the concrete theorem queue under `PLAN_90`, but it is not
+  nearly complete in the sense of delivering a surviving upstream route.
+- The completed items below mostly certify that the current scaffold is no
+  longer vacuous and that the first topology-compatible chart family exists.
+- The decisive open queue is now narrower and harsher:
+  1. produce an operator whose nontrivial local dynamics are not forced to the
+     hard-coded shifted/observation branch,
+  2. reuse the stronger scaffold on a non-explicit-polynomial base, or
+  3. prove the exact smaller obstruction showing why that migration still fails.
 
 ## Current Boundary
 
@@ -337,13 +349,17 @@ broaden the operator further if even that class proves too narrow.
   and
   `not_exists_eq_eval_polynomial_of_slice_chart_finite_observation_and_slice_operator_zero_observation_of_zero_eq_one_of_fixed`.
 
-- [ ] First non-explicit-polynomial base theorem family under the stronger
+- [x] First non-explicit-polynomial base theorem family under the stronger
       scaffold.
   Target shape:
   `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_<base>_<new_chart>_<new_op>`
   Goal:
   reuse the stronger scaffold on the first base outside the already-closed
   explicit-polynomial family.
+  Completed with:
+  - `spikedShiftedBMol`
+  - `spikedShiftedBMol_not_exists_eq_eval_polynomial`
+  - `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation`
 
 - [ ] Fixedness/renormalizability gate theorem family for that first surviving
       base.

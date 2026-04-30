@@ -1,7 +1,7 @@
 # PLAN 90 - Separated Operator Action Redesign
 
 Status: ACTIVE
-Progress: [#########-] 90%
+Progress: [########--] 80%
 Scope: Redesign follow-on after the `PLAN_89` inventory closure. The current
 repository has now isolated two exact scaffold defects in the paper-guided
 Banach-neighborhood operator route:
@@ -69,13 +69,24 @@ Stuck Rule: STUCK if every candidate chart/operator scaffold either:
   (`slice_domain = univ`, equality-coded chart values, identity operator,
   discrete placeholder topology on `BMol`).
 
-Last Updated: 2026-03-13
+Last Updated: 2026-04-30
 
 Execution split:
 the remaining theorem backlog after the current obstruction inventory is now
 tracked in `plan/PLAN_91_nonvacuous_scaffold_remaining_theorems.md`. `PLAN_90`
 remains the governing route plan; `PLAN_91` owns the concrete theorem queue
 for the next scaffold-or-model decision.
+
+## Critical Audit Revision
+
+- This plan is active, but it is not 90%-complete in the sense that matters for
+  the axiom frontier.
+- Most recorded progress so far is obstruction isolation plus the first
+  non-vacuous replacement scaffold.
+- The next decisive milestone is still open:
+  either reuse that stronger scaffold on a non-explicit-polynomial base, or
+  prove a smaller exact obstruction showing why even the named non-discrete
+  topologies and replacement scaffold are still insufficient.
 
 ## Research Program
 
@@ -97,12 +108,16 @@ for the next scaffold-or-model decision.
   before changing `Molecule/BanachSlice.lean` again.
 - [x] Screen the explicit shifted-base package against the next
   fixedness/renormalizability gate.
-- [ ] Replace the current toy refined scaffold by one with nontrivial
-  `f_star`-dependence, a nontrivial chart domain, and at least one non-vacuous
+- [x] Replace the current toy refined scaffold by a theorem-backed scaffold with
+  nontrivial `f_star`-dependence, a proper localized domain, and a non-vacuous
   local/analytic obligation.
-- [ ] Decide whether that strengthening can be done inside the current
-  placeholder `BMol` topology, or whether the next exact debt is a
-  model/topology redesign in `Molecule/BMol.lean`.
+- [x] Separate pure topology debt from chart/operator debt by porting the first
+  scaffold family to named non-discrete `BMol` topologies.
+- [ ] Search beyond the current explicit polynomial family using that stronger
+  scaffold rather than the old toy operator.
+- [ ] Decide whether the remaining gap is now:
+  - a base-search failure inside the stronger scaffold, or
+  - an exact model/topology obstruction requiring a further `BMol` redesign.
 - [ ] Only after that, search beyond the current explicit polynomial family in
   `Molecule/BMol.lean`.
 - [ ] Reuse the stronger scaffold on the first non-explicit-polynomial base
@@ -125,12 +140,12 @@ for the next scaffold-or-model decision.
 | Route | Current State | Progress |
 |---|---|---|
 | Obstruction inventory | The toy-scaffold failures are explicit, and the program now also records that the live search boundary is beyond the explicit-polynomial family. The chart-side toy weakness is now formalized exactly, the current `slice_domain = univ` placeholder is now formally disqualified as a proper localized chart domain, and the current model/topology debt now has four exact theorem-level consequences: local chart injectivity, chart continuity, and local chart constancy are automatic for every chart under the current discrete `BMol` topology, while genuine local variation on every neighborhood is impossible. | [##########] 100% |
-| Minimal source interface | `MoleculeResidualSeparatedOperatorActionSourceWith` and the scaffold/seed interfaces are explicit, and the repo now has a replacement chart/operator pair that realizes distinct nonbase chart and operator directions together with a nontrivial operator linearization theorem. The remaining gap is no longer interface or local-analytic existence, but reuse of that stronger scaffold on the next base search. | [#########-] 90% |
+| Minimal source interface | `MoleculeResidualSeparatedOperatorActionSourceWith` and the scaffold/seed interfaces are explicit, and the repo now has a replacement chart/operator pair that realizes distinct nonbase chart and operator directions together with a nontrivial operator linearization theorem. The remaining gap is reuse of that stronger scaffold on the next base search. | [########--] 80% |
 | Toy-family screening | The literal `z^2` family, the shifted `z^2 + c` family, and in fact every explicit polynomial `BMol` base map are screened under the current scaffold. | [##########] 100% |
-| Non-vacuous scaffold redesign | The repo now has a theorem-backed replacement domain, a multivalued chart with two distinct nonbase directions, a nonidentity reference-dependent operator, a compact scaffold package built from that pair, and a nontrivial operator-linearization theorem that excludes the constant and identity placeholders. The next live step is no longer redesign inside `BanachSlice.lean`, but reuse of this stronger scaffold on the first non-explicit-polynomial base. | [#########-] 90% |
+| Non-vacuous scaffold redesign | The repo now has a theorem-backed replacement domain, a multivalued chart with two distinct nonbase directions, a nonidentity reference-dependent operator, a compact scaffold package built from that pair, and a nontrivial operator-linearization theorem that excludes the constant and identity placeholders. It also now has a first concrete non-explicit-polynomial base (`spikedShiftedBMol`) on which the stronger finite-observation/zero-observation scaffold is instantiated. The next live step is the fixedness/renormalizability gate on that base. | [#########-] 85% |
 | Model/topology adequacy | `BMol` still uses the current discrete placeholder topology as its default instance, and four exact consequences of that choice are formalized. But `BMol` now carries two named non-discrete topology candidates: `bmol_zero_topology`, induced by `f ↦ f 0`, and the stronger `bmol_finite_topology`, induced by `(f 0, 1_{(5 / 2) ∈ U})`. The boundary is now sharper than “continuity is no longer automatic”: `slice_chart_multivalued` still fails continuity under the weaker named topology, but the new observation-based `slice_chart_finite_observation` is continuous under `bmol_finite_topology` and still realizes the same nontrivial `{0, 1, 2}` shifted scaffold package. So the broader migration story is no longer blocked at the first chart step; the remaining gap is to move the later local/analytic and base-search obligations onto a topology-compatible scaffold. | [##########] 100% |
 | Non-equivalence screening | The original default-based package is screened by the `defaultBMol` renormalizability obstruction, and the explicit `largeBMol`-based package is now screened all the way down to a false fixedness claim via impossible self-renormalization. | [##########] 100% |
-| Downstream gate readiness | The generic fixed-to-seed upgrade machinery is in place, but it is only useful once a non-vacuous surviving package exists. | [########--] 80% |
+| Downstream gate readiness | The generic fixed-to-seed upgrade machinery is in place, but it is still waiting on a non-vacuous surviving package beyond the explicit-polynomial family. | [#######---] 70% |
 
 ## Notes
 

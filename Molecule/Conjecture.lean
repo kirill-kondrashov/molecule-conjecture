@@ -3650,6 +3650,18 @@ noncomputable def
             norm_num }
 
 /--
+The first concrete non-explicit-polynomial base already lies in the broader
+zero-observation class `f_ref.f 0 = 1`, so it supports the current stronger
+finite-observation/zero-observation scaffold package.
+-/
+noncomputable def
+    molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation :
+    MoleculeResidualDynamicalBanachNeighborhoodOperatorScaffoldSourcesWith
+      slice_chart_finite_observation slice_operator_zero_observation :=
+  molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_finite_observation_and_slice_operator_zero_observation_of_zero_eq_one
+    (f_ref := spikedShiftedBMol) (by simpa using bmol_zero_observation_spikedShifted)
+
+/--
 But the current refined chart is still toy-level: it only has one nonbase
 chart direction, so it cannot support a richer local chart geometry.
 -/

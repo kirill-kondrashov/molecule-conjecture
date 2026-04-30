@@ -1,7 +1,7 @@
 # PLAN 88 - Dual-Track Seed Or Non-Singleton Localized Bridge
 
 Status: ACTIVE
-Progress: [########--] 80%
+Progress: [#######---] 70%
 Scope: Coordination and gating plan for replacing the formally blocked global
 witness-side route while distinguishing theorem-shape viability from current
 operational plausibility:
@@ -52,8 +52,9 @@ Acceptance:
    - fixed-point critical-value transfer, and
    - renormalizable-point `V`-bound control (`RV`)
    through the already exposed cutovers.
-8. While the seed-side inventory remains open, do not treat abstract
-   localized-side wrapper search as co-equal progress.
+8. With the current seed-side inventory already closed, do not treat abstract
+   localized-side wrapper search as progress unless it is tied to a genuinely
+   new producer class.
 9. If the seed-side inventory closes and no concrete localized producer class
    survives the plausibility screen, record the exact obstruction and hand off
    to model redesign.
@@ -78,7 +79,18 @@ Stuck Rule: STUCK only if both of the following are established:
 - no concrete larger-domain producer class outside the closed refined-chart
   scaffold survives the initial plausibility screen.
 
-Last Updated: 2026-03-11
+Last Updated: 2026-04-30
+
+## Critical Audit Revision
+
+- This file remains the governing frontier plan, but it is not an active
+  theorem queue by itself.
+- `PLAN_89` closed the current in-repository seed-side inventory.
+- The currently encoded localized-side producer class is also closed under the
+  existing scaffold.
+- Therefore the day-to-day operational route is now `PLAN_90` / `PLAN_91`.
+  Reopen direct seed-side or localized-side theorem search only when a genuinely
+  new producer class is named.
 
 ## Critical Revision
 
@@ -111,12 +123,12 @@ Last Updated: 2026-03-11
 - [ ] Keep both exact theorem targets explicit:
   - seed-side: `MoleculeResidualCriticalRenormalizableFixedSeedSource`
   - localized-side: `MoleculeResidualNonSingletonLocalizedBridgeSources`
-- [x] Treat `PLAN_89` as the primary operational route:
-  close the repository's explicit seed-side producer inventory before spending
-  equal effort on more speculative branches.
-- [ ] Treat `PLAN_90` as the active redesign follow-on now that the explicit
-  seed-side inventory is closed and the current chart/operator scaffold is the
-  next exact bottleneck.
+- [x] Close the explicit seed-side producer inventory first (`PLAN_89`).
+- [x] Treat `PLAN_90` / `PLAN_91` as the active operational route now that the
+  explicit seed-side inventory is closed and the current chart/operator
+  scaffold is the next exact bottleneck.
+- [ ] Reopen direct seed-side or localized-side theorem search only when a
+  genuinely new producer class is named.
 - [ ] For every candidate, first prove it escapes the current singleton /
   canonical equivalence class.
 - [ ] For every localized-side candidate, first name the concrete producer
@@ -141,28 +153,30 @@ Last Updated: 2026-03-11
 
 ## Priority Order
 
-1. Close `PLAN_89` inventory and carry the obstruction into `PLAN_90`
-2. Clean theorem route for any surviving seed-side family
-3. Localized-side activation only after naming a new producer class outside the
+1. Carry the closed `PLAN_89` inventory and current localized obstruction into
+   `PLAN_90` / `PLAN_91`
+2. Name a genuinely new producer class
+3. Clean theorem route for any surviving seed-side or localized-side family
+4. Localized-side activation only after naming a new producer class outside the
    closed refined-chart scaffold
-4. Non-equivalence and strong non-circularity screening for any such
+5. Non-equivalence and strong non-circularity screening for any such
    localized-side candidate
-5. Coordinate exact downstream gate with `PLAN_80` / `PLAN_78` / `PLAN_53`
-6. Obstruction certificate if seed inventory closes and no plausible localized
+6. Coordinate exact downstream gate with `PLAN_80` / `PLAN_78` / `PLAN_53`
+7. Obstruction certificate if no plausible new producer class survives
    producer class remains
 
 ## Route Progress
 
 | Route | Current State | Progress |
 |---|---|---|
-| Seed-side operational track | `PLAN_89` has now closed the explicit in-repo inventory: no surviving non-`h_norm` producer class remains under the current scaffold. | [######----] 60% |
+| Seed-side operational track | `PLAN_89` has closed the explicit in-repo inventory: no surviving non-`h_norm` producer class remains under the current scaffold. | [##########] 100% |
 | Localized-side reserve track | The only encoded larger-domain producer class is the refined-chart family, and it is now closed; no alternative producer class is currently named in the repository. | [##--------] 20% |
-| Plausibility screening | Current evidence now separates theorem-shape viability from operational priority: current theorem search is exhausted, and further progress needs model redesign rather than more wrapper search. | [########--] 80% |
+| Plausibility screening | The active distinction is now exact: theorem-shape viability remains open in principle, but current in-repo producer classes are exhausted, so operational progress now requires redesign rather than more wrapper search. | [#########-] 90% |
 | Non-equivalence screening | Singleton localized / singleton seed / canonical seed collapse already recorded, and the current refined-chart localized producer class is now shown to collapse to singleton or blocked global `R`. | [########--] 80% |
-| Strong non-circularity screening | The current refined-chart localized producer class is now ruled out as a genuine larger-domain route, and the current `slice_operator` is too trivial to realize genuine operator-side dynamics even after chart refinement. | [#######---] 70% |
+| Strong non-circularity screening | The current refined-chart localized producer class is ruled out as a genuine larger-domain route, and the current redesign queue is now focused on producing a genuinely new scaffold rather than repackaging a seed theorem. | [########--] 80% |
 | Downstream cutover readiness | Already complete structurally via PLAN_86. | [##########] 100% |
 | External sidecar dependency gate | Exact downstream interface is known and now partially realized by common-midend cutovers from both upstream tracks into the stronger critical-seed contract and the canonical fixed-data/local-witness gate. | [########--] 80% |
-| Redesign handoff | Exact redesign seam is now sharper: the legacy `slice_chart` blocks separated chart directions, and the current `slice_operator` blocks separated operator action even if the chart changes. Active follow-on is now `PLAN_90`. | [#######---] 70% |
+| Redesign handoff | Exact redesign seam is now sharper, and the active operational queue is `PLAN_90` / `PLAN_91`. | [#########-] 90% |
 
 ## Notes
 

@@ -1,7 +1,7 @@
 # PLAN 87 - Non-Circular Critical Seed Source
 
-Status: ACTIVE
-Progress: [###-------] 30%
+Status: STUCK
+Progress: [######----] 60%
 Scope: Seed-side subtrack of the broader dual-track program. Produce the
 stronger upstream seed theorem actually needed by the downstream rebase:
 
@@ -53,37 +53,46 @@ Dependencies: `Molecule/Conjecture.lean`,
 
 Stuck Rule: STUCK if all candidate seed producers are either:
 - definitionally equivalent to current canonical/current singleton routes, or
+- `Molecule.molecule_h_norm`-backed, or
 - blocked by the same `defaultBMol` obstruction as the old global route.
 
-Last Updated: 2026-03-10
+Last Updated: 2026-04-30
+
+## Critical Audit Revision
+
+- `PLAN_89` has already closed the current in-repository seed-producer
+  inventory.
+- No surviving non-`molecule_h_norm` seed producer class is currently named in
+  the repository.
+- So this plan is presently stuck in the honest sense:
+  it should be reopened only if `PLAN_90` / `PLAN_91` yields a genuinely new
+  operator-side producer class, or if a new external source family is encoded.
 
 ## Research Program
 
-- [ ] Enumerate candidate non-circular seed producers above the current
-  singleton/canonical equivalence class.
-- [ ] Test whether any candidate already yields
+- [x] Enumerate current in-repository candidate non-circular seed producers
+  above the singleton/canonical equivalence class.
+- [x] Test the current in-repository candidates and record why they do not yield
   `MoleculeResidualCriticalRenormalizableFixedSeedSource`.
 - [ ] Thread any successful seed into the existing fixed-data/local-witness
   cutovers.
-- [ ] If all candidate seed producers collapse to the same blocked equivalence
-  class, write the exact obstruction and hand off to larger-domain localized
-  redesign.
+- [x] Record the present obstruction and hand off to the redesign branch owned
+  by `PLAN_88` / `PLAN_90`.
 
 ## Priority Order
 
-1. Critical seed from canonical/bounds witness not equivalent to current route
-2. Critical seed from alternative upstream package
-3. Obstruction certificate if both collapse
-4. Hand off immediately if all seed candidates collapse to the singleton class
+1. Reopen only on a genuinely new producer class
+2. Thread a successful seed through the existing downstream cutovers
+3. Otherwise keep the redesign handoff explicit and avoid wrapper churn
 
 ## Route Progress
 
 | Route | Current State | Progress |
 |---|---|---|
-| Candidate inventory | One concrete producer family is now isolated (`exists_standard_siegel_fixed_point` / Feigenbaum assumptions), but it is blocked for this plan because it factors through `h_norm`. | [###-------] 30% |
-| Seed theorem target | Exact target is now `MoleculeResidualCriticalRenormalizableFixedSeedSource`; canonical + critical-value-transfer now exposes the exact external gate into it. | [####------] 40% |
+| Candidate inventory | The current in-repository inventory is closed: no surviving non-`molecule_h_norm` seed producer class is presently named. | [##########] 100% |
+| Seed theorem target | Exact target remains `MoleculeResidualCriticalRenormalizableFixedSeedSource`, but no live producer currently reaches it. | [###-------] 30% |
 | Downstream cutover readiness | Already complete structurally via PLAN_86. | [##########] 100% |
-| Handoff to larger-domain branch | Owned by PLAN_88; ready if seed search collapses. | [########--] 80% |
+| Handoff to redesign branch | Owned by PLAN_88 / PLAN_90 and already triggered by the closed current inventory. | [##########] 100% |
 
 ## Notes
 

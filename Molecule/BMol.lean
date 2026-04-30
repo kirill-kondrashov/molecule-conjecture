@@ -4,6 +4,7 @@ import Mathlib.Topology.Connected.Basic
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.Calculus.Deriv.Polynomial
 import Mathlib.Data.Complex.Basic
+import Mathlib.Algebra.Polynomial.Roots
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
 import Mathlib.Topology.Maps.Proper.Basic
@@ -331,11 +332,11 @@ noncomputable def defaultBMol : BMol :=
       have h1 : deriv (fun z ↦ z ^ 2) c = 2 * c := by
         rw [deriv_pow_field 2]; simp
       rw [h1] at h_deriv
-      
+
       have h_deriv_fun : deriv (fun (z:ℂ) ↦ z^2) = (fun z ↦ 2*z) := by
         ext z
         rw [deriv_pow_field 2]; simp
-      
+
       rw [h_deriv_fun]
       rw [deriv_const_mul]
       · rw [deriv_id'']
@@ -485,6 +486,162 @@ noncomputable def shiftedBMol : BMol :=
         norm_num
       · exact differentiableAt_id
   }
+
+/--
+A first non-explicit-polynomial `BMol` point for the stronger scaffold search.
+It agrees with `shiftedBMol` on the source disk but inserts a single spike at
+`z = 3`, outside that disk, so all local source-side geometry is unchanged while
+the global function is no longer a polynomial.
+-/
+noncomputable def spikedShiftedFun : ℂ → ℂ :=
+  fun z => z ^ 2 + 1 + if z = 3 then 1 else 0
+
+/--
+On the source domain of `shiftedBMol`, the spiked function agrees with the
+shifted quadratic polynomial because the spike lies outside the source disk.
+-/
+theorem spikedShiftedFun_eq_shifted_on_source :
+    EqOn spikedShiftedFun shiftedBMol.f shiftedBMol.U := by
+  intro z hz
+  have hz_ne_three : z ≠ (3 : ℂ) := by
+    intro hz_three
+    have hz_norm_lt : ‖z‖ < 2 := by
+      simpa [shiftedBMol, Metric.mem_ball, dist_zero_right] using hz
+    have : ‖(3 : ℂ)‖ < 2 := by simpa [hz_three] using hz_norm_lt
+    norm_num at this
+  simp [spikedShiftedFun, shiftedBMol, hz_ne_three]
+
+/--
+The corresponding `BMol` point keeps the same source and target sets as
+`shiftedBMol` while replacing the global map by `spikedShiftedFun`.
+-/
+noncomputable def spikedShiftedBMol : BMol := by
+  let f : ℂ → ℂ := spikedShiftedFun
+  have h_eqOn : EqOn f shiftedBMol.f shiftedBMol.U := by
+    simpa [f] using spikedShiftedFun_eq_shifted_on_source
+  have h_maps : MapsTo f shiftedBMol.U shiftedBMol.V := by
+    intro z hz
+    rw [h_eqOn hz]
+    exact shiftedBMol.maps_to hz
+  have h_deriv_eq : shiftedBMol.U.EqOn (deriv f) (deriv shiftedBMol.f) :=
+    h_eqOn.deriv shiftedBMol.isOpen_U
+  have h_second_deriv_eq :
+      shiftedBMol.U.EqOn (deriv (deriv f)) (deriv (deriv shiftedBMol.f)) :=
+    h_deriv_eq.deriv shiftedBMol.isOpen_U
+  refine
+    { U := shiftedBMol.U
+      V := shiftedBMol.V
+      f := f
+      isOpen_U := shiftedBMol.isOpen_U
+      isOpen_V := shiftedBMol.isOpen_V
+      isConnected_U := shiftedBMol.isConnected_U
+      isConnected_V := shiftedBMol.isConnected_V
+      simplyConnected_U := shiftedBMol.simplyConnected_U
+      simplyConnected_V := shiftedBMol.simplyConnected_V
+      subset := shiftedBMol.subset
+      closure_subset := shiftedBMol.closure_subset
+      differentiable_on := by
+        simpa [f] using shiftedBMol.differentiable_on.congr h_eqOn
+      maps_to := h_maps
+      proper := by
+        have hrestrict :
+            MapsTo.restrict f shiftedBMol.U shiftedBMol.V h_maps =
+              MapsTo.restrict shiftedBMol.f shiftedBMol.U shiftedBMol.V shiftedBMol.maps_to := by
+          funext x
+          apply Subtype.ext
+          exact h_eqOn x.2
+        simpa [f, hrestrict] using shiftedBMol.proper
+      unique_critical_point := by
+        rcases shiftedBMol.unique_critical_point with ⟨c, hc, huniq⟩
+        rcases hc with ⟨hcU, hcderiv⟩
+        refine ⟨c, ?_, ?_⟩
+        · constructor
+          · exact hcU
+          · rw [h_deriv_eq hcU]
+            exact hcderiv
+        · intro y hy
+          rcases hy with ⟨hyU, hyderiv⟩
+          apply huniq y
+          constructor
+          · exact hyU
+          · rw [← h_deriv_eq hyU]
+            exact hyderiv
+      simple_critical_point := by
+        intro c hcU hcderiv
+        have h_shifted_deriv : deriv shiftedBMol.f c = 0 := by
+          rw [← h_deriv_eq hcU]
+          exact hcderiv
+        have hsimple := shiftedBMol.simple_critical_point c hcU h_shifted_deriv
+        rw [h_second_deriv_eq hcU]
+        exact hsimple }
+
+/-- The spiked shifted point still has zero-value observation `1`. -/
+@[simp] theorem bmol_zero_observation_spikedShifted :
+    bmol_zero_observation spikedShiftedBMol = 1 := by
+  simp [bmol_zero_observation, spikedShiftedBMol, spikedShiftedFun]
+
+/--
+The spiked shifted point keeps the same source-domain tag as `shiftedBMol`.
+-/
+@[simp] theorem bmol_large_source_tag_observation_spikedShifted :
+    bmol_large_source_tag_observation spikedShiftedBMol = 0 := by
+  simp [bmol_large_source_tag_observation, spikedShiftedBMol, shiftedBMol,
+    Metric.mem_ball, dist_zero_right]
+  norm_num
+
+/-- Therefore the spiked shifted point has the same finite observation. -/
+@[simp] theorem bmol_finite_observation_spikedShifted :
+    bmol_finite_observation spikedShiftedBMol = (1, 0) := by
+  simp [bmol_finite_observation]
+
+/--
+The spiked shifted point is genuinely different from `shiftedBMol` because their
+underlying maps disagree at `3`.
+-/
+lemma spikedShiftedBMol_ne_shiftedBMol : spikedShiftedBMol ≠ shiftedBMol := by
+  intro h_eq
+  have h_at_three : spikedShiftedBMol.f (3 : ℂ) = shiftedBMol.f (3 : ℂ) :=
+    congrArg (fun g : BMol => g.f (3 : ℂ)) h_eq
+  norm_num [spikedShiftedBMol, spikedShiftedFun, shiftedBMol] at h_at_three
+
+/--
+The spike at `3` prevents the new base from being evaluation of any polynomial.
+-/
+theorem spikedShiftedBMol_not_exists_eq_eval_polynomial :
+    ¬ ∃ P : Polynomial ℂ, spikedShiftedBMol.f = fun z => Polynomial.eval z P := by
+  rintro ⟨P, hP⟩
+  have h_eqOn :
+      spikedShiftedBMol.U.EqOn spikedShiftedBMol.f
+        (fun z => Polynomial.eval z (Polynomial.X ^ 2 + Polynomial.C 1)) := by
+    intro z hz
+    have h_shifted :
+        shiftedBMol.f z = Polynomial.eval z (Polynomial.X ^ 2 + Polynomial.C 1) := by
+      simp [shiftedBMol]
+    calc
+      spikedShiftedBMol.f z = shiftedBMol.f z := by
+        simpa [spikedShiftedBMol, spikedShiftedFun] using spikedShiftedFun_eq_shifted_on_source hz
+      _ = Polynomial.eval z (Polynomial.X ^ 2 + Polynomial.C 1) := h_shifted
+  have hU_infinite : Set.Infinite spikedShiftedBMol.U := by
+    rcases spikedShiftedBMol.isConnected_U.nonempty with ⟨z0, hz0⟩
+    exact infinite_of_mem_nhds z0 (spikedShiftedBMol.isOpen_U.mem_nhds hz0)
+  have h_poly_eq : P = Polynomial.X ^ 2 + Polynomial.C 1 := by
+    apply Polynomial.eq_of_infinite_eval_eq
+    refine hU_infinite.mono ?_
+    intro z hz
+    have hPz : spikedShiftedBMol.f z = Polynomial.eval z P := by
+      simpa using congrFun hP z
+    simpa [hPz] using h_eqOn hz
+  have : (11 : ℂ) = (10 : ℂ) := by
+    calc
+      (11 : ℂ) = spikedShiftedBMol.f (3 : ℂ) := by
+        norm_num [spikedShiftedBMol, spikedShiftedFun]
+      _ = Polynomial.eval (3 : ℂ) P := by
+        simpa using congrFun hP (3 : ℂ)
+      _ = Polynomial.eval (3 : ℂ) (Polynomial.X ^ 2 + Polynomial.C 1) := by
+        rw [h_poly_eq]
+      _ = (10 : ℂ) := by
+        norm_num
+  norm_num at this
 
 /--
 A second explicit quadratic-like map in the current scaffold.
