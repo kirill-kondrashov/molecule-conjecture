@@ -4950,6 +4950,209 @@ theorem no_self_renormalization_relation_shiftedBMol :
   simp [shiftedBMol]
 
 /--
+Once a spiked orbit reaches distance at least `10` from the center `1` of the
+shifted target disk, the next iterate stays at distance at least `10`.
+-/
+lemma spikedShiftedFun_dist_one_ge_ten {z : ℂ}
+    (hz : (10 : ℝ) ≤ ‖z - 1‖) :
+    (10 : ℝ) ≤ ‖spikedShiftedFun z - 1‖ := by
+  have hz_ne_three : z ≠ (3 : ℂ) := by
+    intro h_eq
+    have : (10 : ℝ) ≤ ‖(3 : ℂ) - 1‖ := by
+      simpa [h_eq] using hz
+    norm_num at this
+  have hnorm_z_ge_nine : (9 : ℝ) ≤ ‖z‖ := by
+    have h_triangle : ‖z - 1‖ ≤ ‖z‖ + ‖(1 : ℂ)‖ := by
+      simpa using norm_sub_le z (1 : ℂ)
+    have h_le' : ‖z - 1‖ ≤ ‖z‖ + 1 := by
+      simpa using h_triangle
+    have h_le : (10 : ℝ) ≤ ‖z‖ + 1 :=
+      le_trans hz h_le'
+    linarith
+  calc
+    (10 : ℝ) ≤ ‖z‖ ^ 2 := by
+      nlinarith [hnorm_z_ge_nine, norm_nonneg z]
+    _ = ‖z ^ 2‖ := by
+      symm
+      simpa [pow_two] using (norm_mul z z)
+    _ = ‖spikedShiftedFun z - 1‖ := by
+      rw [spikedShiftedFun_eq_shifted_of_ne_three hz_ne_three]
+      simp [shiftedBMol]
+
+/--
+Starting from `11`, every spiked iterate stays at distance at least `10` from
+the center `1` of the shifted target disk.
+-/
+lemma spikedShiftedFun_iterate_dist_one_ge_ten_at_eleven (n : ℕ) :
+    (10 : ℝ) ≤ ‖(spikedShiftedFun^[n]) (11 : ℂ) - 1‖ := by
+  induction n with
+  | zero =>
+      norm_num
+  | succ n ih =>
+      rw [Function.iterate_succ_apply']
+      exact spikedShiftedFun_dist_one_ge_ten ih
+
+/--
+Therefore no spiked iterate of `11` ever lands back in the shifted target disk.
+-/
+lemma spikedShiftedFun_iterate_not_mem_shiftedV_at_eleven (n : ℕ) :
+    (spikedShiftedFun^[n]) (11 : ℂ) ∉ shiftedBMol.V := by
+  intro h_mem
+  have h_lt : ‖(spikedShiftedFun^[n]) (11 : ℂ) - 1‖ < 4 := by
+    simpa [shiftedBMol, Metric.mem_ball, dist_eq_norm] using h_mem
+  have h_ge := spikedShiftedFun_iterate_dist_one_ge_ten_at_eleven n
+  linarith
+
+/--
+If a spiked iterate lands in the shifted target disk, then no earlier iterate in
+that orbit can have hit the spike point `3`.
+-/
+lemma spikedShiftedFun_iterate_ne_three_of_iterate_mem_shiftedV
+    {x : ℂ} {n k : ℕ}
+    (hV : (spikedShiftedFun^[n]) x ∈ shiftedBMol.V)
+    (hk : k < n) :
+    (spikedShiftedFun^[k]) x ≠ (3 : ℂ) := by
+  intro h_three
+  have hkn : k + 1 ≤ n := Nat.succ_le_of_lt hk
+  have h_split :
+      (spikedShiftedFun^[n]) x =
+        (spikedShiftedFun^[n - (k + 1)]) ((spikedShiftedFun^[k + 1]) x) := by
+    rw [← Function.iterate_add_apply, Nat.sub_add_cancel hkn]
+  have h_step : (spikedShiftedFun^[k + 1]) x = (11 : ℂ) := by
+    rw [Function.iterate_succ_apply', h_three]
+    norm_num [spikedShiftedFun]
+  have h_not_mem :
+      (spikedShiftedFun^[n - (k + 1)]) ((spikedShiftedFun^[k + 1]) x) ∉ shiftedBMol.V := by
+    rw [h_step]
+    exact spikedShiftedFun_iterate_not_mem_shiftedV_at_eleven (n - (k + 1))
+  exact h_not_mem (by simpa [h_split] using hV)
+
+/--
+Along any orbit that never hits `3` before time `n`, the spiked iterates agree
+with the shifted polynomial iterates.
+-/
+lemma spikedShiftedFun_iterate_eq_shifted_iterate_of_forall_ne_three
+    {x : ℂ} {n : ℕ}
+    (havoid : ∀ k < n, (spikedShiftedFun^[k]) x ≠ (3 : ℂ)) :
+    (spikedShiftedFun^[n]) x = (shiftedBMol.f^[n]) x := by
+  induction n generalizing x with
+  | zero =>
+      rfl
+  | succ n ih =>
+      rw [Function.iterate_succ_apply', Function.iterate_succ_apply']
+      have hprev :
+          (spikedShiftedFun^[n]) x = (shiftedBMol.f^[n]) x := by
+        apply ih
+        intro k hk
+        exact havoid k (Nat.lt_trans hk (Nat.lt_succ_self n))
+      have hne : (spikedShiftedFun^[n]) x ≠ (3 : ℂ) :=
+        havoid n (Nat.lt_succ_self n)
+      rw [spikedShiftedFun_eq_shifted_of_ne_three hne, hprev]
+
+/--
+Any self-renormalization witness for `spikedShiftedBMol` would also be a
+self-renormalization witness for `shiftedBMol`, because the spike is never seen
+along a renormalization orbit that must return to the shifted target disk.
+-/
+theorem self_renormalization_relation_shiftedBMol_of_spikedShiftedBMol
+    (h_rel : RenormalizationRelation spikedShiftedBMol spikedShiftedBMol) :
+    Nonempty (RenormalizationRelation shiftedBMol shiftedBMol) := by
+  refine
+    ⟨{ p := h_rel.p
+       p_pos := h_rel.p_pos
+       U' := h_rel.U'
+       V' := h_rel.V'
+       ψ := h_rel.ψ
+       U'_sub := by
+         simpa [spikedShiftedBMol] using h_rel.U'_sub
+       V'_sub := by
+         simpa [spikedShiftedBMol] using h_rel.V'_sub
+       rescaling_affine := h_rel.rescaling_affine
+       maps_U := by
+         simpa [spikedShiftedBMol] using h_rel.maps_U
+       maps_V := by
+         simpa [spikedShiftedBMol] using h_rel.maps_V
+       surj_U := by
+         simpa [spikedShiftedBMol] using h_rel.surj_U
+       surj_V := by
+         simpa [spikedShiftedBMol] using h_rel.surj_V
+       eq_f := ?_ }⟩
+  intro z hz
+  have hz_spiked : z ∈ spikedShiftedBMol.U := by
+    simpa [spikedShiftedBMol] using hz
+  have h_start_eq : spikedShiftedBMol.f z = shiftedBMol.f z := by
+    simpa [spikedShiftedBMol, spikedShiftedFun] using spikedShiftedFun_eq_shifted_on_source hz
+  have h_rhs_memV : (spikedShiftedFun^[h_rel.p]) (h_rel.ψ z) ∈ shiftedBMol.V := by
+    have h_mapsψ : h_rel.ψ (spikedShiftedBMol.f z) ∈ spikedShiftedBMol.V := by
+      exact h_rel.V'_sub (h_rel.maps_V (spikedShiftedBMol.maps_to hz_spiked))
+    have h_eq :
+        h_rel.ψ (spikedShiftedBMol.f z) =
+          (spikedShiftedBMol.f^[h_rel.p]) (h_rel.ψ z) := by
+      simpa [spikedShiftedBMol] using h_rel.eq_f z hz_spiked
+    rw [h_eq] at h_mapsψ
+    simpa [spikedShiftedBMol] using h_mapsψ
+  have havoid : ∀ k < h_rel.p, (spikedShiftedFun^[k]) (h_rel.ψ z) ≠ (3 : ℂ) := by
+    intro k hk
+    exact spikedShiftedFun_iterate_ne_three_of_iterate_mem_shiftedV h_rhs_memV hk
+  have h_iter_eq :
+      (spikedShiftedFun^[h_rel.p]) (h_rel.ψ z) =
+        (shiftedBMol.f^[h_rel.p]) (h_rel.ψ z) :=
+    spikedShiftedFun_iterate_eq_shifted_iterate_of_forall_ne_three havoid
+  calc
+    h_rel.ψ (shiftedBMol.f z) = h_rel.ψ (spikedShiftedBMol.f z) := by rw [h_start_eq]
+    _ = (spikedShiftedBMol.f^[h_rel.p]) (h_rel.ψ z) := by
+      simpa [spikedShiftedBMol] using h_rel.eq_f z hz_spiked
+    _ = (spikedShiftedFun^[h_rel.p]) (h_rel.ψ z) := by
+      simp [spikedShiftedBMol]
+    _ = (shiftedBMol.f^[h_rel.p]) (h_rel.ψ z) := h_iter_eq
+
+/--
+So the spiked-shifted non-explicit-polynomial point cannot self-renormalize in
+the current affine renormalization scaffold either.
+-/
+theorem no_self_renormalization_relation_spikedShiftedBMol :
+    ¬ Nonempty (RenormalizationRelation spikedShiftedBMol spikedShiftedBMol) := by
+  intro h_nonempty
+  rcases h_nonempty with ⟨h_rel⟩
+  exact
+    no_self_renormalization_relation_shiftedBMol
+      (self_renormalization_relation_shiftedBMol_of_spikedShiftedBMol h_rel)
+
+/--
+The spiked-shifted surviving scaffold package is therefore not fixed by `Rfast`:
+fixedness would force a self-renormalization relation on `spikedShiftedBMol`.
+-/
+theorem
+    no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_base_fixed :
+    ¬ Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation.f_ref) =
+        molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation.f_ref := by
+  intro h_fixed
+  exact
+    no_self_renormalization_relation_spikedShiftedBMol
+      (by
+        simpa
+          [molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_base_eq_spikedShiftedBMol]
+          using
+            (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_base_self_renorm_of_fixed
+              h_fixed))
+
+/--
+So the spiked-shifted surviving scaffold cannot upgrade to the dynamical seed
+package via fixedness either: the fixedness premise is already impossible.
+-/
+theorem
+    no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_of_fixed
+    (h_fixed :
+      Rfast
+          (molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation.f_ref) =
+        molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation.f_ref) :
+    False := by
+  exact
+    no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_base_fixed
+      h_fixed
+
+/--
 The explicit `largeBMol` model cannot self-renormalize in the current affine
 renormalization scaffold.
 -/

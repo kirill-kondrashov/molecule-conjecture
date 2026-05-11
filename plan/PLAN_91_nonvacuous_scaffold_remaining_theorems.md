@@ -361,7 +361,7 @@ broaden the operator further if even that class proves too narrow.
   - `spikedShiftedBMol_not_exists_eq_eval_polynomial`
   - `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation`
 
-- [ ] Fixedness/renormalizability gate theorem family for that first surviving
+- [x] Fixedness/renormalizability gate theorem family for that first surviving
       base.
   Positive targets:
   `..._base_fixed`
@@ -383,10 +383,17 @@ broaden the operator further if even that class proves too narrow.
     `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_base_self_renorm_of_fixed`
   - fixedness now upgrades directly to the seed package via
     `molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_of_fixed`
-  Remaining gap:
-  - prove fixedness for this surviving package, or
-  - prove the corresponding no-self-renormalization obstruction and close the
-    branch honestly
+  Completed with:
+  - `no_self_renormalization_relation_spikedShiftedBMol`
+  - `no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_base_fixed`
+  - `no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_spiked_shifted_base_slice_chart_finite_observation_and_slice_operator_zero_observation_of_fixed`
+  Result:
+  - the first surviving non-explicit-polynomial base is now screened honestly at
+    the fixedness gate;
+  - fixedness cannot hold because it would force an impossible
+    self-renormalization relation on `spikedShiftedBMol`;
+  - therefore the branch no longer waits on a fixedness proof, and the next live
+    gap is the critical-seed cutover or a broader model-redesign obstruction.
 
 - [ ] Critical-seed cutover theorem or exact handoff obstruction.
   Positive target shape:

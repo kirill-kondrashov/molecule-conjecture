@@ -7,16 +7,26 @@ EXPECTED="expected.txt"
 ACTUAL="output.txt"
 
 # Extract the expected output block from README.md.
-# Accept both legacy "Expected Output:" and newer "Current expected output".
-awk '
-  BEGIN { found = 0; inblock = 0 }
-  tolower($0) ~ /expected output/ { found = 1; next }
-  found && /^```$/ {
-    if (inblock == 0) { inblock = 1; next }
-    else { exit }
-  }
-  inblock { print }
-' "$README" > "$EXPECTED"
+# Prefer explicit markers when present; fall back to the legacy heading-based
+# extraction so older README layouts still work.
+if grep -q "EXPECTED_CHECK_OUTPUT_START" "$README"; then
+  awk '
+    /EXPECTED_CHECK_OUTPUT_START/ { found = 1; next }
+    /EXPECTED_CHECK_OUTPUT_END/ { exit }
+    found && /^```$/ { inblock = !inblock; next }
+    found && inblock { print }
+  ' "$README" > "$EXPECTED"
+else
+  awk '
+    BEGIN { found = 0; inblock = 0 }
+    tolower($0) ~ /expected output/ { found = 1; next }
+    found && /^```$/ {
+      if (inblock == 0) { inblock = 1; next }
+      else { exit }
+    }
+    inblock { print }
+  ' "$README" > "$EXPECTED"
+fi
 
 if [ ! -s "$EXPECTED" ]; then
     echo "Failed to extract expected output block from $README"

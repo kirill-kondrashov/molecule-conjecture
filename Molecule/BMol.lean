@@ -512,6 +512,14 @@ theorem spikedShiftedFun_eq_shifted_on_source :
   simp [spikedShiftedFun, shiftedBMol, hz_ne_three]
 
 /--
+Away from the isolated spike at `3`, the spiked function is exactly the shifted
+quadratic polynomial.
+-/
+theorem spikedShiftedFun_eq_shifted_of_ne_three {z : ℂ} (hz : z ≠ (3 : ℂ)) :
+    spikedShiftedFun z = shiftedBMol.f z := by
+  simp [spikedShiftedFun, shiftedBMol, hz]
+
+/--
 The corresponding `BMol` point keeps the same source and target sets as
 `shiftedBMol` while replacing the global map by `spikedShiftedFun`.
 -/

@@ -8,7 +8,7 @@ handoff or wrapper-reduction plans.
 Acceptance: Active plans are current; completed plans are marked DONE; blocker
 status reflects the verified current frontier; and the tracker makes the live
 operational queue explicit rather than implying a near-complete burndown.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77, PLAN_78, PLAN_79, PLAN_80, PLAN_81, PLAN_82, PLAN_83, PLAN_84, PLAN_85, PLAN_86, PLAN_87, PLAN_88, PLAN_89, PLAN_90, PLAN_91, PLAN_92
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77, PLAN_78, PLAN_79, PLAN_80, PLAN_81, PLAN_82, PLAN_83, PLAN_84, PLAN_85, PLAN_86, PLAN_87, PLAN_88, PLAN_89, PLAN_90, PLAN_91, PLAN_92, PLAN_93
 Stuck Rule: STUCK if the tracker stops distinguishing the live frontier from
 historical handoff plans and therefore misstates the current work.
 Last Updated: 2026-04-30
@@ -34,6 +34,11 @@ Last Updated: 2026-04-30
 - Reserve-only sidecar:
   `PLAN_92` is explanatory/model-diagnostic only unless it feeds back into the
   redesign queue.
+- Dudko Section 4 sidecar:
+  `PLAN_93` records the virtual-Molecule / remaining satellite roadmap from
+  `2512.24171`, but it is not part of the active operational queue unless it
+  names a concrete new producer class or exact model gap that feeds back into
+  `PLAN_88` / `PLAN_90` / `PLAN_91`.
 
 ## Plan Matrix
 
@@ -93,6 +98,7 @@ Last Updated: 2026-04-30
 | PLAN_90 | Separated operator action redesign | ACTIVE | [########--] 80% |
 | PLAN_91 | Nonvacuous scaffold remaining theorems | ACTIVE | [########--] 80% |
 | PLAN_92 | Main cardioid boundary first homology seam | PROPOSED | [#---------] 10% |
+| PLAN_93 | Dudko 2512 virtual Molecule roadmap | PROPOSED | [#---------] 10% |
 
 ## Dependency Map
 
@@ -111,6 +117,11 @@ Last Updated: 2026-04-30
   part of the active elimination queue: current slice-side objects only expose
   discrete `H_0`, and the first plausible nontrivial target would come from
   main-cardioid geometry in `Molecule/Mol.lean`.
+- Dudko sidecar note:
+  `PLAN_93` records the remaining unbounded satellite / virtual-Molecule
+  research roadmap suggested by `refs/2512.24171_section4_note.md`. It is a
+  guidance layer for the residual source search, not a replacement for the
+  current operational queue.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
