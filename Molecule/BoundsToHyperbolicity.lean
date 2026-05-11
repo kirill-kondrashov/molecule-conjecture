@@ -116,9 +116,11 @@ theorem bounds_imply_hyperbolicity_proof
     exact f_star.differentiable_on
 
   -- 3. Construct the IsHyperbolic witness
+  have h_chart' : ∃ V, IsOpen V ∧ MapsTo φ U V ∧ φ f_star ∈ V :=
+    chart_target_with_basepoint h_f_in_U h_chart
   use f_star
   use E, inst1, inst2
   use φ, U
-  refine ⟨h_f_in_U, h_fixed, h_analytic, h_chart, F, h_conj, h_diff, h_hyp⟩
+  refine ⟨h_f_in_U, h_fixed, h_analytic, h_chart', F, h_conj, h_diff, h_hyp⟩
 
 end Molecule

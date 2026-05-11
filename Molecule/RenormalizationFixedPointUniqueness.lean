@@ -17,6 +17,186 @@ noncomputable instance : Inhabited HybridClass := ⟨defaultBMol⟩
 def toHybridClass (f : BMol) : HybridClass := f
 
 /--
+Abstraction seam for hybrid-class modeling.
+This decouples downstream constructor routing from the current identity-model
+choice `HybridClass := BMol`.
+-/
+structure HybridProjectionSeam where
+  Class : Type
+  proj : BMol → Class
+  renorm : Class → Prop
+  Rclass : Class → Class
+  renorm_proj : ∀ f : BMol, IsFastRenormalizable f → renorm (proj f)
+  fixed_proj : ∀ f : BMol, Rfast f = f → Rclass (proj f) = proj f
+
+/--
+Current seam instance induced by the present identity-model choice
+`HybridClass := BMol`.
+-/
+noncomputable def currentHybridProjectionSeam : HybridProjectionSeam where
+  Class := HybridClass
+  proj := toHybridClass
+  renorm := IsFastRenormalizable
+  Rclass := fun c => Rfast c
+  renorm_proj := by
+    intro f h_renorm
+    simpa [toHybridClass] using h_renorm
+  fixed_proj := by
+    intro f h_fix
+    simpa [toHybridClass] using h_fix
+
+/--
+Lifted seam instance that wraps `HybridClass` in a subtype to provide a
+non-identity projection surface for model-source routing.
+-/
+noncomputable def liftedHybridProjectionSeam : HybridProjectionSeam where
+  Class := { c : HybridClass // True }
+  proj := fun f => ⟨toHybridClass f, trivial⟩
+  renorm := fun c => IsFastRenormalizable c.1
+  Rclass := fun c => ⟨Rfast c.1, trivial⟩
+  renorm_proj := by
+    intro f h_renorm
+    simpa [toHybridClass] using h_renorm
+  fixed_proj := by
+    intro f h_fix
+    exact Subtype.ext (by simpa [toHybridClass] using h_fix)
+
+/--
+Current-model bottleneck: `toHybridClass` is injective because `HybridClass` is
+currently modeled as `BMol`.
+-/
+theorem toHybridClass_injective : Function.Injective toHybridClass := by
+  intro f g hfg
+  exact hfg
+
+/--
+Current-model identity equivalence between hybrid-class equality and map
+equality.
+-/
+theorem toHybridClass_eq_iff (f g : BMol) :
+    toHybridClass f = toHybridClass g ↔ f = g := by
+  constructor
+  · intro hfg
+    exact toHybridClass_injective hfg
+  · intro h
+    simp [h]
+
+/--
+Current seam projection remains injective in the identity-model instance.
+-/
+theorem current_hybrid_projection_seam_proj_injective :
+    Function.Injective currentHybridProjectionSeam.proj := by
+  simpa [currentHybridProjectionSeam] using toHybridClass_injective
+
+/--
+Current seam projection equality still collapses to map equality in the
+identity-model instance.
+-/
+theorem current_hybrid_projection_seam_proj_eq_iff (f g : BMol) :
+    currentHybridProjectionSeam.proj f = currentHybridProjectionSeam.proj g ↔ f = g := by
+  simpa [currentHybridProjectionSeam] using toHybridClass_eq_iff f g
+
+/-- Injectivity contract for a hybrid projection seam. -/
+def HybridProjectionInjective (S : HybridProjectionSeam) : Prop :=
+  Function.Injective S.proj
+
+/--
+Seam-level collapse contract on projected classes of fast-renormalizable fixed
+points.
+-/
+def HybridFixedPointCollapseIn (S : HybridProjectionSeam) : Prop :=
+  ∀ f1 f2, Rfast f1 = f1 → IsFastRenormalizable f1 →
+           Rfast f2 = f2 → IsFastRenormalizable f2 →
+           S.proj f1 = S.proj f2
+
+/--
+Seam-level lift contract: every renormalizable fixed class can be represented
+by a renormalizable fixed map.
+-/
+def HybridClassFixedPointLiftSource (S : HybridProjectionSeam) : Prop :=
+  ∀ c : S.Class, (S.renorm c ∧ S.Rclass c = c) →
+    ∃ f : BMol, S.proj f = c ∧ IsFastRenormalizable f ∧ Rfast f = f
+
+/--
+Seam-level uniqueness contract for renormalizable fixed classes.
+-/
+def HybridClassFixedPointUniquenessIn (S : HybridProjectionSeam) : Prop :=
+  ∀ c1 c2 : S.Class,
+    (S.renorm c1 ∧ S.Rclass c1 = c1) →
+    (S.renorm c2 ∧ S.Rclass c2 = c2) →
+    c1 = c2
+
+/--
+Build seam-level class uniqueness from collapse and lift contracts.
+-/
+theorem hybrid_class_fixed_point_uniqueness_in_of_collapse_and_lift
+    (S : HybridProjectionSeam)
+    (h_collapse : HybridFixedPointCollapseIn S)
+    (h_lift : HybridClassFixedPointLiftSource S) :
+    HybridClassFixedPointUniquenessIn S := by
+  intro c1 c2 hc1 hc2
+  rcases h_lift c1 hc1 with ⟨f1, hf1_proj, hf1_renorm, hf1_fix⟩
+  rcases h_lift c2 hc2 with ⟨f2, hf2_proj, hf2_renorm, hf2_fix⟩
+  have h_proj_eq : S.proj f1 = S.proj f2 :=
+    h_collapse f1 f2 hf1_fix hf1_renorm hf2_fix hf2_renorm
+  calc
+    c1 = S.proj f1 := by simp [hf1_proj]
+    _ = S.proj f2 := h_proj_eq
+    _ = c2 := by simp [hf2_proj]
+
+/--
+Build seam-level unique fixed-point data from:
+- a renormalizable fixed map witness,
+- collapse on projected classes of such fixed maps, and
+- a lift source for class fixed points.
+-/
+theorem hybrid_unique_fixed_point_in_of_exists_and_collapse_and_lift
+    (S : HybridProjectionSeam)
+    (h_exists_map : ∃ g : BMol, IsFastRenormalizable g ∧ Rfast g = g)
+    (h_collapse : HybridFixedPointCollapseIn S)
+    (h_lift : HybridClassFixedPointLiftSource S) :
+    ∃! c : S.Class, S.renorm c ∧ S.Rclass c = c := by
+  rcases h_exists_map with ⟨g, h_renorm_g, h_fix_g⟩
+  refine ⟨S.proj g, ?_, ?_⟩
+  · exact ⟨S.renorm_proj g h_renorm_g, S.fixed_proj g h_fix_g⟩
+  · intro c hc
+    exact
+      (hybrid_class_fixed_point_uniqueness_in_of_collapse_and_lift S h_collapse h_lift)
+        c (S.proj g) hc ⟨S.renorm_proj g h_renorm_g, S.fixed_proj g h_fix_g⟩
+
+/--
+Current seam lift source in the identity-model instance.
+-/
+theorem current_hybrid_projection_seam_fixed_point_lift_source :
+    HybridClassFixedPointLiftSource currentHybridProjectionSeam := by
+  intro c hc
+  refine ⟨c, ?_, hc.1, ?_⟩
+  · simp [currentHybridProjectionSeam, toHybridClass]
+  · simpa [currentHybridProjectionSeam] using hc.2
+
+/--
+Lift source in the `ULift`-wrapped seam instance.
+-/
+theorem lifted_hybrid_projection_seam_fixed_point_lift_source :
+    HybridClassFixedPointLiftSource liftedHybridProjectionSeam := by
+  intro c hc
+  refine ⟨c.1, ?_, hc.1, ?_⟩
+  · simp [liftedHybridProjectionSeam, toHybridClass]
+  · exact congrArg Subtype.val hc.2
+
+/--
+Map equality projected from seam-level class equality under an injective
+projection contract.
+-/
+theorem map_eq_of_hybrid_projection_eq
+    (S : HybridProjectionSeam)
+    (h_inj : HybridProjectionInjective S)
+    {f g : BMol}
+    (h_proj : S.proj f = S.proj g) :
+    f = g :=
+  h_inj h_proj
+
+/--
 Renormalization operator on hybrid classes.
 This is well-defined because renormalization preserves hybrid equivalence.
 -/
@@ -75,7 +255,11 @@ theorem fixed_points_in_same_class_eq (f g : BMol)
   (_hf : IsFastRenormalizable f) (_hf_fix : Rfast f = f)
   (_hg : IsFastRenormalizable g) (_hg_fix : Rfast g = g)
   (h_eq_class : toHybridClass f = toHybridClass g) :
-  f = g := h_eq_class
+  f = g := by
+  exact
+    map_eq_of_hybrid_projection_eq currentHybridProjectionSeam
+      current_hybrid_projection_seam_proj_injective
+      (by simpa [currentHybridProjectionSeam] using h_eq_class)
 
 /--
 Theorem: Uniqueness of the Renormalization Fixed Point.

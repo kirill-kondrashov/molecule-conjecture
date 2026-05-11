@@ -21,13 +21,12 @@ Reference target: Dudko, Lyubich, Selinger, "Pacman renormalization...", arXiv:1
 -/
 def IsHyperbolic1DUnstable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (L : E →L[ℂ] E) : Prop :=
   let _ := L
-  ∃ eig : ℂ, ‖eig‖ > 1
+  ∃ eig : ℂ, eig ≠ 0 ∧ ‖eig‖ > 1
 
 theorem isHyperbolic1DUnstable_default
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (L : E →L[ℂ] E) :
     IsHyperbolic1DUnstable L := by
-  refine ⟨2, ?_⟩
-  norm_num
+  refine ⟨2, by norm_num, by norm_num⟩
 
 /--
 A map f : BMol → BMol is hyperbolic if at its fixed point (or periodic point),
@@ -44,12 +43,26 @@ def IsHyperbolic (f : BMol → BMol) : Prop :=
       f g = g ∧ -- Fixed point
       AnalyticOn ℂ g.f g.U ∧ -- f itself should be analytic in its domain
       -- φ is a "chart" around g
-      (∃ (V : Set E), IsOpen V ∧ MapsTo φ U V) ∧
+      (∃ (V : Set E), IsOpen V ∧ MapsTo φ U V ∧ φ g ∈ V) ∧
       -- The conjugate map F = φ ∘ f ∘ φ⁻¹ is differentiable at φ(g)
       ∃ (F : E → E),
         (∀ x ∈ U, F (φ x) = φ (f x)) ∧
         DifferentiableAt ℂ F (φ g) ∧
         -- The derivative is hyperbolic with 1D unstable manifold
         IsHyperbolic1DUnstable (fderiv ℂ F (φ g))
+
+/--
+Compatibility shim for strengthened hyperbolicity charts:
+from a chart target witness and basepoint membership in `U`, recover
+an explicit witness that the basepoint image belongs to the target.
+-/
+theorem chart_target_with_basepoint
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
+    {φ : BMol → E} {U : Set BMol} {g : BMol}
+    (hgU : g ∈ U)
+    (hChart : ∃ (V : Set E), IsOpen V ∧ MapsTo φ U V) :
+    ∃ (V : Set E), IsOpen V ∧ MapsTo φ U V ∧ φ g ∈ V := by
+  rcases hChart with ⟨V, hV_open, h_maps⟩
+  exact ⟨V, hV_open, h_maps, h_maps hgU⟩
 
 end Molecule

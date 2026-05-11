@@ -1,12 +1,44 @@
 # PLAN 00 - Molecule Hypothesis Elimination Tracker
 
 Status: ACTIVE
-Progress: [##########] 100%
-Scope: Track hypothesis-elimination plans, dependencies, blockers, and readiness.
-Acceptance: Active plans are current; completed plans are marked DONE; blocker status reflects `check_axioms`.
-Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43
-Stuck Rule: STUCK if PLAN_26 becomes STUCK without an alternative decomposition route.
-Last Updated: 2026-03-03
+Progress: [########--] 80%
+Scope: Track hypothesis-elimination plans, dependencies, blockers, and
+readiness, while distinguishing the live operational queue from historical
+handoff or wrapper-reduction plans.
+Acceptance: Active plans are current; completed plans are marked DONE; blocker
+status reflects the verified current frontier; and the tracker makes the live
+operational queue explicit rather than implying a near-complete burndown.
+Dependencies: PLAN_11, PLAN_12, PLAN_15, PLAN_17, PLAN_18, PLAN_20, PLAN_21, PLAN_22, PLAN_23, PLAN_24, PLAN_25, PLAN_26, PLAN_27, PLAN_28, PLAN_29, PLAN_30, PLAN_31, PLAN_32, PLAN_33, PLAN_34, PLAN_35, PLAN_36, PLAN_37, PLAN_38, PLAN_39, PLAN_40, PLAN_41, PLAN_42, PLAN_43, PLAN_47, PLAN_49, PLAN_53, PLAN_54, PLAN_57, PLAN_76, PLAN_77, PLAN_78, PLAN_79, PLAN_80, PLAN_81, PLAN_82, PLAN_83, PLAN_84, PLAN_85, PLAN_86, PLAN_87, PLAN_88, PLAN_89, PLAN_90, PLAN_91, PLAN_92, PLAN_93
+Stuck Rule: STUCK if the tracker stops distinguishing the live frontier from
+historical handoff plans and therefore misstates the current work.
+Last Updated: 2026-04-30
+
+## Critical Audit Revision
+
+- Verified current frontier:
+  `check_axioms Molecule.molecule_conjecture_refined` still reports the single
+  residual project-local axiom `Molecule.molecule_h_norm`.
+- Therefore the repository is **not** in a “99% complete elimination” state.
+  The live work is an upstream redesign/search program, not another round of
+  wrapper burndown.
+- Governing frontier:
+  `PLAN_88` remains the master route plan.
+- Operational queue:
+  `PLAN_90` and `PLAN_91` are the active day-to-day redesign theorem queue.
+- Sidecar dependency queue:
+  `PLAN_80`, `PLAN_78`, and `PLAN_53` remain the external gates for fixed-data,
+  local-witness, and witness-side control once a real upstream source lands.
+- Dependent but not lead-frontier plans:
+  `PLAN_82` is a canonical cutover gate; `PLAN_87` is currently stuck pending a
+  genuinely new seed producer class.
+- Reserve-only sidecar:
+  `PLAN_92` is explanatory/model-diagnostic only unless it feeds back into the
+  redesign queue.
+- Dudko Section 4 sidecar:
+  `PLAN_93` records the virtual-Molecule / remaining satellite roadmap from
+  `2512.24171`, but it is not part of the active operational queue unless it
+  names a concrete new producer class or exact model gap that feeds back into
+  `PLAN_88` / `PLAN_90` / `PLAN_91`.
 
 ## Plan Matrix
 
@@ -14,7 +46,7 @@ Last Updated: 2026-03-03
 |---|---|---|---|
 | PLAN_06 | Contract consistency refactor | DONE | [##########] 100% |
 | PLAN_07 | De-wrapper pseudo-Siegel/orbit | DONE | [##########] 100% |
-| PLAN_11 | Full `molecule_h_*` axiom burndown | DONE | [##########] 100% |
+| PLAN_11 | Historical `molecule_h_*` burndown to residual `molecule_h_norm` | DONE | [##########] 100% |
 | PLAN_12 | h_exists/h_norm localization | DONE | [##########] 100% |
 | PLAN_13 | h_orbit non-circular path | DONE | [##########] 100% |
 | PLAN_15 | Replace global h_norm contract | DONE | [##########] 100% |
@@ -42,24 +74,2531 @@ Last Updated: 2026-03-03
 | PLAN_39 | HMol compactness model alignment | DONE | [##########] 100% |
 | PLAN_40 | Analytic residual triple elimination | DONE | [##########] 100% |
 | PLAN_41 | Residual bounds elimination | DONE | [##########] 100% |
-| PLAN_42 | Post-axiom contract hardening | PROPOSED | [----------] 0% |
+| PLAN_42 | Post-axiom contract hardening | DONE | [##########] 100% |
 | PLAN_43 | Post-cutover hygiene pass | PROPOSED | [----------] 0% |
+| PLAN_47 | `molecule_h_norm` elimination via constructive source rebuild | ACTIVE | [#########-] 99% |
+| PLAN_49 | Constructive fixed-point source route | ACTIVE | [#########-] 99% |
+| PLAN_53 | Fixed-point model bottleneck refactor | ACTIVE | [#########-] 89% |
+| PLAN_54 | Orbit source contract refactor | DONE | [##########] 100% |
+| PLAN_57 | Orbit minimal theorem debt extraction | DONE | [##########] 100% |
+| PLAN_76 | Non-h_norm anchor-witness bottleneck break | ACTIVE | [#########-] 92% |
+| PLAN_77 | Upstream model change for non-h_norm fixed-point sources | STUCK | [########--] 80% |
+| PLAN_78 | Non-h_norm local witness-on-sources theorem | ACTIVE | [#########-] 90% |
+| PLAN_79 | Invariant-domain fixed-point source | STUCK | [#######---] 70% |
+| PLAN_80 | Non-h_norm fixed-point data source | ACTIVE | [#########-] 85% |
+| PLAN_81 | Single-reference fixed-point data witness | ACTIVE | [######----] 60% |
+| PLAN_82 | Canonical fast fixed-point data witness | ACTIVE | [#######---] 70% |
+| PLAN_83 | Localized fixed-point renormalizability bridge | STUCK | [#########-] 95% |
+| PLAN_84 | Canonical seed replacement for existence route | DONE | [##########] 100% |
+| PLAN_85 | Upstream four-carrier burndown | DONE | [##########] 100% |
+| PLAN_86 | Localized or reseeded replacement for R | DONE | [##########] 100% |
+| PLAN_87 | Non-circular critical seed source | STUCK | [######----] 60% |
+| PLAN_88 | Dual-track seed or non-singleton localized bridge | ACTIVE | [#######---] 70% |
+| PLAN_89 | Non-h_norm seed producer inventory | DONE | [##########] 100% |
+| PLAN_90 | Separated operator action redesign | ACTIVE | [########--] 80% |
+| PLAN_91 | Nonvacuous scaffold remaining theorems | ACTIVE | [########--] 80% |
+| PLAN_92 | Main cardioid boundary first homology seam | PROPOSED | [#---------] 10% |
+| PLAN_93 | Dudko 2512 virtual Molecule roadmap | PROPOSED | [#---------] 10% |
 
 ## Dependency Map
 
 - Primary elimination path PLAN_34/37/40/41 is complete.
-- Next queue handoff is PLAN_42 then PLAN_43.
+- Current operational queue is:
+  `PLAN_88` governance -> `PLAN_90` / `PLAN_91` redesign theorem queue ->
+  `PLAN_80` / `PLAN_78` / `PLAN_53` sidecar dependency gates.
+- `PLAN_82` remains important, but only as a dependent canonical cutover once a
+  real upstream source lands.
+- `PLAN_87` is currently STUCK after the `PLAN_89` inventory closure; it should
+  not be treated as an equal day-to-day queue with `PLAN_90` / `PLAN_91`.
+- `PLAN_47`, `PLAN_49`, `PLAN_76`, and `PLAN_81` remain useful history and
+  secondary integration context, but they are no longer the lead frontier.
+- Reserve sidecar note:
+  `PLAN_92` now tracks the first credible homology seam. It is explicitly not
+  part of the active elimination queue: current slice-side objects only expose
+  discrete `H_0`, and the first plausible nontrivial target would come from
+  main-cardioid geometry in `Molecule/Mol.lean`.
+- Dudko sidecar note:
+  `PLAN_93` records the remaining unbounded satellite / virtual-Molecule
+  research roadmap suggested by `refs/2512.24171_section4_note.md`. It is a
+  guidance layer for the residual source search, not a replacement for the
+  current operational queue.
 - Legacy `molecule_h_*` elimination path (PLAN_11/15/17/21/24) is complete.
 
 ## Current Notes
 
-- `check_axioms` for `Molecule.molecule_conjecture_refined` no longer reports
-  `Molecule.molecule_h_norm` and no longer reports any `Molecule.molecule_h_*`.
-- Current remaining project axioms:
-  - none (`check_axioms` reports only foundational Lean axioms).
-- No active STUCK plans (and no `Status: STUCK` plan files to remove this pass).
+- `check_axioms` for `Molecule.molecule_conjecture_refined` currently reports:
+  - `Molecule.molecule_h_norm`
+- Verification checkpoint (2026-04-30):
+  - `make build` and `make check` pass.
+  - `scripts/verify_output.sh` passes.
+  - the README expected output remains accurate:
+    `propext`, `Quot.sound`, `Classical.choice`, `Molecule.molecule_h_norm`
+- Critical planning correction:
+  - the active frontier is no longer another wrapper decomposition pass.
+  - the active frontier is a redesign/search queue owned by `PLAN_88` and
+    operationalized by `PLAN_90` / `PLAN_91`.
+- Verification checkpoint (2026-03-04):
+  - `make build` and `make check` pass.
+  - targeted probes still include `Molecule.molecule_h_norm` in:
+    `molecule_residual_direct_seam_anchor_source`,
+    `molecule_residual_fixed_point_uniqueness_source`,
+    `molecule_residual_fixed_point_hybrid_class_collapse_source`,
+    `molecule_residual_direct_source_breakout_sources_via_direct_seam_anchor_witness_sources`,
+    `molecule_residual_fixed_point_normalization_ingredients`,
+    `molecule_residual_non_ground_sources`,
+    `molecule_residual_bounds_seed_free`,
+    and `molecule_conjecture_refined`.
+  - PLAN_74/75/76 route-inventory probes show the selected parameterized witness
+    propagation seams (including
+    `MoleculeResidualPlan74WinningRouteSources`) are ground-axiom-only;
+    current zero-arg PLAN_72/69 alias path is now routed through that bundle;
+    PLAN_75 made the zero-arg source interface explicit
+    (`MoleculeResidualAnchorWitnessZeroArgSource`) with ground-axiom-only
+    equivalence certificates to direct-seam-anchor and uniqueness contracts
+    and is now archived as STUCK; active PLAN_76 track targets a non-
+    `molecule_h_norm` zero-arg theorem for that source.
+  - PLAN_76 candidate-A checkpoint:
+    added `MoleculeResidualAnchorWitnessDirectContractCutoverSource` with
+    conversion/equivalence theorems around
+    `molecule_residual_anchor_witness_zero_arg_source`.
+    Canonical-parametric conversion is ground-axiom-only; unconditional reverse
+    conversion still carries `Molecule.molecule_h_norm` through the active
+    canonical-data source.
+  - PLAN_76 step-1 refactor checkpoint:
+    canonical-data routing now goes through
+    `MoleculeResidualCanonicalFastFixedPointDataSource` and current-route
+    consumers were rewired from `canonical_fast_fixed_point_data_from_bounds`
+    to `molecule_residual_canonical_fast_fixed_point_data_source`; source
+    constructors from existence/data assumptions are ground-axiom-only, but the
+    active source theorem remains `Molecule.molecule_h_norm`-backed.
+  - PLAN_76 step-2 refactor checkpoint:
+    added canonical-parametric breakout constructor
+    `molecule_residual_direct_source_breakout_sources_of_canonical_and_zero_arg_anchor_witness_source`
+    and routed the current breakout alias through it.
+    Targeted probes show the constructor is ground-axiom-only, while the
+    zero-arg breakout alias remains `Molecule.molecule_h_norm`-backed.
+  - PLAN_76 step-3 refactor checkpoint:
+    current zero-arg theorem
+    `molecule_residual_anchor_witness_zero_arg_source` is now routed through
+    the PLAN_76 cutover-source seam via
+    `molecule_residual_anchor_witness_direct_contract_cutover_source`.
+    Targeted probes confirm this explicit cutover, with the residual
+    `Molecule.molecule_h_norm` dependency unchanged.
+  - PLAN_76 step-4 refactor checkpoint:
+    added source-level constructors from canonical-data source + direct-
+    uniqueness source into cutover/zero-arg routes, and rebased the current
+    canonical-data source on fixed-point data source.
+    Targeted probes show these source-level constructors are ground-axiom-only,
+    while current zero-arg/breakout aliases remain `Molecule.molecule_h_norm`-
+    backed.
+  - PLAN_76 step-5 refactor checkpoint:
+    added source bundle `MoleculeResidualAnchorWitnessZeroArgSources` and
+    routed current zero-arg/breakout aliases through bundle-level constructors.
+    Targeted probes show bundle constructors are ground-axiom-only, while the
+    current bundle theorem remains `Molecule.molecule_h_norm`-backed.
+  - PLAN_76 step-6 refactor checkpoint:
+    added cutover-source constructors into bundle and breakout aliases, and
+    routed current bundle/breakout through the cutover-source route.
+    Targeted probes show these constructors are ground-axiom-only, while
+    current cutover/bundle/zero-arg/breakout aliases remain
+    `Molecule.molecule_h_norm`-backed.
+  - PLAN_76 step-7 refactor checkpoint:
+    added explicit cutover-ingredients seam with an `iff` certificate to the
+    cutover-source seam, and routed current cutover theorem through current
+    cutover-ingredients theorem.
+    Targeted probes show the new constructors/equivalence are ground-axiom-
+    only, while current cutover-ingredients theorem remains
+    `Molecule.molecule_h_norm`-backed.
+  - PLAN_76 step-8 refactor checkpoint:
+    added source-bundle/cutover-ingredients projections + equivalence, and
+    rerouted current source-bundle and breakout aliases through the
+    source-bundle route seeded by current cutover-ingredients theorem.
+    Targeted probes show these new seam constructors/equivalence are
+    ground-axiom-only, while current source-bundle/zero-arg/breakout/top-level
+    aliases remain `Molecule.molecule_h_norm`-backed.
+  - PLAN_76 step-9 refactor checkpoint:
+    added breakout->zero-arg constructor + canonical-parametric breakout
+    equivalence certificate, plus a breakout-routed candidate zero-arg theorem.
+    Targeted probes show the new constructor/equivalence are ground-axiom-only,
+    while the candidate zero-arg theorem and current top-level routes remain
+    `Molecule.molecule_h_norm`-backed.
+  - PLAN_77 opened as an upstream model-change track to replace the current
+    full-domain bridge/global-normalization bottlenecks with restricted-domain
+    fixed-point existence/uniqueness contracts that can feed PLAN_76 without
+    `Molecule.molecule_h_norm`.
+  - PLAN_77 step-1 checkpoint:
+    added restricted bridge/witness source seams
+    (`FixedPointImpliesRenormalizableOn`,
+    `MoleculeResidualFixedPointBridgeOnSource`) and source-level existence
+    constructors; targeted probes show these are ground-axiom-only.
+    Current active existence/uniqueness/canonical and top-level routes remain
+    `Molecule.molecule_h_norm`-backed.
+  - PLAN_77 step-2 checkpoint:
+    rerouted `molecule_residual_fixed_point_existence_source` through the
+    restricted bridge-on seam via
+    `molecule_residual_fixed_point_existence_source_via_bridge_on`.
+    Targeted probes show the data-parametric bridge-on constructor is
+    ground-axiom-only, while the active bridge-on source and existence theorem
+    remain `Molecule.molecule_h_norm`-backed.
+  - PLAN_77 step-3 checkpoint:
+    added model-sources-based direct-uniqueness seam and rerouted PLAN_76
+    cutover-ingredients through
+    `molecule_residual_fixed_point_uniqueness_direct_source_via_model_sources`.
+    Targeted probes show source-level model-sources constructors are
+    ground-axiom-only, while current model-source values and active uniqueness/
+    top-level routes remain `Molecule.molecule_h_norm`-backed.
+  - PLAN_77 step-4 checkpoint:
+    rerouted later uniqueness consumers (`molecule_residual_hybrid_unique_fixed_point_source`,
+    then `molecule_residual_fixed_point_uniqueness_source`) through the
+    model-source direct-uniqueness seam. Targeted probes show the routing is
+    correct but the active frontier remains `Molecule.molecule_h_norm`-backed
+    via the current model-source value.
+  - PLAN_77 step-5 checkpoint:
+    rerouted `molecule_residual_canonical_fast_fixed_point_data_source`
+    through the upstream existence seam. Targeted probes show the constructor
+    seam is ground-axiom-only, while active canonical/PLAN_76/top-level routes
+    remain `Molecule.molecule_h_norm`-backed.
+  - PLAN_77 step-6 checkpoint:
+    added explicit transfer/data model-source seams
+    (`MoleculeResidualFixedPointTransferModelSources`,
+    `MoleculeResidualFixedPointDataModelSources`) and rerouted current
+    `molecule_residual_fixed_point_transfer_source` and
+    `molecule_residual_fixed_point_data_source` through those seams.
+    Targeted probes show the new constructors are ground-axiom-only, while the
+    remaining `Molecule.molecule_h_norm` frontier is now explicit on both the
+    uniqueness-side model-collapse value and the transfer/data-side source
+    values.
+  - PLAN_77 step-7 checkpoint:
+    added transfer-component seam
+    `MoleculeResidualFixedPointTransferComponentSources` and rerouted current
+    canonical `V`-bound/orbit-debt aliases through its constructors.
+    Targeted probes show the new constructors are ground-axiom-only; the
+    active frontier remains `Molecule.molecule_h_norm`-backed through the
+    current transfer source value and the uniqueness-side model-collapse value.
+  - PLAN_77 step-8 checkpoint:
+    added invariant-set local-domain transfer seam
+    `MoleculeResidualFixedPointTransferOnSources` and rerouted current
+    transfer/data theorems through it. Targeted probes show the new
+    constructors are ground-axiom-only; the active frontier remains
+    `Molecule.molecule_h_norm`-backed through current local-domain transfer
+    source values and the uniqueness-side model-collapse value.
+  - PLAN_77 step-9 checkpoint:
+    added local normalized-witness seam
+    `MoleculeResidualFixedPointLocalWitnessSources` and rerouted current
+    local-domain transfer pack through that witness route. Targeted probes show
+    the new constructors are ground-axiom-only; the active frontier remains
+    `Molecule.molecule_h_norm`-backed through current local-witness/current-
+    uniqueness values and the uniqueness-side model-collapse value.
+  - PLAN_77 step-10 checkpoint:
+    added candidate transfer/data/canonical route consuming the local-witness
+    pack together with the model-sources direct-uniqueness seam. Targeted
+    probes show the candidate route is still `Molecule.molecule_h_norm`-backed,
+    but no longer uses the legacy direct-uniqueness theorem on that branch.
+  - PLAN_77 step-11 checkpoint:
+    added candidate model-collapse/breakout/model-sources chain consuming the
+    model-sources direct-uniqueness seam. Targeted probes show the candidate
+    route is still `Molecule.molecule_h_norm`-backed, but no longer depends on
+    the older direct-source branch on that uniqueness-side candidate path.
+  - PLAN_77 handoff checkpoint (2026-03-07):
+    seam-only decomposition is now considered saturated; active continuation
+    moved to PLAN_78 targeting the concrete theorem
+    `molecule_residual_fixed_point_local_witness_on_sources`.
+  - PLAN_78 step-1 checkpoint:
+    introduced the concrete theorem target
+    `molecule_residual_fixed_point_local_witness_on_sources` and rebased
+    current local-witness routing through it. Targeted probes show the new
+    constructors are ground-axiom-only, while the current target theorem and
+    `molecule_residual_fixed_point_transfer_source_via_on_sources` remain
+    `Molecule.molecule_h_norm`-backed.
+  - PLAN_79 step-1 checkpoint:
+    isolated the invariant-domain route behind a dedicated source seam for
+    `InvariantSliceDataWithNormalization`, and added direct invariant-domain
+    source theorems to fixed-point data and the local-witness target. This
+    narrows the remaining transfer-side blocker to finding a producer for that
+    invariant-domain source seam.
+    Targeted probes show the new invariant-domain route is ground-axiom-only.
+  - PLAN_79 step-2 inventory:
+    the only current producer of `InvariantSliceDataWithNormalization` remains
+    `invariant_slice_data_with_normalization_of_global`, so the new seam is
+    clean but still lacks a non-`molecule_h_norm` source.
+  - PLAN_79 step-3 refined-route checkpoint:
+    added `MoleculeResidualRefinedInvariantFixedPointSources` plus a
+    ground-axiom-only constructor from fixed-point data and a projection to
+    `molecule_residual_fixed_point_local_witness_on_sources`; the current
+    local-witness theorem is now routed through that refined source pack.
+  - PLAN_79 step-4 invariant-fixed-point checkpoint:
+    added invariant-slice-data -> fixed-point-in-domain and normalized-package
+    -> bridge-on/existence source theorems, all ground-axiom-only. The
+    remaining transfer-side blocker is now specifically the lack of a
+    non-`molecule_h_norm` producer for normalized invariant slice-data.
+  - PLAN_79 step-5 normalization-split checkpoint:
+    factored the reusable invariant-slice fixed-point theorem and direct
+    local-witness ingredient theorem from normalized invariant slice-data.
+    Targeted probes show the new helper/local-witness route is
+    ground-axiom-only; the blocker remains the missing normalized-source
+    producer.
+  - PLAN_79 step-6 dead-end checkpoint:
+    added
+    `invariant_slice_data_with_normalization_implies_global_normalization_contract`,
+    `no_invariant_slice_data_with_normalization`, and
+    `no_molecule_residual_invariant_slice_data_with_normalization_source`;
+    targeted probes show these are ground-axiom-only, certifying the legacy
+    normalized invariant-slice-data branch as a dead end in the current model.
+  - PLAN_80 step-1 checkpoint:
+    added
+    `molecule_residual_fixed_point_data_source_via_fixed_data_direct`;
+    rerouted current
+    `molecule_residual_fixed_point_data_source`
+    through that direct fixed-data carrier;
+    rerouted current
+    `molecule_residual_fixed_point_local_witness_on_sources`
+    directly through
+    `molecule_residual_fixed_point_local_witness_on_sources_via_fixed_data_source`;
+    this makes the current fixed-point data source theorem, still backed by
+    `molecule_h_fixed_data_direct`, the exact remaining live transfer-side
+    blocker.
+  - PLAN_80 step-2 inventory checkpoint:
+    verified that the constructors
+    `fixed_point_normalization_data_of_fixed_exists_and_transfer`,
+    `fixed_point_normalization_data_of_ingredients`,
+    `fixed_point_normalization_data_of_invariant_slice_data`, and
+    `molecule_residual_fixed_point_data_source_of_invariant_slice_data_with_normalization_source`
+    are all ground-axiom-only.
+    This shows the live route is not dead; the missing piece is an upstream
+    producer for one of their inputs that avoids both
+    `molecule_h_fixed_data_direct` and the dead legacy normalized seam.
+  - PLAN_81 step-1 checkpoint:
+    opened a concrete proof-target plan for the exact missing theorem:
+    one non-`molecule_h_norm` witness of `FixedPointNormalizationData`.
+    Active search now targets a direct single-reference witness or a split
+    witness through `fixed_exists + transfer`, rather than more route
+    reshuffling.
+  - PLAN_81 step-2 checkpoint:
+    identified the smallest live fallback source package as
+    `MoleculeResidualFixedPointNormalizationIngredients`, equivalently
+    existence + transfer;
+    added explicit fallback route theorems from current existence + transfer to
+    current data/local-witness candidates.
+  - PLAN_81 step-3 checkpoint:
+    added named current split carriers
+    `molecule_residual_fixed_point_existence_source_via_fixed_data_direct` and
+    `molecule_residual_fixed_point_transfer_source_via_fixed_data_and_uniqueness_direct`,
+    so the two halves of the fallback route are explicit theorem targets.
+  - PLAN_81 step-4 checkpoint:
+    rerouted the active current existence/transfer theorems to those split
+    carriers;
+    targeted probes show both remain `Molecule.molecule_h_norm`-backed;
+    the next preferred attack is the existence half first because it has fewer
+    dependencies than the transfer half.
+  - PLAN_81 step-5 checkpoint:
+    rerouted the active current data and ingredient theorems through the split
+    existence+transfer frontier;
+    targeted probes show the active data/ingredient/existence/transfer path is
+    now fully split and still `Molecule.molecule_h_norm`-backed.
+  - PLAN_81 step-6 checkpoint:
+    reduced the existence half to canonical fast fixed-point data via
+    `molecule_residual_fixed_point_existence_source_iff_canonical_fast_fixed_point_data_source`;
+    targeted probes show this equivalence is ground-axiom-only.
+  - PLAN_80 step-10 checkpoint:
+    added
+    `residual_fixed_point_normalization_ingredients_of_fixed_point_exists_and_component_transfers`
+    and
+    `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`;
+    rerouted
+    `molecule_residual_fixed_point_data_source_via_fixed_exists_and_transfer_direct`
+    through the primitive-ingredient theorem, so the fixed-data branch now
+    depends explicitly on ground `fixed_point_exists` plus the three remaining
+    non-ground carriers:
+    `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`,
+    `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`,
+    and
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
+  - PLAN_82 step-13 checkpoint:
+    added
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_primitive_ingredients_orbit_clause_at_and_uniqueness_direct`;
+    rerouted the active canonical branch through
+    `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`,
+    `molecule_residual_orbit_clause_at_source`,
+    and
+    `molecule_residual_fixed_point_uniqueness_direct_source`;
+    this removes the intermediate fixed-data wrapper from the active canonical
+    frontier and exposes the exact live blocker triple for PLAN_82.
+  - PLAN_80 step-11 checkpoint:
+    added
+    `fixed_point_local_normalization_transfer_of_ingredients_and_unique`;
+    rerouted
+    `molecule_residual_fixed_point_transfer_source_via_fixed_data_and_uniqueness_direct`
+    through
+    `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`
+    and
+    `molecule_residual_fixed_point_uniqueness_direct_source`;
+    this removes the extra fixed-data wrapper from the active transfer branch
+    and aligns the transfer frontier with the primitive fixed-data blocker
+    set;
+    targeted probes show the new constructor is ground-axiom-only, while the
+    current transfer theorem is now blocked exactly by the primitive
+    ingredient carrier plus direct uniqueness.
+  - PLAN_82 step-14 checkpoint:
+    rerouted
+    `molecule_residual_canonical_fast_fixed_point_data_source_via_fixed_data_direct_orbit_clause_at_and_uniqueness_direct`
+    through
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_ingredients_and_orbit_clause_at_source`;
+    this removes the direct-uniqueness wrapper from the active canonical
+    frontier, which now depends only on the primitive ingredient carrier and
+    `molecule_residual_orbit_clause_at_source`.
+  - PLAN_80 step-12 checkpoint:
+    added
+    `fixed_point_local_normalization_transfer_of_ingredients`;
+    rerouted
+    `molecule_residual_fixed_point_transfer_source_via_fixed_data_and_uniqueness_direct`
+    directly through
+    `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`;
+    this removes the remaining uniqueness wrapper from the active transfer
+    frontier; the transfer theorem is now a direct projection from the
+    primitive ingredient carrier.
+  - PLAN_78 primitive-ingredient checkpoint:
+    added
+    `molecule_residual_fixed_point_local_witness_sources_of_ingredients`,
+    `molecule_residual_fixed_point_local_witness_on_sources_of_ingredients`,
+    and
+    `molecule_residual_fixed_point_local_witness_on_sources_via_ingredients_source`;
+    rerouted current local-witness theorems through
+    `molecule_residual_fixed_point_normalization_ingredients_via_fixed_point_exists_and_component_transfers_direct`,
+    removing the remaining fixed-data wrapper from the active local-witness
+    branch.
+  - PLAN_80 step-13 checkpoint:
+    added
+    `fixed_point_normalization_data_of_fixed_point_exists_and_component_transfers`;
+    rerouted current data, existence, transfer, and local-witness theorems so
+    the active fixed-point frontier is now the exact direct carrier set:
+    `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`,
+    `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`,
+    and
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
+  - PLAN_80 step-14 checkpoint:
+    added
+    `fixed_point_normalization_data_of_fixed_point_exists_and_renorm_and_vbound`;
+    rerouted the active witness-side routes so the shared frontier is now:
+    `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`
+    and
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`;
+    `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`
+    remains only on the transfer side.
+  - PLAN_78 direct-component checkpoint:
+    rerouted current local-witness theorems through those exact three direct
+    component carriers, removing the remaining primitive-ingredient wrapper
+    from the active local-witness branch.
+  - PLAN_78 witness-pair checkpoint:
+    rerouted current local-witness theorems through the smaller shared witness
+    pair:
+    `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`
+    and
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
+  - PLAN_78 direct on-sources checkpoint:
+    rerouted current
+    `molecule_residual_fixed_point_transfer_on_sources`
+    directly through
+    `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`
+    and
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`,
+    removing the local-witness and uniqueness wrappers from the active
+    `...via_on_sources` branch.
+  - PLAN_82 step-15 checkpoint:
+    rerouted the active canonical theorem through the same exact direct
+    fixed-point carrier triple, plus
+    `molecule_residual_orbit_clause_at_source`;
+    this leaves a single additional canonical-side obligation beyond the
+    shared fixed-point frontier.
+  - PLAN_82 step-16 checkpoint:
+    rerouted the active canonical theorem through the smaller shared witness
+    pair plus
+    `molecule_residual_orbit_clause_at_source`,
+    removing the critical-value carrier from the canonical-side frontier.
+  - PLAN_80 step-15 checkpoint:
+    rerouted the active `...via_on_sources` branch through the exact transfer
+    component pair:
+    `molecule_residual_fixed_point_critical_value_transfer_via_global_norm_direct`
+    and
+    `molecule_residual_fixed_point_vbound_transfer_via_global_norm_direct`.
+  - PLAN_82 step-1 checkpoint:
+    opened a focused existence-side plan on
+    `MoleculeResidualCanonicalFastFixedPointDataSource`, which is now the
+    smallest live target for the existence half.
+  - PLAN_82 step-2 checkpoint:
+    added canonical-source constructors from `PseudoSiegelAPrioriBounds`,
+    `MoleculeResidualBoundsAssemblySources`, and
+    `MoleculeResidualNonGroundSources`;
+    rerouted the active current canonical theorem through
+    `molecule_residual_bounds_assembly_sources`;
+    targeted probes now identify the smallest live upstream package for the
+    existence half as `MoleculeResidualBoundsAssemblySources`.
+  - PLAN_82 step-3 checkpoint:
+    added canonical-source constructors from
+    `MoleculeResidualFixedPointIngredientsSource` and
+    `MoleculeResidualOrbitClauseSource`;
+    rerouted the active current canonical theorem through those two current
+    carriers instead of the coarser bounds-assembly wrapper;
+    this exposes the existence-side blocker as the pair
+    `molecule_residual_fixed_point_ingredients_source` +
+    `molecule_residual_orbit_clause_source`.
+  - PLAN_82 step-4 checkpoint:
+    added canonical-source constructors from
+    `MoleculeResidualFixedPointIngredientsSource` and
+    `MoleculeResidualOrbitClauseAtSource`;
+    rerouted the active current canonical theorem through those two current
+    carriers, removing the broader orbit-clause wrapper from the active
+    frontier;
+    this exposes the existence-side blocker as the pair
+    `molecule_residual_fixed_point_ingredients_source` +
+    `molecule_residual_orbit_clause_at_source`.
+  - PLAN_82 step-5 checkpoint:
+    added canonical-source constructors from
+    `MoleculeResidualFixedPointIngredientsSource` and
+    `MoleculeResidualCanonicalOrbitAtDebtSource`;
+    rerouted the active current canonical theorem through those two current
+    carriers, removing the stronger local orbit-at wrapper from the active
+    frontier;
+    this exposes the existence-side blocker as the pair
+    `molecule_residual_fixed_point_ingredients_source` +
+    `molecule_residual_canonical_orbit_at_debt_source`.
+  - PLAN_82 step-6 checkpoint:
+    rerouted the active canonical source alias through
+    `molecule_residual_canonical_orbit_at_debt_source_via_fixed_point_transfer_source`;
+    the canonical route now shares the transfer carrier explicitly on the
+    orbit side without moving the earlier current debt declarations.
+  - PLAN_82 step-7 checkpoint:
+    added canonical-source constructors from
+    `MoleculeResidualFixedPointIngredientsSource`,
+    `MoleculeResidualCanonicalOrbitStructureSource`, and
+    `MoleculeResidualFixedPointTransferSource`;
+    rerouted the active current canonical theorem through those three current
+    carriers, removing the transfer-routed orbit-debt wrapper from the active
+    frontier.
+  - PLAN_82 step-8 checkpoint:
+    added canonical-source constructors from
+    `MoleculeResidualFixedPointIngredientsSource`,
+    `MoleculeResidualOrbitClauseSource`, and
+    `MoleculeResidualFixedPointTransferSource`;
+    rerouted the active current canonical theorem through those three current
+    carriers, removing the transport and orbit-structure wrappers from the
+    active frontier.
+  - PLAN_82 step-9 checkpoint:
+    added canonical-source constructors from
+    `MoleculeResidualFixedPointIngredientsSource`,
+    `MoleculeResidualOrbitClauseAtSource`, and
+    `MoleculeResidualFixedPointTransferSource`;
+    rerouted the active current canonical theorem through those three current
+    carriers, removing the broad orbit-clause wrapper from the active
+    frontier.
+  - PLAN_82 step-10 checkpoint:
+    added canonical-source constructors from
+    `MoleculeResidualFixedPointExistenceSource`,
+    `MoleculeResidualOrbitClauseAtSource`, and
+    `MoleculeResidualFixedPointTransferSource`;
+    rerouted the active current canonical theorem through those three current
+    carriers, removing the remaining ingredient wrapper from the active
+    frontier.
+  - PLAN_82 step-11 checkpoint:
+    added canonical-source constructors from
+    `MoleculeResidualFixedPointDataSource`,
+    `MoleculeResidualOrbitClauseAtSource`, and
+    `MoleculeResidualFixedPointUniquenessSource`;
+    rerouted the active current canonical theorem through those three current
+    carriers, removing the remaining existence/transfer wrappers from the
+    active frontier.
+  - PLAN_82 step-12 checkpoint:
+    added a concrete active alias through the exact theorem carriers
+    `molecule_residual_fixed_point_data_source_via_fixed_data_direct`,
+    `molecule_residual_orbit_clause_at_source`, and
+    `molecule_residual_fixed_point_uniqueness_source_direct`;
+    targeted probes show these are now the exact remaining theorem blockers on
+    the canonical branch.
+  - PLAN_82 step-12 checkpoint:
+    added a concrete active alias through the exact theorem carriers
+    `molecule_residual_fixed_point_data_source_via_fixed_data_direct`,
+    `molecule_residual_orbit_clause_at_source`, and
+    `molecule_residual_fixed_point_uniqueness_source_direct`;
+    targeted probes show these are now the exact remaining theorem blockers on
+    the canonical branch.
+- The previous placeholder `PseudoSiegelAPrioriBounds := True` has been replaced by
+  `PseudoSiegelAPrioriBoundsStatement`, and bounds/canonical extraction now consume
+  this stronger contract.
+- `molecule_residual_bounds` has been rewired to a seed-free source path
+  (`molecule_residual_bounds_seed_free`) that no longer uses `molecule_h_data`.
+- New obstruction theorem in `Molecule/Conjecture.lean`:
+  `has_invariant_slice_data_forces_univ_finite`, exposing the current
+  constant-chart/finiteness mismatch that blocks constructive `h_exists`.
+- New feasibility gate theorems in `Molecule/Conjecture.lean`:
+  - `global_normalization_contract_inconsistent`
+  - `no_global_normalization_contract`
+  These certify the current global-normalization seam is inconsistent in this model.
+- `PLAN_44` has started with refined chart scaffolding in `Molecule/BanachSlice.lean`
+  (`slice_chart_refined`, `refined_singleton_slice_witness`), and a new
+  chart-parameterized package in `Molecule/Conjecture.lean`
+  (`HasInvariantSliceDataWith`, `has_invariant_slice_data_with_refined`,
+  `has_invariant_slice_data_with_refined_default`,
+  `InvariantSliceDataWithNormalizationWith`,
+  `invariant_slice_data_with_normalization_with_refined_of_local`,
+  `invariant_slice_data_with_normalization_with_refined_of_global_norm`), plus
+  global-to-local normalization bridges
+  (`normalization_at_point_of_global`,
+  `fixed_point_normalization_data_of_fixed_exists_and_global_norm`) and a
+  narrowed bounds interface
+  (`problem_4_3_bounds_established_conjecture_from_fixed_exists_and_global_norm`,
+  `molecule_residual_fixed_exists`, `problem_4_3_bounds_established_conjecture_from_local_fixed_norm`,
+  `MoleculeOrbitTransportData`,
+  `problem_4_3_bounds_established_conjecture_from_global_norm_and_transport`,
+  `MoleculeOrbitClause`,
+  `MoleculeOrbitOnlyData`,
+  `molecule_orbit_transport_data_of_orbit_only`).
+  `molecule_residual_fixed_exists` is now routed through
+  `renormalizable_fixed_exists_of_fixed_point_normalization_data`.
+  `molecule_h_fixed_data` is now routed through the explicit source seam
+  `molecule_residual_fixed_point_normalization_source`.
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_44_constructive_slice_witness_refactor.md`
+    (replaced by PLAN_45).
+- Archived SUPERSEDED plan:
+  - `ARCHIVE_superseded_2026-03-04_PLAN_45_local_fixed_point_normalization_source.md`
+    (handoff to PLAN_47/49).
+- `PLAN_45` delivered:
+  - Added local bounds seam
+    `problem_4_3_bounds_established_conjecture_from_fixed_data_and_transport`.
+  - Rewired `molecule_residual_bounds_seed_free` through
+    `molecule_residual_bounds_from_fixed_data` using `molecule_h_fixed_data`.
+  - Rewired `molecule_residual_fixed_exists` through
+    `renormalizable_fixed_exists_of_fixed_point_normalization_data`.
+  - Isolated the last blocker behind one explicit replacement seam:
+    `molecule_residual_fixed_point_normalization_source`.
+  - Removed unused wrapper `molecule_h_data_refined_seed_free`; residual
+    blocker surface is now concentrated at the fixed-data source seam.
+  - Factored the fixed-data source into explicit sub-contracts:
+    `FixedPointLocalNormalizationTransfer` and
+    `fixed_point_normalization_data_of_fixed_exists_and_transfer`.
+  - Added an explicit ingredient bundle seam:
+    `MoleculeResidualFixedPointNormalizationIngredients` and
+    `molecule_residual_fixed_point_normalization_ingredients`.
+  - Verification rerun completed (`make build`, `make check`, `#print axioms`);
+    frontier unchanged: `molecule_h_norm` is still the residual blocker.
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_46_seed_free_ingredient_constructor.md`
+    (superseded by PLAN_47).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_48_orbit_clause_constructive_route.md`
+    (superseded by PLAN_50).
+- Archived SUPERSEDED plan:
+  - `ARCHIVE_superseded_2026-03-04_PLAN_50_orbit_clause_local_contract_narrowing.md`
+    (superseded by PLAN_51).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_52_fixed_point_renorm_witness_extraction.md`
+    (superseded by PLAN_53 after bridge infeasibility gate).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_51_orbit_fixed_data_source_replacement.md`
+    (superseded by PLAN_54 orbit source contract refactor).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_55_orbit_constructive_source_extraction_v2.md`
+    (superseded by PLAN_56 decomposition track).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_56_orbit_clause_constructor_decomposition.md`
+    (superseded by PLAN_57 theorem-debt extraction track).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_58_fixed_point_uniqueness_source_constructive_route.md`
+    (superseded by PLAN_59 hybrid unique fixed-point source constructor track).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_59_hybrid_unique_fixed_point_source_constructor.md`
+    (superseded by PLAN_60 hybrid-class model refactor route).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_60_hybrid_class_model_refactor_route.md`
+    (superseded by PLAN_61 upstream hybrid-class uniqueness source replacement).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_61_upstream_hybrid_class_uniqueness_source_replacement.md`
+    (superseded by PLAN_62 upstream map-uniqueness source replacement).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_62_upstream_map_uniqueness_source_replacement.md`
+    (superseded by PLAN_63 upstream hybrid-collapse constructive source).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_63_upstream_hybrid_collapse_constructive_source.md`
+    (superseded by PLAN_64 upstream direct-seam constructive witness).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_64_upstream_direct_seam_constructive_witness.md`
+    (superseded by PLAN_65 canonical-to-anchor constructive witness).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_65_canonical_to_anchor_constructive_witness.md`
+    (superseded by PLAN_66 canonical uniqueness constructive source).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_66_canonical_uniqueness_constructive_source.md`
+    (superseded by PLAN_67 non-h_norm direct contract witness).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_67_non_h_norm_direct_contract_witness.md`
+    (superseded by PLAN_68 non-h_norm direct contract source constructor).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_68_non_h_norm_direct_contract_source_constructor.md`
+    (superseded by PLAN_69 non-h_norm direct-source witness breakout).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_69_non_h_norm_direct_source_witness_breakout.md`
+    (superseded by PLAN_70 non-h_norm model-collapse-direct source witness).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_70_non_h_norm_model_collapse_direct_source_witness.md`
+    (superseded by PLAN_71 non-h_norm hybrid-class-collapse source witness).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_71_non_h_norm_hybrid_class_collapse_source_witness.md`
+    (superseded by PLAN_72 non-h_norm direct-seam-anchor source witness).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_72_non_h_norm_direct_seam_anchor_source_witness.md`
+    (superseded by PLAN_73 non-h_norm anchor-early witness replacement).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_73_non_h_norm_anchor_early_witness_replacement.md`
+    (superseded by PLAN_74 non-h_norm molecule_h_unique replacement).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_74_non_h_norm_molecule_h_unique_replacement.md`
+    (superseded by PLAN_75 non-h_norm anchor-witness source cutover).
+- Archived STUCK plan:
+  - `ARCHIVE_stuck_2026-03-04_PLAN_75_non_h_norm_anchor_witness_source_cutover.md`
+    (superseded by PLAN_76 non-h_norm anchor-witness bottleneck break).
+- `PLAN_47` progress:
+  - Introduced narrowed residual bounds-assembly source pack in
+    `Molecule/Conjecture.lean`:
+    `MoleculeResidualBoundsAssemblySources`.
+  - Added bridge theorem:
+    `molecule_residual_bounds_assembly_sources_of_non_ground_sources`.
+  - Added current narrowed source constructor:
+    `molecule_residual_bounds_assembly_sources`.
+  - Rewired `molecule_residual_bounds_seed_free` through
+    `molecule_residual_bounds_seed_free_of_bounds_assembly_sources`.
+  - Split fixed-point assembly path from orbit-clause path via:
+    `MoleculeResidualFixedPointAssemblySources` and
+    `molecule_residual_bounds_assembly_sources_of_fixed_point_and_orbit_sources`.
+  - Re-oriented non-ground source assembly to forward constructor form:
+    `molecule_residual_non_ground_sources_of_fixed_point_and_orbit_sources`.
+  - Narrowed orbit source component in non-ground/bounds-assembly packs to
+    fixed-data local orbit contract:
+    `MoleculeResidualOrbitClauseForFixedDataSource`.
+  - Narrowed fixed-point component in non-ground/bounds-assembly packs to carry
+    fixed-point transfer source directly.
+  - Split fixed-point assembly constructor to explicit source-level seam:
+    `molecule_residual_fixed_point_assembly_sources_of_sources`.
+  - Narrowed non-ground source pack to carry fixed-point ingredients directly.
+  - Routed non-ground source theorem through explicit ingredient+orbit
+    constructor:
+    `molecule_residual_non_ground_sources_of_ingredients_and_orbit`.
+  - Split fixed-point ingredient route into explicit bridge + transfer seams
+    and routed ingredient assembly through that path.
+  - Rewired current fixed-point ingredient/data/assembly theorems through
+    explicit existence + transfer seam composition:
+    `molecule_residual_fixed_point_normalization_ingredients_of_sources`,
+    `molecule_residual_fixed_point_ingredients_source_of_sources`,
+    `molecule_residual_fixed_point_data_source_of_sources`,
+    `molecule_residual_fixed_point_assembly_sources_of_exists_and_transfer`.
+  - Cut over active top-path non-ground source assembly to transport-routed
+    orbit wrapper:
+    `molecule_residual_non_ground_sources` now consumes
+    `molecule_residual_orbit_clause_for_fixed_data_source`.
+  - Added local orbit-obligation seam in `Molecule/Conjecture.lean`:
+    `MoleculeOrbitClauseAt` and
+    `molecule_orbit_clause_at_of_orbit_clause`.
+  - Targeted axiom probe confirms:
+    `molecule_residual_bounds_seed_free_of_bounds_assembly_sources` and
+    `molecule_residual_bounds_seed_free_of_non_ground_sources` are axiom-clean
+    modulo ground axioms; only
+    `molecule_residual_non_ground_sources` still carries `molecule_h_norm`.
+  - Residual blocker remains concentrated in constructive replacement of:
+    - ingredient source route, and
+    - orbit-clause source route.
+- `PLAN_49` progress:
+  - Added fixed-point-only assembly seam and bridge theorems:
+    `molecule_residual_fixed_point_assembly_sources_of_non_ground_sources`,
+    `molecule_residual_fixed_point_normalization_ingredients_of_fixed_point_assembly_sources`.
+  - Targeted axiom probe confirms these fixed-point assembly seam theorems are
+    axiom-clean modulo ground axioms.
+  - Completed constructor inventory for fixed-point source route:
+    `molecule_residual_fixed_point_data_source` is currently global-norm backed,
+    and the direct legacy uniqueness theorem
+    `molecule_residual_fixed_point_uniqueness_source_direct`
+    remains ex-falso-backed.
+  - Added forward constructor seam checkpoint:
+    `molecule_residual_non_ground_sources_of_fixed_point_and_orbit_sources`
+    is axiom-clean modulo ground axioms.
+  - Narrowed fixed-point source packs to carry transfer directly (instead of
+    uniqueness), reducing replacement surface.
+  - Added and routed through explicit source-level fixed-point assembly
+    constructor:
+    `molecule_residual_fixed_point_assembly_sources_of_sources`.
+  - Narrowed non-ground source pack to carry fixed-point ingredients directly,
+    concentrating the fixed-point blocker at ingredient source construction.
+  - Added explicit non-ground constructor from ingredient + local-orbit
+    sources and routed `molecule_residual_non_ground_sources` through it.
+  - Added explicit fixed-point bridge source seam and routed fixed-point
+    existence/ingredient assembly through bridge + transfer seams.
+  - Verified
+    `molecule_residual_fixed_point_normalization_ingredients_of_fixed_point_assembly_sources`
+    remains axiom-clean modulo ground axioms after the refactor.
+  - Current fixed-point blocker is concentrated at:
+    `molecule_residual_fixed_point_normalization_ingredients`.
+  - Current ingredient theorem now routes through fixed-data + transfer seam:
+    `molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer`,
+    removing active dependence on `FixedPointImpliesRenormalizable`.
+  - Current existence/transfer source theorems are bridge-free and ex-falso-free:
+    `molecule_residual_fixed_point_existence_source`,
+    `molecule_residual_fixed_point_transfer_source`.
+  - Current fixed-point data source theorem now routes via explicit source
+    composition:
+    `molecule_residual_fixed_point_data_source_of_sources`.
+  - Current fixed-point ingredient source theorem now routes via explicit
+    source composition:
+    `molecule_residual_fixed_point_ingredients_source_of_sources`.
+  - Current fixed-point assembly source theorem now routes via explicit
+    existence+transfer seam:
+    `molecule_residual_fixed_point_assembly_sources_of_exists_and_transfer`.
+  - Added transfer decomposition seams and canonical `V`-bound routing hooks:
+    `FixedPointCriticalValueTransferSource`,
+    `FixedPointVBoundTransferSource`,
+    `fixed_point_local_normalization_transfer_of_critical_and_vbound`,
+    `fixed_point_critical_and_vbound_of_local_normalization_transfer`,
+    `molecule_residual_canonical_vbound_source_of_fixed_point_vbound_transfer`,
+    `fixed_point_vbound_transfer_source_of_fixed_point_transfer_source`.
+  - Targeted probe confirms these transfer decomposition/projection seams are
+    axiom-clean modulo ground axioms.
+  - Cut over current fixed-point existence/ingredient theorem routing to
+    explicit fixed-data + transfer seam constructors (bridge-free current path):
+    `molecule_residual_fixed_point_existence_source` now routes via
+    `renormalizable_fixed_exists_of_fixed_point_normalization_data
+    molecule_h_fixed_data_direct`, and
+    `molecule_residual_fixed_point_normalization_ingredients` now routes via
+    `molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer`.
+  - Targeted probe confirms
+    `molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer`
+    remains axiom-clean modulo ground axioms; current
+    `molecule_residual_fixed_point_normalization_ingredients` and
+    `molecule_residual_non_ground_sources` still carry
+    `Molecule.molecule_h_norm`.
+  - Added cross-track integration seams from fixed-data + uniqueness to
+    transfer components and canonical orbit-debt composition:
+    `fixed_point_critical_value_transfer_source_of_fixed_data_and_unique`,
+    `fixed_point_vbound_transfer_source_of_fixed_data_and_unique`,
+    `molecule_residual_canonical_vbound_source_of_fixed_data_and_unique`,
+    `molecule_residual_canonical_orbit_at_debt_source_of_structure_fixed_data_and_unique`,
+    and source wrappers
+    `fixed_point_transfer_components_of_fixed_data_and_uniqueness_source`,
+    `molecule_residual_canonical_vbound_source_of_fixed_data_and_uniqueness_source`,
+    `molecule_residual_canonical_orbit_at_debt_source_of_structure_fixed_data_and_uniqueness_source`.
+  - Added transport-wrapped canonical-orbit debt integration seam:
+    `molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_uniqueness_source`,
+    with current routed theorem
+    `molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source`.
+  - Targeted probe confirms these integration seams are axiom-clean modulo
+    ground axioms.
+  - Next target is constructive replacement of:
+    `molecule_residual_fixed_point_normalization_ingredients`.
+- `PLAN_53` progress:
+  - Opened replacement track for the fixed-point witness bottleneck after
+    proving infeasibility gate:
+    `no_fixed_point_implies_renormalizable`.
+  - Added bridge-free ingredient routing checkpoint:
+    `molecule_residual_fixed_point_normalization_ingredients` now routes through
+    `molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer`.
+  - Decoupled current existence/transfer source theorems from bridge+uniqueness
+    routing:
+    `molecule_residual_fixed_point_existence_source`,
+    `molecule_residual_fixed_point_transfer_source`.
+  - Decoupled current fixed-point data/assembly source theorems from one-off
+    fixed-data seed routing:
+    `molecule_residual_fixed_point_data_source_of_sources`,
+    `molecule_residual_fixed_point_assembly_sources_of_exists_and_transfer`.
+  - Decoupled current fixed-point ingredient source theorem from direct
+    normalization theorem dependency:
+    `molecule_residual_fixed_point_ingredients_source_of_sources`.
+  - Targeted probe confirms
+    `molecule_residual_fixed_point_normalization_ingredients_of_data_and_transfer`
+    is axiom-clean modulo ground axioms.
+  - Added cross-track integration seams:
+    `fixed_point_critical_value_transfer_source_of_fixed_data_and_unique`,
+    `fixed_point_vbound_transfer_source_of_fixed_data_and_unique`,
+    `molecule_residual_canonical_vbound_source_of_fixed_data_and_unique`,
+    `molecule_residual_canonical_orbit_at_debt_source_of_structure_fixed_data_and_unique`.
+  - Added transport-wrapped integration seam:
+    `molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_uniqueness_source`.
+  - Targeted probe confirms these integration seams are axiom-clean modulo
+    ground axioms.
+  - Next target is constructive replacement of
+    `molecule_residual_fixed_point_data_source`.
+- `PLAN_59` final (archived as STUCK):
+  - Opened successor track after archiving PLAN_58 as stuck on its own rule
+    (no standalone non-assumptive uniqueness constructor route in current
+    infrastructure).
+  - Added higher-level source seam in `Molecule/Conjecture.lean`:
+    `MoleculeResidualHybridUniqueFixedPointSource`.
+  - Added axiom-clean projection/composition seams:
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_of_hybrid_unique_fixed_point_source`,
+    `molecule_residual_fixed_point_uniqueness_source_of_hybrid_unique_fixed_point_source`,
+    `molecule_residual_canonical_orbit_at_debt_source_of_transport_fixed_data_and_hybrid_unique_fixed_point_source`.
+  - Targeted probe confirms these new seam theorems are axiom-clean modulo
+    ground axioms.
+  - Added canonical/refined bridge constructors into the hybrid-unique source:
+    `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_uniqueness_source`,
+    `molecule_residual_hybrid_unique_fixed_point_source_of_refined_and_uniqueness_source`,
+    and current theorem `molecule_residual_hybrid_unique_fixed_point_source`.
+  - Targeted probe confirms these bridge constructors are axiom-clean modulo
+    ground axioms; current hybrid-unique source theorem still carries
+    `Molecule.molecule_h_norm`.
+  - Added explicit current-route wrappers through the hybrid-unique source seam:
+    `molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_uniqueness_source`,
+    `molecule_residual_fixed_point_uniqueness_source_via_hybrid_unique_fixed_point_source`,
+    `molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_hybrid_unique_fixed_point_source`,
+    `molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source_via_hybrid_unique_fixed_point_source`.
+  - Added hybrid-class-collapse bridge constructors into the hybrid-unique
+    source:
+    `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_collapse_source`,
+    `molecule_residual_hybrid_unique_fixed_point_source_of_refined_and_hybrid_class_collapse_source`,
+    `molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_hybrid_class_collapse_source`.
+  - Rewired the public uniqueness theorem through the hybrid-unique seam:
+    `molecule_residual_fixed_point_uniqueness_source` now routes through
+    `molecule_residual_hybrid_unique_fixed_point_source`; the previous direct
+    path is preserved as
+    `molecule_residual_fixed_point_uniqueness_source_direct`.
+  - Rewired the public orbit-debt wrapper theorem name through that public
+    uniqueness theorem:
+    `molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source`
+    now routes through the hybrid-unique path; the previous direct path is
+    preserved as
+    `molecule_residual_canonical_orbit_at_debt_source_via_transport_fixed_data_and_uniqueness_source_direct`.
+  - Targeted probe confirms these wrappers are axiom-clean modulo ground
+    axioms at the seam level and still carry `Molecule.molecule_h_norm` in the
+    current routed path.
+  - Added dead-end certificates:
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_iff_uniqueness_source`,
+    `molecule_residual_hybrid_unique_fixed_point_source_iff_uniqueness_source_of_canonical`,
+    `molecule_residual_hybrid_unique_fixed_point_source_iff_uniqueness_source_of_bounds`.
+  - STUCK condition met: every constructor route is still tied to
+    `molecule_h_norm` or an equivalent uniqueness assumption in the current
+    model route.
+- `PLAN_60` final (archived as STUCK):
+  - Opened successor model-refactor track after archiving PLAN_59 as stuck.
+  - Added current-model bottleneck lemmas in
+    `Molecule/RenormalizationFixedPointUniqueness.lean`:
+    `toHybridClass_injective`, `toHybridClass_eq_iff`.
+  - Added first-pass abstraction seam scaffold in
+    `Molecule/RenormalizationFixedPointUniqueness.lean`:
+    `HybridProjectionSeam`, `currentHybridProjectionSeam`,
+    `current_hybrid_projection_seam_proj_injective`,
+    `current_hybrid_projection_seam_proj_eq_iff`.
+  - Added seam-level projection contract and rewired first rigidity consumer:
+    `HybridProjectionInjective`, `map_eq_of_hybrid_projection_eq`,
+    `fixed_points_in_same_class_eq` now routes via
+    `currentHybridProjectionSeam`.
+  - Added hybrid-class uniqueness source seams and constructor route:
+    `MoleculeResidualHybridProjectionInjectiveSource`,
+    `MoleculeResidualHybridClassFixedPointUniquenessSource`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_projection_injective_source`,
+    `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_uniqueness_source`.
+  - Rewired
+    `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_collapse_source`
+    through the hybrid-class uniqueness constructor route.
+  - Rewired current public theorem names through this wrapper route:
+    `molecule_residual_hybrid_unique_fixed_point_source` now routes via
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source`, and probes
+    were rerun for hybrid/uniqueness/orbit wrapper theorems.
+  - Generalized seam-level uniqueness machinery in
+    `Molecule/RenormalizationFixedPointUniqueness.lean` to collapse + lift
+    contracts:
+    `HybridFixedPointCollapseIn`, `HybridClassFixedPointLiftSource`,
+    `HybridClassFixedPointUniquenessIn`,
+    `hybrid_class_fixed_point_uniqueness_in_of_collapse_and_lift`,
+    `hybrid_unique_fixed_point_in_of_exists_and_collapse_and_lift`.
+  - Rewired `Molecule/Conjecture.lean` constructors to the lift-based route:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_lift_source`,
+    `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_collapse_and_lift_sources`,
+    `molecule_residual_hybrid_unique_fixed_point_source_of_canonical_and_hybrid_class_collapse_source`,
+    and current `molecule_residual_hybrid_class_fixed_point_uniqueness_source`.
+  - Introduced direct seam-level collapse source in `Molecule/Conjecture.lean`
+    and rewired constructors through it:
+    `MoleculeResidualHybridFixedPointCollapseSource`,
+    `molecule_residual_hybrid_fixed_point_collapse_source_of_hybrid_class_collapse_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_hybrid_class_collapse_and_lift_source`.
+  - Added assembly-source pack and routed current uniqueness source through it:
+    `MoleculeResidualHybridClassFixedPointUniquenessAssemblySources`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_assembly_sources`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources_of_hybrid_class_collapse_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_assembly_sources`.
+  - Added model-source pack for non-identity seam cutover and routed the current
+    uniqueness theorem through it:
+    `MoleculeResidualHybridClassFixedPointUniquenessModelSources`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_model_sources`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_assembly_sources`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source`.
+  - Targeted probe checkpoint:
+    model-source constructor/packaging theorems are axiom-clean modulo ground
+    axioms, while the current model-source value and routed current uniqueness
+    theorem still carry `Molecule.molecule_h_norm`.
+  - Replaced current model-source instantiation with a non-identity lifted seam
+    route:
+    `liftedHybridProjectionSeam`,
+    `MoleculeResidualLiftedHybridFixedPointCollapseSource`,
+    `MoleculeResidualLiftedHybridClassFixedPointLiftSource`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_lifted_sources`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_hybrid_class_collapse_source`.
+  - Probe checkpoint:
+    lifted-seam constructors are axiom-clean modulo ground axioms; the current
+    model-source value still carries `Molecule.molecule_h_norm` via the
+    map-level collapse source input.
+  - Added alternative lifted-seam constructor routes for model-source
+    instantiation:
+    `molecule_residual_lifted_hybrid_fixed_point_collapse_source_of_hybrid_unique_fixed_point_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_hybrid_unique_fixed_point_source`,
+    `molecule_residual_lifted_hybrid_fixed_point_collapse_source_of_uniqueness_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_uniqueness_source`.
+  - Added lifted-seam constructor routes from hybrid-class uniqueness:
+    `molecule_residual_lifted_hybrid_fixed_point_collapse_source_of_hybrid_class_uniqueness_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_hybrid_class_uniqueness_source`.
+  - Rewired current lifted model-source instantiation to consume a direct
+    hybrid-class uniqueness source seam:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources`.
+  - Introduced explicit model-collapse seam routing:
+    `MoleculeResidualHybridClassFixedPointUniquenessModelCollapseSource`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_*`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_of_model_collapse_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source`.
+  - Added current-route model-collapse probe-matrix wrappers:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_via_hybrid_class_collapse_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_via_uniqueness_source_direct`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_via_hybrid_class_uniqueness_source_direct`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_via_hybrid_unique_fixed_point_source`.
+  - Probe checkpoint:
+    all current zero-arg model-collapse wrappers remain
+    `Molecule.molecule_h_norm`-backed; remaining PLAN_60 step depends on
+    replacing `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`
+    with a non-`molecule_h_norm` source.
+  - Probe checkpoint:
+    these alternative lifted-seam constructors are axiom-clean modulo ground
+    axioms; current routed theorem still carries `Molecule.molecule_h_norm`.
+  - Targeted probe confirms the new seam scaffold is axiom-clean modulo ground
+    axioms.
+  - Next target is replacing the map-level collapse source input in the lifted
+    model-source route with a non-`molecule_h_norm` source, then rerunning
+    hybrid/uniqueness/orbit wrapper probes.
+  - Final stuck check:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_iff_uniqueness_source_of_bounds`
+    is axiom-clean and identifies the current route as equivalence-bound under
+    active bounds; all zero-arg model-collapse wrappers remain
+    `Molecule.molecule_h_norm`-backed.
+- `PLAN_61` final (archived as STUCK):
+  - Opened successor track to replace
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct` with
+    a non-`molecule_h_norm` upstream source.
+  - Inherited PLAN_60 obstruction/probe matrix and set first execution target to
+    upstream constructor discovery in PLAN_49/53.
+  - Added dedicated replacement seam and routed current direct theorem through it:
+    `MoleculeResidualHybridClassFixedPointUniquenessDirectSource`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_assembly_sources`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct_of_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`.
+  - Added upstream hook theorem from map-level uniqueness into the direct seam:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_uniqueness_source`
+    and current wrapper
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_via_uniqueness_source_direct`.
+  - Added direct-source equivalence certificates versus map-level uniqueness:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_iff_uniqueness_source_of_bounds`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_iff_uniqueness_source`.
+  - Added direct-source hooks from hybrid-unique/current uniqueness routes:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_hybrid_unique_fixed_point_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_via_hybrid_unique_fixed_point_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_via_uniqueness_source`.
+  - Added bidirectional seam conversions between direct-source and model-collapse
+    inputs:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_direct_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_of_model_collapse_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_iff_direct_source`.
+  - Probe checkpoint:
+    the hook theorem is axiom-clean modulo ground axioms; current zero-arg route
+    remains `Molecule.molecule_h_norm`-backed.
+  - Final stuck check:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_direct_source_iff_uniqueness_source_of_bounds`
+    is axiom-clean and identifies the direct-source seam as equivalence-bound
+    to map-level uniqueness under active bounds; current zero-arg wrappers
+    remain `Molecule.molecule_h_norm`-backed.
+- `PLAN_62` final archived progress:
+  - Opened successor track to replace
+    `molecule_residual_fixed_point_uniqueness_source_direct` as the minimal
+    upstream replacement point feeding PLAN_61 seams.
+  - Inherited PLAN_61 direct/model-collapse seam infrastructure and set first
+    execution target to upstream constructor discovery in PLAN_49/53.
+  - Introduced dedicated map-level direct-source seam alias and routed wrappers:
+    `MoleculeResidualFixedPointUniquenessDirectSource`,
+    `molecule_residual_fixed_point_uniqueness_direct_source`,
+    `molecule_residual_fixed_point_uniqueness_source_direct_routed`.
+  - Identified the first concrete upstream constructor candidate:
+    `MoleculeResidualFixedPointHybridClassCollapseSource ->
+    molecule_residual_fixed_point_uniqueness_source_of_hybrid_class_collapse_source`.
+  - Exported non-`molecule_h_norm` constructor hooks into the direct seam:
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_uniqueness_source`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_uniqueness_assembly_sources`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_hybrid_class_uniqueness_model_collapse_source`.
+  - Probe checkpoint:
+    these constructor hooks are ground-axiom-only; current zero-arg direct
+    route (`molecule_residual_fixed_point_uniqueness_direct_source`,
+    `molecule_residual_fixed_point_uniqueness_source_direct_routed`) remains
+    `Molecule.molecule_h_norm`-backed.
+  - Added source-parameterized seam-routing hooks from the map-level direct
+    uniqueness seam into PLAN_61 outputs:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_of_fixed_point_uniqueness_direct_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_of_fixed_point_uniqueness_direct_source`,
+    `molecule_residual_hybrid_unique_fixed_point_source_of_bounds_and_fixed_point_uniqueness_direct_source`.
+  - Probe checkpoint:
+    these seam-routing hooks are ground-axiom-only.
+  - Zero-arg cutover checkpoint:
+    rewired
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source`,
+    and `molecule_residual_hybrid_unique_fixed_point_source` through the
+    direct-seam hook path.
+  - Probe checkpoint:
+    frontier unchanged; the rewired zero-arg theorems above and
+    `molecule_residual_fixed_point_uniqueness_source_direct` remain
+    `Molecule.molecule_h_norm`-backed.
+  - Completed base direct-source cutover:
+    `molecule_residual_fixed_point_uniqueness_source_direct` now routes through
+    `MoleculeResidualFixedPointUniquenessDirectSource`.
+  - Residual blocker concentration checkpoint:
+    frontier is unchanged and now localizes to
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_direct`.
+  - Added dedicated direct-source seam for the concentrated blocker:
+    `MoleculeResidualFixedPointHybridClassCollapseDirectSource` with
+    projection theorem
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_direct_of_source`.
+  - Probe checkpoint:
+    the new projection theorem is ground-axiom-only; current direct-source
+    collapse theorem remains `Molecule.molecule_h_norm`-backed.
+  - Final stuck check:
+    no non-circular non-`molecule_h_norm` constructor remained for
+    `MoleculeResidualFixedPointHybridClassCollapseSource` within PLAN_62 seam
+    rewiring scope.
+- `PLAN_63` final archived progress:
+  - Opened successor upstream theorem track after archiving PLAN_62 as STUCK.
+  - Initial objective is to construct a non-`molecule_h_norm` source for
+    `MoleculeResidualFixedPointHybridClassCollapseDirectSource`.
+  - Isolated minimal upstream statement for constructive collapse routing at
+    hybrid-class fixed-point uniqueness source input (or model-collapse input
+    for it).
+  - Added constructive constructors into collapse source/direct seams:
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_of_hybrid_class_uniqueness_source`,
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_of_hybrid_class_uniqueness_model_collapse_source`,
+    `molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_hybrid_class_uniqueness_source`,
+    `molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_hybrid_class_uniqueness_model_collapse_source`.
+  - Probe checkpoint:
+    these constructors are ground-axiom-only; current zero-arg direct collapse
+    theorem remains `Molecule.molecule_h_norm`-backed.
+  - Added source-level equivalence sharpening theorem:
+    `molecule_residual_fixed_point_hybrid_class_collapse_source_iff_hybrid_class_uniqueness_source`.
+  - Probe checkpoint:
+    this equivalence theorem is ground-axiom-only; current zero-arg collapse
+    and hybrid-class uniqueness sources remain `Molecule.molecule_h_norm`-backed.
+  - Added dedicated direct seam for current hybrid-class-uniqueness
+    model-collapse theorem and routed zero-arg model-collapse source through it.
+  - Probe checkpoint:
+    source-level constructors/projections in this seam are ground-axiom-only;
+    current zero-arg model-collapse source remains
+    `Molecule.molecule_h_norm`-backed.
+  - Added direct-seam equivalence certificate:
+    `molecule_residual_fixed_point_hybrid_class_collapse_direct_source_iff_hybrid_class_uniqueness_model_collapse_direct_source`.
+  - Probe checkpoint:
+    this equivalence theorem is ground-axiom-only; both current zero-arg
+    direct seams remain `Molecule.molecule_h_norm`-backed.
+  - Added direct-seam equivalence certificate:
+    `molecule_residual_fixed_point_hybrid_class_collapse_direct_source_iff_fixed_point_uniqueness_direct_source`.
+  - Probe checkpoint:
+    this equivalence theorem is ground-axiom-only; both zero-arg direct seams
+    remain `Molecule.molecule_h_norm`-backed.
+  - Final stuck check:
+    seam reductions/equivalence certificates were complete, but no independent
+    non-`molecule_h_norm` zero-arg constructor was produced for any direct seam
+    in the equivalence class.
+- `PLAN_64` final archived progress:
+  - Opened successor upstream theorem-witness track after archiving PLAN_63 as
+    STUCK.
+  - Initial anchor set is the direct-seam equivalence class:
+    collapse direct, map-level uniqueness direct, and hybrid-class
+    model-collapse direct seams.
+  - Selected explicit anchor seam:
+    `MoleculeResidualDirectSeamAnchorSource` (model-collapse direct seam).
+  - Added ground-axiom-only anchor projection constructors:
+    `molecule_residual_fixed_point_hybrid_class_collapse_direct_source_of_anchor_source`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_anchor_source`.
+  - Probe checkpoint:
+    anchor constructors are ground-axiom-only; current zero-arg direct seams
+    remain `Molecule.molecule_h_norm`-backed.
+  - Added canonical/refined upstream anchor-source contracts:
+    `MoleculeResidualDirectSeamAnchorOfCanonicalSource`,
+    `MoleculeResidualDirectSeamAnchorOfRefinedSource`.
+  - Added ground-axiom-only canonical/refined projection constructors into
+    direct collapse/uniqueness seams.
+  - Added current zero-arg anchor theorem:
+    `molecule_residual_direct_seam_anchor_source`.
+  - Routed later direct-chain theorems through the anchor path:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`,
+    plus direct-seam aliases
+    `molecule_residual_fixed_point_hybrid_class_collapse_direct_source_via_anchor_source`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_via_anchor_source`.
+  - Probe checkpoint:
+    current zero-arg anchor and routed aliases remain
+    `Molecule.molecule_h_norm`-backed.
+  - Added canonical cutover aliases for direct collapse/uniqueness seams and
+    rewired
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_direct`
+    through the uniqueness cutover alias.
+  - Probe checkpoint:
+    cutover aliases and rewired downstream theorem remain
+    `Molecule.molecule_h_norm`-backed.
+  - Declaration-order refinement checkpoint:
+    moved `molecule_residual_direct_seam_anchor_source` earlier in the file and
+    added compatibility alias
+    `molecule_residual_direct_seam_anchor_source_via_uniqueness_direct_source`.
+  - Residual constraint:
+    direct rebinding of the original early zero-arg direct theorem names still
+    requires a wider declaration reorder.
+  - Integration sync checkpoint:
+    reran direct-chain probes and synced PLAN_49/53 notes with current PLAN_64
+    anchor/cutover status.
+  - Added declaration-order-safe anchor constructor:
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_anchor_source_early`.
+  - Rewired zero-arg
+    `molecule_residual_fixed_point_uniqueness_direct_source`
+    through the anchor path using that constructor.
+  - Probe checkpoint:
+    the new constructor is ground-axiom-only; zero-arg theorem remains
+    `Molecule.molecule_h_norm`-backed because the anchor source is.
+- `PLAN_65` final archived progress:
+  - Opened successor theorem-construction track after archiving PLAN_64 as
+    STUCK.
+  - Added source-level constructor/equivalence bridge in
+    `Molecule/Conjecture.lean`:
+    `molecule_residual_direct_seam_anchor_source_of_uniqueness_source`,
+    `molecule_residual_direct_seam_anchor_source_iff_fixed_point_uniqueness_source`.
+  - Added contract-level wrappers for canonical/refined anchor contracts:
+    `molecule_residual_direct_seam_anchor_of_canonical_source_of_uniqueness_source`,
+    `molecule_residual_direct_seam_anchor_of_refined_source_of_uniqueness_source`.
+  - Added canonical/refined contract-equivalence certificates:
+    `molecule_residual_direct_seam_anchor_of_canonical_source_iff_fixed_point_uniqueness_of_canonical_source`,
+    `molecule_residual_direct_seam_anchor_of_refined_source_iff_fixed_point_uniqueness_of_refined_source`.
+  - Probe checkpoint:
+    new PLAN_65 source/contract bridge theorems are ground-axiom-only
+    (`propext`, `Classical.choice`, `Quot.sound`).
+  - Added conditional cutover constructors from canonical/refined uniqueness
+    contracts into anchor/direct seams.
+  - Probe checkpoint:
+    these conditional cutover constructors are ground-axiom-only.
+  - Bottleneck checkpoint:
+    zero-arg cutover remains blocked by absence of a non-`molecule_h_norm`
+    theorem-level source for `MoleculeResidualFixedPointUniquenessSource`.
+- `PLAN_66` final archived progress:
+  - Opened successor uniqueness-theorem track after archiving PLAN_65 as
+    STUCK.
+  - Inherited PLAN_65 source/contract equivalence and conditional cutover
+    scaffolding as the baseline.
+  - Added candidate-source constructors into canonical/refined uniqueness
+    contracts from hybrid-class uniqueness/collapse source assumptions.
+  - Probe checkpoint:
+    new PLAN_66 candidate constructors are ground-axiom-only; zero-arg direct
+    uniqueness remains `Molecule.molecule_h_norm`-backed.
+  - Added canonical/refined contract-equivalence layer between map-level
+    uniqueness contracts and hybrid-class-uniqueness contracts.
+  - Probe checkpoint:
+    new PLAN_66 contract-equivalence theorems are ground-axiom-only.
+  - Added canonical/refined contract-equivalence layer between map-level
+    uniqueness contracts and hybrid-class-uniqueness model-collapse contracts.
+  - Probe checkpoint:
+    new PLAN_66 model-collapse equivalence theorems are ground-axiom-only.
+  - Added canonical/refined contract-equivalence layer between map-level
+    uniqueness contracts and model-collapse-direct contracts.
+  - Added canonical/refined anchor-contract equivalence to model-collapse-direct
+    contracts.
+  - Probe checkpoint:
+    new PLAN_66 direct-contract/anchor equivalence theorems are
+    ground-axiom-only.
+  - Added canonical/refined constructor routes from model-collapse-direct
+    contracts into anchor/direct seams.
+  - Probe checkpoint:
+    new PLAN_66 model-collapse-direct constructor routes are
+    ground-axiom-only.
+  - Added canonical/refined contract-equivalence layer between map-level
+    uniqueness contracts and map-level direct-uniqueness contracts.
+  - Added canonical/refined anchor-contract equivalence to map-level
+    direct-uniqueness contracts.
+  - Added canonical/refined constructor routes from direct-uniqueness contracts
+    into anchor seams.
+  - Probe checkpoint:
+    new PLAN_66 direct-uniqueness contract/equivalence/constructor theorems are
+    ground-axiom-only.
+  - Final stuck check:
+    current canonical/refined direct-contract theorems remained
+    `Molecule.molecule_h_norm`-backed; no non-`molecule_h_norm` witness theorem
+    was produced in this plan scope.
+- `PLAN_67` final archived progress:
+  - Opened successor direct-contract witness track after archiving PLAN_66 as
+    STUCK.
+  - Inherited PLAN_66 contract/equivalence/cutover scaffolding as baseline.
+  - Added direct-contract constructors from model-collapse-direct and
+    map-level direct-source seams, plus current canonical/refined
+    direct-contract theorems.
+  - Added order-safe wrapper/equivalence layer:
+    `molecule_residual_fixed_point_uniqueness_direct_of_canonical_source_iff_direct_source_of_canonical`,
+    `molecule_residual_fixed_point_uniqueness_direct_of_refined_source_iff_direct_source_of_refined`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_via_canonical_direct_contract`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_via_refined_direct_contract`,
+    `molecule_residual_direct_seam_anchor_source_via_canonical_direct_contract`.
+  - Final stuck check:
+    wrapper/equivalence layer is ground-axiom-only, but current canonical/refined
+    direct-contract theorems remained `Molecule.molecule_h_norm`-backed.
+- `PLAN_68` final archived progress:
+  - Added minimal cutover-source pack and constructors in
+    `Molecule/Conjecture.lean`:
+    `MoleculeResidualDirectContractCutoverSources`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_direct_contract_cutover_sources`,
+    `molecule_residual_direct_seam_anchor_source_of_direct_contract_cutover_sources`,
+    `molecule_residual_direct_contract_cutover_sources_of_canonical_and_direct_of_canonical`,
+    `molecule_residual_direct_contract_cutover_sources_of_refined_and_direct_of_refined`.
+  - Added source-pack-to-contract constructors:
+    `molecule_residual_fixed_point_uniqueness_direct_of_canonical_source_of_direct_contract_cutover_sources`,
+    `molecule_residual_fixed_point_uniqueness_direct_of_refined_source_of_direct_contract_cutover_sources`.
+  - Added explicit obstruction-equivalence theorems:
+    `molecule_residual_direct_contract_cutover_sources_iff_fixed_point_uniqueness_direct_source_of_canonical`,
+    `molecule_residual_direct_contract_cutover_sources_iff_fixed_point_uniqueness_direct_source_of_refined`.
+  - Final stuck check:
+    cutover-source path is equivalent to current direct-source frontier under
+    canonical/refined data; current direct-source/direct-contract theorems
+    remain `Molecule.molecule_h_norm`-backed.
+- `PLAN_69` final archived progress:
+  - Added breakout-source interface and constructors:
+    `MoleculeResidualDirectSourceBreakoutSources`,
+    `molecule_residual_direct_source_breakout_sources_of_canonical_and_model_collapse_direct`,
+    `molecule_residual_direct_source_breakout_sources_of_refined_and_model_collapse_direct`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_of_direct_source_breakout_sources`,
+    `molecule_residual_direct_seam_anchor_source_of_direct_source_breakout_sources`.
+  - Added obstruction-equivalence/cutover layer:
+    `molecule_residual_direct_source_breakout_sources_iff_model_collapse_direct_source_of_canonical`,
+    `molecule_residual_direct_source_breakout_sources_iff_model_collapse_direct_source_of_refined`,
+    `molecule_residual_direct_source_breakout_sources`,
+    `molecule_residual_direct_seam_anchor_source_via_direct_source_breakout_sources`,
+    `molecule_residual_fixed_point_uniqueness_direct_source_via_direct_source_breakout_sources`.
+  - Final stuck check:
+    breakout cutover stayed `Molecule.molecule_h_norm`-backed through
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_direct_source`.
+- `PLAN_70` final archived progress:
+  - Introduced minimal upstream interface:
+    `MoleculeResidualModelCollapseDirectSourceWitnessSources`.
+  - Added witness/interface decomposition and equivalence layer, plus breakout
+    routing through that interface.
+  - Expanded candidate inventory with current-route aliases via uniqueness,
+    hybrid-unique, hybrid-class-uniqueness, and fixed-point-hybrid-class-collapse
+    sources.
+  - Final stuck check:
+    interface-level decomposition is ground-axiom-only, but every current
+    zero-arg candidate witness route remains `Molecule.molecule_h_norm`-backed.
+- `PLAN_71` final archived progress:
+  - Introduced minimal upstream interface:
+    `MoleculeResidualHybridClassCollapseSourceWitnessSources`.
+  - Added interface decomposition/equivalence layer, bridges into PLAN_70/69
+    witness routes, and current-route aliases.
+  - Final stuck check:
+    interface-level declarations are ground-axiom-only, but every current
+    zero-arg candidate witness route remained `Molecule.molecule_h_norm`-backed.
+- `PLAN_72` final archived progress:
+  - Introduced minimal interface:
+    `MoleculeResidualDirectSeamAnchorSourceWitnessSources`.
+  - Added interface decomposition/equivalence and bridges into PLAN_71/70/69
+    routes, plus current-route aliases.
+  - Final stuck check:
+    interface-level declarations are ground-axiom-only, but current zero-arg
+    PLAN_72 witness route remained `Molecule.molecule_h_norm`-backed.
+- `PLAN_73` final archived progress:
+  - Introduced direct-seam-anchor witness interface and candidate-route
+    constructors from uniqueness/direct/hybrid source assumptions.
+  - Final stuck check:
+    interface-level decomposition is ground-axiom-only, but all current
+    zero-arg witness aliases remained `Molecule.molecule_h_norm`-backed via
+    `molecule_residual_direct_seam_anchor_source_early`.
+- `PLAN_75` final archived progress:
+  - Opened anchor-witness-source cutover track after archiving PLAN_74 as
+    STUCK.
+  - Inherited `MoleculeResidualPlan74WinningRouteSources` and routed zero-arg
+    PLAN_72/69 aliases through that bundle.
+  - Added explicit zero-arg target interface:
+    `MoleculeResidualAnchorWitnessZeroArgSource`.
+  - Added bottleneck equivalence certificates:
+    `molecule_residual_anchor_witness_zero_arg_source_iff_direct_seam_anchor_source`
+    and
+    `molecule_residual_anchor_witness_zero_arg_source_iff_fixed_point_uniqueness_source`.
+  - Final stuck check: route isolation succeeded, but no non-`molecule_h_norm`
+    zero-arg source theorem was produced.
+- `PLAN_76` progress:
+  - Opened successor bottleneck-break track after archiving PLAN_75 as STUCK.
+  - Active goal is a genuinely new non-`molecule_h_norm` zero-arg source
+    theorem for `MoleculeResidualAnchorWitnessZeroArgSource`.
+  - Candidate A added:
+    `MoleculeResidualAnchorWitnessDirectContractCutoverSource`, with
+    canonical-parametric bridge/equivalence theorems.
+  - Targeted probes confirm the canonical-parametric bridge/equivalence is
+    ground-axiom-only.
+  - Step-1 refactor added canonical-data source seam
+    `MoleculeResidualCanonicalFastFixedPointDataSource` and rewired current
+    breakout/top-level canonical-data consumers through
+    `molecule_residual_canonical_fast_fixed_point_data_source`.
+  - Remaining PLAN_76 blocker is now explicit:
+    unconditional reverse conversion now uses
+    `molecule_residual_canonical_fast_fixed_point_data_source`, which is
+    currently routed through `molecule_residual_fixed_point_existence_source`
+    and therefore
+    `Molecule.molecule_h_norm`.
+  - Added canonical-parametric breakout constructor:
+    `molecule_residual_direct_source_breakout_sources_of_canonical_and_zero_arg_anchor_witness_source`,
+    and rerouted the current breakout alias through this seam.
+  - Current zero-arg theorem is now routed through the PLAN_76 cutover-source
+    seam via
+    `molecule_residual_anchor_witness_direct_contract_cutover_source`.
+  - Added source-level constructors from canonical-data + direct-uniqueness
+    sources into cutover/zero-arg routes; these constructors are
+    ground-axiom-only in targeted probes.
+  - Added PLAN_76 source bundle
+    `MoleculeResidualAnchorWitnessZeroArgSources` and bundle-level zero-arg/
+    breakout constructors, with current aliases routed through this bundle.
+  - Added cutover-source constructors into bundle/breakout aliases and routed
+    current bundle/breakout aliases through the cutover-source route.
+  - Added source-bundle/cutover-ingredients projections + equivalence, and
+    rerouted current source-bundle + breakout aliases through this seam.
+  - Added breakout->zero-arg constructor + canonical-parametric breakout
+    equivalence certificate, plus breakout-routed candidate zero-arg theorem.
+  - Route status:
+    interface/equivalence inheritance [#########-] 90%,
+    new zero-arg source theorem [#########-] 92%,
+    breakout/top-level cutover [########--] 84%.
+- `PLAN_77` progress:
+  - Opened upstream model-change track to target non-`molecule_h_norm`
+    fixed-point existence/uniqueness sources.
+  - Consolidated obstruction inventory:
+    `no_fixed_point_implies_renormalizable`,
+    `global_normalization_contract_inconsistent`,
+    `molecule_h_norm_inconsistent`.
+  - Declared replacement targets:
+    `molecule_residual_fixed_point_existence_source`,
+    `molecule_residual_fixed_point_uniqueness_direct_source`,
+    `molecule_residual_canonical_fast_fixed_point_data_source`.
+  - Added restricted bridge/witness source seams and source-level existence
+    constructors:
+    `FixedPointImpliesRenormalizableOn`,
+    `renormalizable_fixed_exists_of_fixed_point_exists_in_and_bridge_on`,
+    `MoleculeResidualFixedPointBridgeOnSource`,
+    `molecule_residual_fixed_point_existence_source_of_bridge_on`.
+  - Added bridge-on source constructor from fixed-point data source and rerouted
+    active existence theorem through bridge-on:
+    `molecule_residual_fixed_point_bridge_on_source_of_fixed_point_data_source`,
+    `molecule_residual_fixed_point_existence_source_via_bridge_on`,
+    `molecule_residual_fixed_point_existence_source`.
+  - Added model-sources-based direct-uniqueness seam and routed PLAN_76
+    cutover-ingredient consumers through
+    `molecule_residual_fixed_point_uniqueness_direct_source_via_model_sources`.
+  - Rerouted later uniqueness consumers (`hybrid_unique`,
+    `fixed_point_uniqueness_source`) through the model-source direct-uniqueness
+    seam where declaration order permits.
+  - Rerouted active canonical fixed-point data source through the upstream
+    existence seam.
+  - Added explicit transfer/data model-source seams and rerouted current
+    transfer/data theorems through them:
+    `MoleculeResidualFixedPointTransferModelSources`,
+    `MoleculeResidualFixedPointDataModelSources`,
+    `molecule_residual_fixed_point_transfer_source_via_model_sources`,
+    `molecule_residual_fixed_point_data_source_via_model_sources`.
+  - Added transfer-component seam and routed canonical `V`-bound/orbit-debt
+    aliases through it:
+    `MoleculeResidualFixedPointTransferComponentSources`,
+    `molecule_residual_canonical_vbound_source_via_fixed_point_transfer_component_sources`,
+    `molecule_residual_canonical_orbit_at_debt_source_via_fixed_point_transfer_component_sources`.
+  - Added invariant-set local-domain transfer seam and routed current
+    transfer/data theorems through it:
+    `MoleculeResidualFixedPointTransferOnSources`,
+    `molecule_residual_fixed_point_transfer_source_via_on_sources`,
+    `molecule_residual_fixed_point_data_source_via_transfer_on_sources`.
+  - Added local normalized-witness seam and routed current local-domain
+    transfer pack through it:
+    `MoleculeResidualFixedPointLocalWitnessSources`,
+    `molecule_residual_fixed_point_transfer_on_sources_via_local_witness_sources`.
+  - Added candidate local-witness + model-source-direct-uniqueness route:
+    `molecule_residual_fixed_point_transfer_source_via_local_witness_and_model_source_direct_uniqueness`,
+    `molecule_residual_fixed_point_data_source_via_local_witness_and_model_source_direct_uniqueness`,
+    `molecule_residual_canonical_fast_fixed_point_data_source_via_local_witness_and_model_source_direct_uniqueness`.
+  - Added candidate model-collapse/breakout/model-sources chain through the
+    model-sources direct-uniqueness seam:
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_collapse_source_via_model_source_direct_uniqueness`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_model_sources_via_model_source_direct_uniqueness`,
+    `molecule_residual_hybrid_class_fixed_point_uniqueness_source_via_model_source_direct_uniqueness`.
+  - Targeted probes show these new constructors are ground-axiom-only; active
+    existence/uniqueness/transfer/data/canonical/top-level routes remain
+    `Molecule.molecule_h_norm`-backed.
+  - PLAN_77 is now STUCK as a seam-only umbrella plan; active continuation
+    moved to `PLAN_78`.
+  - Route status:
+    obstruction inventory [###-------] 30%,
+    local-domain transfer/data replacement [######----] 60%,
+    lifted-seam model-collapse witness [###-------] 30%,
+    canonical-first partial bypass [####------] 40%,
+    model-restriction fallback inventory [#---------] 10%,
+    PLAN_76 downstream readiness [########--] 80%.
+- `PLAN_78` progress:
+  - Opened concrete witness-theorem track targeting
+    `molecule_residual_fixed_point_local_witness_on_sources`.
+  - Added explicit concrete target theorem and current-route rebasing:
+    `MoleculeResidualFixedPointLocalWitnessOnSources`,
+    `molecule_residual_fixed_point_local_witness_sources_of_on_sources`,
+    `molecule_residual_fixed_point_local_witness_on_sources`,
+    `molecule_residual_fixed_point_local_witness_sources`.
+  - Route status:
+    concrete target exposure [#####-----] 50%,
+    transfer-branch cutover readiness [#####-----] 50%,
+    proof-source search [######----] 60%.
+- `PLAN_79` progress:
+  - Opened invariant-domain source track under `PLAN_78`.
+  - Added direct route from `InvariantSliceDataWithNormalization` to:
+    `MoleculeResidualFixedPointDataSource`,
+    `MoleculeResidualFixedPointLocalWitnessOnSources`.
+  - Added refined fixed-point pack and routed the current local-witness theorem
+    through it.
+  - Added invariant-slice-data -> fixed-point-in-domain and normalized-package
+    -> bridge-on/existence routes.
+  - Added direct local-witness ingredient split from normalized invariant
+    slice-data.
+  - Added dead-end certificate proving the legacy normalized invariant-slice-
+    data seam is inconsistent in the current model.
+  - Route status:
+    source seam exposure [########--] 80%,
+    local-witness derivation [#######---] 70%,
+    source producer search [##########] 100% dead.
+- `PLAN_80` progress:
+  - Opened the direct fixed-point-data replacement track after closing the
+    legacy normalized invariant-domain branch.
+  - Current fixed-point-data and local-witness theorems now route directly
+    through the fixed-data carrier.
+  - Split the direct fixed-data carrier into exact theorem blockers:
+    direct renormalizable fixed-point existence and direct local
+    normalization transfer.
+  - Split those further into primitive direct blockers:
+    ground `fixed_point_exists`, direct renormalizability, direct
+    critical-value transfer, and direct `V`-bound transfer.
+  - Inventory confirms the existing fixed-data constructors are clean; the
+    blocker is now producing their inputs without `molecule_h_norm`.
+  - Added explicit split fallback route through current existence + transfer.
+  - Route status:
+    minimal blocker exposure [########--] 80%,
+    legacy branch closure [##########] 100%,
+    live source search [##--------] 20%.
+- `PLAN_81` progress:
+  - Opened a concrete proof-target plan for one non-`molecule_h_norm`
+    `FixedPointNormalizationData` witness.
+  - This is the new missing-theorem track underneath PLAN_80.
+  - Identified the smallest live fallback package as ingredients /
+    existence+transfer and added explicit candidate routes through it.
+  - Added named current existence-side and transfer-side split carriers.
+  - Cut over the active current existence/transfer theorems to those split
+    carriers.
+  - Cut over the active current data/ingredient theorems to the same split
+    frontier.
+  - Reduced the existence half further to canonical fast fixed-point data.
+  - Route status:
+    target exposure [#######---] 70%,
+    constructor readiness [######----] 60%,
+    upstream witness search [#####-----] 50%.
+- `PLAN_82` progress:
+  - Opened a focused canonical-witness track for the existence half.
+  - Ground-axiom-only equivalence is in place between the existence split
+    target and canonical fast fixed-point data.
+  - Reduced the current canonical theorem further to the residual
+    bounds-assembly package.
+  - Reduced the current canonical theorem again to fixed-point ingredients plus
+    the broad orbit-clause source.
+  - Reduced the current canonical theorem again to fixed-point ingredients plus
+    the local orbit-at source.
+  - Reduced the current canonical theorem again to fixed-point ingredients plus
+    the fixed-data canonical orbit debt source.
+  - Rerouted the current orbit-debt side of that canonical route through the
+    transfer branch.
+  - Exposed the active canonical route directly as ingredients + orbit
+    structure + transfer.
+  - Exposed the active canonical route directly as ingredients + orbit clause +
+    transfer.
+  - Exposed the active canonical route directly as ingredients + local
+    orbit-at + transfer.
+  - Exposed the active canonical route directly as existence + local orbit-at +
+    transfer.
+  - Exposed the active canonical route directly as fixed data + local orbit-at +
+    uniqueness.
+  - Exposed the active canonical route directly through the exact current
+    theorem carriers on that frontier.
+  - Route status:
+    target exposure [##########] 100%,
+    downstream leverage [#########-] 90%,
+    witness search [##########] 100%.
+- `PLAN_83` progress:
+  - Opened a focused localized-bridge track after the frontier reduction showed
+    that literal global `(R)` is false in the current model.
+  - Existing code already contains the right interface:
+    `FixedPointImpliesRenormalizableOn` together with
+    `renormalizable_fixed_exists_of_fixed_point_exists_in_and_bridge_on`.
+  - Tightened the plan to forbid circular local domains and proofs routed
+    through `NormalizationOn K` or downstream fixed-data.
+  - Added one concrete upstream domain source from the refined singleton slice
+    witness plus the ground fixed-point theorem, and projected it into the
+    fixed-point-in-domain seam.
+  - This shows the domain-search part is live on the refined route, but on
+    that route the remaining bridge debt collapses to renormalizability of one
+    designated fixed point.
+  - Added the exact singleton-bridge reduction and a clean candidate
+    bridge-on/existence route from one-point renormalizability of the fixed
+    point chosen by `fixed_point_exists`.
+  - Named the exact live target proposition:
+    `MoleculeResidualSelectedFixedPointRenormalizableSource`, together with
+    direct bridge/existence routes from that source.
+  - Added a stronger integration source,
+    `MoleculeResidualSelectedFixedPointIdentificationSource`, showing how
+    PLAN_82 canonical fixed-point data would feed PLAN_83 if the selected point
+    could be identified with any renormalizable fixed point.
+  - Added the sharper fixed-point-only source,
+    `MoleculeResidualSelectedFixedPointFixedIdentificationSource`, and the
+    corresponding candidate route from PLAN_82 canonical fixed-point data.
+  - Added the sharper class-level fixed-point source,
+    `MoleculeResidualSelectedHybridClassFixedIdentificationSource`, showed that
+    it implies the map-level fixed-point-only source in the current
+    identity-model seam, and added the corresponding candidate route from
+    PLAN_82 canonical fixed-point data.
+  - Added the direct class-level continuation from
+    `MoleculeResidualSelectedHybridClassFixedIdentificationSource` to selected
+    point renormalizability using canonical fixed-point data, so the candidate
+    PLAN_83 route no longer needs the intermediate map-level
+    fixed-identification wrapper.
+  - Added the sharper exact source
+    `MoleculeResidualHybridClassFixedPointExactUniquenessSource`, showed that
+    it implies the selected hybrid-class identification target, and added the
+    corresponding candidate route from canonical fixed-point data.
+  - Proved that exact hybrid-class fixed-point uniqueness and selected
+    hybrid-class identification are equivalent formulations of the same
+    frontier, so the PLAN_83 target is now structurally saturated at the
+    hybrid-class level.
+  - Targeted `#print axioms` probes confirm both directions of that
+    equivalence, the equivalence theorem itself, and the exact-uniqueness
+    candidate existence route are ground-axiom-only.
+  - Explicitly ruled out the tempting next reduction
+    `MoleculeResidualHybridClassFixedPointRenormalizableSource`: in the current
+    identity-model seam it is equivalent to the false global bridge `(R)`, so
+    that branch is now formally dead.
+  - Proved the decisive obstruction theorem
+    `no_molecule_residual_fixed_point_existence_source_of_hybrid_class_fixed_point_exact_uniqueness`:
+    in the current scaffold, exact hybrid-class fixed-point uniqueness already
+    implies `¬ MoleculeResidualFixedPointExistenceSource`.
+  - This means the current PLAN_83 live target cannot satisfy the plan
+    acceptance criterion of removing `Molecule.molecule_h_norm` from the active
+    existence theorem; the route is therefore STUCK unless the ground witness
+    `fixed_point_exists` is changed or the route is redesigned.
+  - Targeted `#print axioms` probes confirm
+    `molecule_residual_selected_hybrid_class_fixed_identification_of_exact_uniqueness`
+    and
+    `molecule_residual_fixed_point_existence_source_of_hybrid_class_fixed_point_exact_uniqueness_and_canonical`
+    are ground-axiom-only.
+  - Targeted `#print axioms` probes confirm
+    `no_molecule_residual_fixed_point_existence_source_of_hybrid_class_fixed_point_exact_uniqueness`
+    is ground-axiom-only.
+  - Targeted `#print axioms` probes confirm
+    `selected_fixed_point_hybrid_fixed`,
+    `molecule_residual_selected_fixed_point_renormalizable_of_hybrid_class_fixed_identification_and_canonical`,
+    and
+    `molecule_residual_fixed_point_existence_source_of_selected_hybrid_class_fixed_identification_and_canonical`
+    are ground-axiom-only.
+  - Targeted `#print axioms` probes confirm the new class-level reduction and
+    its candidate existence route are ground-axiom-only, while
+    `molecule_residual_fixed_point_existence_source` still carries
+    `Molecule.molecule_h_norm`.
+  - `make build` passed; `make check` passed; targeted probes show the new
+    refined-domain source and its projection are ground-axiom-only, while the
+    active existence theorem remains `Molecule.molecule_h_norm`-backed.
+  - Route status:
+    feasibility gate [##########] 100%,
+    circularity guard [########--] 80%,
+    domain source search [##########] 100%,
+    local bridge proof [#########-] 90%,
+    downstream cutover readiness [##########] 100%.
+- `PLAN_84` progress:
+  - Opened a new direction after PLAN_83 was shown to be blocked by the
+    current ground witness behind `fixed_point_exists`.
+  - The new route does not try to prove more properties of
+    `selected_fixed_point`; it replaces that seed entirely.
+  - `MoleculeResidualRenormalizableFixedSeedSource` and its singleton bridge
+    are now explicit, and the chosen seed is proved distinct from
+    `defaultBMol`.
+  - `CanonicalFastFixedPointDataSource` now feeds that seed interface directly,
+    with an equivalence certificate:
+    `molecule_residual_renormalizable_fixed_seed_source_iff_canonical_fast_fixed_point_data_source`.
+  - The existence-side canonical route is now cut over to
+    `canonical -> seed -> existence`.
+  - The theorem
+    `molecule_residual_fixed_point_existence_source_via_canonical_fast_fixed_point_data_source`
+    now exposes the full seeded canonical route as a concrete current-route
+    alias; declaration order is the only reason the earlier legacy theorem body
+    is still present.
+  - Targeted probes show the new seed-source equivalence and canonical-seed
+    existence route are ground-axiom-only; the remaining debt on this branch is
+    exactly `MoleculeResidualCanonicalFastFixedPointDataSource`.
+  - Probes also show:
+    `molecule_residual_fixed_point_existence_source_via_canonical_fast_fixed_point_data_source`,
+    `molecule_residual_canonical_fast_fixed_point_data_source`, and the current
+    `molecule_residual_fixed_point_existence_source` have the same axiom
+    footprint. So PLAN_84 is now structurally saturated.
+  - The fully expanded seeded route is now explicit:
+    `molecule_residual_fixed_point_existence_source_via_fixed_data_orbit_clause_at_and_uniqueness_direct_via_seed`
+    depends exactly on the current fixed-data, local orbit-at, and direct
+    uniqueness carriers.
+  - Targeted probes show the parameterized theorem
+    `molecule_residual_fixed_point_existence_source_of_fixed_data_orbit_clause_at_and_uniqueness_direct_via_seed`
+    is ground-axiom-only, while the current-route alias inherits precisely the
+    `Molecule.molecule_h_norm` debt of those three carriers.
+  - The route is now expanded one layer further:
+    `molecule_residual_fixed_point_existence_source_via_renorm_vbound_orbit_clause_at_and_uniqueness_direct_via_seed`
+    exposes the exact four residual inputs on the PLAN_84 branch.
+  - Probe confirmation:
+    the four-input current-route alias carries exactly the shared
+    `Molecule.molecule_h_norm` debt of those four carriers, with no extra seed
+    or canonical wrapper debt.
+  - One wrapper less again:
+    `molecule_residual_fixed_point_existence_source_via_renorm_vbound_orbit_clause_at_and_hybrid_class_collapse_via_seed`
+    exposes the same branch using the more primitive hybrid-class-collapse
+    carrier instead of direct uniqueness.
+  - Probe result:
+    this collapse-based alias has the same axiom footprint as the
+    uniqueness-based four-input alias, so PLAN_84 is now effectively
+    saturated.
+  - Critical revision:
+    PLAN_84 is now DONE, not ACTIVE. Its scope was seed replacement and
+    frontier isolation, and that scope is complete.
+  - Residual handoff frontier:
+    renormalizability, `V`-bound transfer, local orbit-at, and
+    hybrid-class collapse.
+  - Current route status:
+    seed abstraction [##########] 100%,
+    obstruction escape [##########] 100%,
+    upstream witness source [##########] 100%,
+    downstream cutover readiness [##########] 100%.
+- `PLAN_85` progress:
+  - added explicit upstream package:
+    `MoleculeResidualUpstreamFourCarrierSources`
+  - added package-routed existence theorem:
+    `molecule_residual_fixed_point_existence_source_of_upstream_four_carrier_sources`
+  - added current package and current-route alias:
+    `molecule_residual_upstream_four_carrier_sources`,
+    `molecule_residual_fixed_point_existence_source_via_upstream_four_carrier_sources`
+  - targeted probes show the parameterized package theorem is
+    ground-axiom-only, while the current package and current-route alias carry
+    exactly the shared `Molecule.molecule_h_norm` debt of the four packaged
+    carriers
+  - added explicit shared witness-side package:
+    `MoleculeResidualWitnessPairSources`
+  - added pair-routed fixed-data and local-witness theorems:
+    `molecule_residual_fixed_point_data_source_of_witness_pair_sources`,
+    `molecule_residual_fixed_point_local_witness_on_sources_of_witness_pair_sources`
+  - targeted probes show the pair-level parameterized theorems are
+    ground-axiom-only, while the current pair package carries exactly the
+    shared witness-side debt
+  - added pair+orbit+collapse existence theorem:
+    `molecule_residual_fixed_point_existence_source_of_witness_pair_orbit_at_and_hybrid_class_collapse_via_seed`
+  - this reduces the seeded existence branch to:
+    shared witness-side pair + orbit-at + collapse
+  - shrank the shared witness-side pair:
+    it now uses renormalizable-point `V`-bound control
+    (`MoleculeResidualRenormVBoundSource`)
+    instead of fixed-point `V`-bound transfer
+  - added
+    `fixed_point_normalization_data_of_fixed_point_exists_and_renorm_and_renorm_vbound`
+    and rerouted the current PLAN_85 witness-side package through that smaller
+    carrier
+  - targeted probes show:
+    `molecule_residual_fixed_point_data_source_of_witness_pair_sources`,
+    `molecule_residual_fixed_point_local_witness_on_sources_of_witness_pair_sources`,
+    and
+    `molecule_residual_fixed_point_existence_source_of_witness_pair_orbit_at_and_hybrid_class_collapse_via_seed`
+    are ground-axiom-only, while
+    `molecule_residual_witness_pair_sources`,
+    `molecule_residual_upstream_four_carrier_sources`,
+    and
+    `molecule_residual_fixed_point_existence_source_via_upstream_four_carrier_sources`
+    still carry `Molecule.molecule_h_norm` exactly through the smaller
+    witness-side pair + orbit-at + collapse frontier
+  - added canonical-threading theorems:
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_upstream_four_carrier_sources`,
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_witness_pair_orbit_at_and_hybrid_class_collapse`,
+    and
+    `molecule_residual_canonical_fast_fixed_point_data_source_via_upstream_four_carrier_sources`
+  - targeted probes show the two parameterized canonical-threading theorems are
+    ground-axiom-only, while the current canonical alias carries exactly the
+    reduced `(R, RV, O, H)` frontier with no extra canonical wrapper debt
+  - rerouted the active current
+    `molecule_residual_fixed_point_data_source`
+    through the smaller witness-side pair `R + RV`
+  - rerouted the active current
+    `molecule_residual_fixed_point_local_witness_on_sources`
+    and
+    `molecule_residual_fixed_point_local_witness_sources`
+    through that same pair
+  - rerouted the active current
+    `molecule_residual_canonical_fast_fixed_point_data_source`
+    through current fixed-data, removing `O` and `H` from the active canonical
+    branch
+  - targeted probes show the current fixed-data, local-witness, and canonical
+    theorems still carry `Molecule.molecule_h_norm`, but the exact remaining
+    current carriers are now only:
+    `molecule_residual_fixed_point_renormalizable_via_global_norm_direct`
+    and
+    `molecule_residual_renorm_vbound_source`
+  - rerouted the active current
+    `molecule_residual_canonical_fast_fixed_point_data_source`
+    one step further through current existence
+  - targeted probes show the current canonical theorem now has the same axiom
+    footprint as the current existence theorem, so the active current
+    canonical branch is down to `R` alone
+  - added exact obstruction theorem
+    `no_molecule_residual_fixed_point_renormalizable_source`
+    certifying that literal global `R` is false in the current scaffold
+  - added exact parameterized current-route theorem
+    `molecule_residual_fixed_point_existence_source_of_fixed_point_renormalizable`
+    showing the active current existence route is exactly:
+    ground `fixed_point_exists` + `R`
+  - targeted probes show both new theorems are ground-axiom-only, while the
+    current existence and current canonical theorems remain
+    `Molecule.molecule_h_norm`-backed
+  - this forces the redesign fallback on the existence/canonical branch:
+    further progress must replace global `R`, not prove it
+  - Current route status:
+    frontier stabilization [##########] 100%,
+    shared witness-side attack [##########] 100%,
+    orbit-side attack [##########] 100%,
+    collapse-side attack [##########] 100%,
+    redesign fallback [#####-----] 50%.
+- `PLAN_86` progress:
+  - opened the replacement program after PLAN_85 certified literal global `R`
+    false
+  - the new active target is:
+    replace global `R` by either localized `R_K` or a reseeded existence route
+  - added a clean seed-singleton bridge route:
+    `molecule_residual_fixed_point_bridge_on_source_of_renormalizable_fixed_seed_source`
+    and
+    `molecule_residual_fixed_point_existence_source_of_renormalizable_fixed_seed_source_via_bridge_on`
+  - targeted probes show those two new theorems are ground-axiom-only, so the
+    localized and reseeded branches now meet at one clean singleton bridge
+    seam avoiding both `fixed_point_exists` and `selected_fixed_point`
+  - added a seed-based refined singleton-domain pack:
+    `molecule_residual_refined_invariant_fixed_seed_singleton_domain_sources_of_renormalizable_fixed_seed_source`
+  - added the localized seed-domain bridge/existence route:
+    `molecule_residual_fixed_point_bridge_on_source_of_renormalizable_fixed_seed_source_via_refined_singleton_domain`
+    and
+    `molecule_residual_fixed_point_existence_source_of_renormalizable_fixed_seed_source_via_refined_singleton_domain`
+  - targeted probes show the new localized seed-domain route is
+    ground-axiom-only
+  - this makes the localized branch concrete, but only as a singleton-domain
+    route under the current refined witness
+  - added the reverse reduction:
+    `molecule_residual_renormalizable_fixed_seed_source_of_refined_invariant_fixed_seed_singleton_domain_sources`
+    and the equivalence
+    `molecule_residual_refined_invariant_fixed_seed_singleton_domain_sources_nonempty_iff_renormalizable_fixed_seed_source`
+  - targeted probes show those two reduction theorems are ground-axiom-only
+  - this means the current localized refined-singleton branch is equivalent to
+    the reseeded seed source, not a larger-domain replacement yet
+  - added the canonical comparison/cutover:
+    `molecule_residual_refined_invariant_fixed_seed_singleton_domain_sources_nonempty_iff_canonical_fast_fixed_point_data_source`,
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_refined_invariant_fixed_seed_singleton_domain_sources`,
+    and
+    `molecule_residual_fixed_point_existence_source_of_refined_invariant_fixed_seed_singleton_domain_sources`
+  - targeted probes show those three new comparison/cutover theorems are
+    ground-axiom-only
+  - this means the current localized refined-singleton branch is also exactly
+    as strong as canonical fast fixed-point data
+  - added the exact larger-domain target:
+    `MoleculeResidualNonSingletonLocalizedBridgeSources`
+  - added the bridge/existence cutovers from that target:
+    `molecule_residual_fixed_point_bridge_on_source_of_non_singleton_localized_bridge_sources`
+    and
+    `molecule_residual_fixed_point_existence_source_of_non_singleton_localized_bridge_sources`
+  - added
+    `no_nontrivial_member_of_refined_invariant_fixed_seed_singleton_domain_sources`
+  - targeted probes show all three theorems are ground-axiom-only
+  - this means the current refined singleton route cannot witness the required
+    larger-domain localized target
+  - added the stronger downstream seed contract:
+    `MoleculeResidualCriticalRenormalizableFixedSeedSource`
+  - added
+    `molecule_residual_critical_renormalizable_fixed_seed_source_of_fixed_point_existence_source_and_critical_value_transfer`
+  - added the exact fixed-data/local-witness rebases:
+    `molecule_residual_fixed_point_data_source_of_existence_and_critical_value_transfer_and_renorm_vbound`
+    and
+    `molecule_residual_fixed_point_local_witness_on_sources_of_existence_and_critical_value_transfer_and_renorm_vbound`
+  - targeted probes show those three new theorems are ground-axiom-only
+  - this means the downstream rebase requirement is now exact:
+    replacement existence alone is too weak; the active `PLAN_80` / `PLAN_78`
+    branches need existence + critical-value transfer + `RV`
+  - added the full non-singleton localized downstream cutovers:
+    `molecule_residual_canonical_fast_fixed_point_data_source_of_non_singleton_localized_bridge_sources`,
+    `molecule_residual_fixed_point_data_source_of_non_singleton_localized_bridge_sources_and_critical_value_transfer_and_renorm_vbound`,
+    `molecule_residual_fixed_point_local_witness_on_sources_of_non_singleton_localized_bridge_sources_and_critical_value_transfer_and_renorm_vbound`,
+    and
+    `molecule_residual_fixed_point_local_witness_sources_of_non_singleton_localized_bridge_sources_and_critical_value_transfer_and_renorm_vbound`
+  - targeted probes show all four downstream cutovers are ground-axiom-only
+  - this completes the structural handoff from the larger-domain localized
+    target into existence, canonical, fixed-data, and local-witness
+  - current route status:
+    blocked global route inventory [##########] 100%,
+    localized replacement [#########-] 90%,
+    reseeded replacement [######----] 60%,
+    fixed-data/local-witness rebase [########--] 80%,
+    redesign handoff [####------] 40%.
+  - critical revision:
+    the plan had become too broad because it mixed theorem search with
+    structural downstream handoff
+  - result:
+    PLAN_86 is now DONE as a structural handoff plan
+    and the active theorem search is moved to PLAN_88,
+    with PLAN_87 retained as the seed-side subtrack
+- `PLAN_87` progress:
+  - opened as the focused seed-side theorem-search subtrack after PLAN_86
+    completed its structural reductions
+  - exact live target:
+    `MoleculeResidualCriticalRenormalizableFixedSeedSource`
+  - acceptance is now stricter:
+    no use of `fixed_point_exists`, `selected_fixed_point`, current existence,
+    or any route already equivalent to the blocked global `R`
+  - critical revision:
+    as a standalone master program this was too narrow, because a
+    non-singleton localized theorem shape remains structurally available
+  - operational revision:
+    current plausibility is asymmetric: seed-side producer inventory is now
+    the primary active route, while larger-domain localized work needs a
+    concrete new producer class before it becomes active again
+  - current route status:
+    candidate inventory [###-------] 30%,
+    seed theorem target [####------] 40%,
+    downstream cutover readiness [##########] 100%,
+    handoff to larger-domain branch [########--] 80%.
+- `PLAN_88` progress:
+  - opened as the revised master research program after criticizing PLAN_87
+    for overfitting to the seed-only subtrack
+  - exact theorem targets remain:
+    `MoleculeResidualCriticalRenormalizableFixedSeedSource`
+    and
+    `MoleculeResidualNonSingletonLocalizedBridgeSources`
+  - acceptance now requires explicit non-equivalence screening against the
+    singleton/canonical class before counting any candidate as progress
+  - critical revision:
+    theorem-shape viability and day-to-day plausibility are not the same:
+    the seed side has a concrete producer inventory, while the only encoded
+    localized producer class is now closed
+  - localized activation rule:
+    localized-side work only becomes active when a named producer class
+    outside the refined-chart scaffold is supplied together with an explicit
+    plausibility screen
+  - ownership revision:
+    PLAN_88 should not own the proof search for critical-value transfer or
+    `RV`; those remain with PLAN_80 / PLAN_78 / PLAN_53, while PLAN_88 owns
+    the upstream replacement search and the exact downstream dependency gate
+  - new checkpoint:
+    both upstream tracks now meet at the same stronger critical-seed midpoint
+    once fixed-point critical-value transfer is supplied, and the seed-side
+    canonical gate into fixed-data/local-witness is now fully explicit
+  - refined-side checkpoint:
+    added
+    `molecule_residual_non_singleton_localized_bridge_sources_of_refined_invariant_fixed_point_domain_sources_and_bridge_on_and_nontrivial`,
+    making the larger-domain localized search exact on the refined side:
+    refined invariant domain data + localized bridge-on + nontriviality
+  - current-candidate checkpoint:
+    added
+    `molecule_residual_non_singleton_localized_bridge_sources_of_fixed_point_exists_refined_domain_and_bridge_on_and_nontrivial`
+    and
+    `molecule_residual_fixed_point_existence_source_of_fixed_point_exists_refined_domain_and_bridge_on_and_nontrivial`,
+    making the present `fixed_point_exists`-based refined-domain candidate
+    exact up to two remaining hypotheses: bridge-on + nontriviality
+  - current-candidate closure checkpoint:
+    added
+    `molecule_residual_refined_invariant_fixed_point_domain_sources_shape`
+    and
+    `no_fixed_point_exists_refined_domain_bridge_on_and_nontrivial`,
+    closing the present `fixed_point_exists`-based refined-domain candidate:
+    its chosen domain is always either `{f_ref}` or `univ`, and the nontrivial
+    `univ` branch collapses localized bridge-on to the already-false global
+    `R`
+  - generic refined-route closure checkpoint:
+    added
+    `no_refined_invariant_fixed_point_domain_sources_bridge_on_and_nontrivial`,
+    showing the whole current refined-chart localized producer class is
+    blocked: any refined invariant fixed-point domain source with bridge-on and
+    nontriviality still collapses to the already-false global `R`
+  - seed-side inventory checkpoint:
+    added
+    `molecule_residual_critical_renormalizable_fixed_seed_source_of_standard_siegel_fixed_point`,
+    exposing the standard-Siegel / Feigenbaum assumption family as a concrete
+    seed-side producer class; targeted probe shows it is ground-axiom-only, but
+    it remains invalid as a non-circular hit because it explicitly factors
+    through `h_norm`
+  - operator-action redesign checkpoint:
+    added
+    `MoleculeResidualSeparatedOperatorActionSourceWith`,
+    `MoleculeResidualDynamicalBanachNeighborhoodOperatorSeedSourcesWith`,
+    `no_molecule_residual_separated_operator_action_source_with_current_operator`,
+    and
+    `no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_current_operator`
+    so the redesign frontier is sharper still:
+    chart refinement alone is not enough, because the current `slice_operator`
+    is too trivial to realize genuine operator-side dynamics for any chart
+  - handoff checkpoint:
+    `PLAN_89` is now DONE as inventory/handoff, and the active redesign
+    continuation is `PLAN_90`
+  - current route status:
+    seed-side operational track [######----] 60%,
+    localized-side reserve track [##--------] 20%,
+    plausibility screening [########--] 80%,
+    non-equivalence screening [########--] 80%,
+    strong non-circularity screening [#######---] 70%,
+    external sidecar dependency gate [########--] 80%,
+    downstream cutover readiness [##########] 100%,
+    redesign handoff [#######---] 70%.
+- `PLAN_89` progress:
+  - completed as the primary inventory/handoff plan under the seed-first
+    revision of PLAN_88
+  - designated inventory now classified:
+    canonical fast fixed-point data and refined singleton-domain packs are
+    canonical-equivalent, while Feigenbaum / standard-Siegel and the
+    downstream Problem4_3 / bounds / hyperbolicity / renormalization chain are
+    `h_norm`-backed
+  - broader repo scan checkpoint:
+    `FixedPointExistence`, `PseudoSiegelDisk`, and
+    `RenormalizationFixedPointUniqueness` do not add a new seed-side producer;
+    they either stop at non-renormalizable `fixed_point_exists`, consume an
+    already renormalizable fixed point, or remain downstream of the same
+    legacy spine
+  - upstream ingredient scan checkpoint:
+    `Schauder`, `BanachSlice`, `FeigenbaumFixedPointAssumptions`, and the
+    `HMol` compactness seam expose ingredient templates, assumption wrappers,
+    or already-closed refined-singleton witnesses, but still no theorem-level
+    in-repo non-`h_norm` seed producer
+  - reference-guided next target:
+    DLS17 Theorem 3.16 / Corollary 3.17 identifies the next plausible missing
+    producer class as a compact analytic pacman renormalization self-operator
+    on a Banach neighborhood around a fixed Siegel pacman
+  - code checkpoint:
+    the paper-guided route is now encoded as a first-class source interface in
+    `Molecule/Conjecture.lean`, so the next target is no longer only prose
+  - collapse checkpoint:
+    that Banach-neighborhood operator route is now shown equivalent to the
+    existing PLAN_84 seed interface under the current constant-slice scaffold,
+    so it does not yet supply a genuinely new producer class
+  - separation checkpoint:
+    the exact missing property is now isolated:
+    under the current constant `slice_chart`, no Banach-neighborhood operator
+    source can realize a nontrivial chart direction, so operator-route
+    progress now requires strengthening the slice scaffold itself
+  - minimal-redesign-target checkpoint:
+    the smallest missing source is now explicit:
+    a separated slice-chart source; this is formally impossible in the current
+    scaffold because `slice_chart` is constant
+  - parameterized-redesign checkpoint:
+    chart-parameterized operator/separation interfaces are now explicit, so
+    the paper-guided operator route can be discussed independently of the
+    legacy `slice_chart`
+  - refined-chart checkpoint:
+    the refined chart already realizes separated Banach-neighborhood operator
+    packages exactly when a PLAN_84 seed exists, so chart separation alone is
+    still not a new zero-argument producer class
+  - operator-action checkpoint:
+    added
+    `MoleculeResidualSeparatedOperatorActionSourceWith`,
+    `MoleculeResidualDynamicalBanachNeighborhoodOperatorSeedSourcesWith`,
+    `no_molecule_residual_separated_operator_action_source_with_current_operator`,
+    and
+    `no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_current_operator`
+    showing that even after chart refinement, the current `slice_operator`
+    still blocks genuine operator-side dynamics
+  - current result:
+    no surviving non-`h_norm` seed producer class has been found in the
+    designated inventory
+  - active follow-on:
+    moved to `PLAN_90_separated_operator_action_redesign.md`
+  - current route status:
+    producer inventory [##########] 100%,
+    non-circular screening [##########] 100%,
+    exact obstruction inventory [##########] 100%,
+    reference-guided next target [##########] 100%,
+    downstream gate readiness [##########] 100%.
+- `PLAN_90` progress:
+  - opened as the active redesign follow-on after `PLAN_89` closed the current
+    in-repo seed producer inventory
+  - exact new target:
+    `MoleculeResidualSeparatedOperatorActionSourceWith`
+  - current obstruction checkpoint:
+    `no_molecule_residual_separated_operator_action_source_with_current_operator`
+    shows the current `slice_operator` blocks genuine operator-side dynamics
+    even if the chart changes
+  - refined continuation checkpoint:
+    `no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_current_operator`
+    shows the refined chart still does not activate the paper-guided operator
+    route while the operator scaffold remains constant
+  - concrete scaffold checkpoint:
+    added
+    `largeBMol`,
+    `largeBMol_ne_defaultBMol`,
+    `slice_operator_refined`,
+    `slice_operator_refined_separates_zero_one`,
+    and
+    `molecule_residual_separated_operator_action_source_with_refined_chart_and_operator`
+    so the repo now has a zero-argument separated-operator-action witness that
+    does not pass through any seed source
+  - package-lift checkpoint:
+    added
+    `MoleculeResidualBanachNeighborhoodOperatorScaffoldSourcesWith`,
+    `MoleculeResidualDynamicalBanachNeighborhoodOperatorScaffoldSourcesWith`,
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator`,
+    and
+    `molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_of_scaffold_and_fixed_renorm`
+    so the current candidate is now lifted to a compact neighborhood package
+    candidate and the exact remaining gate back to the existing seed package is
+    fixedness plus renormalizability of its base map
+  - non-equivalence checkpoint:
+    added
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_base_fixed`
+    and
+    `no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_base_renorm`
+    showing the current scaffold candidate is not already a disguised PLAN_84
+    seed package: its base map is fixed, but the required renormalizability
+    upgrade collapses to the already-false `defaultBMol` renormalizability
+    claim
+  - distinct-base scaffold checkpoint:
+    added
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne`,
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator`,
+    and
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator_base_ne_default`
+    so the refined chart/operator search now has an explicit `largeBMol`-based
+    scaffold package and no longer collapses immediately to the old
+    `defaultBMol` base obstruction
+  - large-base fixedness gate checkpoint:
+    added
+    `isFastRenormalizable_of_fixed_of_ne_defaultBMol`,
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator_base_renorm_of_fixed`,
+    and
+    `molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_large_base_refined_chart_and_operator_of_fixed`
+    so the `largeBMol`-based scaffold no longer carries a separate
+    renormalizability debt: in the current totalized `Rfast` model, fixedness
+    alone upgrades it to the seed package
+  - self-renormalization reduction checkpoint:
+    added
+    `self_renormalization_relation_of_fixed_of_ne_defaultBMol`,
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator_base_self_renorm_of_fixed`,
+    and
+    `no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator_base_fixed_of_no_self_renorm`
+    so the remaining large-base fixedness question is now reduced to a smaller
+    exact obligation: whether `largeBMol` can admit a self-renormalization
+    relation in the current model
+  - generic refined-scaffold reduction checkpoint:
+    added
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_renorm_of_fixed`,
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_self_renorm_of_fixed`,
+    `no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_fixed_of_no_self_renorm`,
+    `no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_ne_of_fixed_of_no_self_renorm`,
+    and
+    `molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_ne_of_fixed`
+    so the large-base reduction is no longer special: any future non-default
+    refined-scaffold candidate now inherits the same fixedness/self-renorm/seed
+    upgrade path
+  - large-base obstruction checkpoint:
+    added
+    `no_self_renormalization_relation_largeBMol`
+    and
+    `no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_large_base_refined_chart_and_operator_base_fixed`
+    so the explicit `largeBMol`-based scaffold is now screened out:
+    its fixedness gate is false because affine self-renormalization of
+    `largeBMol` is impossible by polynomial degree
+  - literal-`z^2` obstruction checkpoint:
+    added
+    `no_self_renormalization_relation_of_eq_sq`
+    and
+    `no_fixed_of_eq_sq_of_ne_defaultBMol`
+    so the large-base failure is now generalized:
+    any non-`defaultBMol` `BMol` point with underlying map `z ↦ z^2` is ruled
+    out as a fixed-base candidate in the current totalized `Rfast` model
+  - feasibility revision:
+    prioritize one explicit non-`z^2` `BMol` constructor in
+    `Molecule/BMol.lean`, and reuse the current refined chart/operator package
+    on that base before spending more effort redesigning
+    `Molecule/BanachSlice.lean`
+  - shifted-base checkpoint:
+    added
+    `isProperMap_quad`,
+    `isProperMap_quad_add_const`,
+    `shiftedBMol`,
+    `shiftedBMol_ne_defaultBMol`,
+    `shiftedBMol_f_ne_sq`,
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator`,
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator_base_ne_default`,
+    and
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator_base_f_ne_sq`
+    so `PLAN_90` now has a first explicit non-`z^2` refined-scaffold
+    candidate; the next live question is whether its base survives the current
+    fixedness/renormalizability gate
+  - quadratic-polynomial obstruction checkpoint:
+    added
+    `eval_quad_add_const_iterate`,
+    `natDegree_quad_add_const_iterate`,
+    `no_self_renormalization_relation_of_eq_sq_add_const`,
+    `no_fixed_of_eq_sq_add_const_of_ne_defaultBMol`,
+    `no_self_renormalization_relation_shiftedBMol`,
+    and
+    `no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_shifted_base_refined_chart_and_operator_base_fixed`
+    so the first explicit non-`z^2` candidate is now screened too
+  - explicit-polynomial obstruction checkpoint:
+    added
+    `eval_polynomial_iterate`,
+    `natDegree_polynomial_iterate`,
+    `no_self_renormalization_relation_of_eq_eval_polynomial_natDegree_gt_one`,
+    `one_lt_natDegree_of_eq_eval_polynomial`,
+    `no_self_renormalization_relation_of_eq_eval_polynomial`,
+    `no_fixed_and_renorm_of_eq_eval_polynomial`,
+    `not_exists_eq_eval_polynomial_of_fixed_and_renorm`,
+    `no_molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_refined_chart_and_operator_of_ne_base_fixed_of_eq_eval_polynomial`,
+    `no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_ne_of_fixed_of_eq_eval_polynomial`,
+    `no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_eq_eval_polynomial`,
+    `not_exists_eq_eval_polynomial_of_refined_chart_and_operator_of_ne_fixed_and_renorm`,
+    `not_exists_eq_eval_polynomial_of_refined_chart_and_operator_seed_sources_with_of_ne_of_fixed`,
+    `no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_large_base_refined_chart_and_operator_of_fixed`,
+    `no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_shifted_base_refined_chart_and_operator_of_fixed`,
+    and
+    `no_fixed_of_eq_eval_polynomial_of_ne_defaultBMol`
+    so the current in-repo search is now exhausted for the explicit polynomial
+    family, not just for the literal `z^2`, `z^2 + c`, or degree-`2`
+    subfamilies; the same screen is now lifted to the generic refined-scaffold
+    constructor and its fixed-to-seed-upgrade interface as well.
+    The full fixed-and-renormalizable gate is now already false at the bare
+    `BMol` level for every explicit polynomial point.
+    Any surviving fixed-and-renormalizable `of_ne` refined-scaffold candidate
+    must therefore use a base with no explicit polynomial representation.
+    The same frontier is now recorded directly on the actual seed package
+    produced by the generic `of_ne` fixed-upgrade constructor as well.
+    The full fixed-and-renormalizable upgrade interface is now closed for the
+    whole explicit-polynomial `of_ne` family too, including the current
+    default/large/shifted named candidates
+  - research-program correction:
+    lowered `PLAN_90` claimed progress and rewrote its priority order:
+    the next active bottleneck is no longer “screen more explicit base maps
+    with the current refined scaffold”.
+    The current scaffold is still toy-level
+    (`slice_domain = univ`, equality-coded chart, identity operator, discrete
+    placeholder topology on `BMol`), so active work now starts with a
+    non-vacuous scaffold/model redesign.
+    Further exclusion theorems should count only if they directly unblock a
+    positive constructor or isolate the exact model-redesign obstruction.
+  - non-vacuous chart obstruction checkpoint:
+    added
+    `MoleculeResidualDistinctNonbaseChartDirectionsSourceWith`,
+    `MoleculeResidualDistinctNonbaseOperatorDirectionsSourceWith`,
+    `slice_chart_refined_self`,
+    `slice_chart_refined_eq_one_of_ne`,
+    `slice_chart_refined_nonbase_eq_of_ne`,
+    and
+    `no_molecule_residual_distinct_nonbase_chart_directions_source_with_refined_chart`,
+    `no_molecule_residual_distinct_nonbase_operator_directions_source_with_refined_chart`
+    so the current refined chart’s toy weakness is no longer only descriptive:
+    it now has exact chart-side and operator-side source obstructions.
+    The equality-coded refined chart can separate the reference point from the
+    nonbase class, but it cannot realize two distinct nonbase chart
+    directions.
+    Therefore it also blocks any stronger operator-side source target that
+    would need two distinct nonbase directions.
+  - topology-side obstruction checkpoint:
+    added
+    `MoleculeResidualLocallyInjectiveChartSourceWith`
+    and
+    `molecule_residual_locally_injective_chart_source_with_of_current_BMol_topology`
+    and
+    `MoleculeResidualContinuousChartSourceWith`
+    and
+    `molecule_residual_continuous_chart_source_with_of_current_BMol_topology`
+    and
+    `MoleculeResidualLocallyConstantChartSourceWith`
+    and
+    `molecule_residual_locally_constant_chart_source_with_of_current_BMol_topology`
+    and
+    `MoleculeResidualLocallyNonconstantChartSourceWith`
+    and
+    `no_molecule_residual_locally_nonconstant_chart_source_with_of_current_BMol_topology`
+    so the current discrete placeholder topology now has an exact theorem-level
+    weakness too:
+    local injectivity is automatic for every chart because singleton open
+    neighborhoods exist at every point, continuity is automatic for every
+    chart because the topology is discrete, local constancy is automatic for
+    every chart by the same singleton-neighborhood collapse, and any chart
+    target demanding a distinct nearby chart direction in every open
+    neighborhood is impossible.
+  - named non-discrete topology checkpoint:
+    added in `Molecule/BMol.lean`
+    `bmol_zero_observation`,
+    `bmol_zero_topology`,
+    `continuous_bmol_zero_observation`,
+    `exists_open_separating_default_and_shifted_of_bmol_zero_topology`,
+    `not_isOpen_singleton_default_of_bmol_zero_topology`,
+    and
+    `not_discrete_bmol_zero_topology`
+    so `BMol` no longer only has the discrete placeholder topology in the
+    repository. The default instance is still discrete for compatibility, but
+    there is now a theorem-backed non-discrete candidate topology induced by
+    the observable `f ↦ f 0`.
+  - first migrated-family checkpoint:
+    added in `Molecule/Conjecture.lean`
+    `MoleculeResidualContinuousChartSourceWithOn`,
+    `molecule_residual_continuous_chart_source_with_on_of_current_BMol_topology`,
+    `molecule_residual_continuous_chart_source_with_on_zero_observation_chart_of_bmol_zero_topology`,
+    and
+    `not_molecule_residual_continuous_chart_source_with_on_slice_chart_multivalued_of_bmol_zero_topology`
+    so one theorem family has now been ported off the default discrete
+    instance. The result is genuinely informative: continuity is no longer
+    automatic under a named non-discrete topology. It still holds for the
+    observation chart by construction, but it already fails for the current
+    multivalued chart.
+  - topology-compatible replacement-chart checkpoint:
+    added in `Molecule/BMol.lean`
+    `bmol_large_source_tag_observation`,
+    `bmol_finite_observation`,
+    `bmol_finite_topology`,
+    `continuous_bmol_finite_observation`,
+    `continuous_bmol_zero_observation_of_bmol_finite_topology`,
+    and
+    `continuous_bmol_large_source_tag_observation_of_bmol_finite_topology`
+    and in `Molecule/BanachSlice.lean`
+    `slice_chart_finite_observation`,
+    `continuous_slice_chart_finite_observation_of_bmol_finite_topology`,
+    `slice_chart_finite_observation_self`,
+    `slice_chart_finite_observation_default_shifted`,
+    and
+    `slice_chart_finite_observation_large_shifted`
+    and in `Molecule/Conjecture.lean`
+    `molecule_residual_continuous_chart_source_with_on_slice_chart_finite_observation_of_bmol_finite_topology`,
+    `molecule_residual_distinct_nonbase_chart_directions_source_with_slice_chart_finite_observation`,
+    `molecule_residual_distinct_nonbase_operator_directions_source_with_slice_chart_finite_observation_and_slice_operator_multivalued`,
+    and
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_finite_observation_and_slice_operator_multivalued`
+    so the migration story is now positive too:
+    the repo has a first replacement chart that is continuous under a named
+    non-discrete `BMol` topology while still supporting two nonbase chart
+    directions and the same compact shifted `{0, 1, 2}` operator scaffold.
+  - topology-compatible local/analytic checkpoint:
+    added in `Molecule/BanachSlice.lean`
+    `slice_operator_multivalued_eq_id_of_ne_shifted`,
+    `slice_operator_multivalued_differentiableAt_of_ne_shifted`,
+    and
+    `deriv_slice_operator_multivalued_of_ne_shifted`
+    and in `Molecule/Conjecture.lean`
+    `molecule_residual_nontrivial_operator_linearization_source_with_slice_chart_finite_observation_and_slice_operator_multivalued`,
+    `eq_shifted_of_deriv_ne_one_slice_operator_multivalued`,
+    and
+    `eq_shifted_of_molecule_residual_nontrivial_operator_linearization_source_with_slice_operator_multivalued`
+    so the local/analytic migration is now positive too:
+    the finite-observation chart inherits the nontrivial derivative `-1`
+    checkpoint, but the current multivalued operator is now proved to realize
+    that derivative only on the hard-coded `shiftedBMol` branch.
+    This isolates the next exact redesign target:
+    a nontrivial operator whose local dynamics are not pinned to the explicit
+    shifted base.
+  - observation-class operator checkpoint:
+    added in `Molecule/BanachSlice.lean`
+    `slice_operator_finite_observation`
+    and its shifted-observation-class action, invariance, and derivative
+    lemmas
+    and in `Molecule/Conjecture.lean`
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_finite_observation_and_slice_operator_finite_observation_of_eq_shifted_observation`,
+    `molecule_residual_nontrivial_operator_linearization_source_with_slice_chart_finite_observation_and_slice_operator_finite_observation`,
+    `eq_shifted_observation_of_molecule_residual_nontrivial_operator_linearization_source_with_slice_operator_finite_observation`,
+    `molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_slice_chart_finite_observation_and_slice_operator_finite_observation_of_eq_shifted_observation_of_fixed`,
+    and
+    `not_exists_eq_eval_polynomial_of_slice_chart_finite_observation_and_slice_operator_finite_observation_of_eq_shifted_observation_of_fixed`
+    so the active route is now stronger in exactly the way the plan needed:
+    the nontrivial operator branch is no longer tied to the literal point
+    `shiftedBMol`, only to the shifted finite-observation class, and the
+    fixed-to-seed upgrade seam is already wired for that whole class.
+    The next live search is therefore precise and still feasible:
+    find a non-explicit-polynomial base in that observation class, or enlarge
+    the operator’s nontrivial observation class further.
+  - broader zero-observation operator checkpoint:
+    added in `Molecule/BanachSlice.lean`
+    `slice_operator_zero_observation`
+    and its zero-observation-class action, invariance, and derivative lemmas
+    and in `Molecule/Conjecture.lean`
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_finite_observation_and_slice_operator_zero_observation_of_zero_eq_one`,
+    `molecule_residual_nontrivial_operator_linearization_source_with_slice_chart_finite_observation_and_slice_operator_zero_observation_of_zero_eq_one`,
+    `eq_one_of_molecule_residual_nontrivial_operator_linearization_source_with_slice_operator_zero_observation`,
+    `molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_slice_chart_finite_observation_and_slice_operator_zero_observation_of_zero_eq_one_of_fixed`,
+    and
+    `not_exists_eq_eval_polynomial_of_slice_chart_finite_observation_and_slice_operator_zero_observation_of_zero_eq_one_of_fixed`
+    so the route is broader again in exactly the needed direction:
+    the nontrivial branch no longer needs the full shifted finite-observation
+    class, only the scalar condition `f_ref.f 0 = 1`, while the fixed-to-seed
+    seam and the no-explicit-polynomial frontier still survive.
+  - chart-domain obstruction checkpoint:
+    added
+    `MoleculeResidualProperLocalizedChartDomainSource`,
+    `no_molecule_residual_proper_localized_chart_domain_source_of_eq_univ`,
+    `no_molecule_residual_proper_localized_chart_domain_source_current_slice_domain`
+    so the revised acceptance rule against counting `slice_domain = univ` now
+    has an exact theorem too:
+    any chart-domain scaffold that is definitionally `univ` at every reference
+    point is disqualified from the proper localized-domain target, and the
+    current `slice_domain` fails for exactly that reason.
+  - theorem-backlog extraction checkpoint:
+    added
+    `plan/PLAN_91_nonvacuous_scaffold_remaining_theorems.md`
+    to carry the remaining theorem families after the obstruction inventory:
+    replacement domain witness, replacement chart/operator witness, scaffold
+    package lift, first nonvacuous local/analytic obligation, first
+    non-explicit-polynomial base reuse, fixed/renorm gate, and critical-seed
+    cutover or exact handoff obstruction.
+  - replacement-domain checkpoint:
+    added in `Molecule/BanachSlice.lean`
+    `slice_domain_localized`,
+    `slice_domain_localized_open`,
+    `mem_slice_domain_localized_self`,
+    `exists_not_mem_slice_domain_localized`,
+    `slice_chart_refined_open_localized`
+    and in `Molecule/Conjecture.lean`
+    `molecule_residual_proper_localized_chart_domain_source_with_slice_domain_localized`
+    so the first `PLAN_91` theorem family is now complete:
+    the repo has a reference-dependent proper localized chart domain witness,
+    and the remaining scaffold debt is now chart/operator-side rather than
+    domain existence by itself.
+  - multivalued scaffold checkpoint:
+    added in `Molecule/BanachSlice.lean`
+    `slice_chart_multivalued`,
+    `slice_chart_multivalued_open`,
+    `slice_chart_multivalued_self`,
+    `slice_chart_multivalued_default_eq_one_of_ne`,
+    `slice_chart_multivalued_large_eq_two_of_ne`,
+    `slice_operator_multivalued`,
+    `slice_operator_multivalued_zero_shifted`,
+    `slice_operator_multivalued_one_shifted`,
+    `slice_operator_multivalued_two_shifted`,
+    `slice_operator_multivalued_separates_one_two_shifted`,
+    `slice_operator_multivalued_maps_three_point_shifted`
+    and in `Molecule/Conjecture.lean`
+    `molecule_residual_distinct_nonbase_chart_directions_source_with_slice_chart_multivalued`,
+    `molecule_residual_distinct_nonbase_operator_directions_source_with_slice_chart_multivalued_and_slice_operator_multivalued`,
+    `molecule_residual_dynamical_banach_neighborhood_operator_scaffold_sources_with_slice_chart_multivalued_and_slice_operator_multivalued`
+    so the next three `PLAN_91` theorem families are now complete too:
+    the repo has a concrete multivalued chart/operator scaffold with two
+    distinct nonbase directions and a compact invariant slice package.
+  - operator-linearization checkpoint:
+    added in `Molecule/BanachSlice.lean`
+    `slice_operator_multivalued_differentiableAt_shifted`
+    and
+    `deriv_slice_operator_multivalued_shifted`
+    and in `Molecule/Conjecture.lean`
+    `MoleculeResidualNontrivialOperatorLinearizationSourceWith`,
+    `no_molecule_residual_nontrivial_operator_linearization_source_with_refined_operator`,
+    `molecule_residual_nontrivial_operator_linearization_source_with_slice_chart_multivalued_and_slice_operator_multivalued`
+    so the nonvacuous local/analytic obligation item in `PLAN_91` is now
+    complete too:
+    the stronger scaffold has operator derivative `-1` at its reference chart
+    value, while the old identity-style refined operator fails this exact
+    analytic target.
+  - default-based seed-upgrade closure checkpoint:
+    added
+    `no_molecule_residual_dynamical_banach_neighborhood_operator_seed_sources_with_refined_chart_and_operator_of_scaffold_and_fixed_renorm`
+    so the original default-based refined scaffold is now closed explicitly at
+    the fixed-and-renormalizable upgrade interface too
+  - current route status:
+    current obstruction inventory [##########] 100%,
+    minimal source interface [#########-] 90%,
+    concrete scaffold search [##########] 100%,
+    non-equivalence screening [##########] 100%,
+    downstream gate readiness [##########] 100%.
+- `PLAN_54` progress:
+  - Opened replacement orbit-side track after archiving PLAN_51 as stuck.
+  - Added localized residual-bounds wrapper seam:
+    `molecule_residual_bounds_from_fixed_data_localized`.
+  - Rewired `molecule_residual_bounds_from_fixed_data` to consume the local
+    fixed-data orbit source route (no direct transport theorem dependency).
+  - Added explicit orbit-source composition seam theorems:
+    `molecule_residual_orbit_clause_for_fixed_data_source_of_orbit_clause_source`,
+    `molecule_residual_orbit_clause_for_fixed_data_source_of_transport_source`.
+  - Targeted probe confirms
+    `molecule_residual_orbit_clause_for_fixed_data_source_of_orbit_clause_source`,
+    `molecule_residual_orbit_clause_for_fixed_data_source_of_transport_source`,
+    `molecule_residual_bounds_from_fixed_data_localized`,
+    and `molecule_residual_bounds_from_fixed_data_and_local_orbit_source`
+    are axiom-clean modulo ground axioms.
+  - Cut over the active top-path non-ground source assembly:
+    `molecule_residual_non_ground_sources` now consumes
+    `molecule_residual_orbit_clause_for_fixed_data_source`.
+  - Completed declaration-order cleanup:
+    `molecule_residual_orbit_clause_for_fixed_data_source` now routes through
+    the transport-source composition theorem directly.
+  - Probe checkpoint:
+    `molecule_residual_bounds_from_fixed_data_localized` is axiom-clean modulo
+    ground axioms, while `molecule_residual_bounds_from_fixed_data` now carries
+    `Molecule.molecule_h_norm` only via the current orbit source theorem.
+  - Plan outcome: done; single canonical orbit-source theorem name retained.
+- `PLAN_57` progress:
+  - Opened minimal theorem-debt extraction track after archiving PLAN_56 as
+    stuck.
+  - Baseline includes PLAN_56 seam outputs:
+    `MoleculeResidualOrbitClauseAtFixedDataSource`,
+    `molecule_residual_orbit_clause_for_fixed_data_source_of_at_fixed_data_source`,
+    `molecule_residual_orbit_clause_at_fixed_data_source_of_orbit_clause_source`,
+    `molecule_residual_orbit_clause_at_fixed_data_source_of_transport_source`.
+  - Added explicit debt statement:
+    `MoleculeResidualCanonicalOrbitAtDebtSource`.
+  - Added debt-bridge theorems:
+    `molecule_residual_orbit_clause_at_fixed_data_source_of_canonical_debt_source`,
+    `molecule_residual_canonical_orbit_at_debt_source_of_at_fixed_data_source`.
+  - Added constructors into debt statement from orbit-clause/transport sources:
+    `molecule_residual_canonical_orbit_at_debt_source_of_orbit_clause_source`,
+    `molecule_residual_canonical_orbit_at_debt_source_of_transport_source`,
+    and current theorem `molecule_residual_canonical_orbit_at_debt_source`.
+  - Added canonical debt micro-split and constructor seams:
+    `MoleculeResidualCanonicalOrbitLandingSource`,
+    `MoleculeResidualCanonicalOrbitStructureSource`,
+    `molecule_residual_canonical_orbit_at_debt_source_of_landing_and_structure`,
+    `molecule_residual_canonical_orbit_landing_and_structure_of_debt_source`,
+    `molecule_residual_canonical_orbit_structure_source_of_at_fixed_data_source`,
+    `molecule_residual_canonical_orbit_at_debt_source_of_landing_and_at_fixed_data_source`,
+    `molecule_residual_canonical_orbit_structure_source_of_transport_source`,
+    `molecule_residual_canonical_orbit_at_debt_source_of_landing_and_transport_source`.
+  - Added canonical `V`-bound source seam and decomposition:
+    `MoleculeResidualCanonicalVBoundSource`,
+    `molecule_residual_canonical_orbit_landing_source_of_structure_and_vbound_source`,
+    `molecule_residual_canonical_orbit_at_debt_source_of_structure_and_vbound_source`,
+    `molecule_residual_canonical_vbound_source`.
+  - Added global `V`-bound seam and projection route:
+    `MoleculeResidualGlobalVBoundSource`,
+    `molecule_residual_global_vbound_source_of_h_norm`,
+    `molecule_residual_global_vbound_source`,
+    `molecule_residual_canonical_vbound_source_of_global_vbound_source`.
+  - Added weakened renormalizable-point `V`-bound seam and projection route:
+    `MoleculeResidualRenormVBoundSource`,
+    `molecule_residual_canonical_vbound_source_of_renorm_vbound_source`,
+    `molecule_residual_renorm_vbound_source_of_global_vbound_source`,
+    `molecule_residual_renorm_vbound_source_of_h_norm`,
+    `molecule_residual_renorm_vbound_source`.
+  - Added transfer-based canonical `V`-bound projection bridges:
+    `molecule_residual_canonical_vbound_source_of_fixed_point_local_transfer`,
+    `molecule_residual_canonical_vbound_source_of_fixed_point_transfer_source`.
+  - Targeted probes confirm debt seam constructor theorems are axiom-clean
+  modulo ground axioms; current theorem
+  `molecule_residual_canonical_orbit_at_debt_source` still carries
+  `Molecule.molecule_h_norm`, and
+    `molecule_residual_orbit_clause_at_fixed_data_source` inherits that.
+  - Completed with explicit transfer-routed cutover theorems:
+    `molecule_residual_canonical_vbound_source_via_fixed_point_transfer_source`
+    and
+    `molecule_residual_canonical_orbit_at_debt_source_via_fixed_point_transfer_source`.
+  - Handoff target is now PLAN_49: constructive replacement of
+    `molecule_residual_fixed_point_transfer_source`.
 
 ## Current Critical Blockers
 
-1. No remaining project-axiom blocker.
-2. Follow-up risk is mathematical-strength drift from interface realignment; handled by PLAN_42.
+1. Root blocker: `Molecule.molecule_h_norm` remains in the zero-arg theorem path.
+2. Active mitigation: PLAN_83 localized renormalizability bridge track, PLAN_81 single-reference fixed-data witness track, PLAN_80 fixed-point-data-source track, PLAN_78 concrete local-witness theorem track, PLAN_53 model bottleneck track, PLAN_76 anchor-witness bottleneck-break track, PLAN_47/49 integration tracks. PLAN_79 and PLAN_77 remain STUCK history/handoff.

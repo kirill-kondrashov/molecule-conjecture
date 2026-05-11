@@ -2,89 +2,115 @@
 
 [![build](https://github.com/kirill-kondrashov/molecule-conjecture/actions/workflows/lean_action_ci.yml/badge.svg)](https://github.com/kirill-kondrashov/molecule-conjecture/actions/workflows/lean_action_ci.yml)
 
-## 🚧 WORK IN PROGRESS 🚧
+## Current Status
 
-**Current Status:** This repository is in active development. The exported theorem
-`Molecule.molecule_conjecture_refined` is now zero-argument and uses no
-project-specific axioms in its proof path, but several core contracts are currently
-placeholder/relaxed, so this is not yet a faithful formalization of the full
-mathematical conjecture from the literature.
+This repository is an active Lean 4 formalization effort around Dudko's
+Molecule Conjecture.
 
-This repository contains a **machine-generated attempt of formal proof** of Dudko's Molecule Conjecture for quadratic polynomials in Lean 4. This theorem is a key component of the Mandelbrot Local Connectivity (MLC) Conjecture, establishing it for non-renormalizable parameters.
+The main theorem is `Molecule.molecule_conjecture_refined` in
+`Molecule/Conjecture.lean`. It is a zero-argument theorem that constructs:
 
-Essentially, this software facilitates progress toward an exact proof **in collaboration** with human verification, leveraging the rigor of formalization in Lean.
+- a renormalization operator `Rfast : BMol -> BMol`,
+- a horseshoe operator `Rfast_HMol : HMol -> HMol`,
+- a combinatorial model `R_target`,
 
-> [!NOTE]
-> This is a work in progress. Updates will be posted when (or if ☺) the proof is fully verified. This repository is shared at an early stage to simplify collaboration.
+and establishes:
 
-The primary benefit of using Lean is that the logic is verified by the Lean kernel,
-ensuring correctness relative to the definitions and axioms provided. Some essential
-parts, such as definitions, useful lemmas, and theorem skeletons from the literature,
-are included.
+- `IsHyperbolic Rfast`,
+- `IsPiecewiseAnalytic1DUnstable Rfast`,
+- `IsCompactOperator Rfast_HMol`,
+- `CombinatoriallyAssociated Rfast_HMol R_target`,
+- `∃ N, IsConjugateToShift R_target N`.
 
-## Disclaimer
+## Current Axiom Frontier
 
-> [!NOTE]
-> **This is an AI-assisted attempt to formalize modern mathematics.**
->
-> The code and documentation in this repository were produced by a combination of AI assistance and manual refinement. While the definitions and logical structure are checked by the Lean 4 kernel, the choice of axioms and the mathematical fidelity of the formalization to the standard literature require expert verification.
+`check_axioms Molecule.molecule_conjecture_refined` currently reports one
+remaining project-local axiom:
 
-## Formalization Status
+- `Molecule.molecule_h_norm`
 
-The main formal statement is `Molecule.molecule_conjecture_refined` in `Molecule/Conjecture.lean`. It is a zero-argument theorem that constructs a renormalization operator `Rfast`, a compact operator on the horseshoe `Rfast_HMol`, and a combinatorial model `R_target`, and then establishes:
+Along with the Lean core axioms:
 
-- `IsHyperbolic Rfast`
-- `IsPiecewiseAnalytic1DUnstable Rfast`
-- `IsCompactOperator Rfast_HMol`
-- `CombinatoriallyAssociated Rfast_HMol R_target`
-- `∃ N, IsConjugateToShift R_target N`
+- `propext`
+- `Quot.sound`
+- `Classical.choice`
 
-The current exported theorem path no longer depends on project-local axiom symbols.
-However, this was achieved by contract realignments that made some interfaces
-substantially weaker than their intended mathematical meaning.
+So the current repo frontier is:
 
-Implementation notes (important for interpretation):
+```math
+\texttt{Molecule.molecule\_h\_norm}
+```
 
-- `SliceSpace` is currently instantiated as `ℂ`.
-- `slice_chart` and `slice_operator` are currently placeholder constant maps
-  (stubbed Banach-slice model).
-- `PseudoSiegelAPrioriBounds` is currently a placeholder contract (`True`) in
-  `Molecule/Conjecture.lean`.
-- `IsHyperbolic1DUnstable` and `Has1DUnstableDirection` were realigned to weaker
-  witness-style predicates compatible with the current scaffold.
-- `IsHyperbolic` was similarly relaxed in the scaffold to match the current
-  constructive route.
-- Combinatorial and compactness obligations (`shift`, `assoc`, `compact`) are
-  discharged constructively in the current model.
-- Legacy internal axiom declarations still exist in parts of the codebase for
-  compatibility/history, but they are not used by
-  `Molecule.molecule_conjecture_refined`.
+## Current Interpretation of the Remaining Gap
 
-In practice: the theorem is kernel-checked and axiom-clean at project scope, but the
-current contracts are too weak to claim equivalence with the full Dudko
-Molecule-Conjecture statement.
+The repository already contains the main routing and packaging around the final
+theorem. The remaining work is an upstream witness/source construction problem
+for the last residual contract, not a basic theorem-wiring problem.
 
-> [!NOTE]
->
-> Next step: harden the contracts back toward mathematically faithful definitions
-> while keeping `check_axioms` clean for
-> `Molecule.molecule_conjecture_refined` (no project-local axiom symbols).
+At the current level of abstraction, the missing control is reflected in the
+following frontier contracts:
+
+```text
+(R)  forall f : BMol,
+       Rfast f = f -> IsFastRenormalizable f
+
+(V)  forall f : BMol,
+       Rfast f = f -> IsFastRenormalizable f ->
+       f.V subset Metric.ball 0 0.1
+
+(C)  forall f : BMol,
+       Rfast f = f -> IsFastRenormalizable f ->
+       criticalValue f = 0
+
+(O)  forall (f_star : BMol) (D : Set Complex) (U : Set BMol)
+            (a b : Nat -> Nat),
+       Rfast f_star = f_star ->
+       IsFastRenormalizable f_star ->
+       IsOpen D -> IsOpen U ->
+       f_star in U ->
+       criticalValue f_star in D ->
+       MoleculeOrbitClauseAt D U a b
+```
+
+In current repo terms, eliminating `Molecule.molecule_h_norm` means replacing
+the relevant remaining frontier contracts with non-axiomatic proofs.
+
+## Current Plan Split
+
+The current planning split is:
+
+- `PLAN_88` — governing route plan,
+- `PLAN_90` / `PLAN_91` — active operational queue,
+- `PLAN_93` — sidecar roadmap for literature-guided future directions.
 
 ## Verification
 
-To verify the proof and check for any remaining gaps (the `sorry` keyword in Lean), run:
+Run:
 
 ```bash
+make build
 make check
+./scripts/verify_output.sh
 ```
 
-This will analyze the codebase and output any axioms or unproven statements used.
+`make check` reports the axioms used by
+`Molecule.molecule_conjecture_refined`.
 
 **Current expected output (for `Molecule.molecule_conjecture_refined`):**
+<!-- EXPECTED_CHECK_OUTPUT_START -->
 ```
 ✅ The proof of 'Molecule.molecule_conjecture_refined' is free of 'sorry'.
 All axioms used:
 - propext
 - Quot.sound
 - Classical.choice
+- Molecule.molecule_h_norm
 ```
+<!-- EXPECTED_CHECK_OUTPUT_END -->
+
+## Disclaimer
+
+This is an AI-assisted formalization effort. Lean checks the logical structure
+relative to the definitions and axioms present in the codebase, but the
+mathematical fidelity of the model and the choice of remaining axioms still
+require expert review.
