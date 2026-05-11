@@ -37,9 +37,9 @@ Along with the Lean core axioms:
 
 So the current repo frontier is:
 
-\[
+$$
 \texttt{Molecule.molecule\_h\_norm}
-\]
+$$
 
 ## Current Interpretation of the Remaining Gap
 
