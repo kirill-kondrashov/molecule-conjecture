@@ -6,7 +6,7 @@ package molecule where
   lean_lib Molecule
 
 require mathlib from git
-  "https://github.com/leanprover-community/mathlib4" @ "master"
+  "https://github.com/leanprover-community/mathlib4" @ "v4.28.0"
 
 require mlc from git
   "https://github.com/kirill-kondrashov/yoccoz-theorem" @ "main"
